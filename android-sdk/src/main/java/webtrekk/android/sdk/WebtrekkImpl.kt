@@ -162,7 +162,7 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
         scheduleManager.startScheduling(config)
 
         if (config.autoTracking) {
-            autoTrack(context).also { logInfo("Start auto tracking") }
+            autoTrack(context).also { logInfo("Webtrekk started auto tracking") }
         } else {
             appState.disableAutoTrack(context)
         }
