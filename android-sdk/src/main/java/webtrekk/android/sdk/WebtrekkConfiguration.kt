@@ -12,7 +12,7 @@ class WebtrekkConfiguration private constructor(
     override val autoTracking: Boolean
 ) : Config {
 
-    class Builder(private var trackIds: List<String>, private var trackDomain: String) {
+    class Builder(private val trackIds: List<String>, private val trackDomain: String) {
         private var logLevel: Logger.Level = LOG_LEVEL_DEFAULT
         private var sendDelay: Long = TIME_UNIT_DEFAULT.toMillis(SEND_DELAY_DEFAULT)
         private var autoTracking = ENABLED_AUTO_TRACKING_DEFAULT
