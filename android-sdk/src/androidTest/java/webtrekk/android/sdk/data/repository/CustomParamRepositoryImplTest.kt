@@ -13,7 +13,7 @@ import webtrekk.android.sdk.data.customParams
 import webtrekk.android.sdk.data.trackRequests
 
 @RunWith(AndroidJUnit4::class)
-internal class CustomParamRepositoryImplTest: DbTest() {
+internal class CustomParamRepositoryImplTest : DbTest() {
 
     private lateinit var customParamRepositoryImpl: CustomParamRepositoryImpl
 
@@ -37,7 +37,8 @@ internal class CustomParamRepositoryImplTest: DbTest() {
         trackRequestDao.setTrackRequests(trackRequests)
         customParamDao.setCustomParams(customParams)
 
-        val customParamsById = customParamRepositoryImpl.getCustomParamsByTrackId(trackRequests[0].id)
+        val customParamsById =
+            customParamRepositoryImpl.getCustomParamsByTrackId(trackRequests[0].id)
         val filteredCustomParams = customParams.filter { it.trackId == trackRequests[0].id }
 
         assertThat(DataResult.Success(filteredCustomParams), `is`(customParamsById))

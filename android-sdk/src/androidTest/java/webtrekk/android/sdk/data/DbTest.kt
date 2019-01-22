@@ -9,9 +9,6 @@ import org.junit.Before
 import org.junit.Rule
 import webtrekk.android.sdk.data.dao.CustomParamDao
 import webtrekk.android.sdk.data.dao.TrackRequestDao
-import webtrekk.android.sdk.data.model.CustomParam
-import webtrekk.android.sdk.data.model.DataTrack
-import webtrekk.android.sdk.data.model.TrackRequest
 import java.io.IOException
 
 internal abstract class DbTest {

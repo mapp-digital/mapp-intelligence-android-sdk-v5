@@ -25,7 +25,6 @@ import webtrekk.android.sdk.domain.internal.AddCustomParams
 import webtrekk.android.sdk.domain.internal.AddTrackRequestWithCustomParams
 import webtrekk.android.sdk.domain.internal.AddTrackRequest
 import webtrekk.android.sdk.domain.internal.GetTrackRequests
-import webtrekk.android.sdk.util.generateEverId
 import webtrekk.android.sdk.util.notNullOrException
 import webtrekk.android.sdk.util.resolution
 import webtrekk.android.sdk.worker.ScheduleManager
@@ -37,8 +36,8 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
 
     private var context: Context by Delegates.notNullOrException(errorMessage = "Context must be initialized")
     private var config: Config by Delegates.notNullOrException(
-        errorMessage = "Webtrekk configurations must be set before invoking any method."
-            + " Use Webtrekk.getInstance().init(context, configuration)"
+        errorMessage = "Webtrekk configurations must be set before invoking any method." +
+            " Use Webtrekk.getInstance().init(context, configuration)"
     )
 
     private val sharedPrefs by inject<SharedPrefs>()
@@ -140,7 +139,7 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
     }
 
     override fun optOut() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getEverId(): String = context.run {

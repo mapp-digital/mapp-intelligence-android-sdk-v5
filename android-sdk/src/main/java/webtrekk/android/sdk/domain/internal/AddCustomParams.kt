@@ -1,7 +1,6 @@
 package webtrekk.android.sdk.domain.internal
 
 import android.util.Log
-import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

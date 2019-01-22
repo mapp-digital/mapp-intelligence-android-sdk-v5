@@ -4,7 +4,6 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import androidx.work.impl.WorkManagerImpl
 import webtrekk.android.sdk.Config
 import java.util.concurrent.TimeUnit
 
