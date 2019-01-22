@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.RestrictTo
 import kotlinx.coroutines.*
 import org.koin.dsl.module.module
+import org.koin.log.EmptyLogger
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
@@ -62,6 +63,8 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
 
+    internal var logger: Logger? = null
+
     init {
         val module = module {
             single { SharedPrefs(context) }
@@ -89,7 +92,7 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
             single { Sessions(sharedPrefs) }
         }
 
-        startKoin(listOf(module))
+        startKoin(listOf(module), logger = EmptyLogger())
     }
 
     companion object {
@@ -151,13 +154,15 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
     }
 
     private fun internalInit() {
+        logger = WebtrekkLogger(config.logLevel)
+
         sessions.setEverId()
         sessions.startNewSession()
 
         scheduleManager.startScheduling(config)
 
         if (config.autoTracking) {
-            autoTrack(context)
+            autoTrack(context).also { logInfo("Start auto tracking") }
         } else {
             appState.disableAutoTrack(context)
         }

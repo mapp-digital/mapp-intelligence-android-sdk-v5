@@ -12,7 +12,7 @@ class SampleApplication : Application() {
         super.onCreate()
 
         val webtrekkConfigurations = WebtrekkConfiguration.Builder(listOf("1"), "www.webtrekk.com")
-            .logLevel(Logger.Level.ALL)
+            .logLevel(Logger.Level.BASIC)
             .sendDelay(TimeUnit.MINUTES, 15)
             .build()
 
