@@ -46,7 +46,6 @@ internal class WebtrekkLogger(level: Logger.Level) : Logger {
         }
     }
 
-
     override fun error(message: String) {
         basicMessage?.let {
             Log.wtf(tag, "$basicMessage -> $message")
