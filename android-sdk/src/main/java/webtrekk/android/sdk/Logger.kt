@@ -12,5 +12,7 @@ interface Logger {
 
     fun debug(message: String)
 
+    fun warn(message: String)
+
     fun error(message: String)
 }

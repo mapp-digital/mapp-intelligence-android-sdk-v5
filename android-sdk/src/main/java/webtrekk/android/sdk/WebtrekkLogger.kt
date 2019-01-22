@@ -8,6 +8,8 @@ internal fun logInfo(message: String) = WebtrekkImpl.getInstance().logger?.info(
 
 internal fun logDebug(message: String) = WebtrekkImpl.getInstance().logger?.debug(message)
 
+internal fun logWarn(message: String) = WebtrekkImpl.getInstance().logger?.warn(message)
+
 internal fun logError(message: String) = WebtrekkImpl.getInstance().logger?.error(message)
 
 internal class WebtrekkLogger(level: Logger.Level) : Logger {
@@ -37,6 +39,13 @@ internal class WebtrekkLogger(level: Logger.Level) : Logger {
             Log.d(tag, "$basicMessage -> $message")
         }
     }
+
+    override fun warn(message: String) {
+        basicMessage?.let {
+            Log.w(tag, "$basicMessage -> $message")
+        }
+    }
+
 
     override fun error(message: String) {
         basicMessage?.let {

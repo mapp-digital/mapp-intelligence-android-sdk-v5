@@ -14,8 +14,8 @@ import static webtrekk.android.sdk.model.ParamTypeKt.createCustomParam;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String BACKGROUND_PARAM = createCustomParam(ParamType.PAGE_CATEGORY, 100);
     private final Webtrekk webtrekk = Webtrekk.getInstance();
+    private static final String BACKGROUND_PARAM = createCustomParam(ParamType.PAGE_CATEGORY, 100);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
