@@ -26,8 +26,7 @@ import webtrekk.android.sdk.domain.internal.AddCustomParams
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.GetCachedTrackRequests
-import webtrekk.android.sdk.util.notNullOrException
-import webtrekk.android.sdk.util.resolution
+import webtrekk.android.sdk.util.*
 import webtrekk.android.sdk.worker.ScheduleManager
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -57,7 +56,7 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
     private val autoTrack by inject<AutoTrack>()
     private val trackPage by inject<TrackPage>()
     private val trackEvent by inject<TrackEvent>()
-    private val sessions by inject<Sessions>()
+    internal val sessions by inject<Sessions>()
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext

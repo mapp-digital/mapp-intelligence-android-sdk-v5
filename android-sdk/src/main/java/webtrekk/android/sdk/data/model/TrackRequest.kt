@@ -16,12 +16,14 @@ internal data class TrackRequest(
     @ColumnInfo(name = "language") var language: String? = currentLanguage,
     @ColumnInfo(name = "screen_resolution") var screenResolution: String = "",
     @ColumnInfo(name = "time_zone") var timeZone: String? = currentTimeZone.toString(),
-    @ColumnInfo(name = "time_stamp") var timeStamp: String? = currentTimeStamp.toString()
+    @ColumnInfo(name = "time_stamp") var timeStamp: String? = currentTimeStamp.toString(),
+    @ColumnInfo(name = "fns") var fns: String? = currentSession,
+    @ColumnInfo(name = "one") var one: String? = appFirstStart
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long = 0
 
     override fun toString() =
-        "$id $name $apiLevel $osVersion $deviceManufacturer $deviceModel $country $language $screenResolution $timeZone $timeStamp"
+        "$id $name $apiLevel $osVersion $deviceManufacturer $deviceModel $country $language $screenResolution $timeZone $timeStamp $fns $one"
 }

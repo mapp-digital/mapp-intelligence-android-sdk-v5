@@ -1,6 +1,7 @@
 package webtrekk.android.sdk.util
 
 import android.os.Build
+import webtrekk.android.sdk.WebtrekkImpl
 import java.util.*
 import kotlin.random.Random
 
@@ -29,6 +30,12 @@ internal val currentTimeZone
 
 internal val currentTimeStamp
     inline get() = System.currentTimeMillis()
+
+internal val currentSession
+    @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
+
+internal val appFirstStart
+    @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstStart()
 
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
