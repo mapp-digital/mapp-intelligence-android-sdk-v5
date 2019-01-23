@@ -14,11 +14,16 @@ import webtrekk.android.sdk.data.model.CustomParam
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import kotlin.coroutines.CoroutineContext
 
-internal class `Add Custom Param Test` : CoroutineScope {
+internal class AddCustomParamsTest : CoroutineScope {
 
     private lateinit var customParamRepository: CustomParamRepository
-    private lateinit var customParams: List<CustomParam>
     private lateinit var addCustomParams: AddCustomParams
+
+    private var customParams = listOf(
+        CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
+        CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2"),
+        CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3")
+    )
 
     private val job = SupervisorJob()
     private val testCoroutineContext = TestCoroutineContext()
@@ -29,12 +34,6 @@ internal class `Add Custom Param Test` : CoroutineScope {
     fun tearUp() {
         customParamRepository = mockkClass(CustomParamRepository::class)
 
-        customParams = listOf(
-            CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
-            CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2"),
-            CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3")
-        )
-
         addCustomParams = AddCustomParams(customParamRepository, coroutineContext)
     }
 
@@ -44,7 +43,7 @@ internal class `Add Custom Param Test` : CoroutineScope {
     }
 
     @Test
-    fun `insert custom params into database and return success`() {
+    fun `add custom params and return success`() {
         coEvery { customParamRepository.addCustomParams(customParams) } returns DataResult.Success(
             customParams
         )

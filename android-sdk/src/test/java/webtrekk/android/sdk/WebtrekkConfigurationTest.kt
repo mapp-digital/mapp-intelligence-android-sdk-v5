@@ -5,7 +5,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
-class `WebtrekkConfiguration Test` {
+class WebtrekkConfigurationTest {
 
     private lateinit var webtrekkConfiguration: WebtrekkConfiguration
 

@@ -19,10 +19,10 @@ import webtrekk.android.sdk.data.model.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import kotlin.coroutines.CoroutineContext
 
-internal class `Get Track Requests` : CoroutineScope {
+internal class GetCachedTrackRequestsTest : CoroutineScope {
 
-    lateinit var trackRequestRepository: TrackRequestRepository
-    private lateinit var getTrackRequests: GetTrackRequests
+    private lateinit var trackRequestRepository: TrackRequestRepository
+    private lateinit var getCachedTrackRequests: GetCachedTrackRequests
 
     private val dataTracks = listOf(
         DataTrack(
@@ -56,7 +56,7 @@ internal class `Get Track Requests` : CoroutineScope {
     fun tearUp() {
         trackRequestRepository = mockkClass(TrackRequestRepository::class)
 
-        getTrackRequests = GetTrackRequests(trackRequestRepository, testCoroutineContext)
+        getCachedTrackRequests = GetCachedTrackRequests(trackRequestRepository, testCoroutineContext)
     }
 
     @After
@@ -69,9 +69,9 @@ internal class `Get Track Requests` : CoroutineScope {
         coEvery { trackRequestRepository.getTrackRequests() } returns DataResult.Success(dataTracks)
 
         launch {
-            val result = getTrackRequests
+            val result = getCachedTrackRequests().await()
 
-            assertThat(DataResult.Success(dataTracks), equalTo(result.testResult))
+            assertThat(DataResult.Success(dataTracks), equalTo(result))
         }
     }
 }

@@ -23,9 +23,9 @@ import webtrekk.android.sdk.domain.external.Sessions
 import webtrekk.android.sdk.domain.external.TrackEvent
 import webtrekk.android.sdk.domain.external.TrackPage
 import webtrekk.android.sdk.domain.internal.AddCustomParams
-import webtrekk.android.sdk.domain.internal.AddTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.internal.AddTrackRequest
-import webtrekk.android.sdk.domain.internal.GetTrackRequests
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.domain.internal.CacheTrackRequest
+import webtrekk.android.sdk.domain.internal.GetCachedTrackRequests
 import webtrekk.android.sdk.util.notNullOrException
 import webtrekk.android.sdk.util.resolution
 import webtrekk.android.sdk.worker.ScheduleManager
@@ -49,10 +49,10 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
     private val trackRequestRepository by inject<TrackRequestRepository>()
     private val customParamsRepository by inject<CustomParamRepository>()
 
-    private val addTrackRequest by inject<AddTrackRequest>()
-    private val getTrackRequests by inject<GetTrackRequests>()
+    private val cacheTrackRequest by inject<CacheTrackRequest>()
+    private val getCachedTrackRequests by inject<GetCachedTrackRequests>()
     private val addCustomParams by inject<AddCustomParams>()
-    private val addTrackRequestWithCustomParams by inject<AddTrackRequestWithCustomParams>()
+    private val addTrackRequestWithCustomParams by inject<CacheTrackRequestWithCustomParams>()
 
     private val autoTrack by inject<AutoTrack>()
     private val trackPage by inject<TrackPage>()
@@ -75,18 +75,18 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
             single { TrackRequestRepositoryImpl(DaoProvider.provideTrackRequestDao(context)) as TrackRequestRepository }
             single { CustomParamRepositoryImpl(DaoProvider.provideCustomParamDao(context)) as CustomParamRepository }
 
-            single { AddTrackRequest(trackRequestRepository, coroutineContext) }
-            single { GetTrackRequests(trackRequestRepository, coroutineContext) }
+            single { CacheTrackRequest(trackRequestRepository, coroutineContext) }
+            single { GetCachedTrackRequests(trackRequestRepository, coroutineContext) }
             single { AddCustomParams(customParamsRepository, coroutineContext) }
             single {
-                AddTrackRequestWithCustomParams(
-                    addTrackRequest,
-                    addCustomParams,
+                CacheTrackRequestWithCustomParams(
+                    trackRequestRepository,
+                    customParamsRepository,
                     coroutineContext
                 )
             }
 
-            single { AutoTrack(appState, addTrackRequest) }
+            single { AutoTrack(appState, cacheTrackRequest) }
             single { TrackPage(addTrackRequestWithCustomParams) }
             single { TrackEvent(addTrackRequestWithCustomParams) }
             single { Sessions(sharedPrefs) }
@@ -153,7 +153,7 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
         job.cancel()
     }
 
-    private fun internalInit() {
+    private fun internalInit() = launch {
         logger = WebtrekkLogger(config.logLevel)
 
         sessions.setEverId()

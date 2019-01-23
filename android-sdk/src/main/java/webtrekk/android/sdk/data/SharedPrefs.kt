@@ -14,15 +14,15 @@ internal class SharedPrefs(context: Context) {
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
     var everId: String
-        get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
+        inline get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
 
     var one: String
-        get() = sharedPreferences.getString(ONE_KEY, "0") ?: "0"
+        inline get() = sharedPreferences.getString(ONE_KEY, "0") ?: "0"
         set(value) = sharedPreferences.edit().putString(ONE_KEY, value).apply()
 
     var fns: String
-        get() = sharedPreferences.getString(NEW_SESSION_KEY, "0") ?: "0"
+        inline get() = sharedPreferences.getString(NEW_SESSION_KEY, "0") ?: "0"
         set(value) = sharedPreferences.edit().putString(NEW_SESSION_KEY, value).apply()
 
     fun contains(key: String): Boolean = sharedPreferences.contains(key)

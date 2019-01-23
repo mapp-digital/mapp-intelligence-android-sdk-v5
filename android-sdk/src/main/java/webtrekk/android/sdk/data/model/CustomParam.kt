@@ -23,6 +23,6 @@ internal data class CustomParam(
     var customParamId: Long = 0
 
     override fun toString(): String {
-        return "$trackId $paramKey -> $paramValue"
+        return "trackId = $trackId: $paramKey -> $paramValue"
     }
 }

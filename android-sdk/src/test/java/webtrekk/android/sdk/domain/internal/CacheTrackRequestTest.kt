@@ -14,11 +14,12 @@ import webtrekk.android.sdk.data.model.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import kotlin.coroutines.CoroutineContext
 
-internal class `Add Track Request Test` : CoroutineScope {
+internal class CacheTrackRequestTest : CoroutineScope {
 
-    lateinit var trackRequestRepository: TrackRequestRepository
-    lateinit var trackRequest: TrackRequest
-    lateinit var addTrackRequest: AddTrackRequest
+    private lateinit var trackRequestRepository: TrackRequestRepository
+    private lateinit var cacheTrackRequest: CacheTrackRequest
+
+    private var trackRequest = TrackRequest(name = "test")
 
     private val job = SupervisorJob()
     private val testCoroutineContext = TestCoroutineContext()
@@ -28,9 +29,8 @@ internal class `Add Track Request Test` : CoroutineScope {
     @Before
     fun tearUp() {
         trackRequestRepository = mockkClass(TrackRequestRepository::class)
-        trackRequest = TrackRequest(name = "test")
 
-        addTrackRequest = AddTrackRequest(trackRequestRepository, coroutineContext)
+        cacheTrackRequest = CacheTrackRequest(trackRequestRepository, coroutineContext)
     }
 
     @After
@@ -39,13 +39,13 @@ internal class `Add Track Request Test` : CoroutineScope {
     }
 
     @Test
-    fun `insert track request to the database and return success`() {
+    fun `cache a new track request and return success`() {
         coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns DataResult.Success(
             trackRequest
         )
 
         launch {
-            val result = addTrackRequest(trackRequest).await()
+            val result = cacheTrackRequest(trackRequest).await()
 
             assertThat(DataResult.Success(trackRequest).data, `is`(result))
         }

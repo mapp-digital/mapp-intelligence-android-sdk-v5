@@ -1,11 +1,11 @@
 package webtrekk.android.sdk.domain.external
 
 import webtrekk.android.sdk.data.model.TrackRequest
-import webtrekk.android.sdk.domain.internal.AddTrackRequestWithCustomParams
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 
-internal class TrackEvent(private val addTrackRequestWithCustomParams: AddTrackRequestWithCustomParams) {
+internal class TrackEvent(private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams) {
 
     operator fun invoke(trackRequest: TrackRequest, trackingParams: Map<String, String>) {
-        addTrackRequestWithCustomParams(trackRequest, trackingParams)
+        cacheTrackRequestWithCustomParams(trackRequest, trackingParams)
     }
 }

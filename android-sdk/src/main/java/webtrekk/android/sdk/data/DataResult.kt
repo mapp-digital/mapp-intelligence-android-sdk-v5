@@ -9,7 +9,7 @@ internal inline fun <T> tryToQuery(
     return try {
         query()
     } catch (exception: Exception) {
-        DataResult.Fail(Exception(errorMessage, exception))
+        DataResult.Fail(Exception("$errorMessage $exception"))
     }
 }
 

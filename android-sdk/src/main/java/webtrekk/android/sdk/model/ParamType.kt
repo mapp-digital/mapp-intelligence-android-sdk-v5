@@ -2,13 +2,6 @@ package webtrekk.android.sdk.model
 
 import androidx.annotation.IntRange
 
-// get restrictive on the params either Page or Event
-internal enum class RequestType(val value: String) {
-
-    PAGE(""),
-    EVENT("ct")
-}
-
 object Param {
 
     // Page Data PAGE ONLY
@@ -46,3 +39,10 @@ typealias TrackingParams = LinkedHashMap<String, String>
 @JvmName("createCustomParam")
 fun customParam(paramType: ParamType, @IntRange(from = 0, to = 500) value: Int): String =
     "${paramType.value}$value"
+
+// get restrictive on the params either Page or Event
+internal enum class RequestType(val value: String) {
+
+    PAGE(""),
+    EVENT("ct")
+}
