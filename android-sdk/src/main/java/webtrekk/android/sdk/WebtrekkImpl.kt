@@ -56,12 +56,12 @@ internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
     private val autoTrack by inject<AutoTrack>()
     private val trackPage by inject<TrackPage>()
     private val trackEvent by inject<TrackEvent>()
-    internal val sessions by inject<Sessions>()
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
 
+    internal val sessions by inject<Sessions>()
     internal var logger: Logger? = null
 
     init {

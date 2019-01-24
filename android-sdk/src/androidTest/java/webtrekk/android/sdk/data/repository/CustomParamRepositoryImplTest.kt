@@ -7,7 +7,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import webtrekk.android.sdk.data.DataResult
 import webtrekk.android.sdk.data.DbTest
 import webtrekk.android.sdk.data.customParams
 import webtrekk.android.sdk.data.trackRequests
@@ -28,7 +27,7 @@ internal class CustomParamRepositoryImplTest : DbTest() {
         trackRequestDao.setTrackRequests(trackRequests)
         val result = customParamRepositoryImpl.addCustomParams(customParams)
 
-        assertThat(DataResult.Success(customParams), `is`(result))
+        assertThat(Result.success(customParams), `is`(result))
     }
 
     @Test
@@ -41,6 +40,6 @@ internal class CustomParamRepositoryImplTest : DbTest() {
             customParamRepositoryImpl.getCustomParamsByTrackId(trackRequests[0].id)
         val filteredCustomParams = customParams.filter { it.trackId == trackRequests[0].id }
 
-        assertThat(DataResult.Success(filteredCustomParams), `is`(customParamsById))
+        assertThat(Result.success(filteredCustomParams), `is`(customParamsById))
     }
 }

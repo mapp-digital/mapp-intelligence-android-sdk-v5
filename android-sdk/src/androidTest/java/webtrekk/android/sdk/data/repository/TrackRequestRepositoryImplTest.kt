@@ -24,7 +24,7 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
     fun addTrackRequest() = runBlocking {
         val result = trackRequestRepositoryImpl.addTrackRequest(trackRequests[0])
 
-        assertThat(DataResult.Success(trackRequests[0]), `is`(result))
+        assertThat(Result.success(trackRequests[0]), `is`(result))
     }
 
     @Test
@@ -35,7 +35,7 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
 
         val result = trackRequestRepositoryImpl.getTrackRequests()
 
-        assertThat(DataResult.Success(dataTracks), `is`(result))
+        assertThat(Result.success(dataTracks), `is`(result))
     }
 
     @Test
@@ -45,6 +45,6 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
 
         val result = trackRequestRepositoryImpl.deleteTrackRequests(trackRequests)
 
-        assertThat(DataResult.Success(true), `is`(result))
+        assertThat(Result.success(true), `is`(result))
     }
 }

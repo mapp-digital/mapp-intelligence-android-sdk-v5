@@ -12,7 +12,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import webtrekk.android.sdk.data.DataResult
 import webtrekk.android.sdk.data.model.CustomParam
 import webtrekk.android.sdk.data.model.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
@@ -26,7 +25,7 @@ internal class CacheTrackRequestWithCustomParamsTest : CoroutineScope {
     private lateinit var cacheTrackRequest: CacheTrackRequest
     private lateinit var addCustomParams: AddCustomParams
 
-    private var trackRequest = TrackRequest(name = "track request 1").apply { id = 1 }
+    private var trackRequest = TrackRequest(name = "track request 1", fns = "1", one = "1").apply { id = 1 }
 
     private val job = Job()
     private val testCoroutineContext = TestCoroutineContext()
@@ -49,27 +48,27 @@ internal class CacheTrackRequestWithCustomParamsTest : CoroutineScope {
 
     @Test
     fun `cache track request then append its custom params`() {
-        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns DataResult.Success(
+        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns Result.success(
             trackRequest
         )
 
         launch {
             val trackRequestResult = cacheTrackRequest(trackRequest).await() as TrackRequest
 
-            assertThat(DataResult.Success(trackRequest).data, `is`(trackRequestResult))
+            assertThat(trackRequest, `is`(trackRequestResult))
 
             val customParams = listOf(
                 CustomParam(trackId = trackRequestResult.id, paramKey = "cs", paramValue = "val 1"),
                 CustomParam(trackId = trackRequestResult.id, paramKey = "cd", paramValue = "val 2")
             )
 
-            coEvery { customParamRepository.addCustomParams(customParams) } returns DataResult.Success(
+            coEvery { customParamRepository.addCustomParams(customParams) } returns Result.success(
                 customParams
             )
 
             addCustomParams(customParams)
 
-            assertThat(DataResult.Success(customParams), `is`(addCustomParams.testResult))
+            assertThat(Result.success(customParams), `is`(addCustomParams.testResult))
         }
     }
 }

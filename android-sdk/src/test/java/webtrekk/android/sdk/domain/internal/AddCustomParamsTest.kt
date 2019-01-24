@@ -9,7 +9,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import webtrekk.android.sdk.data.DataResult
 import webtrekk.android.sdk.data.model.CustomParam
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import kotlin.coroutines.CoroutineContext
@@ -44,14 +43,14 @@ internal class AddCustomParamsTest : CoroutineScope {
 
     @Test
     fun `add custom params and return success`() {
-        coEvery { customParamRepository.addCustomParams(customParams) } returns DataResult.Success(
+        coEvery { customParamRepository.addCustomParams(customParams) } returns Result.success(
             customParams
         )
 
         launch {
             addCustomParams(customParams)
 
-            assertThat(DataResult.Success(customParams), `is`(addCustomParams.testResult))
+            assertThat(Result.success(customParams), `is`(addCustomParams.testResult))
         }
     }
 }

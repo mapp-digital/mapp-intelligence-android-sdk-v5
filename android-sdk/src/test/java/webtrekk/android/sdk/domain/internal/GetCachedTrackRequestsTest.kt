@@ -12,7 +12,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import webtrekk.android.sdk.data.DataResult
 import webtrekk.android.sdk.data.model.CustomParam
 import webtrekk.android.sdk.data.model.DataTrack
 import webtrekk.android.sdk.data.model.TrackRequest
@@ -26,23 +25,29 @@ internal class GetCachedTrackRequestsTest : CoroutineScope {
 
     private val dataTracks = listOf(
         DataTrack(
-            trackRequest = TrackRequest(name = "page 1").apply { id = 1 },
+            trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 },
             customParam = CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1")
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 1").apply { id = 1 },
+            trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 },
             customParam = CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2")
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 2").apply { this.id = 2 },
+            trackRequest = TrackRequest(name = "page 2", fns = "0", one = "0").apply {
+                this.id = 2
+            },
             customParam = CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3")
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 3").apply { this.id = 3 },
+            trackRequest = TrackRequest(name = "page 3", fns = "0", one = "0").apply {
+                this.id = 3
+            },
             customParam = null
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 4").apply { this.id = 4 },
+            trackRequest = TrackRequest(name = "page 4", fns = "0", one = "0").apply {
+                this.id = 4
+            },
             customParam = null
         )
     )
@@ -56,7 +61,8 @@ internal class GetCachedTrackRequestsTest : CoroutineScope {
     fun tearUp() {
         trackRequestRepository = mockkClass(TrackRequestRepository::class)
 
-        getCachedTrackRequests = GetCachedTrackRequests(trackRequestRepository, testCoroutineContext)
+        getCachedTrackRequests =
+            GetCachedTrackRequests(trackRequestRepository, testCoroutineContext)
     }
 
     @After
@@ -66,12 +72,12 @@ internal class GetCachedTrackRequestsTest : CoroutineScope {
 
     @Test
     fun `get all tracks and their custom params`() {
-        coEvery { trackRequestRepository.getTrackRequests() } returns DataResult.Success(dataTracks)
+        coEvery { trackRequestRepository.getTrackRequests() } returns Result.success(dataTracks)
 
         launch {
             val result = getCachedTrackRequests().await()
 
-            assertThat(DataResult.Success(dataTracks), equalTo(result))
+            assertThat(Result.success(dataTracks), equalTo(result))
         }
     }
 }

@@ -9,7 +9,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import webtrekk.android.sdk.data.DataResult
 import webtrekk.android.sdk.data.model.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import kotlin.coroutines.CoroutineContext
@@ -19,7 +18,7 @@ internal class CacheTrackRequestTest : CoroutineScope {
     private lateinit var trackRequestRepository: TrackRequestRepository
     private lateinit var cacheTrackRequest: CacheTrackRequest
 
-    private var trackRequest = TrackRequest(name = "test")
+    private var trackRequest = TrackRequest(name = "test", fns = "1", one = "1")
 
     private val job = SupervisorJob()
     private val testCoroutineContext = TestCoroutineContext()
@@ -40,14 +39,14 @@ internal class CacheTrackRequestTest : CoroutineScope {
 
     @Test
     fun `cache a new track request and return success`() {
-        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns DataResult.Success(
+        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns Result.success(
             trackRequest
         )
 
         launch {
             val result = cacheTrackRequest(trackRequest).await()
 
-            assertThat(DataResult.Success(trackRequest).data, `is`(result))
+            assertThat(Result.success(trackRequest), `is`(result))
         }
     }
 }
