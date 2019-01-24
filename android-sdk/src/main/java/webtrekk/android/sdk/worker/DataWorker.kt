@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import webtrekk.android.sdk.data.DaoProvider
-import webtrekk.android.sdk.data.DataResult
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import kotlin.coroutines.CoroutineContext
 
@@ -35,10 +34,10 @@ internal class DataWorker(context: Context, workerParameters: WorkerParameters) 
         launch(Dispatchers.IO) {
             // sendToServer()
             val result = trackRequestRepository.getTrackRequests()
-            when (result) {
-                is DataResult.Success -> Log.wtf("data inside work manager", result.data.toString())
-                is DataResult.Fail -> Log.wtf("exception", result.exception)
-            }
+//            when (result) {
+//                is DataResult.Success -> logError("data inside work manager " + result.data.toString())
+//                is DataResult.Fail -> logError("exception "+ result.exception)
+//            }
         }
 
         return Result.success()

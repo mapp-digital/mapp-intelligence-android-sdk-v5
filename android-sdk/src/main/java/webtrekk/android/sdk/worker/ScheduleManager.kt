@@ -1,9 +1,6 @@
 package webtrekk.android.sdk.worker
 
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
+import androidx.work.*
 import webtrekk.android.sdk.Config
 import java.util.concurrent.TimeUnit
 
@@ -11,7 +8,7 @@ internal class ScheduleManager {
 
     fun startScheduling(config: Config) {
         val constraints = Constraints.Builder()
-            .setRequiresCharging(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
         val worker = PeriodicWorkRequest.Builder(

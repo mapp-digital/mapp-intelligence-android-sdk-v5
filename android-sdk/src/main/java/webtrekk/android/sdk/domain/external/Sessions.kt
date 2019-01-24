@@ -17,15 +17,11 @@ internal class Sessions(private val sharedPrefs: SharedPrefs) {
         return sharedPrefs.everId
     }
 
-    fun getAppFirstStart(): String {
-        return sharedPrefs.one.also { sharedPrefs.one = "0" }
-    }
+    fun getAppFirstStart(): String = sharedPrefs.one.also { sharedPrefs.one = "0" }
 
     fun startNewSession() {
         sharedPrefs.fns = "1"
     }
 
-    fun getCurrentSession(): String {
-        return sharedPrefs.fns.also { sharedPrefs.fns = "0" }
-    }
+    fun getCurrentSession(): String = sharedPrefs.fns.also { sharedPrefs.fns = "0" }
 }
