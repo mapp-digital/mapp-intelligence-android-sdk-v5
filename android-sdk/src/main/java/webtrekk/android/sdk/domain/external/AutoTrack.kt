@@ -17,8 +17,6 @@ internal class AutoTrack(
             with(trackRequest) {
                 logInfo("Received new auto track request: $this")
 
-                screenResolution = context.resolution()
-
                 cacheTrackRequest(this)
             }
         }

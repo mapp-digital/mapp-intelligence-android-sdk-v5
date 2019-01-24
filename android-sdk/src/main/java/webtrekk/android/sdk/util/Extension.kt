@@ -42,6 +42,6 @@ internal fun Context.resolution(): String {
     return String.format("%sx%s", displayMetrics.widthPixels, displayMetrics.heightPixels)
 }
 
-internal fun Activity.toTrackRequest(): TrackRequest = TrackRequest(name = this.localClassName)
+internal fun Activity.toTrackRequest(): TrackRequest = TrackRequest(name = this.localClassName, screenResolution = this.resolution())
 
-internal fun Fragment.toTrackRequest(): TrackRequest = TrackRequest(name = this.toString())
+internal fun Fragment.toTrackRequest(): TrackRequest = TrackRequest(name = this.toString(), screenResolution = this.context?.resolution())

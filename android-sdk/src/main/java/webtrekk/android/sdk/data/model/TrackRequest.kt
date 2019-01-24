@@ -14,7 +14,7 @@ internal data class TrackRequest(
     @ColumnInfo(name = "device_model") var deviceModel: String? = currentDeviceModel,
     @ColumnInfo(name = "country") var country: String? = currentCountry,
     @ColumnInfo(name = "language") var language: String? = currentLanguage,
-    @ColumnInfo(name = "screen_resolution") var screenResolution: String = "",
+    @ColumnInfo(name = "screen_resolution") var screenResolution: String? = "",
     @ColumnInfo(name = "time_zone") var timeZone: String? = currentTimeZone.toString(),
     @ColumnInfo(name = "time_stamp") var timeStamp: String? = currentTimeStamp.toString(),
     @ColumnInfo(name = "fns") var fns: String? = currentSession,
