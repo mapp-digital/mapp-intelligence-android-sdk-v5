@@ -7,10 +7,10 @@ import webtrekk.android.sdk.data.dao.TrackRequestDao
 internal object DaoProvider {
 
     fun provideTrackRequestDao(context: Context): TrackRequestDao {
-        return WebtrekkDatabase.getInstance(context).trackRequestDao()
+        return getWebtrekkDatabase(context.applicationContext).trackRequestDao()
     }
 
     fun provideCustomParamDao(context: Context): CustomParamDao {
-        return WebtrekkDatabase.getInstance(context).customParamDataDao()
+        return getWebtrekkDatabase(context.applicationContext).customParamDataDao()
     }
 }

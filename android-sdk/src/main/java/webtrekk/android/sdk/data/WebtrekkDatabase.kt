@@ -23,21 +23,20 @@ internal abstract class WebtrekkDatabase : RoomDatabase() {
 
     abstract fun trackRequestDao(): TrackRequestDao
     abstract fun customParamDataDao(): CustomParamDao
+}
 
-    companion object {
+private lateinit var INSTANCE: WebtrekkDatabase
 
-        @Volatile
-        private var INSTANCE: WebtrekkDatabase? = null
-
-        fun getInstance(context: Context): WebtrekkDatabase {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
-            }
-        }
-
-        private fun buildDatabase(context: Context): WebtrekkDatabase {
-            return Room.databaseBuilder(context, WebtrekkDatabase::class.java, DATABASE_NAME)
-                .build()
+internal fun getWebtrekkDatabase(context: Context): WebtrekkDatabase {
+    synchronized(WebtrekkDatabase::class) {
+        if (!::INSTANCE.isInitialized) {
+            INSTANCE = Room.databaseBuilder(
+                context.applicationContext,
+                WebtrekkDatabase::class.java,
+                DATABASE_NAME
+            ).build()
         }
     }
+
+    return INSTANCE
 }
