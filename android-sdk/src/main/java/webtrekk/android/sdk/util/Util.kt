@@ -1,6 +1,9 @@
 package webtrekk.android.sdk.util
 
+import android.content.Context
 import android.os.Build
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import webtrekk.android.sdk.WebtrekkImpl
 import java.util.*
 import kotlin.random.Random
@@ -42,3 +45,13 @@ internal fun generateEverId(): String {
     val random = Random
     return "6${String.format("%010d%08d", date, random.nextLong(100000000))}"
 }
+
+internal fun <T : RoomDatabase> buildRoomDatabase(
+    context: Context,
+    databaseName: String,
+    database: Class<T>
+): T = Room.databaseBuilder(
+    context.applicationContext,
+    database,
+    databaseName
+).build()
