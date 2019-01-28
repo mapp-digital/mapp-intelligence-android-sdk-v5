@@ -5,7 +5,6 @@ import webtrekk.android.sdk.AppState
 import webtrekk.android.sdk.data.model.TrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.logInfo
-import webtrekk.android.sdk.util.resolution
 
 internal class AutoTrack(
     private val appState: AppState<TrackRequest>,

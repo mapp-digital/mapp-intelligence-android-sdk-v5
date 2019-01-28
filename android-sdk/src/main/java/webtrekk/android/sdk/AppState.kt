@@ -20,10 +20,11 @@ internal abstract class AppState<T : Any> : LifecycleWrapper() {
     protected lateinit var lifecycleReceiver: LifecycleReceiver<T>
 
     inline fun startAutoTrack(context: Context, crossinline onReceive: (T) -> Unit) {
-        (context as? Application)?.registerActivityLifecycleCallbacks(this)
-        lifecycleReceiver = object : LifecycleReceiver<T> {
-            override fun onEventReceived(event: T) {
-                onReceive(event)
+        (context as? Application)?.registerActivityLifecycleCallbacks(this)?.let {
+            lifecycleReceiver = object : LifecycleReceiver<T> {
+                override fun onEventReceived(event: T) {
+                    onReceive(event)
+                }
             }
         }
     }
