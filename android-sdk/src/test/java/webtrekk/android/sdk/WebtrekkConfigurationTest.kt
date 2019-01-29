@@ -39,6 +39,7 @@ class WebtrekkConfigurationTest {
             defaultWebtrekkConfiguration.sendDelay
         )
         assertEquals(ENABLED_AUTO_TRACKING_DEFAULT, defaultWebtrekkConfiguration.autoTracking)
+        assertEquals(WORKMANAGER_CONSTRAINTS_DEFAULT, defaultWebtrekkConfiguration.workManagerConstraints)
     }
 
     @Test
