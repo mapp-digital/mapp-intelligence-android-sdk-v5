@@ -32,7 +32,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-internal class WebtrekkImpl : Webtrekk(), KoinComponent, CoroutineScope {
+internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, CoroutineScope {
 
     private var context: Context by Delegates.notNullOrException(errorMessage = "Context must be initialized")
     private var config: Config by Delegates.notNullOrException(
