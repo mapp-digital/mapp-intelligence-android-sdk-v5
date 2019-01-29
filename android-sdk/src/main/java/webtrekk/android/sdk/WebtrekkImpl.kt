@@ -19,15 +19,10 @@ import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import webtrekk.android.sdk.domain.external.AutoTrack
-import webtrekk.android.sdk.domain.external.Sessions
 import webtrekk.android.sdk.domain.external.TrackEvent
 import webtrekk.android.sdk.domain.external.TrackPage
-import webtrekk.android.sdk.domain.internal.AddCustomParams
-import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.internal.CacheTrackRequest
-import webtrekk.android.sdk.domain.internal.GetCachedTrackRequests
+import webtrekk.android.sdk.domain.internal.*
 import webtrekk.android.sdk.util.*
-import webtrekk.android.sdk.worker.ScheduleManager
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
@@ -43,7 +38,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     private val sharedPrefs by inject<SharedPrefs>()
 
     private val appState by inject<AppState<TrackRequest>>()
-    private val scheduleManager by inject<ScheduleManager>()
+    private val scheduler by inject<Scheduler>()
 
     private val trackRequestRepository by inject<TrackRequestRepository>()
     private val customParamsRepository by inject<CustomParamRepository>()
@@ -69,7 +64,6 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             single { SharedPrefs(context) }
 
             single { AppStateImpl() as AppState<TrackRequest> }
-            single { ScheduleManager() }
 
             single { TrackRequestRepositoryImpl(DaoProvider.provideTrackRequestDao(context)) as TrackRequestRepository }
             single { CustomParamRepositoryImpl(DaoProvider.provideCustomParamDao(context)) as CustomParamRepository }
@@ -89,6 +83,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             single { TrackPage(addTrackRequestWithCustomParams) }
             single { TrackEvent(addTrackRequestWithCustomParams) }
             single { Sessions(sharedPrefs) }
+            single { Scheduler(trackRequestRepository) }
         }
 
         startKoin(listOf(module), logger = EmptyLogger())
@@ -158,7 +153,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         sessions.setEverId()
         sessions.startNewSession()
 
-        scheduleManager.startScheduling(config)
+        scheduler(sendDelay = config.sendDelay, constraints = config.workManagerConstraints)
 
         if (config.autoTracking) {
             autoTrack(context).also { logInfo("Webtrekk started auto tracking") }

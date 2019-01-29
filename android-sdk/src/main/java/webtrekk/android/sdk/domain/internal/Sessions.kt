@@ -1,4 +1,4 @@
-package webtrekk.android.sdk.domain.external
+package webtrekk.android.sdk.domain.internal
 
 import webtrekk.android.sdk.data.SharedPrefs
 import webtrekk.android.sdk.util.generateEverId
