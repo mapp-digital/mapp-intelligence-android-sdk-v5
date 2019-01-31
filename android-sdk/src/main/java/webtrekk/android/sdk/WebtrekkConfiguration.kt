@@ -30,7 +30,8 @@ class WebtrekkConfiguration private constructor(
         fun disableAutoTracking() = apply { this.autoTracking = false }
 
         @JvmName("setWorkManagerConstraints")
-        fun workManagerConstraints(constraints: Constraints) = apply { this.constraints = constraints }
+        fun workManagerConstraints(constraints: Constraints) =
+            apply { this.constraints = constraints }
 
         fun build() = WebtrekkConfiguration(
             trackIds.validateList("trackId"),

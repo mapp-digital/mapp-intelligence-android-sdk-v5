@@ -13,7 +13,7 @@ buildscript {
             'appCompatVersion'       : '1.1.0-alpha01',
             'constraintLayoutVersion': '2.0.0-alpha3',
 
-            'kotlinCoroutines'       : '1.1.0',
+            'kotlinCoroutines'       : '1.1.1',
             'coreKtxVersion'         : '1.0.1',
             'koinVersion'            : '1.0.1',
 
@@ -56,11 +56,12 @@ allprojects {
         }
     }
 
-    // Enable progressive mode
+    // Enable progressive mode & allow Result return type
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
             freeCompilerArgs += [
-                    '-progressive'
+                    '-progressive',
+                    '-Xallow-result-return-type'
             ]
         }
     }

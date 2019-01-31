@@ -28,10 +28,6 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
-    kotlinOptions {
-        freeCompilerArgs = ["-Xallow-result-return-type"]
-    }
 }
 
 dependencies {
