@@ -33,20 +33,20 @@ class WebtrekkConfigurationTest {
         val defaultWebtrekkConfiguration =
             WebtrekkConfiguration.Builder(listOf("123"), "www.webtrekk.com").build()
 
-        assertEquals(LOG_LEVEL_DEFAULT, defaultWebtrekkConfiguration.logLevel)
+        assertEquals(DefaultConfiguration.logLevel, defaultWebtrekkConfiguration.logLevel)
         assertEquals(
-            TIME_UNIT_DEFAULT.toMillis(SEND_DELAY_DEFAULT),
+            DefaultConfiguration.timeUnit.toMillis(DefaultConfiguration.sendDelay),
             defaultWebtrekkConfiguration.sendDelay
         )
-        assertEquals(ENABLED_AUTO_TRACKING_DEFAULT, defaultWebtrekkConfiguration.autoTracking)
-        assertEquals(WORKMANAGER_CONSTRAINTS_DEFAULT, defaultWebtrekkConfiguration.workManagerConstraints)
+        assertEquals(DefaultConfiguration.enabledAutoTrack, defaultWebtrekkConfiguration.autoTracking)
+        assertEquals(DefaultConfiguration.workManagerConstraints, defaultWebtrekkConfiguration.workManagerConstraints)
     }
 
     @Test
     fun `validate webtrekk configurations are set`() {
         assertEquals(webtrekkConfiguration.trackIds, listOf("123456789", "123"))
         assertEquals(webtrekkConfiguration.trackDomain, "www.webtrekk.com")
-        assertEquals(webtrekkConfiguration.logLevel, LOG_LEVEL_DEFAULT) // Default value
+        assertEquals(webtrekkConfiguration.logLevel, DefaultConfiguration.logLevel) // DefaultConfiguration value
         assertEquals(webtrekkConfiguration.sendDelay, TimeUnit.MINUTES.toMillis(20))
         assertEquals(webtrekkConfiguration.autoTracking, false)
     }

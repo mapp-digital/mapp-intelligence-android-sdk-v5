@@ -15,10 +15,10 @@ class WebtrekkConfiguration private constructor(
 ) : Config {
 
     class Builder(private val trackIds: List<String>, private val trackDomain: String) {
-        private var logLevel: Logger.Level = LOG_LEVEL_DEFAULT
-        private var sendDelay: Long = TIME_UNIT_DEFAULT.toMillis(SEND_DELAY_DEFAULT)
-        private var autoTracking = ENABLED_AUTO_TRACKING_DEFAULT
-        private var constraints = WORKMANAGER_CONSTRAINTS_DEFAULT
+        private var logLevel = DefaultConfiguration.logLevel
+        private var sendDelay = DefaultConfiguration.timeUnit.toMillis(DefaultConfiguration.sendDelay)
+        private var autoTracking = DefaultConfiguration.enabledAutoTrack
+        private var constraints = DefaultConfiguration.workManagerConstraints
 
         @JvmName("setLogLevel")
         fun logLevel(logLevel: Logger.Level) = apply { this.logLevel = logLevel }
