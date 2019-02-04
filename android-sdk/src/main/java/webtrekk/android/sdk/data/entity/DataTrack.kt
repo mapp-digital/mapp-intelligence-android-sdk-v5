@@ -1,4 +1,4 @@
-package webtrekk.android.sdk.data.model
+package webtrekk.android.sdk.data.entity
 
 import androidx.room.DatabaseView
 import androidx.room.Embedded

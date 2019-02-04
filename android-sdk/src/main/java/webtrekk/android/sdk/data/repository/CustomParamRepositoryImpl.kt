@@ -1,7 +1,7 @@
 package webtrekk.android.sdk.data.repository
 
 import webtrekk.android.sdk.data.dao.CustomParamDao
-import webtrekk.android.sdk.data.model.CustomParam
+import webtrekk.android.sdk.data.entity.CustomParam
 
 internal class CustomParamRepositoryImpl(private val customParamDao: CustomParamDao) :
     CustomParamRepository {

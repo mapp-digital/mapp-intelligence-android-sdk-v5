@@ -2,7 +2,7 @@ package webtrekk.android.sdk.domain.external
 
 import android.content.Context
 import webtrekk.android.sdk.AppState
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.logInfo
 

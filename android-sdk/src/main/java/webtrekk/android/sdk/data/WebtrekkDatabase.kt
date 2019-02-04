@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import webtrekk.android.sdk.data.dao.CustomParamDao
 import webtrekk.android.sdk.data.dao.TrackRequestDao
-import webtrekk.android.sdk.data.model.DataTrackView
-import webtrekk.android.sdk.data.model.CustomParam
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.DataTrackView
+import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.buildRoomDatabase
 
 internal const val DATABASE_NAME = "webtrekk-test-db"

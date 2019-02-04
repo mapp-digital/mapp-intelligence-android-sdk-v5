@@ -4,7 +4,7 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import java.util.concurrent.TimeUnit
 
-internal object DefaultConfiguration {
+object DefaultConfiguration {
 
     val logLevel = Logger.Level.BASIC
 

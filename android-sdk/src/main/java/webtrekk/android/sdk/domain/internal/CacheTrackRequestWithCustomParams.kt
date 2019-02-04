@@ -1,8 +1,8 @@
 package webtrekk.android.sdk.domain.internal
 
 import kotlinx.coroutines.*
-import webtrekk.android.sdk.data.model.CustomParam
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import kotlin.coroutines.CoroutineContext

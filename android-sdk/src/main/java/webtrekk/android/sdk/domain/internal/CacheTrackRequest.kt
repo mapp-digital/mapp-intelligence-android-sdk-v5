@@ -1,7 +1,7 @@
 package webtrekk.android.sdk.domain.internal
 
 import kotlinx.coroutines.*
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.logDebug
 import webtrekk.android.sdk.logError

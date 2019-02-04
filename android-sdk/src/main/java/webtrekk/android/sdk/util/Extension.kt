@@ -6,7 +6,7 @@ import android.content.res.Configuration
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal inline fun <reified T : Any> T?.nullOrEmptyIsError(propertyName: T): T {
     when (this) {

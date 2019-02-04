@@ -13,7 +13,7 @@ import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
 import webtrekk.android.sdk.data.DaoProvider
 import webtrekk.android.sdk.data.SharedPrefs
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
@@ -135,12 +135,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         )
     }
 
-    override fun optOut() {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun getEverId(): String = context.run {
         sessions.getEverId()
+    }
+
+    override fun optOut() {
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun clear() {

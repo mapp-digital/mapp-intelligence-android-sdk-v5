@@ -1,8 +1,8 @@
 package webtrekk.android.sdk.data
 
-import webtrekk.android.sdk.data.model.CustomParam
-import webtrekk.android.sdk.data.model.DataTrack
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal val trackRequests = listOf(
     TrackRequest(name = "page 1", fns = "1", one = "1").apply { this.id = 1 },

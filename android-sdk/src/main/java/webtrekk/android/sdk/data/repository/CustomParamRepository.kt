@@ -1,6 +1,6 @@
 package webtrekk.android.sdk.data.repository
 
-import webtrekk.android.sdk.data.model.CustomParam
+import webtrekk.android.sdk.data.entity.CustomParam
 
 internal interface CustomParamRepository {
 

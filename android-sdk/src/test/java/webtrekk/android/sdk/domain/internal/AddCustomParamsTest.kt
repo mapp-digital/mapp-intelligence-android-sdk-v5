@@ -9,7 +9,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import webtrekk.android.sdk.data.model.CustomParam
+import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import kotlin.coroutines.CoroutineContext
 

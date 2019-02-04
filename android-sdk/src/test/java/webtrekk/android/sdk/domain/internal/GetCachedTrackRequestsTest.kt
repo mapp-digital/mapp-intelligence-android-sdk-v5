@@ -12,9 +12,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import webtrekk.android.sdk.data.model.CustomParam
-import webtrekk.android.sdk.data.model.DataTrack
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import kotlin.coroutines.CoroutineContext
 

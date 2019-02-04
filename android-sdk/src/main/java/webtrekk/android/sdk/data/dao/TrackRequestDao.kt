@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import webtrekk.android.sdk.data.model.DataTrack
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 
 @Dao
 internal interface TrackRequestDao {
@@ -18,6 +18,9 @@ internal interface TrackRequestDao {
 
     @Query("SELECT * FROM DataTrackView")
     fun getTrackRequests(): List<DataTrack>
+
+    @Query("SELECT * FROM tracking_data")
+    fun getTrackRequestsOnly(): List<TrackRequest>
 
     @Delete
     fun clearTrackRequests(trackRequests: List<TrackRequest>)

@@ -1,7 +1,7 @@
 package webtrekk.android.sdk.data.repository
 
-import webtrekk.android.sdk.data.model.DataTrack
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal interface TrackRequestRepository {
 

@@ -1,8 +1,8 @@
 package webtrekk.android.sdk.data.repository
 
 import webtrekk.android.sdk.data.dao.TrackRequestDao
-import webtrekk.android.sdk.data.model.DataTrackView
-import webtrekk.android.sdk.data.model.TrackRequest
+import webtrekk.android.sdk.data.entity.DataTrackView
+import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequestDao) :
     TrackRequestRepository {

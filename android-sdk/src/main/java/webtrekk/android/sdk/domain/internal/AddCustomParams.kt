@@ -3,7 +3,7 @@ package webtrekk.android.sdk.domain.internal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import webtrekk.android.sdk.data.model.CustomParam
+import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.logDebug
 import webtrekk.android.sdk.logError
