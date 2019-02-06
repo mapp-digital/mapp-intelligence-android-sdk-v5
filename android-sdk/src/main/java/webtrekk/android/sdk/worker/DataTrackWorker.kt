@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import webtrekk.android.sdk.data.DaoProvider
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import webtrekk.android.sdk.domain.internal.GetCachedTrackRequests
+import webtrekk.android.sdk.logDebug
 
 internal class DataTrackWorker(
     context: Context,
@@ -13,6 +14,7 @@ internal class DataTrackWorker(
 ) :
     CoroutineWorker(context, workerParameters) {
 
+    // todo implement by injection
     private val trackRequestRepository =
         TrackRequestRepositoryImpl(DaoProvider.provideTrackRequestDao(context))
     private val getCachedTrackRequests =
@@ -20,6 +22,7 @@ internal class DataTrackWorker(
 
     override suspend fun doWork(): Result {
         val result = getCachedTrackRequests().await()
+        logDebug("got data in work manager $result")
 
         return Result.success()
     }

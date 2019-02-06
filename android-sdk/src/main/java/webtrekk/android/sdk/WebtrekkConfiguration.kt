@@ -1,8 +1,8 @@
 package webtrekk.android.sdk
 
 import androidx.work.Constraints
-import webtrekk.android.sdk.util.nullOrEmptyIsError
-import webtrekk.android.sdk.util.validateList
+import webtrekk.android.sdk.extension.nullOrEmptyIsError
+import webtrekk.android.sdk.extension.validateList
 import java.util.concurrent.TimeUnit
 
 class WebtrekkConfiguration private constructor(

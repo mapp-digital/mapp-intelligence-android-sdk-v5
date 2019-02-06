@@ -31,9 +31,9 @@ internal class CacheTrackRequestWithCustomParams(
                 val customTrackingParams =
                     trackingParams.map { param ->
                         CustomParam(
-                            cachedTrackRequest.id,
-                            param.key,
-                            param.value
+                            trackId = cachedTrackRequest.id,
+                            paramKey = param.key,
+                            paramValue = param.value
                         )
                     }
 

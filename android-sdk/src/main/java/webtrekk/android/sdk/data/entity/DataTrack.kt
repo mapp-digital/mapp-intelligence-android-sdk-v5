@@ -1,12 +1,12 @@
 package webtrekk.android.sdk.data.entity
 
-import androidx.room.DatabaseView
 import androidx.room.Embedded
+import androidx.room.Relation
 
-@DatabaseView("SELECT * FROM tracking_data LEFT JOIN custom_params ON tracking_data.id = custom_params.track_id ORDER BY tracking_data.time_stamp")
-internal data class DataTrackView(
+internal data class DataTrack(
     @Embedded var trackRequest: TrackRequest,
-    @Embedded var customParam: CustomParam?
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "track_id"
+    ) var customParams: List<CustomParam> = arrayListOf()
 )
-
-internal typealias DataTrack = DataTrackView

@@ -26,7 +26,7 @@ object Param {
 enum class ParamType(val value: String) {
     PAGE_PARAM("cp"), // page only
     PAGE_CATEGORY("cg"), // page only
-    ACTION_PARAM("ck"), // event only
+    EVENT_PARAM("ck"), // event only
     CAMPAIGN_PARAM("cc"), // both
     SESSION_PARAM("cs"), // both
     URM_CATEGORY("uc"), // both

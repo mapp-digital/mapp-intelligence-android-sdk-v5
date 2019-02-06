@@ -1,12 +1,10 @@
-package webtrekk.android.sdk.util
+package webtrekk.android.sdk.extension
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import androidx.fragment.app.Fragment
-import webtrekk.android.sdk.data.entity.TrackRequest
+import java.net.URLEncoder
 
 internal inline fun <reified T : Any> T?.nullOrEmptyIsError(propertyName: T): T {
     when (this) {
@@ -30,6 +28,8 @@ internal fun <T : Any> List<T>?.validateList(propertyName: Any): List<T> {
     return this as List<T>
 }
 
+internal fun String.encodeToUTF8(): String = URLEncoder.encode(this, "UTF-8")
+
 internal val Context.isPortrait
     inline get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
@@ -41,7 +41,3 @@ internal fun Context.resolution(): String {
     windowManager.defaultDisplay.getMetrics(displayMetrics)
     return String.format("%sx%s", displayMetrics.widthPixels, displayMetrics.heightPixels)
 }
-
-internal fun Activity.toTrackRequest(): TrackRequest = TrackRequest(name = this.localClassName, screenResolution = this.resolution())
-
-internal fun Fragment.toTrackRequest(): TrackRequest = TrackRequest(name = this.toString(), screenResolution = this.context?.resolution())

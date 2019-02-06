@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.util.toTrackRequest
+import webtrekk.android.sdk.extension.toTrackRequest
 
 internal class AppStateImpl : AppState<TrackRequest>() {
 

@@ -4,11 +4,10 @@ import android.content.Context
 import android.os.Build
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.WebtrekkImpl
 import java.util.*
 import kotlin.random.Random
-
-internal const val PLATFORM_NAME = "Android"
 
 internal val currentOsVersion
     inline get() = Build.VERSION.RELEASE
@@ -33,6 +32,12 @@ internal val currentTimeZone
 
 internal val currentTimeStamp
     inline get() = System.currentTimeMillis()
+
+internal val currentWebtrekkVersion
+    inline get() = BuildConfig.VERSION_NAME
+
+internal val currentEverId
+    inline get() = WebtrekkImpl.getInstance().sessions.getEverId()
 
 internal val currentSession
     @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()

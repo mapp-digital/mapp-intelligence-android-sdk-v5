@@ -14,15 +14,8 @@ import androidx.room.ForeignKey.CASCADE
     indices = [Index("track_id")]
 )
 internal data class CustomParam(
-    @ColumnInfo(name = "track_id") var trackId: Long,
-    @ColumnInfo(name = "param_key") var paramKey: String,
-    @ColumnInfo(name = "param_value") var paramValue: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "custom_id")
-    var customParamId: Long = 0
-
-    override fun toString(): String {
-        return "trackId = $trackId: $paramKey -> $paramValue"
-    }
-}
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "custom_id") var customParamId: Long = 0,
+    @ColumnInfo(name = "track_id") val trackId: Long,
+    @ColumnInfo(name = "param_key") val paramKey: String,
+    @ColumnInfo(name = "param_value") val paramValue: String
+)

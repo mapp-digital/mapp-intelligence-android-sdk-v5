@@ -1,7 +1,7 @@
 package webtrekk.android.sdk.data.repository
 
 import webtrekk.android.sdk.data.dao.TrackRequestDao
-import webtrekk.android.sdk.data.entity.DataTrackView
+import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequestDao) :
@@ -14,7 +14,7 @@ internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequ
         }
     }
 
-    override suspend fun getTrackRequests(): Result<List<DataTrackView>> {
+    override suspend fun getTrackRequests(): Result<List<DataTrack>> {
         return runCatching {
             trackRequestDao.getTrackRequests()
         }

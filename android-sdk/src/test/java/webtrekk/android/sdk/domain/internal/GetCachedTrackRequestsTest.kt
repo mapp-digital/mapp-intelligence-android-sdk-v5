@@ -26,29 +26,20 @@ internal class GetCachedTrackRequestsTest : CoroutineScope {
     private val dataTracks = listOf(
         DataTrack(
             trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 },
-            customParam = CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1")
+            customParams = listOf(CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
+                CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2"))
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 },
-            customParam = CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2")
+            trackRequest = TrackRequest(name = "page 2", fns = "0", one = "0").apply { this.id = 2 },
+            customParams = listOf(CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3"))
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 2", fns = "0", one = "0").apply {
-                this.id = 2
-            },
-            customParam = CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3")
+            trackRequest = TrackRequest(name = "page 3", fns = "0", one = "0").apply { this.id = 3 },
+            customParams = emptyList()
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 3", fns = "0", one = "0").apply {
-                this.id = 3
-            },
-            customParam = null
-        ),
-        DataTrack(
-            trackRequest = TrackRequest(name = "page 4", fns = "0", one = "0").apply {
-                this.id = 4
-            },
-            customParam = null
+            trackRequest = TrackRequest(name = "page 4", fns = "0", one = "0").apply { this.id = 4 },
+            customParams = emptyList()
         )
     )
 

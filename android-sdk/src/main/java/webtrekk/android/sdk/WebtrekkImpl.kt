@@ -13,7 +13,7 @@ import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
 import webtrekk.android.sdk.data.DaoProvider
 import webtrekk.android.sdk.data.SharedPrefs
-import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.entity.*
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
@@ -22,6 +22,7 @@ import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.TrackEvent
 import webtrekk.android.sdk.domain.external.TrackPage
 import webtrekk.android.sdk.domain.internal.*
+import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates

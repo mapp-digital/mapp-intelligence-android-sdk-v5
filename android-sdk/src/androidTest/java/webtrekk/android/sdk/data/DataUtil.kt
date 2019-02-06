@@ -12,15 +12,14 @@ internal val trackRequests = listOf(
 )
 
 internal val customParams = listOf(
-    CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
-    CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2"),
-    CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3")
+    CustomParam(customParamId = 1, trackId = 1, paramKey = "cs", paramValue = "val 1"),
+    CustomParam(customParamId = 2, trackId = 1, paramKey = "cd", paramValue = "val 2"),
+    CustomParam(customParamId = 3, trackId = 2, paramKey = "cs", paramValue = "val 3")
 )
 
 internal val dataTracks = listOf(
-    DataTrack(trackRequest = trackRequests[0], customParam = customParams[0]),
-    DataTrack(trackRequest = trackRequests[0], customParam = customParams[1]),
-    DataTrack(trackRequest = trackRequests[1], customParam = customParams[2]),
-    DataTrack(trackRequest = trackRequests[2], customParam = null),
-    DataTrack(trackRequest = trackRequests[3], customParam = null)
+    DataTrack(trackRequest = trackRequests[0], customParams = listOf(customParams[0], customParams[1])),
+    DataTrack(trackRequest = trackRequests[1], customParams = listOf(customParams[2])),
+    DataTrack(trackRequest = trackRequests[2], customParams = emptyList()),
+    DataTrack(trackRequest = trackRequests[3], customParams = emptyList())
 )
