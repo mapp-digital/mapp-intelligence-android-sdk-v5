@@ -13,6 +13,7 @@ internal interface TrackRequestDao {
     @Insert
     fun setTrackRequests(trackRequests: List<TrackRequest>)
 
+    @Transaction
     @Query("SELECT * FROM tracking_data ORDER BY time_stamp")
     fun getTrackRequests(): List<DataTrack>
 
