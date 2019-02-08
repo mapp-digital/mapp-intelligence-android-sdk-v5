@@ -1,6 +1,7 @@
 package webtrekk.android.sdk.data.dao
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -12,7 +13,7 @@ internal class TrackRequestDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getSingleTrackRequest() {
+    fun getSingleTrackRequest() = runBlocking {
         trackRequestDao.setTrackRequest(trackRequests[0])
 
         assertThat(trackRequestDao.getTrackRequests()[0].trackRequest, `is`(trackRequests[0]))
@@ -20,7 +21,7 @@ internal class TrackRequestDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getTrackRequestsAndTheirCustomParams() {
+    fun getTrackRequestsAndTheirCustomParams() = runBlocking {
         trackRequestDao.setTrackRequests(trackRequests)
         customParamDao.setCustomParams(customParams)
 
@@ -29,7 +30,7 @@ internal class TrackRequestDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun clearTrackRequests() {
+    fun clearTrackRequests() = runBlocking {
         trackRequestDao.setTrackRequests(trackRequests)
         trackRequestDao.clearTrackRequests(listOf(trackRequests[0], trackRequests[1]))
 

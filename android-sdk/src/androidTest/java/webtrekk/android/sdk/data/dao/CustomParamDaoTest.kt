@@ -1,6 +1,7 @@
 package webtrekk.android.sdk.data.dao
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -14,7 +15,7 @@ internal class CustomParamDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getCustomParams() {
+    fun getCustomParams() = runBlocking {
         trackRequestDao.setTrackRequests(trackRequests)
         customParamDao.setCustomParams(customParams)
 
@@ -23,7 +24,7 @@ internal class CustomParamDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getCustomParamsByTrackId() {
+    fun getCustomParamsByTrackId() = runBlocking {
         trackRequestDao.setTrackRequests(trackRequests)
         customParamDao.setCustomParams(customParams)
 
@@ -35,7 +36,7 @@ internal class CustomParamDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun clearCustomParamsWhenTrackIsDeleted() {
+    fun clearCustomParamsWhenTrackIsDeleted() = runBlocking {
         trackRequestDao.setTrackRequests(trackRequests)
         customParamDao.setCustomParams(customParams)
 

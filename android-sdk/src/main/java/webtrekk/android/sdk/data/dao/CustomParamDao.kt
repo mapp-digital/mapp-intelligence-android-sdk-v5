@@ -9,11 +9,11 @@ import webtrekk.android.sdk.data.entity.CustomParam
 internal interface CustomParamDao {
 
     @Insert
-    fun setCustomParams(customParams: List<CustomParam>)
+    suspend fun setCustomParams(customParams: List<CustomParam>)
 
     @Query("SELECT * FROM custom_params")
-    fun getCustomParams(): List<CustomParam>
+    suspend fun getCustomParams(): List<CustomParam>
 
     @Query("SELECT * FROM custom_params WHERE track_id = :trackId")
-    fun getCustomParamsByTrackId(trackId: Long): List<CustomParam>
+    suspend fun getCustomParamsByTrackId(trackId: Long): List<CustomParam>
 }

@@ -8,15 +8,15 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 internal interface TrackRequestDao {
 
     @Insert
-    fun setTrackRequest(trackRequest: TrackRequest): Long
+    suspend fun setTrackRequest(trackRequest: TrackRequest): Long
 
     @Insert
-    fun setTrackRequests(trackRequests: List<TrackRequest>)
+    suspend fun setTrackRequests(trackRequests: List<TrackRequest>)
 
     @Transaction
     @Query("SELECT * FROM tracking_data ORDER BY time_stamp")
-    fun getTrackRequests(): List<DataTrack>
+    suspend fun getTrackRequests(): List<DataTrack>
 
     @Delete
-    fun clearTrackRequests(trackRequests: List<TrackRequest>)
+    suspend fun clearTrackRequests(trackRequests: List<TrackRequest>)
 }

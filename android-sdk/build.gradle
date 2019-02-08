@@ -44,6 +44,7 @@ dependencies {
     implementation "android.arch.work:work-runtime-ktx:$versions.workManagerVersion"
     androidTestImplementation "android.arch.work:work-testing:$versions.workManagerVersion"
     implementation "androidx.room:room-runtime:$versions.roomVersion"
+    implementation "androidx.room:room-coroutines:$versions.roomVersion"
     kapt "androidx.room:room-compiler:$versions.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
 
