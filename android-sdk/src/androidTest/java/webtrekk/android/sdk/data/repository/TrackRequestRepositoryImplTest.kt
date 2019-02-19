@@ -50,11 +50,20 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
         updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
         updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
 
-        val dataTracks = listOf(DataTrack(updatedTrackRequests[2]))
+        val dataTracks = listOf(
+            DataTrack(updatedTrackRequests[0]),
+            DataTrack(updatedTrackRequests[1]),
+            DataTrack(updatedTrackRequests[2])
+        )
 
         trackRequestRepositoryImpl.updateTrackRequests(*updatedTrackRequests.toTypedArray())
 
-        val results = trackRequestRepositoryImpl.getTrackRequestsByState(TrackRequest.RequestState.DONE)
+        val results = trackRequestRepositoryImpl.getTrackRequestsByState(
+            listOf(
+                TrackRequest.RequestState.DONE,
+                TrackRequest.RequestState.FAILED
+            )
+        )
 
         assertThat(Result.success(dataTracks), `is`(results))
     }

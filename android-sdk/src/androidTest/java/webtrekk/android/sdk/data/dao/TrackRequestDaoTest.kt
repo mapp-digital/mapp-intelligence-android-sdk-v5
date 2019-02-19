@@ -41,9 +41,28 @@ internal class TrackRequestDaoTest : DbTest() {
 
         trackRequestDao.updateTrackRequests(*updatedTrackRequests.toTypedArray())
 
-        val results = trackRequestDao.getTrackRequestsByState(TrackRequest.RequestState.DONE.value).map { it.trackRequest }
+        val results =
+            trackRequestDao.getTrackRequestsByState(listOf(TrackRequest.RequestState.DONE.value))
+                .map { it.trackRequest }
 
-        assertThat(listOf(updatedTrackRequests[0], updatedTrackRequests[1]), `is`(results))
+        assertThat(
+            updatedTrackRequests.filter { it.requestState == TrackRequest.RequestState.DONE },
+            `is`(results)
+        )
+
+        val twoStateResults =
+            trackRequestDao.getTrackRequestsByState(
+                listOf(
+                    TrackRequest.RequestState.DONE.value,
+                    TrackRequest.RequestState.FAILED.value
+                )
+            )
+                .map { it.trackRequest }
+
+        assertThat(updatedTrackRequests.filter {
+            it.requestState == TrackRequest.RequestState.DONE ||
+                it.requestState == TrackRequest.RequestState.FAILED
+        }, `is`(twoStateResults))
     }
 
     @Test
