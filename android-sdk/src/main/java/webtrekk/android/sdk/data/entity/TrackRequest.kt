@@ -20,5 +20,13 @@ internal data class TrackRequest(
     @ColumnInfo(name = "time_stamp") val timeStamp: String? = currentTimeStamp.toString(),
     @ColumnInfo(name = "fns") val fns: String = currentSession,
     @ColumnInfo(name = "one") val one: String = appFirstStart,
-    @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion
-)
+    @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion,
+    @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW
+) {
+    internal enum class RequestState(val value: String) {
+        NEW("NEW"),
+        IN_PROGRESS("IN_PROGRESS"),
+        DONE("DONE"),
+        FAILED("FAILED")
+    }
+}

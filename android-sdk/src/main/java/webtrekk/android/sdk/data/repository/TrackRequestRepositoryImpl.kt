@@ -20,6 +20,19 @@ internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequ
         }
     }
 
+    override suspend fun getTrackRequestsByState(requestState: TrackRequest.RequestState): Result<List<DataTrack>> {
+        return runCatching {
+            trackRequestDao.getTrackRequestsByState(requestState.value)
+        }
+    }
+
+    override suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>> {
+        return runCatching {
+            trackRequestDao.updateTrackRequests(*trackRequests)
+            trackRequests.toList()
+        }
+    }
+
     override suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean> {
         return runCatching {
             trackRequestDao.clearTrackRequests(trackRequests).run { true }

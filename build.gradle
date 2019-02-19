@@ -15,7 +15,7 @@ buildscript {
 
             'kotlinCoroutines'       : '1.1.1',
             'coreKtxVersion'         : '1.0.1',
-            'koinVersion'            : '1.0.1',
+            'koinVersion'            : '1.0.2',
 
             'okHttpVersion'          : '3.13.1',
 

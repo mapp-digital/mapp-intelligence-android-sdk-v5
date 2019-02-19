@@ -8,6 +8,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import webtrekk.android.sdk.data.*
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 
 @RunWith(AndroidJUnit4::class)
 internal class TrackRequestRepositoryImplTest : DbTest() {
@@ -36,6 +38,42 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
         val result = trackRequestRepositoryImpl.getTrackRequests()
 
         assertThat(Result.success(dataTracks), `is`(result))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getTrackRequestsByState() = runBlocking {
+        trackRequestDao.setTrackRequests(trackRequests)
+
+        val updatedTrackRequests = trackRequests
+        updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
+
+        val dataTracks = listOf(DataTrack(updatedTrackRequests[2]))
+
+        trackRequestRepositoryImpl.updateTrackRequests(*updatedTrackRequests.toTypedArray())
+
+        val results = trackRequestRepositoryImpl.getTrackRequestsByState(TrackRequest.RequestState.DONE)
+
+        assertThat(Result.success(dataTracks), `is`(results))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun updateTrackRequests() = runBlocking {
+        trackRequestDao.setTrackRequests(trackRequests)
+
+        val updatedTrackRequests = trackRequests
+        updatedTrackRequests[0].requestState = TrackRequest.RequestState.IN_PROGRESS
+        updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
+
+        trackRequestRepositoryImpl.updateTrackRequests(*updatedTrackRequests.toTypedArray())
+
+        val results = trackRequestDao.getTrackRequests().map { it.trackRequest }
+
+        assertThat(updatedTrackRequests, `is`(results))
     }
 
     @Test

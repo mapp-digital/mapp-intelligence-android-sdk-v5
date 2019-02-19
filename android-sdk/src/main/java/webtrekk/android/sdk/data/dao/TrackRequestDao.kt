@@ -7,15 +7,22 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 @Dao
 internal interface TrackRequestDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setTrackRequest(trackRequest: TrackRequest): Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setTrackRequests(trackRequests: List<TrackRequest>)
 
     @Transaction
     @Query("SELECT * FROM tracking_data ORDER BY time_stamp")
     suspend fun getTrackRequests(): List<DataTrack>
+
+    @Transaction
+    @Query("SELECT * FROM tracking_data WHERE request_state = :requestState ORDER BY time_stamp")
+    suspend fun getTrackRequestsByState(requestState: String): List<DataTrack>
+
+    @Update
+    suspend fun updateTrackRequests(vararg trackRequests: TrackRequest)
 
     @Delete
     suspend fun clearTrackRequests(trackRequests: List<TrackRequest>)

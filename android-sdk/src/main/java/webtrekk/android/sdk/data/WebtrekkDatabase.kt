@@ -3,6 +3,8 @@ package webtrekk.android.sdk.data
 import android.content.Context
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import webtrekk.android.sdk.data.converter.RequestStateConverter
 import webtrekk.android.sdk.data.dao.CustomParamDao
 import webtrekk.android.sdk.data.dao.TrackRequestDao
 import webtrekk.android.sdk.data.entity.CustomParam
@@ -16,6 +18,7 @@ internal const val DATABASE_NAME = "webtrekk-test-db"
     version = 3,
     exportSchema = false
 )
+@TypeConverters(RequestStateConverter::class)
 internal abstract class WebtrekkDatabase : RoomDatabase() {
 
     abstract fun trackRequestDao(): TrackRequestDao
