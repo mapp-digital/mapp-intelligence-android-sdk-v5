@@ -38,4 +38,10 @@ internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequ
             trackRequestDao.clearTrackRequests(trackRequests).run { true }
         }
     }
+
+    override suspend fun deleteAllTrackRequests(): Result<Boolean> {
+        return runCatching {
+            trackRequestDao.clearAllTrackRequests().run { true }
+        }
+    }
 }

@@ -25,7 +25,6 @@ internal data class TrackRequest(
 ) {
     internal enum class RequestState(val value: String) {
         NEW("NEW"),
-        IN_PROGRESS("IN_PROGRESS"),
         DONE("DONE"),
         FAILED("FAILED")
     }

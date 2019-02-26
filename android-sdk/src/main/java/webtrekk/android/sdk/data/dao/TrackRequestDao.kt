@@ -26,4 +26,7 @@ internal interface TrackRequestDao {
 
     @Delete
     suspend fun clearTrackRequests(trackRequests: List<TrackRequest>)
+
+    @Query("DELETE FROM tracking_data")
+    suspend fun clearAllTrackRequests()
 }

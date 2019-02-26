@@ -74,7 +74,7 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
         trackRequestDao.setTrackRequests(trackRequests)
 
         val updatedTrackRequests = trackRequests
-        updatedTrackRequests[0].requestState = TrackRequest.RequestState.IN_PROGRESS
+        updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
         updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
         updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
 
