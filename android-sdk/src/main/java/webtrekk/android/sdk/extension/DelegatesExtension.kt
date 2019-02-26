@@ -1,13 +1,13 @@
-package webtrekk.android.sdk.util
+package webtrekk.android.sdk.extension
 
 import kotlin.properties.Delegates
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-fun <T : Any> Delegates.notNullOrException(errorMessage: String): ReadWriteProperty<Any?, T> =
-    NotNullOrException(errorMessage)
+fun <T : Any> Delegates.initOrException(errorMessage: String): ReadWriteProperty<Any?, T> =
+    InitOrException(errorMessage)
 
-class NotNullOrException<T : Any>(errorMessage: String) : ReadWriteProperty<Any?, T> {
+class InitOrException<T : Any>(errorMessage: String) : ReadWriteProperty<Any?, T> {
     private var value: T? = null
     private val errorMsg = errorMessage
 
