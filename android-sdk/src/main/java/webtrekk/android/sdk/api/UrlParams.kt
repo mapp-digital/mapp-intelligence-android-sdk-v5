@@ -1,20 +1,20 @@
 package webtrekk.android.sdk.api
 
-internal enum class UrlParams(val value: String) {
+internal object UrlParams {
 
-    WEBTREKK_PARAM("p"),
+    const val WEBTREKK_PARAM = "p"
 
-    EVER_ID("eid"),
+    const val EVER_ID = "eid"
 
-    FORCE_NEW_SESSION("fns"),
+    const val FORCE_NEW_SESSION = "fns"
 
-    APP_FIRST_START("one"),
+    const val APP_FIRST_START = "one"
 
-    TIME_ZONE("tz"),
+    const val TIME_ZONE = "tz"
 
-    USER_AGENT("X-WT-UA"),
+    const val USER_AGENT = "X-WT-UA"
 
-    LANGUAGE("la"),
+    const val LANGUAGE = "la"
 
-    EVENT_NAME("ct")
+    const val EVENT_NAME = "ct"
 }
