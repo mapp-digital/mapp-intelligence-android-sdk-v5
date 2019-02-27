@@ -1,19 +1,20 @@
-package webtrekk.android.sdk.model
+package webtrekk.android.sdk
 
 import androidx.annotation.IntRange
 
+// Predefined const params
 object Param {
 
-    // Page Data PAGE ONLY
+    // Page Data -> PAGE ONLY
     const val INTERNAL_SEARCH = "is"
 
-    // Campaign Data BOTH
+    // Campaign Data -> BOTH PAGE AND EVENT
     const val MEDIA_CODE = "mc"
 
-    // User Data BOTH
+    // User Data - > BOTH PAGE AND EVENT
     const val CUSTOMER_ID = "cd"
 
-    // E-Commerce Data PAGE ONLY
+    // E-Commerce Data -> PAGE ONLY
     const val PRODUCT_NAME = "ba"
     const val PRODUCT_COST = "co"
     const val PRODUCT_CURRENCY = "cr"
@@ -23,15 +24,16 @@ object Param {
     const val ORDER_VALUE = "ov"
 }
 
+// Customizable params, use it with [customParam] function
 enum class ParamType(val value: String) {
-    PAGE_PARAM("cp"), // page only
-    PAGE_CATEGORY("cg"), // page only
-    EVENT_PARAM("ck"), // event only
-    CAMPAIGN_PARAM("cc"), // both
-    SESSION_PARAM("cs"), // both
-    URM_CATEGORY("uc"), // both
-    ECOMMERCE_PARAM("cb"), // page only
-    PRODUCT_CATEGORY("ca") // page only
+    PAGE_PARAM("cp"), // PAGE ONLY
+    PAGE_CATEGORY("cg"), // PAGE ONLY
+    EVENT_PARAM("ck"), // EVENT ONLY
+    CAMPAIGN_PARAM("cc"), // BOTH PAGE AND EVENT
+    SESSION_PARAM("cs"), // BOTH PAGE AND EVENT
+    URM_CATEGORY("uc"), // BOTH PAGE AND EVENT
+    ECOMMERCE_PARAM("cb"), // PAGE ONLY
+    PRODUCT_CATEGORY("ca") // PAGE ONLY
 }
 
 typealias TrackingParams = LinkedHashMap<String, String>
@@ -40,7 +42,6 @@ typealias TrackingParams = LinkedHashMap<String, String>
 fun customParam(paramType: ParamType, @IntRange(from = 0, to = 500) value: Int): String =
     "${paramType.value}$value"
 
-// get restrictive on the params either Page or Event
 internal enum class RequestType(val value: String) {
 
     PAGE(""),
