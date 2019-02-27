@@ -1,8 +1,9 @@
 package webtrekk.android.sdk
 
 import androidx.work.Constraints
-import webtrekk.android.sdk.extension.nullOrEmptyIsError
-import webtrekk.android.sdk.extension.validateList
+import okhttp3.OkHttpClient
+import webtrekk.android.sdk.extension.nullOrEmptyThrowError
+import webtrekk.android.sdk.extension.validateEntireList
 import java.util.concurrent.TimeUnit
 
 class WebtrekkConfiguration private constructor(
@@ -11,14 +12,17 @@ class WebtrekkConfiguration private constructor(
     override val logLevel: Logger.Level,
     override val sendDelay: Long,
     override val autoTracking: Boolean,
-    override val workManagerConstraints: Constraints
+    override val workManagerConstraints: Constraints,
+    override val okHttpClient: OkHttpClient
 ) : Config {
 
     class Builder(private val trackIds: List<String>, private val trackDomain: String) {
-        private var logLevel = DefaultConfiguration.logLevel
-        private var sendDelay = DefaultConfiguration.timeUnit.toMillis(DefaultConfiguration.sendDelay)
-        private var autoTracking = DefaultConfiguration.enabledAutoTrack
-        private var constraints = DefaultConfiguration.workManagerConstraints
+        private var logLevel = DefaultConfiguration.LOG_LEVEL_VALUE
+        private var sendDelay =
+            DefaultConfiguration.TIME_UNIT_VALUE.toMillis(DefaultConfiguration.SEND_DELAY_VALUE)
+        private var autoTracking = DefaultConfiguration.AUTO_TRACK_ENABLED
+        private var constraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
+        private var okHttpClientBuilder = DefaultConfiguration.OKHTTP_CLIENT
 
         @JvmName("setLogLevel")
         fun logLevel(logLevel: Logger.Level) = apply { this.logLevel = logLevel }
@@ -33,13 +37,18 @@ class WebtrekkConfiguration private constructor(
         fun workManagerConstraints(constraints: Constraints) =
             apply { this.constraints = constraints }
 
+        @JvmName("setOkHttpClient")
+        fun okHttpClient(okHttpClient: OkHttpClient) =
+            apply { this.okHttpClientBuilder = okHttpClient }
+
         fun build() = WebtrekkConfiguration(
-            trackIds.validateList("trackId"),
-            trackDomain.nullOrEmptyIsError("trackDomain"),
+            trackIds.validateEntireList("trackId"),
+            trackDomain.nullOrEmptyThrowError("trackDomain"),
             logLevel,
             sendDelay,
             autoTracking,
-            constraints
+            constraints,
+            okHttpClientBuilder
         )
     }
 }

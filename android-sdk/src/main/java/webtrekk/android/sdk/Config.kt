@@ -1,6 +1,7 @@
 package webtrekk.android.sdk
 
 import androidx.work.Constraints
+import okhttp3.OkHttpClient
 
 interface Config {
 
@@ -15,4 +16,6 @@ interface Config {
     val autoTracking: Boolean
 
     val workManagerConstraints: Constraints
+
+    val okHttpClient: OkHttpClient
 }
