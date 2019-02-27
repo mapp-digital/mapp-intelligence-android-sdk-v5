@@ -1,24 +1,16 @@
 package webtrekk.android.sdk.domain.internal
 
-import kotlinx.coroutines.*
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.logDebug
-import webtrekk.android.sdk.logError
-import kotlin.coroutines.CoroutineContext
+import webtrekk.android.sdk.domain.InternalInteractor
 
 internal class CacheTrackRequest(
-    private val trackRequestRepository: TrackRequestRepository,
-    coroutineContext: CoroutineContext
-) {
+    private val trackRequestRepository: TrackRequestRepository
+) : InternalInteractor<CacheTrackRequest.Params, TrackRequest> {
 
-    private val scope = CoroutineScope(coroutineContext + Dispatchers.IO)
-
-    operator fun invoke(trackRequest: TrackRequest) = scope.async {
-        trackRequestRepository.addTrackRequest(trackRequest)
-            .onSuccess { trackRequest ->
-                return@async trackRequest.also { logDebug("Cached the track request: $trackRequest") }
-            }
-            .onFailure { logError("Error while caching the request: $it") }
+    override suspend operator fun invoke(invokeParams: Params): Result<TrackRequest> {
+        return trackRequestRepository.addTrackRequest(invokeParams.trackRequest)
     }
+
+    data class Params(val trackRequest: TrackRequest)
 }

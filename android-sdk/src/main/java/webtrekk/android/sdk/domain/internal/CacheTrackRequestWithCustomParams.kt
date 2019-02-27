@@ -1,44 +1,30 @@
 package webtrekk.android.sdk.domain.internal
 
-import kotlinx.coroutines.*
-import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import kotlin.coroutines.CoroutineContext
+import webtrekk.android.sdk.domain.InternalInteractor
+import webtrekk.android.sdk.extension.toCustomParams
 
 internal class CacheTrackRequestWithCustomParams(
-    trackRequestRepository: TrackRequestRepository,
-    customParamRepository: CustomParamRepository,
-    coroutineContext: CoroutineContext
-) {
+    private val trackRequestRepository: TrackRequestRepository,
+    private val customParamRepository: CustomParamRepository
+) : InternalInteractor<CacheTrackRequestWithCustomParams.Params, DataTrack> {
 
-    private val job = Job()
-    private val scope = CoroutineScope(coroutineContext + job)
+    override suspend operator fun invoke(invokeParams: Params): Result<DataTrack> {
+        return runCatching {
+            val cachedTrackRequest =
+                trackRequestRepository.addTrackRequest(invokeParams.trackRequest)
 
-    private val cacheTrackRequest =
-        CacheTrackRequest(trackRequestRepository, scope.coroutineContext)
-    private val addCustomParams = AddCustomParams(customParamRepository, scope.coroutineContext)
+            val customParams =
+                invokeParams.trackingParams.toCustomParams(cachedTrackRequest.getOrThrow().id)
 
-    operator fun invoke(
-        trackRequest: TrackRequest,
-        trackingParams: Map<String, String>
-    ) = scope.launch {
-        val cachedTrackRequest = cacheTrackRequest(trackRequest).await() as? TrackRequest
+            val cachedCustomParams = customParamRepository.addCustomParams(customParams)
 
-        cachedTrackRequest?.let {
-            if (trackingParams.isNotEmpty()) {
-                val customTrackingParams =
-                    trackingParams.map { param ->
-                        CustomParam(
-                            trackId = cachedTrackRequest.id,
-                            paramKey = param.key,
-                            paramValue = param.value
-                        )
-                    }
-
-                addCustomParams(customTrackingParams)
-            }
+            DataTrack(cachedTrackRequest.getOrThrow(), cachedCustomParams.getOrThrow())
         }
     }
+
+    data class Params(val trackRequest: TrackRequest, val trackingParams: Map<String, String>)
 }
