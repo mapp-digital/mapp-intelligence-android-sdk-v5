@@ -7,13 +7,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
-
-internal interface LifecycleReceiver<in T> {
-
-    fun onEventReceived(event: T)
-}
 
 internal abstract class AppState<T : Any> : LifecycleWrapper() {
 
@@ -22,19 +15,9 @@ internal abstract class AppState<T : Any> : LifecycleWrapper() {
     inline fun startAutoTrack(context: Context, crossinline onReceive: (T) -> Unit) {
         (context as? Application)?.registerActivityLifecycleCallbacks(this)?.let {
             lifecycleReceiver = object : LifecycleReceiver<T> {
-                override fun onEventReceived(event: T) {
+                override fun onLifecycleEventReceived(event: T) {
                     onReceive(event)
                 }
-            }
-        }
-    }
-
-    // check if possible to use suspend
-    suspend fun startAutoTrack(context: Context): T = suspendCancellableCoroutine { cont ->
-        (context as? Application)?.registerActivityLifecycleCallbacks(this)
-        lifecycleReceiver = object : LifecycleReceiver<T> {
-            override fun onEventReceived(event: T) {
-                cont.resume(event)
             }
         }
     }
@@ -42,6 +25,11 @@ internal abstract class AppState<T : Any> : LifecycleWrapper() {
     fun disableAutoTrack(context: Context) {
         (context as? Application)?.unregisterActivityLifecycleCallbacks(this)
     }
+}
+
+internal interface LifecycleReceiver<in T> {
+
+    fun onLifecycleEventReceived(event: T)
 }
 
 internal open class LifecycleWrapper :
@@ -85,5 +73,13 @@ internal open class LifecycleWrapper :
         savedInstanceState: Bundle?
     ) {
         super.onFragmentCreated(fm, f, savedInstanceState)
+    }
+
+    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+        super.onFragmentStarted(fm, f)
+    }
+
+    override fun onFragmentStopped(fm: FragmentManager, f: Fragment) {
+        super.onFragmentStopped(fm, f)
     }
 }
