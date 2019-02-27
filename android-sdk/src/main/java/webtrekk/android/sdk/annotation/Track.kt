@@ -23,24 +23,13 @@
  *
  */
 
-package webtrekk.android.sdk.extension
+package webtrekk.android.sdk.annotation
 
-import kotlin.properties.Delegates
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
+/**
+ * Should be used when auto track is disabled and want to track some manual pages
+ */
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.SOURCE)
+annotation class Track(val contextName: String = "", val trackingParams: Array<TrackParams> = emptyArray())
 
-fun <T : Any> Delegates.initOrException(errorMessage: String): ReadWriteProperty<Any?, T> =
-    InitOrException(errorMessage)
-
-class InitOrException<T : Any>(errorMessage: String) : ReadWriteProperty<Any?, T> {
-    private var value: T? = null
-    private val errorMsg = errorMessage
-
-    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return value ?: throw IllegalStateException(errorMsg)
-    }
-
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        this.value = value
-    }
-}
+annotation class TrackParams(val paramKey: String, val paramVal: String)
