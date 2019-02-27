@@ -4,22 +4,21 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal fun logInfo(message: String) = WebtrekkImpl.getInstance().logger?.info(message)
+internal fun logInfo(message: String) = WebtrekkImpl.getInstance().logger.info(message)
 
-internal fun logDebug(message: String) = WebtrekkImpl.getInstance().logger?.debug(message)
+internal fun logDebug(message: String) = WebtrekkImpl.getInstance().logger.debug(message)
 
-internal fun logWarn(message: String) = WebtrekkImpl.getInstance().logger?.warn(message)
+internal fun logWarn(message: String) = WebtrekkImpl.getInstance().logger.warn(message)
 
-internal fun logError(message: String) = WebtrekkImpl.getInstance().logger?.error(message)
+internal fun logError(message: String) = WebtrekkImpl.getInstance().logger.error(message)
 
 internal class WebtrekkLogger(level: Logger.Level) : Logger {
 
-    private val tag = "webtrekk"
     private var basicMessage: String? = null
 
-    private val dateFormat = SimpleDateFormat.getDateTimeInstance()
+    private val _dateFormat = SimpleDateFormat.getDateTimeInstance()
     private val date
-        inline get() = dateFormat.format(Date())
+        inline get() = _dateFormat.format(Date())
 
     init {
         basicMessage = when (level) {
@@ -30,25 +29,29 @@ internal class WebtrekkLogger(level: Logger.Level) : Logger {
 
     override fun info(message: String) {
         basicMessage?.let {
-            Log.i(tag, "$basicMessage -> $message")
+            Log.i(TAG, "$basicMessage -> $message")
         }
     }
 
     override fun debug(message: String) {
         basicMessage?.let {
-            Log.d(tag, "$basicMessage -> $message")
+            Log.d(TAG, "$basicMessage -> $message")
         }
     }
 
     override fun warn(message: String) {
         basicMessage?.let {
-            Log.w(tag, "$basicMessage -> $message")
+            Log.w(TAG, "$basicMessage -> $message")
         }
     }
 
     override fun error(message: String) {
         basicMessage?.let {
-            Log.wtf(tag, "$basicMessage -> $message")
+            Log.wtf(TAG, "$basicMessage -> $message")
         }
+    }
+
+    companion object {
+        private const val TAG = "webtrekk"
     }
 }
