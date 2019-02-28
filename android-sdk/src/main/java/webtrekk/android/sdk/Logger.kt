@@ -25,11 +25,28 @@
 
 package webtrekk.android.sdk
 
+/**
+ * A logger interface that should be implemented in the library, to print the logs.
+ *
+ * The concrete implementation [WebtrekkLogger].
+ */
 interface Logger {
 
+    /**
+     * Enum class represents the log level that will be used in the lib.
+     *
+     * You can customize the log level in the configurations [WebtrekkConfiguration.logLevel].
+     * The default log level in the configuration [DefaultConfiguration.LOG_LEVEL_VALUE].
+     */
     enum class Level {
+        /**
+         * AT this level, will not print any logs.
+         */
         NONE,
 
+        /**
+         * The basic level of logging, including "webtrekk" tag, date and time of the log message.
+         */
         BASIC,
     }
 

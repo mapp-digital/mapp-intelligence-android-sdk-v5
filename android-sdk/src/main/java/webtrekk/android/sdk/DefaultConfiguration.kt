@@ -30,21 +30,53 @@ import androidx.work.NetworkType
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
+/**
+ * A singleton object that holds all the default configurations in the library.
+ *
+ * The default configurations are set in [WebtrekkConfiguration] in case that you not override the configurations there,
+ * You must use instance of [WebtrekkConfiguration] to set up all the necessary configurations that will be used in the library.
+ *
+ * @see [WebtrekkConfiguration] to customize those configurations.
+ */
 object DefaultConfiguration {
 
+    /**
+     * The auto track in the configurations is enabled by default.
+     *
+     * To disable the auto track, call [WebtrekkConfiguration.Builder.disableAutoTracking]
+     */
     const val AUTO_TRACK_ENABLED = true
 
+    /**
+     * The default interval time that's used in [WebtrekkConfiguration.Builder.sendDelay].
+     */
     const val SEND_DELAY_VALUE: Long = 15 // minutes
 
+    /**
+     * The default time unit that is used in [WebtrekkConfiguration.Builder.sendDelay].
+     */
     val TIME_UNIT_VALUE = TimeUnit.MINUTES
 
+    /**
+     * The default log level that is used in [WebtrekkConfiguration.Builder.logLevel].
+     */
     val LOG_LEVEL_VALUE = Logger.Level.BASIC
 
+    /**
+     * The default work manager constraints that are used by the library when sending the requests to the server.
+     *
+     * @see [WebtrekkConfiguration.Builder.workManagerConstraints]
+     */
     val WORK_MANAGER_CONSTRAINTS = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .setRequiresBatteryNotLow(true)
         .build()
 
+    /**
+     * The default okHttpClient configurations that will be used by the library for networking.
+     *
+     * @see [WebtrekkConfiguration.Builder.okHttpClient]
+     */
     val OKHTTP_CLIENT: OkHttpClient = OkHttpClient.Builder()
         .callTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)

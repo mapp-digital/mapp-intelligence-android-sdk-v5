@@ -27,19 +27,64 @@ package webtrekk.android.sdk
 
 import androidx.annotation.IntRange
 
-// Predefined const params
+/**
+ * This file, contains all the predefined custom params. and helper function that helps you create your
+ * own custom params depend on their names/keys in the analytics.
+ *
+ * A sample usage:
+ *
+ * // Define first your custom params (names/keys) as extension properties of [Param], for consistency and code convention.
+ * val Param.BACKGROUND_COLOR
+ *      inline get() = customParam(ParamType.PAGE_PARAM, 100)
+ *
+ * val Param.TRACKING_LOCATION
+ *      inline get() = customParam(ParamType.SESSION_PARAM, 10)
+ *
+ * // Add your custom params to [TrackingParams] object, which is a map of custom params you defined and their values.
+ * val trackingParams = TrackingParams()
+ * trackingParams.putAll(
+ *      mapOf(
+ *          Param.INTERNAL_SEARCH to "search",
+ *          Param.BACKGROUND_COLOR to "blue",
+ *          Param.TRACKING_LOCATION to "my new location"
+ *      )
+ * )
+ *
+ * // Send your trackingParams object to Webtrekk
+ * Webtrekk.getInstance().trackCustomPage("Product Page", trackingParams)
+ *
+ * [Param] class contains predefined custom params names/keys, which you don't need to append any more names to it.
+ */
 object Param {
 
-    // Page Data -> PAGE ONLY
+    /**
+     * A predefined custom param key, used for PAGE tracking only.
+     *
+     * Sending this custom param for event tracking, its value will be ignored in the analytics.
+     */
     const val INTERNAL_SEARCH = "is"
 
-    // Campaign Data -> BOTH PAGE AND EVENT
+    /**
+     * A predefined custom param key, could be used for both PAGE and EVENT tracking.
+     *
+     * Mostly used for tracking campaign data.
+     */
     const val MEDIA_CODE = "mc"
 
-    // User Data - > BOTH PAGE AND EVENT
+    /**
+     * A predefined custom param key, could be used for both PAGE and EVENT tracking.
+     *
+     * Mostly used for tracking user data.
+     */
     const val CUSTOMER_ID = "cd"
 
-    // E-Commerce Data -> PAGE ONLY
+    /**
+     * A predefined custom params keys, used for PAGE tracking only.
+     *
+     * Sending any of these custom params for event tracking, their values will be ignored in the analytics.
+     *
+     * Mostly used for tracking e-commerce data.
+     */
     const val PRODUCT_NAME = "ba"
     const val PRODUCT_COST = "co"
     const val PRODUCT_CURRENCY = "cr"
@@ -49,24 +94,76 @@ object Param {
     const val ORDER_VALUE = "ov"
 }
 
-// Customizable params, use it with [customParam] function
+/**
+ * This enum class contains predefined custom params names/keys that you must append some names/numbers to their keys
+ * depend on what are their actual names in the analytics.
+ *
+ * Use alongside [customParam] to create a custom param.
+ *
+ * A sample usage:
+ *
+ * val Param.BACKGROUND_COLOR
+ *      inline get() = customParam(ParamType.PAGE_PARAM, 100)
+ */
 enum class ParamType(val value: String) {
-    PAGE_PARAM("cp"), // PAGE ONLY
-    PAGE_CATEGORY("cg"), // PAGE ONLY
-    EVENT_PARAM("ck"), // EVENT ONLY
-    CAMPAIGN_PARAM("cc"), // BOTH PAGE AND EVENT
-    SESSION_PARAM("cs"), // BOTH PAGE AND EVENT
-    URM_CATEGORY("uc"), // BOTH PAGE AND EVENT
-    ECOMMERCE_PARAM("cb"), // PAGE ONLY
-    PRODUCT_CATEGORY("ca") // PAGE ONLY
+
+    /**
+     * Those custom params are used for page tracking only.
+     *
+     * Using them in event tracking, their values will be ignored in the analytics.
+     */
+    PAGE_PARAM("cp"),
+    PAGE_CATEGORY("cg"),
+    ECOMMERCE_PARAM("cb"),
+    PRODUCT_CATEGORY("ca"),
+
+    /**
+     * This custom param is used for event tracking only.
+     *
+     * Using it in page tracking, its value will be ignored in the analytics.
+     */
+    EVENT_PARAM("ck"),
+
+    /**
+     * Those custom params can be used for both page and event tracking.
+     */
+    CAMPAIGN_PARAM("cc"),
+    SESSION_PARAM("cs"),
+    URM_CATEGORY("uc")
 }
 
+/**
+ * A type alias name for the map of custom params and their values that you like to send for tracking.
+ *
+ * A sample usage:
+ *
+ * val trackingParams = TrackingParams()
+ * trackingParams.putAll(
+ *      mapOf(
+ *          Param.INTERNAL_SEARCH to "search",
+ *          Param.BACKGROUND_COLOR to "blue",
+ *          Param.TRACKING_LOCATION to "my new location"
+ *      )
+ * )
+ */
 typealias TrackingParams = LinkedHashMap<String, String>
 
+/**
+ * A helper function, that is used to create a custom param name/key depends on the real custom param name in the analytics.
+ *
+ * A sample usage:
+ *
+ * val customParam = customParam(EVENT_PARAM, 15)
+ */
 @JvmName("createCustomParam")
 fun customParam(paramType: ParamType, @IntRange(from = 0, to = 500) value: Int): String =
     "${paramType.value}$value"
 
+/**
+ * Enum class to specify either the type of the request is a page or an event.
+ *
+ * This is internal class and should not be used in your application.
+ */
 internal enum class RequestType(val value: String) {
 
     PAGE(""),

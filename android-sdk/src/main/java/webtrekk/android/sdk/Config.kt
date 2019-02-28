@@ -28,19 +28,81 @@ package webtrekk.android.sdk
 import androidx.work.Constraints
 import okhttp3.OkHttpClient
 
+/**
+ * A configuration interface used to customize [Webtrekk] behaviour.
+ *
+ * You should NOT implement this interface. Use [WebtrekkConfiguration] to set up the configuration, which is a concrete implementation of
+ * this interface with a builder pattern.
+ *
+ * Ideally, you must set valid [trackIds] and [trackDomain], without setting them up, webtrekk won't send
+ * any tracking data.
+ *
+ * All other config parameters have default values, which you may override those values.
+ * @see [DefaultConfiguration] for the default values (behaviour) of each parameter.
+ */
 interface Config {
 
+    /**
+     * The [trackIds] that you get in your Webtrekk's account. [trackIds] must be set in the configuration,
+     * otherwise webtrekk won't send any tracking data.
+     *
+     * Could be just one track Id or list of track Ids, but there must be at least one track Id.
+     */
     val trackIds: List<String>
 
+    /**
+     * The [trackDomain] domain that all the analytics data will be sent to. Make sure it's a valid domain.
+     *
+     * [trackDomain] must be set in the configuration, otherwise webtrekk won't send any tracking data.
+     */
     val trackDomain: String
 
+    /**
+     * [logLevel], the log level that is used through the library.
+     *
+     * In [WebtrekkConfiguration] the default is [Logger.Level.BASIC].
+     * To disable logging, then set up the [logLevel] to [Logger.Level.NONE]
+     */
     val logLevel: Logger.Level
 
+    /**
+     * [sendDelay] the interval period in [java.util.concurrent.TimeUnit.MILLISECONDS]
+     * when [Webtrekk] sends the cached tracking data through network to the analytics.
+     *
+     * Webtrekk uses [androidx.work.WorkManager] for enqueuing and sending the requests in the background, for battery optimization.
+     *
+     * *NOTE* the minimum interval period is 15 minutes.
+     * In [WebtrekkConfiguration] the default is [DefaultConfiguration.SEND_DELAY_VALUE]
+     */
     val sendDelay: Long
 
+    /**
+     * [autoTracking] set to true to enable the auto tracking. Set to false to disable the auto tracking.
+     *
+     * In [WebtrekkConfiguration] the default is [DefaultConfiguration.AUTO_TRACK_ENABLED] enabled.
+     * To disable the auto tracking in [WebtrekkConfiguration], call [WebtrekkConfiguration.Builder][disableAutoTracking()]
+     */
     val autoTracking: Boolean
 
+    /**
+     * [workManagerConstraints] the constraints that will be used by the work manager to send the requests.
+     *
+     * Those constraints are important for your app battery performance and optimization. You can configure constraints
+     * like if the device is charging or when the battery is not low, so the users won't notice any overhead performance in your app.
+     *
+     * In [WebtrekkConfiguration] the default constraints [DefaultConfiguration.WORK_MANAGER_CONSTRAINTS].
+     *
+     * *NOTE* make sure that you enable the network connection constraint, so that the requests will be sent only when
+     * the network connection is on.
+     */
     val workManagerConstraints: Constraints
 
+    /**
+     * [okHttpClient] is the client that is used for networking.
+     *
+     * You can customize it, like adding your pinning certificates, configuring SSL socket or adding interceptor, etc.
+     *
+     * In [WebtrekkConfiguration] the defailt okHttplclient is [DefaultConfiguration.OKHTTP_CLIENT]
+     */
     val okHttpClient: OkHttpClient
 }
