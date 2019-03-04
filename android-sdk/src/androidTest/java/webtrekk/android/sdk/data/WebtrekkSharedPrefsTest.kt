@@ -26,46 +26,64 @@
 package webtrekk.android.sdk.data
 
 import android.content.Context
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import kotlinx.coroutines.runBlocking
-import org.junit.After
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
-import org.junit.Rule
-import webtrekk.android.sdk.data.dao.CustomParamDao
-import webtrekk.android.sdk.data.dao.TrackRequestDao
-import java.io.IOException
+import org.junit.Test
 
-internal abstract class DbTest {
+internal class WebtrekkSharedPrefsTest {
 
-    lateinit var webtrekkDatabase: WebtrekkDatabase
-    lateinit var trackRequestDao: TrackRequestDao
-    lateinit var customParamDao: CustomParamDao
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    private lateinit var webtrekkSharedPrefs: WebtrekkSharedPrefs
 
     @Before
-    open fun setUp() {
+    fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
-        webtrekkDatabase = Room.inMemoryDatabaseBuilder(
-            context, WebtrekkDatabase::class.java
-        ).build()
-
-        trackRequestDao = webtrekkDatabase.trackRequestDao()
-        customParamDao = webtrekkDatabase.customParamDataDao()
-
-        runBlocking {
-            trackRequestDao.setTrackRequests(trackRequests)
-            customParamDao.setCustomParams(customParams)
-        }
+        webtrekkSharedPrefs = WebtrekkSharedPrefs(context)
     }
 
-    @After
-    @Throws(IOException::class)
-    fun closeDb() {
-        webtrekkDatabase.close()
+    @Test
+    fun testEverId() {
+        // Verify default value
+        assertThat(webtrekkSharedPrefs.everId, `is`(""))
+
+        webtrekkSharedPrefs.everId = "1"
+
+        // Verify ever id is set correctly
+        assertThat(webtrekkSharedPrefs.everId, `is`("1"))
+    }
+
+    @Test
+    fun testAppFirstStart() {
+        // Verify default value
+        assertThat(webtrekkSharedPrefs.appFirstStart, `is`("0"))
+
+        webtrekkSharedPrefs.appFirstStart = "1"
+
+        // Verify appFirstStart is set correctly
+        assertThat(webtrekkSharedPrefs.appFirstStart, `is`("1"))
+    }
+
+    @Test
+    fun testFns() {
+        // Verify default value
+        assertThat(webtrekkSharedPrefs.fns, `is`("0"))
+
+        webtrekkSharedPrefs.fns = "1"
+
+        // Verify fns is set correctly
+        assertThat(webtrekkSharedPrefs.fns, `is`("1"))
+    }
+
+    @Test
+    fun testOptOut() {
+        // Verify default value
+        assertThat(webtrekkSharedPrefs.optOut, `is`(false))
+
+        webtrekkSharedPrefs.optOut = true
+
+        // Verify optOut is set correctly
+        assertThat(webtrekkSharedPrefs.optOut, `is`(true))
     }
 }

@@ -41,18 +41,12 @@ internal class CustomParamDaoTest : DbTest() {
     @Test
     @Throws(Exception::class)
     fun getCustomParams() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-        customParamDao.setCustomParams(customParams)
-
         assertThat(customParamDao.getCustomParams(), `is`(customParams))
     }
 
     @Test
     @Throws(Exception::class)
-    fun getCustomParamsByTrackId() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-        customParamDao.setCustomParams(customParams)
-
+    fun getCustomParams_ByTrackId() = runBlocking {
         val customParamsById = customParamDao.getCustomParamsByTrackId(trackRequests[0].id)
         val filteredCustomParams = customParams.filter { it.trackId == trackRequests[0].id }
 
@@ -61,17 +55,16 @@ internal class CustomParamDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun clearCustomParamsWhenTrackIsDeleted() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-        customParamDao.setCustomParams(customParams)
-
+    fun clearCustomParams_WhenTrackIsDeleted() = runBlocking {
         trackRequestDao.clearTrackRequests(listOf(trackRequests[0]))
         val filteredCustomParams = customParams.filter { it.trackId != trackRequests[0].id }
 
+        // Verify that filtered custom params doesn't have the custom param with the deleted track id
         assertThat(customParamDao.getCustomParams(), `is`(filteredCustomParams))
 
         trackRequestDao.clearTrackRequests(trackRequests)
 
+        // Verify that all custom params are deleted when all tracks are deleted
         assertThat(customParamDao.getCustomParams().size, `is`(0))
     }
 }

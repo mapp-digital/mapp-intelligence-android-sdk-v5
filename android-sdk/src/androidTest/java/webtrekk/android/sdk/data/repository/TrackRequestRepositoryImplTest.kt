@@ -42,7 +42,9 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
     private lateinit var trackRequestRepositoryImpl: TrackRequestRepositoryImpl
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         trackRequestRepositoryImpl = TrackRequestRepositoryImpl(trackRequestDao)
     }
 
@@ -51,34 +53,52 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
     fun addTrackRequest() = runBlocking {
         val result = trackRequestRepositoryImpl.addTrackRequest(trackRequests[0])
 
-        assertThat(Result.success(trackRequests[0]), `is`(result))
+        assertThat(result, `is`(Result.success(trackRequests[0])))
     }
 
     @Test
     @Throws(Exception::class)
     fun getTrackRequests() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-        customParamDao.setCustomParams(customParams)
-
         val result = trackRequestRepositoryImpl.getTrackRequests()
 
-        assertThat(Result.success(dataTracks), `is`(result))
+        assertThat(result, `is`(Result.success(dataTracks)))
     }
 
     @Test
     @Throws(Exception::class)
-    fun getTrackRequestsByState() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-
+    fun updateTrackRequests() = runBlocking {
         val updatedTrackRequests = trackRequests
         updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
         updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
         updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
 
-        val dataTracks = listOf(
-            DataTrack(updatedTrackRequests[0]),
-            DataTrack(updatedTrackRequests[1]),
-            DataTrack(updatedTrackRequests[2])
+        // Update the updated track requests in DB
+        trackRequestRepositoryImpl.updateTrackRequests(*updatedTrackRequests.toTypedArray())
+
+        val results = trackRequestDao.getTrackRequests().map { it.trackRequest }
+
+        // Verify that the updated track requests are the same
+        assertThat(results, `is`(updatedTrackRequests))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getTrackRequests_ByState() = runBlocking {
+        val updatedTrackRequests = trackRequests
+        updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
+
+        val updatedDataTracks = listOf(
+            DataTrack(
+                trackRequest = updatedTrackRequests[0],
+                customParams = listOf(customParams[0], customParams[1])
+            ),
+            DataTrack(
+                trackRequest = updatedTrackRequests[1],
+                customParams = listOf(customParams[2])
+            ),
+            DataTrack(trackRequest = updatedTrackRequests[2], customParams = emptyList())
         )
 
         trackRequestRepositoryImpl.updateTrackRequests(*updatedTrackRequests.toTypedArray())
@@ -90,33 +110,31 @@ internal class TrackRequestRepositoryImplTest : DbTest() {
             )
         )
 
-        assertThat(Result.success(dataTracks), `is`(results))
+        assertThat(results, `is`(Result.success(updatedDataTracks)))
     }
 
     @Test
     @Throws(Exception::class)
-    fun updateTrackRequests() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
+    fun deleteAllTrackRequests() = runBlocking {
+        val result = trackRequestRepositoryImpl.deleteTrackRequests(trackRequests)
 
-        val updatedTrackRequests = trackRequests
-        updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
-        updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
-        updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
-
-        trackRequestRepositoryImpl.updateTrackRequests(*updatedTrackRequests.toTypedArray())
-
-        val results = trackRequestDao.getTrackRequests().map { it.trackRequest }
-
-        assertThat(updatedTrackRequests, `is`(results))
+        assertThat(result, `is`(Result.success(true)))
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteTrackRequests() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
+        val deletedTrackRequests = listOf(trackRequests[0], trackRequests[1])
 
-        val result = trackRequestRepositoryImpl.deleteTrackRequests(trackRequests)
+        trackRequestRepositoryImpl.deleteTrackRequests(deletedTrackRequests)
 
-        assertThat(Result.success(true), `is`(result))
+        val trackRequestsAfterDelete = listOf(
+            DataTrack(trackRequests[2], emptyList()),
+            DataTrack(trackRequests[3], emptyList())
+        )
+
+        val result = trackRequestRepositoryImpl.getTrackRequests()
+
+        assertThat(result, `is`(Result.success(trackRequestsAfterDelete)))
     }
 }

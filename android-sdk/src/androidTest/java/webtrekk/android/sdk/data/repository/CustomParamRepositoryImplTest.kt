@@ -42,7 +42,9 @@ internal class CustomParamRepositoryImplTest : DbTest() {
     private lateinit var customParamRepositoryImpl: CustomParamRepositoryImpl
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
+
         customParamRepositoryImpl = CustomParamRepositoryImpl(customParamDao)
     }
 
@@ -50,21 +52,19 @@ internal class CustomParamRepositoryImplTest : DbTest() {
     @Throws(Exception::class)
     fun addCustomParams() = runBlocking {
         trackRequestDao.setTrackRequests(trackRequests)
+
         val result = customParamRepositoryImpl.addCustomParams(customParams)
 
-        assertThat(Result.success(customParams), `is`(result))
+        assertThat(result, `is`(Result.success(customParams)))
     }
 
     @Test
-    @Throws
-    fun getCustomParamById() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-        customParamDao.setCustomParams(customParams)
-
+    @Throws(Exception::class)
+    fun getCustomParam_ById() = runBlocking {
         val customParamsById =
             customParamRepositoryImpl.getCustomParamsByTrackId(trackRequests[0].id)
         val filteredCustomParams = customParams.filter { it.trackId == trackRequests[0].id }
 
-        assertThat(Result.success(filteredCustomParams), `is`(customParamsById))
+        assertThat(customParamsById, `is`(Result.success(filteredCustomParams)))
     }
 }

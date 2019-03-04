@@ -40,39 +40,49 @@ internal class TrackRequestDaoTest : DbTest() {
     @Test
     @Throws(Exception::class)
     fun getSingleTrackRequest() = runBlocking {
-        trackRequestDao.setTrackRequest(trackRequests[0])
-
         assertThat(trackRequestDao.getTrackRequests()[0].trackRequest, `is`(trackRequests[0]))
     }
 
     @Test
     @Throws(Exception::class)
-    fun getTrackRequestsAndTheirCustomParams() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-        customParamDao.setCustomParams(customParams)
-
+    fun getTrackRequests_WithCustomParams() = runBlocking {
         assertThat(trackRequestDao.getTrackRequests(), `is`(dataTracks))
     }
 
     @Test
     @Throws(Exception::class)
-    fun getTrackRequestsByState() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
+    fun updateTrackRequests() = runBlocking {
+        val updatedTrackRequests = trackRequests
+        updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
+        updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
 
+        trackRequestDao.updateTrackRequests(*updatedTrackRequests.toTypedArray())
+
+        val results = trackRequestDao.getTrackRequests().map { it.trackRequest }
+
+        assertThat(results, `is`(updatedTrackRequests))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getTrackRequests_ByState() = runBlocking {
         val updatedTrackRequests = trackRequests
         updatedTrackRequests[0].requestState = TrackRequest.RequestState.DONE
         updatedTrackRequests[1].requestState = TrackRequest.RequestState.DONE
         updatedTrackRequests[2].requestState = TrackRequest.RequestState.FAILED
 
+        // Update the track requests state
         trackRequestDao.updateTrackRequests(*updatedTrackRequests.toTypedArray())
 
         val results =
             trackRequestDao.getTrackRequestsByState(listOf(TrackRequest.RequestState.DONE.value))
                 .map { it.trackRequest }
 
+        // Validate that we have the updated track requests with state "DONE" from DB
         assertThat(
-            updatedTrackRequests.filter { it.requestState == TrackRequest.RequestState.DONE },
-            `is`(results)
+            results,
+            `is`(updatedTrackRequests.filter { it.requestState == TrackRequest.RequestState.DONE })
         )
 
         val twoStateResults =
@@ -84,37 +94,22 @@ internal class TrackRequestDaoTest : DbTest() {
             )
                 .map { it.trackRequest }
 
-        assertThat(updatedTrackRequests.filter {
+        // Validate that if we had multi states, we get the updated ones from DB
+        assertThat(twoStateResults, `is`(updatedTrackRequests.filter {
             it.requestState == TrackRequest.RequestState.DONE ||
                 it.requestState == TrackRequest.RequestState.FAILED
-        }, `is`(twoStateResults))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun updateTrackRequests() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
-
-        val updatedTrackRequests = trackRequests
-        updatedTrackRequests[0].requestState = TrackRequest.RequestState.FAILED
-        updatedTrackRequests[1].requestState = TrackRequest.RequestState.FAILED
-        updatedTrackRequests[2].requestState = TrackRequest.RequestState.DONE
-
-        trackRequestDao.updateTrackRequests(*updatedTrackRequests.toTypedArray())
-
-        val results = trackRequestDao.getTrackRequests().map { it.trackRequest }
-
-        assertThat(updatedTrackRequests, `is`(results))
+        }))
     }
 
     @Test
     @Throws(Exception::class)
     fun clearTrackRequests() = runBlocking {
-        trackRequestDao.setTrackRequests(trackRequests)
+        // First, let's delete only 2 elements and verify their results
         trackRequestDao.clearTrackRequests(listOf(trackRequests[0], trackRequests[1]))
 
         assertThat(trackRequestDao.getTrackRequests().size, `is`(trackRequests.size - 2))
 
+        // Clear all track requests and verify
         trackRequestDao.clearTrackRequests(trackRequests)
 
         assertThat(trackRequestDao.getTrackRequests().size, `is`(0))
