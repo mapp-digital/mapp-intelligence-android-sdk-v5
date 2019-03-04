@@ -25,9 +25,10 @@
 
 package webtrekk.android.sdk
 
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
 
 class WebtrekkConfigurationTest {
@@ -43,18 +44,22 @@ class WebtrekkConfigurationTest {
                 .build()
     }
 
-    @Test
-    fun `validate trackIds are not null nor empty nor containing any null or empty values`() {
-        webtrekkConfiguration.trackIds
+    @Test(expected = IllegalStateException::class)
+    fun `throw error if trackIds has null or empty values`() {
+        val configuration = WebtrekkConfiguration.Builder(listOf(), "www.webtrekk.com").build()
+
+        configuration.trackIds
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun `throw error if trackDomain is null or blank`() {
+        val configuration = WebtrekkConfiguration.Builder(listOf("123"), "").build()
+
+        configuration.trackIds
     }
 
     @Test
-    fun `validate trackDomain is not null nor blank`() {
-        webtrekkConfiguration.trackDomain
-    }
-
-    @Test
-    fun `validate default values`() {
+    fun `test default values`() {
         val defaultWebtrekkConfiguration =
             WebtrekkConfiguration.Builder(listOf("123"), "www.webtrekk.com").build()
 
@@ -63,16 +68,31 @@ class WebtrekkConfigurationTest {
             DefaultConfiguration.TIME_UNIT_VALUE.toMillis(DefaultConfiguration.SEND_DELAY_VALUE),
             defaultWebtrekkConfiguration.sendDelay
         )
-        assertEquals(DefaultConfiguration.AUTO_TRACK_ENABLED, defaultWebtrekkConfiguration.autoTracking)
-        assertEquals(DefaultConfiguration.WORK_MANAGER_CONSTRAINTS, defaultWebtrekkConfiguration.workManagerConstraints)
+        assertEquals(
+            DefaultConfiguration.AUTO_TRACK_ENABLED,
+            defaultWebtrekkConfiguration.autoTracking
+        )
+        assertEquals(
+            DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
+            defaultWebtrekkConfiguration.workManagerConstraints
+        )
+        assertEquals(DefaultConfiguration.OKHTTP_CLIENT, defaultWebtrekkConfiguration.okHttpClient)
     }
 
     @Test
-    fun `validate webtrekk configurations are set`() {
+    fun `test webtrekk configurations are set`() {
         assertEquals(webtrekkConfiguration.trackIds, listOf("123456789", "123"))
         assertEquals(webtrekkConfiguration.trackDomain, "www.webtrekk.com")
-        assertEquals(webtrekkConfiguration.logLevel, DefaultConfiguration.LOG_LEVEL_VALUE) // DefaultConfiguration optOutValue
+        assertEquals(
+            webtrekkConfiguration.logLevel,
+            DefaultConfiguration.LOG_LEVEL_VALUE
+        )
         assertEquals(webtrekkConfiguration.sendDelay, TimeUnit.MINUTES.toMillis(20))
         assertEquals(webtrekkConfiguration.autoTracking, false)
+        assertEquals(
+            webtrekkConfiguration.workManagerConstraints,
+            DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
+        )
+        assertEquals(webtrekkConfiguration.okHttpClient, DefaultConfiguration.OKHTTP_CLIENT)
     }
 }

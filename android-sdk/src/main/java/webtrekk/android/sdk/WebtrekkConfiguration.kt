@@ -144,7 +144,7 @@ class WebtrekkConfiguration private constructor(
          * Returns an instance of [WebtrekkConfiguration] with configurations that are set in the [Builder]
          */
         fun build() = WebtrekkConfiguration(
-            trackIds.validateEntireList("trackId"),
+            trackIds.validateEntireList("trackIds"),
             trackDomain.nullOrEmptyThrowError("trackDomain"),
             logLevel,
             sendDelay,
