@@ -44,7 +44,7 @@ internal data class TrackRequest(
     @ColumnInfo(name = "time_zone") val timeZone: String? = currentTimeZone.toString(),
     @ColumnInfo(name = "time_stamp") val timeStamp: String? = currentTimeStamp.toString(),
     @ColumnInfo(name = "fns") val fns: String = currentSession,
-    @ColumnInfo(name = "one") val one: String = appFirstStart,
+    @ColumnInfo(name = "appFirstStart") val one: String = appFirstStart,
     @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion,
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW
 ) {

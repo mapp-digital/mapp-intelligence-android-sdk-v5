@@ -38,9 +38,9 @@ internal class WebtrekkSharedPrefs(context: Context) {
         inline get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
 
-    var one: String
-        inline get() = sharedPreferences.getString(ONE_KEY, "0") ?: "0"
-        set(value) = sharedPreferences.edit().putString(ONE_KEY, value).apply()
+    var appFirstStart: String
+        inline get() = sharedPreferences.getString(APP_FIRST_START, "0") ?: "0"
+        set(value) = sharedPreferences.edit().putString(APP_FIRST_START, value).apply()
 
     var fns: String
         inline get() = sharedPreferences.getString(NEW_SESSION_KEY, "0") ?: "0"
@@ -55,7 +55,7 @@ internal class WebtrekkSharedPrefs(context: Context) {
     companion object {
 
         const val EVER_ID_KEY = "everId"
-        const val ONE_KEY = "one"
+        const val APP_FIRST_START = "appFirstStart"
         const val NEW_SESSION_KEY = "fns"
         const val USER_OPT_OUT = "optOut"
     }
