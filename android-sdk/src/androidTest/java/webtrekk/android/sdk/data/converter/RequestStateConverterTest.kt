@@ -25,14 +25,19 @@
 
 package webtrekk.android.sdk.data.converter
 
-import androidx.room.TypeConverter
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Test
 import webtrekk.android.sdk.data.entity.TrackRequest
 
-internal class RequestStateConverter {
+internal class RequestStateConverterTest {
 
-    @TypeConverter
-    fun requestStateToString(requestState: TrackRequest.RequestState): String = requestState.value
+    @Test
+    fun testRequestStateConverter() {
+        val requestState = TrackRequest.RequestState.DONE
 
-    @TypeConverter
-    fun stringToRequestState(value: String): TrackRequest.RequestState = TrackRequest.RequestState.valueOf(value)
+        assertThat(RequestStateConverter().requestStateToString(requestState), `is` ("DONE"))
+
+        assertThat(RequestStateConverter().stringToRequestState("DONE"), `is`(requestState))
+    }
 }
