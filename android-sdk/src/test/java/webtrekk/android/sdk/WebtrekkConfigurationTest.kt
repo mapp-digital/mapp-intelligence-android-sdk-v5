@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk
 
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -44,18 +45,34 @@ class WebtrekkConfigurationTest {
                 .build()
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `throw error if trackIds has null or empty values`() {
-        val configuration = WebtrekkConfiguration.Builder(listOf(), "www.webtrekk.com").build()
+        val errorMsg =
+            "trackIds is missing in the configurations. trackIds is required in the configurations."
 
-        configuration.trackIds
+        try {
+            val configuration = WebtrekkConfiguration.Builder(listOf(), "www.webtrekk.com").build()
+            // Invoke trackIds
+            configuration.trackIds
+            fail("Expected an IllegalStateException to be thrown!")
+        } catch (e: IllegalStateException) {
+            assertThat(e.message, `is`(errorMsg))
+        }
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `throw error if trackDomain is null or blank`() {
-        val configuration = WebtrekkConfiguration.Builder(listOf("123"), "").build()
+        val errorMsg =
+            "trackDomain is missing in the configurations. trackDomain is required in the configurations."
 
-        configuration.trackIds
+        try {
+            val configuration = WebtrekkConfiguration.Builder(listOf("123"), "").build()
+            // Invoke trackDomain
+            configuration.trackDomain
+            fail("Expected an IllegalStateException to be thrown!")
+        } catch (e: IllegalStateException) {
+            assertThat(e.message, `is`(errorMsg))
+        }
     }
 
     @Test
