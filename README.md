@@ -4,7 +4,7 @@ Webtrekk Android SDK
 # License
 MIT License
 
-Copyright (c) 2018 Webtrekk GmbH
+Copyright (c) 2019 Webtrekk GmbH
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
