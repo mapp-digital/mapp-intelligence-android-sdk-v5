@@ -27,23 +27,17 @@ package webtrekk.android.sdk
 
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
 
 class WebtrekkConfigurationTest {
 
-    private lateinit var webtrekkConfiguration: WebtrekkConfiguration
-
-    @Before
-    fun setUp() {
-        webtrekkConfiguration =
-            WebtrekkConfiguration.Builder(listOf("123456789", "123"), "www.webtrekk.com")
-                .sendDelay(sendDelay = 20)
-                .disableAutoTracking()
-                .build()
-    }
+    private val webtrekkConfiguration =
+        WebtrekkConfiguration.Builder(listOf("123456789", "123"), "www.webtrekk.com")
+            .sendDelay(sendDelay = 20)
+            .disableAutoTracking()
+            .build()
 
     @Test
     fun `throw error if trackIds has null or empty values`() {
