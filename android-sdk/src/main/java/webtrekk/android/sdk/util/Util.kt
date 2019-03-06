@@ -35,16 +35,16 @@ import java.util.*
 import kotlin.random.Random
 
 internal val currentOsVersion: String
-    inline get() = Build.VERSION.RELEASE
+    inline get() = Build.VERSION.RELEASE ?: ""
 
 internal val currentApiLevel: Int
     inline get() = Build.VERSION.SDK_INT
 
 internal val currentDeviceManufacturer: String
-    inline get() = Build.MANUFACTURER
+    inline get() = Build.MANUFACTURER ?: ""
 
 internal val currentDeviceModel: String
-    inline get() = Build.MODEL
+    inline get() = Build.MODEL ?: ""
 
 internal val currentCountry: String
     inline get() = Locale.getDefault().country
