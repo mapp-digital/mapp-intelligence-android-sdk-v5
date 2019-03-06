@@ -25,53 +25,38 @@
 
 package webtrekk.android.sdk.domain.internal
 
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import kotlinx.coroutines.*
-import kotlinx.coroutines.test.TestCoroutineContext
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import kotlin.coroutines.CoroutineContext
+import java.io.IOException
 
-internal class CacheTrackRequestTest : CoroutineScope {
+internal class CacheTrackRequestTest : StringSpec({
 
-    private lateinit var trackRequestRepository: TrackRequestRepository
-    private lateinit var cacheTrackRequest: CacheTrackRequest
+    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
+    val cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
+    val trackRequest = TrackRequest(name = "test", fns = "1", one = "1")
+    val params = CacheTrackRequest.Params(trackRequest)
 
-    private var trackRequest = TrackRequest(name = "test", fns = "1", one = "1")
+    "cache trackRequest and return success" {
+        val resultSuccess = Result.success(trackRequest)
 
-    private val job = SupervisorJob()
-    private val testCoroutineContext = TestCoroutineContext()
-    override val coroutineContext: CoroutineContext
-        get() = job + testCoroutineContext
+        coEvery {
+            trackRequestRepository.addTrackRequest(trackRequest)
+        } returns resultSuccess
 
-    @Before
-    fun tearUp() {
-        trackRequestRepository = mockkClass(TrackRequestRepository::class)
-
-        cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
+        cacheTrackRequest(params) shouldBe (resultSuccess)
     }
 
-    @After
-    fun tearDown() {
-        coroutineContext.cancel()
+    "cache trackRequest and return failure encapsulating the exception" {
+        val resultFailure = Result.failure<TrackRequest>(IOException("error"))
+
+        coEvery {
+            trackRequestRepository.addTrackRequest(trackRequest)
+        } returns resultFailure
+
+        cacheTrackRequest(params) shouldBe (resultFailure)
     }
-
-    @Test
-    fun `cache a new track request and return success`() {
-        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns Result.success(
-            trackRequest
-        )
-
-        launch {
-            val result = cacheTrackRequest(trackRequest)
-
-            assertThat(Result.success(trackRequest), `is`(result))
-        }
-    }
-}
+})

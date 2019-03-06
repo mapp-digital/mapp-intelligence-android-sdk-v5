@@ -25,75 +25,108 @@
 
 package webtrekk.android.sdk.domain.internal
 
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineContext
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import kotlin.coroutines.CoroutineContext
+import java.io.IOException
 
-internal class GetCachedDataTracksTest : CoroutineScope {
+internal class GetCachedDataTracksTest : StringSpec({
 
-    private lateinit var trackRequestRepository: TrackRequestRepository
-    private lateinit var getCachedDataTracks: GetCachedDataTracks
-
-    private val dataTracks = listOf(
+    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
+    val getCachedDataTracks = GetCachedDataTracks(trackRequestRepository)
+    val dataTracks = listOf(
         DataTrack(
-            trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 },
-            customParams = listOf(CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
-                CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2"))
+            trackRequest = TrackRequest(
+                name = "page 1",
+                fns = "1",
+                one = "1",
+                requestState = TrackRequest.RequestState.NEW
+            ).apply { id = 1 },
+            customParams = listOf(
+                CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
+                CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2")
+            )
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 2", fns = "0", one = "0").apply { this.id = 2 },
+            trackRequest = TrackRequest(
+                name = "page 2",
+                fns = "0",
+                one = "0",
+                requestState = TrackRequest.RequestState.NEW
+            ).apply {
+                this.id = 2
+            },
             customParams = listOf(CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3"))
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 3", fns = "0", one = "0").apply { this.id = 3 },
+            trackRequest = TrackRequest(
+                name = "page 3",
+                fns = "0",
+                one = "0",
+                requestState = TrackRequest.RequestState.FAILED
+            ).apply {
+                this.id = 3
+            },
             customParams = emptyList()
         ),
         DataTrack(
-            trackRequest = TrackRequest(name = "page 4", fns = "0", one = "0").apply { this.id = 4 },
+            trackRequest = TrackRequest(
+                name = "page 4",
+                fns = "0",
+                one = "0",
+                requestState = TrackRequest.RequestState.DONE
+            ).apply {
+                this.id = 4
+            },
             customParams = emptyList()
         )
     )
 
-    private val job = SupervisorJob()
-    private val testCoroutineContext = TestCoroutineContext()
-    override val coroutineContext: CoroutineContext
-        get() = job + testCoroutineContext
+    "get all data tracks and return success of their results" {
+        val resultSuccess = Result.success(dataTracks)
 
-    @Before
-    fun tearUp() {
-        trackRequestRepository = mockkClass(TrackRequestRepository::class)
+        // We send emptyList of States to get all the track requests
+        val emptyParams = GetCachedDataTracks.Params(emptyList())
 
-        getCachedDataTracks =
-            GetCachedDataTracks(trackRequestRepository)
+        coEvery {
+            trackRequestRepository.getTrackRequests()
+        } returns resultSuccess
+
+        getCachedDataTracks(emptyParams) shouldBe (resultSuccess)
     }
 
-    @After
-    fun tearDown() {
-        testCoroutineContext.cancel()
+    "get data tracks by request states and return success of their results" {
+        val requestStates = listOf(TrackRequest.RequestState.NEW, TrackRequest.RequestState.FAILED)
+        val params = GetCachedDataTracks.Params(requestStates)
+
+        // Filter the results by the request states
+        val resultSuccess = Result.success(dataTracks.filter {
+            it.trackRequest.requestState == TrackRequest.RequestState.NEW ||
+                it.trackRequest.requestState == TrackRequest.RequestState.FAILED
+        })
+
+        coEvery {
+            trackRequestRepository.getTrackRequestsByState(requestStates)
+        } returns resultSuccess
+
+        getCachedDataTracks(params) shouldBe (resultSuccess)
     }
 
-//    @Test
-//    fun `get all tracks and their custom params`() {
-//        coEvery { trackRequestRepository.getTrackRequests() } returns Result.success(dataTracks)
-//
-//        launch {
-//            val result = getCachedDataTracks()
-//
-//            assertThat(Result.success(dataTracks), equalTo(result))
-//        }
-//    }
-}
+    "get data tracks and return failure" {
+        val resultFailure = Result.failure<List<DataTrack>>(IOException("error"))
+
+        // We send emptyList of States to get all the track requests
+        val emptyParams = GetCachedDataTracks.Params(emptyList())
+
+        coEvery {
+            trackRequestRepository.getTrackRequests()
+        } returns resultFailure
+
+        getCachedDataTracks(emptyParams) shouldBe (resultFailure)
+    }
+})
