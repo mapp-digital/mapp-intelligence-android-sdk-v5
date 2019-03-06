@@ -83,7 +83,7 @@ dependencies {
     testImplementation "androidx.test:core:$versions.testCoreVersion"
     testImplementation "io.mockk:mockk:$versions.mockkVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlinCoroutines"
-    testImplementation "io.kotlintest:kotlintest-runner-junit5:3.3.0"
+    testImplementation "io.kotlintest:kotlintest-runner-junit5:$versions.kotlinTestVersion"
     androidTestImplementation "androidx.test.ext:junit:$versions.testCoreVersion"
     androidTestImplementation "androidx.test:core:$versions.testCoreVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"

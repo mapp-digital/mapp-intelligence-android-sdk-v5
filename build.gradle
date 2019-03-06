@@ -53,6 +53,7 @@ buildscript {
             'espressoCoreVersion'    : '3.1.0',
             'coreTestingVersion'     : '2.0.0',
             'mockkVersion'           : '1.9',
+            'kotlinTestVersion'      : '3.3.0',
 
             'ktlintVersion'          : '0.30.0',
             'dokkaVersion'           : '0.9.17'
