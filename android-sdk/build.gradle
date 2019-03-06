@@ -26,6 +26,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion versions.compileSdkVersion
@@ -53,6 +54,9 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
 }
 
@@ -79,6 +83,7 @@ dependencies {
     testImplementation "androidx.test:core:$versions.testCoreVersion"
     testImplementation "io.mockk:mockk:$versions.mockkVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlinCoroutines"
+    testImplementation "io.kotlintest:kotlintest-runner-junit5:3.3.0"
     androidTestImplementation "androidx.test.ext:junit:$versions.testCoreVersion"
     androidTestImplementation "androidx.test:core:$versions.testCoreVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
@@ -94,4 +99,9 @@ task ktlint(type: JavaExec, group: "verification") {
     main = "com.github.shyiko.ktlint.Main"
     args "src/**/*.kt"
     args "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/javadoc"
 }
