@@ -25,75 +25,60 @@
 
 package webtrekk.android.sdk.domain.internal
 
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineContext
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import kotlin.coroutines.CoroutineContext
+import webtrekk.android.sdk.extension.toCustomParams
+import java.io.IOException
 
-internal class CacheTrackRequestWithCustomParamsTest : CoroutineScope {
+internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
 
-    private lateinit var trackRequestRepository: TrackRequestRepository
-    private lateinit var customParamRepository: CustomParamRepository
-    private lateinit var cacheTrackRequest: CacheTrackRequest
-    private lateinit var addCustomParams: AddCustomParams
+    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
+    val customParamRepository = mockkClass(CustomParamRepository::class)
+    val cacheTrackRequestWithCustomParams =
+        CacheTrackRequestWithCustomParams(trackRequestRepository, customParamRepository)
 
-    private var trackRequest = TrackRequest(name = "trackPage request 1", fns = "1", one = "1").apply { id = 1 }
+    val trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 }
+    val trackingParams = mapOf(
+        "cs" to "val 1",
+        "cd" to "val 2"
+    )
+    val params = CacheTrackRequestWithCustomParams.Params(
+        trackRequest = trackRequest,
+        trackingParams = trackingParams
+    )
+    val customParams = trackingParams.toCustomParams(trackRequestId = trackRequest.id)
+    val dataTrack = DataTrack(
+        trackRequest = trackRequest,
+        customParams = customParams
+    )
 
-    private val job = Job()
-    private val testCoroutineContext = TestCoroutineContext()
-    override val coroutineContext: CoroutineContext
-        get() = job + testCoroutineContext
+    "cache track request with its custom params and return success" {
+        val resultSuccess = Result.success(dataTrack)
 
-    @Before
-    fun tearUp() {
-        trackRequestRepository = mockkClass(TrackRequestRepository::class)
-        customParamRepository = mockkClass(CustomParamRepository::class)
+        coEvery {
+            trackRequestRepository.addTrackRequest(trackRequest)
+        } returns Result.success(trackRequest)
 
-        cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
-        addCustomParams = AddCustomParams(customParamRepository)
+        coEvery {
+            customParamRepository.addCustomParams(customParams)
+        } returns Result.success(customParams)
+
+        cacheTrackRequestWithCustomParams(params) shouldBe (resultSuccess)
     }
 
-    @After
-    fun tearDown() {
-        coroutineContext.cancel()
+    "cache track request with its custom params and return failure" {
+        val resultFailure = Result.failure<TrackRequest>(IOException("error"))
+
+        coEvery {
+            trackRequestRepository.addTrackRequest(trackRequest)
+        } returns resultFailure
+
+        cacheTrackRequestWithCustomParams(params) shouldBe (resultFailure)
     }
-
-    @Test
-    fun `cache track request then append its custom params`() {
-        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns Result.success(
-            trackRequest
-        )
-
-        launch {
-            val trackRequestResult = cacheTrackRequest(trackRequest) as TrackRequest
-
-            assertThat(trackRequest, `is`(trackRequestResult))
-
-            val customParams = listOf(
-                CustomParam(trackId = trackRequestResult.id, paramKey = "cs", paramValue = "val 1"),
-                CustomParam(trackId = trackRequestResult.id, paramKey = "cd", paramValue = "val 2")
-            )
-
-            coEvery { customParamRepository.addCustomParams(customParams) } returns Result.success(
-                customParams
-            )
-
-            addCustomParams(customParams)
-
-//            assertThat(Result.success(customParams), `is`(addCustomParams.testResult))
-        }
-    }
-}
+})
