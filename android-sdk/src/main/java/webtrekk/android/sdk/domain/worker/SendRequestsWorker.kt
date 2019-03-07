@@ -70,9 +70,12 @@ internal class SendRequestsWorker(
 
                     // Must execute requests sync and in order
                     dataTracks.forEach { dataTrack ->
+                        val urlRequest = dataTrack.buildUrlRequest(trackDomain, trackIds)
+                        logInfo("Sending request = $urlRequest")
+
                         executeRequest(
                             ExecuteRequest.Params(
-                                request = dataTrack.buildUrlRequest(trackDomain, trackIds),
+                                request = urlRequest,
                                 dataTrack = dataTrack
                             )
                         )
