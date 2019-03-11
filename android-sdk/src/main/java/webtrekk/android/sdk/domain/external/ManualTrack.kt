@@ -37,17 +37,18 @@ import webtrekk.android.sdk.logError
 import webtrekk.android.sdk.logWarn
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
+import kotlin.coroutines.CoroutineContext
 
 internal class ManualTrack(
-    coroutineDispatchers: CoroutineDispatchers,
+    coroutineContext: CoroutineContext,
     private val cacheTrackRequest: CacheTrackRequest,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<ManualTrack.Params> {
 
     private val _job = Job()
-    override val scope = CoroutineScope(coroutineDispatchers.ioDispatcher + _job)
+    override val scope = CoroutineScope(_job + coroutineContext)
 
-    override operator fun invoke(invokeParams: Params) {
+    override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
         if (invokeParams.autoTrack) {
@@ -56,7 +57,7 @@ internal class ManualTrack(
             return
         }
 
-        scope.launch(coroutineExceptionHandler) {
+        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler) {
             if (invokeParams.trackingParams.isEmpty()) {
                 cacheTrackRequest(CacheTrackRequest.Params(invokeParams.trackRequest))
                     .onSuccess { logDebug("Cached the track request: $it") }

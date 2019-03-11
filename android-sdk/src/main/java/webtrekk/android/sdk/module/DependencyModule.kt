@@ -35,7 +35,6 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import webtrekk.android.sdk.domain.Scheduler
 import webtrekk.android.sdk.domain.Sessions
-import webtrekk.android.sdk.domain.external.*
 import webtrekk.android.sdk.domain.internal.*
 
 internal val dataModule = module {
@@ -53,12 +52,4 @@ internal val internalInteractorsModule = module {
     factory { CacheTrackRequestWithCustomParams(get(), get()) }
     factory { ExecuteRequest(get(), get()) }
     factory { ClearTrackRequests(get()) }
-}
-
-internal val externalInteractorsModule = module {
-    single { AutoTrack(get(), get(), get()) }
-    single { ManualTrack(get(), get(), get()) }
-    single { TrackCustomPage(get(), get()) }
-    single { TrackCustomEvent(get(), get()) }
-    single { Optout(get(), get(), get(), get(), get()) }
 }

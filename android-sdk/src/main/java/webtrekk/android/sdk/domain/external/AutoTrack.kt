@@ -33,23 +33,24 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
+import kotlin.coroutines.CoroutineContext
 
 internal class AutoTrack(
-    coroutineDispatchers: CoroutineDispatchers,
+    coroutineContext: CoroutineContext,
     private val appState: AppState<TrackRequest>,
     private val cacheTrackRequest: CacheTrackRequest
 ) : ExternalInteractor<AutoTrack.Params> {
 
     private val _job = Job()
-    override val scope = CoroutineScope(coroutineDispatchers.ioDispatcher + _job)
+    override val scope = CoroutineScope(_job + coroutineContext)
 
-    override operator fun invoke(invokeParams: Params) {
+    override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
         appState.startAutoTrack(invokeParams.context) { trackRequest ->
             logInfo("Received new auto track request: $trackRequest")
 
-            scope.launch(coroutineExceptionHandler) {
+            scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler) {
                 cacheTrackRequest(CacheTrackRequest.Params(trackRequest))
                     .onSuccess { logDebug("Cached auto track request: $it") }
                     .onFailure { logError("Error while caching the request: $it") }

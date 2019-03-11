@@ -44,7 +44,6 @@ import webtrekk.android.sdk.domain.external.*
 import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
-import webtrekk.android.sdk.module.externalInteractorsModule
 import webtrekk.android.sdk.module.internalInteractorsModule
 import webtrekk.android.sdk.util.*
 import kotlin.coroutines.CoroutineContext
@@ -90,6 +89,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             single { AppStateImpl() as AppState<TrackRequest> }
         }
 
+        val externalInteractorsModule = module {
+            single { AutoTrack(coroutineContext, get(), get()) }
+            single { ManualTrack(coroutineContext, get(), get()) }
+            single { TrackCustomPage(coroutineContext, get()) }
+            single { TrackCustomEvent(coroutineContext, get()) }
+            single { Optout(coroutineContext, get(), get(), get(), get()) }
+        }
+
         startKoin(
             listOf(
                 mainModule,
@@ -123,7 +130,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 trackingParams = trackingParams,
                 autoTrack = autoTracking,
                 isOptOut = hasOptOut()
-            )
+            ), coroutineDispatchers
         )
     }
 
@@ -137,7 +144,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()
-                )
+                ), coroutineDispatchers
             )
         }
 
@@ -151,12 +158,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()
-                )
+                ), coroutineDispatchers
             )
         }
 
     override fun optOut(value: Boolean) = context.run {
-        optOutUser(Optout.Params(context = this, optOutValue = value))
+        optOutUser(Optout.Params(context = this, optOutValue = value), coroutineDispatchers)
     }
 
     override fun hasOptOut(): Boolean = context.run {
@@ -183,7 +190,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 AutoTrack.Params(
                     context = context,
                     isOptOut = hasOptOut()
-                )
+                ), coroutineDispatchers
             ).also { logInfo("Webtrekk started auto tracking") }
         } else {
             appState.disableAutoTrack(context)

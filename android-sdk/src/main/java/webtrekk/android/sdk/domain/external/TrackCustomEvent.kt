@@ -34,19 +34,20 @@ import webtrekk.android.sdk.logError
 import webtrekk.android.sdk.RequestType
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
+import kotlin.coroutines.CoroutineContext
 
 internal class TrackCustomEvent(
-    coroutineDispatchers: CoroutineDispatchers,
+    coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<TrackCustomEvent.Params> {
 
     private val _job = Job()
-    override val scope = CoroutineScope(coroutineDispatchers.ioDispatcher + _job)
+    override val scope = CoroutineScope(_job + coroutineContext)
 
-    override fun invoke(invokeParams: Params) {
+    override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineExceptionHandler) {
+        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler) {
             val params = invokeParams.trackingParams.toMutableMap()
             params[RequestType.EVENT.value] = invokeParams.trackRequest.name
 

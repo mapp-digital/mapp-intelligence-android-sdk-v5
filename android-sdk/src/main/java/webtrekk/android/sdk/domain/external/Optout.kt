@@ -37,9 +37,10 @@ import webtrekk.android.sdk.logDebug
 import webtrekk.android.sdk.logError
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
+import kotlin.coroutines.CoroutineContext
 
 internal class Optout(
-    coroutineDispatchers: CoroutineDispatchers,
+    coroutineContext: CoroutineContext,
     private val sessions: Sessions,
     private val scheduler: Scheduler,
     private val appState: AppState<TrackRequest>,
@@ -47,16 +48,19 @@ internal class Optout(
 ) : ExternalInteractor<Optout.Params> {
 
     private val _job = Job()
-    override val scope = CoroutineScope(coroutineDispatchers.ioDispatcher + _job)
+    override val scope = CoroutineScope(_job + coroutineContext)
 
-    override fun invoke(invokeParams: Params) {
+    override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         sessions.optOut(invokeParams.optOutValue)
 
         if (invokeParams.optOutValue) {
             appState.disableAutoTrack(invokeParams.context)
             scheduler.cancelSendRequests()
 
-            scope.launch(context = coroutineExceptionHandler, start = CoroutineStart.ATOMIC) {
+            scope.launch(
+                context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler,
+                start = CoroutineStart.ATOMIC
+            ) {
                 clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
                     .onSuccess { logDebug("Cleared all track requests") }
                     .onFailure { logError("Failed to clear the track requests while opting out") }

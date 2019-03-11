@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.domain
 
 import kotlinx.coroutines.CoroutineScope
+import webtrekk.android.sdk.util.CoroutineDispatchers
 
 internal interface InternalInteractor<in T, R : Any> {
 
@@ -36,5 +37,5 @@ internal interface ExternalInteractor<in T> {
 
     val scope: CoroutineScope
 
-    operator fun invoke(invokeParams: T)
+    operator fun invoke(invokeParams: T, coroutineDispatchers: CoroutineDispatchers)
 }
