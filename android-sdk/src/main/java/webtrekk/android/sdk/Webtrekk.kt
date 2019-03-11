@@ -154,16 +154,21 @@ abstract class Webtrekk protected constructor() {
 
     /**
      * Allows to opt out entirely from tracking. Internally, calling this method will cause to delete
-     * all the current tracking data that are cached in the database, canceling sending requests,
-     * shutting down work manager's worker and disabling all incoming tracking requests.
+     * all the current tracking data that are cached in the database (if sendCurrentData is false),
+     * canceling sending requests, shutting down work manager's worker and disabling all incoming tracking requests.
      *
      * If you want to opt in again, you have to set [optOut(false)].
      *
+     * In case there are some data already in the cache, and it's desirable to send them before
+     * deleting all the data, set sendCurrentData to true, this allows to send first all current
+     * requests in the cache, then delete everything.
+     *
      * @param value set it to true to opt out, false to cancel.
+     * @param sendCurrentData set it to true, to send current data in cache before deleting them.
      *
      * @throws [IllegalStateException] if [Context] context is not initialized.
      */
-    abstract fun optOut(value: Boolean)
+    abstract fun optOut(value: Boolean, sendCurrentData: Boolean = false)
 
     /**
      * Returns [Boolean] true if the user is opt'd-out, false otherwise.

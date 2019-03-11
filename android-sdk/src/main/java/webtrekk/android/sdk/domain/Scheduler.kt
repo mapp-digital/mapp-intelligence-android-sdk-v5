@@ -49,6 +49,20 @@ internal class Scheduler(private val workManager: WorkManager) {
         )
     }
 
+    fun sendRequestsThenCleanUp() {
+        val sendRequestsWorker = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
+            .addTag(SendRequestsWorker.TAG_ONE_TIME_WORKER)
+            .build()
+
+        val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
+            .addTag(CleanUpWorker.TAG)
+            .build()
+
+        workManager.beginWith(sendRequestsWorker)
+            .then(cleanUpWorker)
+            .enqueue()
+    }
+
     // To be changed to clean up upon executing the requests
     fun scheduleCleanUp() {
         val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
@@ -58,7 +72,7 @@ internal class Scheduler(private val workManager: WorkManager) {
         workManager.enqueue(cleanUpWorker)
     }
 
-    fun cancelSendRequests() {
+    fun cancelScheduleSendRequests() {
         workManager.cancelAllWorkByTag(SendRequestsWorker.TAG)
     }
 

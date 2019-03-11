@@ -90,5 +90,6 @@ internal class SendRequestsWorker(
 
     companion object {
         const val TAG = "send_track_requests"
+        const val TAG_ONE_TIME_WORKER = "send_track_requests_now"
     }
 }

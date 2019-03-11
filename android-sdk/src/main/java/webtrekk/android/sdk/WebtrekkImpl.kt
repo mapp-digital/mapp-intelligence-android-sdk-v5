@@ -162,8 +162,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             )
         }
 
-    override fun optOut(value: Boolean) = context.run {
-        optOutUser(Optout.Params(context = this, optOutValue = value), coroutineDispatchers)
+    override fun optOut(value: Boolean, sendCurrentData: Boolean) = context.run {
+        optOutUser(
+            Optout.Params(
+                context = this,
+                optOutValue = value,
+                sendCurrentData = sendCurrentData
+            ), coroutineDispatchers
+        )
     }
 
     override fun hasOptOut(): Boolean = context.run {

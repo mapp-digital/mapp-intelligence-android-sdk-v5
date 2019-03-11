@@ -44,8 +44,9 @@ internal class AutoTrack(
 ) : ExternalInteractor<AutoTrack.Params>, KoinComponent {
 
     private val _job = Job()
-    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
+
+    private val logger by inject<Logger>()
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return

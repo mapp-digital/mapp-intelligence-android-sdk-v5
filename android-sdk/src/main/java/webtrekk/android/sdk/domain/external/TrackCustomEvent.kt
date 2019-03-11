@@ -43,8 +43,9 @@ internal class TrackCustomEvent(
 ) : ExternalInteractor<TrackCustomEvent.Params>, KoinComponent {
 
     private val _job = Job()
-    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
+
+    private val logger by inject<Logger>()
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return

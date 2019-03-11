@@ -49,28 +49,37 @@ internal class Optout(
 ) : ExternalInteractor<Optout.Params>, KoinComponent {
 
     private val _job = Job()
-    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
+
+    private val logger by inject<Logger>()
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         sessions.optOut(invokeParams.optOutValue)
 
         if (invokeParams.optOutValue) {
             appState.disableAutoTrack(invokeParams.context)
-            scheduler.cancelSendRequests()
+            scheduler.cancelScheduleSendRequests()
 
-            scope.launch(
-                context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger),
-                start = CoroutineStart.ATOMIC
-            ) {
-                clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
-                    .onSuccess { logger.debug("Cleared all track requests") }
-                    .onFailure { logger.error("Failed to clear the track requests while opting out") }
+            if (invokeParams.sendCurrentData) {
+                scheduler.sendRequestsThenCleanUp()
+            } else {
+                scope.launch(
+                    context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger),
+                    start = CoroutineStart.ATOMIC
+                ) {
+                    clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
+                        .onSuccess { logger.debug("Cleared all track requests") }
+                        .onFailure { logger.error("Failed to clear the track requests while opting out") }
+                }
             }
         }
     }
 
     fun isActive(): Boolean = sessions.isOptOut()
 
-    data class Params(val context: Context, val optOutValue: Boolean)
+    data class Params(
+        val context: Context,
+        val optOutValue: Boolean,
+        val sendCurrentData: Boolean
+    )
 }
