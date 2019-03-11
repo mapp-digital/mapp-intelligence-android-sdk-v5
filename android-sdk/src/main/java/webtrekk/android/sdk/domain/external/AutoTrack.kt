@@ -27,6 +27,8 @@ package webtrekk.android.sdk.domain.external
 
 import android.content.Context
 import kotlinx.coroutines.*
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import webtrekk.android.sdk.*
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
@@ -39,21 +41,22 @@ internal class AutoTrack(
     coroutineContext: CoroutineContext,
     private val appState: AppState<TrackRequest>,
     private val cacheTrackRequest: CacheTrackRequest
-) : ExternalInteractor<AutoTrack.Params> {
+) : ExternalInteractor<AutoTrack.Params>, KoinComponent {
 
     private val _job = Job()
+    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
         appState.startAutoTrack(invokeParams.context) { trackRequest ->
-            logInfo("Received new auto track request: $trackRequest")
+            logger.info("Received new auto track request: $trackRequest")
 
-            scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler) {
+            scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger)) {
                 cacheTrackRequest(CacheTrackRequest.Params(trackRequest))
-                    .onSuccess { logDebug("Cached auto track request: $it") }
-                    .onFailure { logError("Error while caching the request: $it") }
+                    .onSuccess { logger.debug("Cached auto track request: $it") }
+                    .onFailure { logger.error("Error while caching the request: $it") }
             }
         }
     }

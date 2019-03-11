@@ -26,11 +26,12 @@
 package webtrekk.android.sdk.domain.external
 
 import kotlinx.coroutines.*
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.logDebug
-import webtrekk.android.sdk.logError
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
@@ -38,23 +39,24 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackCustomPage(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackCustomPage.Params> {
+) : ExternalInteractor<TrackCustomPage.Params>, KoinComponent {
 
     private val _job = Job()
+    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler) {
+        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger)) {
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
                     invokeParams.trackingParams
                 )
             )
-                .onSuccess { logDebug("Cached the data track request: $it") }
-                .onFailure { logError("Error while caching the request: $it") }
+                .onSuccess { logger.debug("Cached the data track request: $it") }
+                .onFailure { logger.error("Error while caching the request: $it") }
         }
     }
 

@@ -27,14 +27,15 @@ package webtrekk.android.sdk.domain.external
 
 import android.content.Context
 import kotlinx.coroutines.*
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import webtrekk.android.sdk.AppState
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.Scheduler
 import webtrekk.android.sdk.domain.Sessions
-import webtrekk.android.sdk.logDebug
-import webtrekk.android.sdk.logError
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
@@ -45,9 +46,10 @@ internal class Optout(
     private val scheduler: Scheduler,
     private val appState: AppState<TrackRequest>,
     private val clearTrackRequests: ClearTrackRequests
-) : ExternalInteractor<Optout.Params> {
+) : ExternalInteractor<Optout.Params>, KoinComponent {
 
     private val _job = Job()
+    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
@@ -58,12 +60,12 @@ internal class Optout(
             scheduler.cancelSendRequests()
 
             scope.launch(
-                context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler,
+                context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger),
                 start = CoroutineStart.ATOMIC
             ) {
                 clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
-                    .onSuccess { logDebug("Cleared all track requests") }
-                    .onFailure { logError("Failed to clear the track requests while opting out") }
+                    .onSuccess { logger.debug("Cleared all track requests") }
+                    .onFailure { logger.error("Failed to clear the track requests while opting out") }
             }
         }
     }

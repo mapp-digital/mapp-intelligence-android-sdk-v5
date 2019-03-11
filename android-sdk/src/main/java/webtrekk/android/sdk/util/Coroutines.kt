@@ -27,10 +27,10 @@ package webtrekk.android.sdk.util
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import webtrekk.android.sdk.logError
+import webtrekk.android.sdk.Logger
 
-internal val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
-    logError("Caught coroutine exception $exception")
+internal fun coroutineExceptionHandler(logger: Logger) = CoroutineExceptionHandler { _, exception ->
+    logger.error("Caught coroutine exception $exception")
 }
 
 internal data class CoroutineDispatchers(

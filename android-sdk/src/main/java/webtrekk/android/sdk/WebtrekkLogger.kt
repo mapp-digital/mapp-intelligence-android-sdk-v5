@@ -29,14 +29,6 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal fun logInfo(message: String) = WebtrekkImpl.getInstance().logger.info(message)
-
-internal fun logDebug(message: String) = WebtrekkImpl.getInstance().logger.debug(message)
-
-internal fun logWarn(message: String) = WebtrekkImpl.getInstance().logger.warn(message)
-
-internal fun logError(message: String) = WebtrekkImpl.getInstance().logger.error(message)
-
 internal class WebtrekkLogger(level: Logger.Level) : Logger {
 
     private var basicMessage: String? = null

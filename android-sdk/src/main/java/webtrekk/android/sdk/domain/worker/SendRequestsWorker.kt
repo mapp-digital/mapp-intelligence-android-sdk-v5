@@ -31,13 +31,11 @@ import androidx.work.WorkerParameters
 import kotlinx.coroutines.CoroutineDispatcher
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.extension.buildUrlRequest
-import webtrekk.android.sdk.logDebug
-import webtrekk.android.sdk.logError
-import webtrekk.android.sdk.logInfo
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.trackDomain
 import webtrekk.android.sdk.util.trackIds
@@ -51,6 +49,7 @@ internal class SendRequestsWorker(
     private val coroutineDispatchers: CoroutineDispatchers by inject()
     private val getCachedDataTracks: GetCachedDataTracks by inject()
     private val executeRequest: ExecuteRequest by inject()
+    private val logger by inject<Logger>()
 
     override val coroutineContext: CoroutineDispatcher
         get() = coroutineDispatchers.ioDispatcher
@@ -66,12 +65,12 @@ internal class SendRequestsWorker(
         )
             .onSuccess { dataTracks ->
                 if (dataTracks.isNotEmpty()) {
-                    logInfo("Executing the requests")
+                    logger.info("Executing the requests")
 
                     // Must execute requests sync and in order
                     dataTracks.forEach { dataTrack ->
                         val urlRequest = dataTrack.buildUrlRequest(trackDomain, trackIds)
-                        logInfo("Sending request = $urlRequest")
+                        logger.info("Sending request = $urlRequest")
 
                         executeRequest(
                             ExecuteRequest.Params(
@@ -79,12 +78,12 @@ internal class SendRequestsWorker(
                                 dataTrack = dataTrack
                             )
                         )
-                            .onSuccess { logDebug("Sent the request successfully $it") }
-                            .onFailure { logError("Failed to send the request $it") }
+                            .onSuccess { logger.debug("Sent the request successfully $it") }
+                            .onFailure { logger.error("Failed to send the request $it") }
                     }
                 }
             }
-            .onFailure { logError("Error getting cached data tracks: $it") }
+            .onFailure { logger.error("Error getting cached data tracks: $it") }
 
         return Result.success()
     }

@@ -28,13 +28,13 @@ package webtrekk.android.sdk.domain.external
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.logDebug
-import webtrekk.android.sdk.logError
-import webtrekk.android.sdk.logWarn
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
@@ -43,25 +43,26 @@ internal class ManualTrack(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequest: CacheTrackRequest,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<ManualTrack.Params> {
+) : ExternalInteractor<ManualTrack.Params>, KoinComponent {
 
     private val _job = Job()
+    private val logger by inject<Logger>()
     override val scope = CoroutineScope(_job + coroutineContext)
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
         if (invokeParams.autoTrack) {
-            logWarn("Auto track is enabled by default")
+            logger.warn("Auto track is enabled by default")
 
             return
         }
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler) {
+        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger)) {
             if (invokeParams.trackingParams.isEmpty()) {
                 cacheTrackRequest(CacheTrackRequest.Params(invokeParams.trackRequest))
-                    .onSuccess { logDebug("Cached the track request: $it") }
-                    .onFailure { logError("Error while caching the request: $it") }
+                    .onSuccess { logger.debug("Cached the track request: $it") }
+                    .onFailure { logger.warn("Error while caching the request: $it") }
             } else {
                 cacheTrackRequestWithCustomParams(
                     CacheTrackRequestWithCustomParams.Params(
@@ -69,8 +70,8 @@ internal class ManualTrack(
                         invokeParams.trackingParams
                     )
                 )
-                    .onSuccess { logDebug("Cached the data track request: $it") }
-                    .onFailure { logError("Error while caching the request: $it") }
+                    .onSuccess { logger.debug("Cached the data track request: $it") }
+                    .onFailure { logger.warn("Error while caching the request: $it") }
             }
         }
     }
