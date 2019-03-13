@@ -31,28 +31,16 @@ import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
 import webtrekk.android.sdk.api.SyncRequestsDataSourceImpl
-import webtrekk.android.sdk.data.entity.CustomParam
-import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
+import webtrekk.android.sdk.util.dataTrack
 
 internal class ExecuteRequestTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
     val syncRequestDataSource = mockkClass(SyncRequestsDataSourceImpl::class)
     val executeRequest = ExecuteRequest(trackRequestRepository, syncRequestDataSource)
-    val dataTrack = DataTrack(
-        trackRequest = TrackRequest(
-            name = "page 1",
-            fns = "1",
-            one = "1",
-            requestState = TrackRequest.RequestState.NEW
-        ).apply { id = 1 },
-        customParams = listOf(
-            CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
-            CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2")
-        )
-    )
+
     val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
     val params = ExecuteRequest.Params(request = urlRequest, dataTrack = dataTrack)
 

@@ -29,63 +29,16 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
+import webtrekk.android.sdk.util.dataTracks
 import java.io.IOException
 
 internal class GetCachedDataTracksTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
     val getCachedDataTracks = GetCachedDataTracks(trackRequestRepository)
-    val dataTracks = listOf(
-        DataTrack(
-            trackRequest = TrackRequest(
-                name = "page 1",
-                fns = "1",
-                one = "1",
-                requestState = TrackRequest.RequestState.NEW
-            ).apply { id = 1 },
-            customParams = listOf(
-                CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
-                CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2")
-            )
-        ),
-        DataTrack(
-            trackRequest = TrackRequest(
-                name = "page 2",
-                fns = "0",
-                one = "0",
-                requestState = TrackRequest.RequestState.NEW
-            ).apply {
-                this.id = 2
-            },
-            customParams = listOf(CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3"))
-        ),
-        DataTrack(
-            trackRequest = TrackRequest(
-                name = "page 3",
-                fns = "0",
-                one = "0",
-                requestState = TrackRequest.RequestState.FAILED
-            ).apply {
-                this.id = 3
-            },
-            customParams = emptyList()
-        ),
-        DataTrack(
-            trackRequest = TrackRequest(
-                name = "page 4",
-                fns = "0",
-                one = "0",
-                requestState = TrackRequest.RequestState.DONE
-            ).apply {
-                this.id = 4
-            },
-            customParams = emptyList()
-        )
-    )
 
     "get all data tracks and return success of their results" {
         val resultSuccess = Result.success(dataTracks)

@@ -29,20 +29,14 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
+import webtrekk.android.sdk.util.trackRequests
 import java.io.IOException
 
 internal class ClearTrackRequestsTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
     val clearTrackRequests = ClearTrackRequests(trackRequestRepository)
-    val trackRequests = listOf(
-        TrackRequest(name = "page 1", fns = "1", one = "1").apply { this.id = 1 },
-        TrackRequest(name = "page 2", fns = "0", one = "0").apply { this.id = 2 },
-        TrackRequest(name = "page 3", fns = "0", one = "0").apply { this.id = 3 },
-        TrackRequest(name = "page 4", fns = "0", one = "0").apply { this.id = 4 }
-    )
 
     "clear all track requests and return success" {
         val resultSuccess = Result.success(true)

@@ -31,14 +31,14 @@ import io.mockk.coEvery
 import io.mockk.mockkClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
+import webtrekk.android.sdk.util.cacheTrackRequestParams
+import webtrekk.android.sdk.util.trackRequest
 import java.io.IOException
 
 internal class CacheTrackRequestTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
     val cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
-    val trackRequest = TrackRequest(name = "test", fns = "1", one = "1")
-    val params = CacheTrackRequest.Params(trackRequest)
 
     "cache trackRequest and return success" {
         val resultSuccess = Result.success(trackRequest)
@@ -47,7 +47,7 @@ internal class CacheTrackRequestTest : StringSpec({
             trackRequestRepository.addTrackRequest(trackRequest)
         } returns resultSuccess
 
-        cacheTrackRequest(params) shouldBe (resultSuccess)
+        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultSuccess)
     }
 
     "cache trackRequest and return failure encapsulating the exception" {
@@ -57,6 +57,6 @@ internal class CacheTrackRequestTest : StringSpec({
             trackRequestRepository.addTrackRequest(trackRequest)
         } returns resultFailure
 
-        cacheTrackRequest(params) shouldBe (resultFailure)
+        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultFailure)
     }
 })

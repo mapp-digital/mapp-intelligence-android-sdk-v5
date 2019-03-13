@@ -29,11 +29,10 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.extension.toCustomParams
+import webtrekk.android.sdk.util.*
 import java.io.IOException
 
 internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
@@ -42,21 +41,6 @@ internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
     val customParamRepository = mockkClass(CustomParamRepository::class)
     val cacheTrackRequestWithCustomParams =
         CacheTrackRequestWithCustomParams(trackRequestRepository, customParamRepository)
-
-    val trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 }
-    val trackingParams = mapOf(
-        "cs" to "val 1",
-        "cd" to "val 2"
-    )
-    val params = CacheTrackRequestWithCustomParams.Params(
-        trackRequest = trackRequest,
-        trackingParams = trackingParams
-    )
-    val customParams = trackingParams.toCustomParams(trackRequestId = trackRequest.id)
-    val dataTrack = DataTrack(
-        trackRequest = trackRequest,
-        customParams = customParams
-    )
 
     "cache track request with its custom params and return success" {
         val resultSuccess = Result.success(dataTrack)
@@ -69,7 +53,7 @@ internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
             customParamRepository.addCustomParams(customParams)
         } returns Result.success(customParams)
 
-        cacheTrackRequestWithCustomParams(params) shouldBe (resultSuccess)
+        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultSuccess)
     }
 
     "cache track request with its custom params and return failure" {
@@ -79,6 +63,6 @@ internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
             trackRequestRepository.addTrackRequest(trackRequest)
         } returns resultFailure
 
-        cacheTrackRequestWithCustomParams(params) shouldBe (resultFailure)
+        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultFailure)
     }
 })
