@@ -44,7 +44,7 @@ internal class ManualTrackTest : AbstractExternalInteractor() {
     init {
         feature("the manual track is called") {
 
-            scenario("if optout is active or auto tracking is enabled then return and don't track") {
+            scenario("if opt out is active or auto tracking is enabled then return and don't track") {
                 val params = ManualTrack.Params(trackRequest, emptyMap(), true, true)
 
                 runBlocking {
