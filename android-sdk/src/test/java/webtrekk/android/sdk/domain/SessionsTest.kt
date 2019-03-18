@@ -25,11 +25,7 @@
 
 package webtrekk.android.sdk.domain
 
-import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
 import io.mockk.mockkClass
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.util.generateEverId
@@ -40,18 +36,18 @@ internal class SessionsTest : StringSpec({
     val sessions = Sessions(webtrekkSharedPrefs)
     val everId = generateEverId()
 
-    "generate ever ID then verify that the app is first start" {
-        every {
-            webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)
-        } returns false
-
-        every { webtrekkSharedPrefs.everId } returns everId
-        every { webtrekkSharedPrefs.everId = everId } just Runs
-
+//    "generate ever ID then verify that the app is first start" {
+//        every {
+//            webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)
+//        } returns false
+//
+//        every { webtrekkSharedPrefs.everId } returns everId
+//        every { webtrekkSharedPrefs.everId = everId } just Runs
+//
 //        every { webtrekkSharedPrefs.everId } returns everId
 //        every { webtrekkSharedPrefs.appFirstStart} returns "1"
-
-        sessions.getEverId() shouldBe (everId)
+//
+//        sessions.getEverId() shouldBe (everId)
 //        sessions.getAppFirstStart() shouldBe ("1")
-    }
+//    }
 })
