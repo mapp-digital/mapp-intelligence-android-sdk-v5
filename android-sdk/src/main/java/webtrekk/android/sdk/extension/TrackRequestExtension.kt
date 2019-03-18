@@ -29,7 +29,9 @@ import android.app.Activity
 import androidx.fragment.app.Fragment
 import okhttp3.Request
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.data.entity.*
+import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.currentEverId
 
 internal fun Activity.toTrackRequest(): TrackRequest =

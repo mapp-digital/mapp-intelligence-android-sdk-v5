@@ -27,7 +27,12 @@ package webtrekk.android.sdk.domain.external
 
 import android.content.Context
 import io.kotlintest.IsolationMode
-import io.mockk.*
+import io.mockk.every
+import io.mockk.coVerify
+import io.mockk.coVerifyAll
+import io.mockk.mockk
+import io.mockk.mockkClass
+import io.mockk.Called
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.AppState
 import webtrekk.android.sdk.data.entity.TrackRequest

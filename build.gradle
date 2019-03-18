@@ -35,7 +35,7 @@ buildscript {
             'minSdkVersion'          : 19,
             'targetSdkVersion'       : 28,
 
-            'appCompatVersion'       : '1.1.0-alpha02',
+            'appCompatVersion'       : '1.1.0-alpha03',
             'constraintLayoutVersion': '2.0.0-alpha3',
 
             'kotlinCoroutines'       : '1.1.1',
@@ -44,7 +44,7 @@ buildscript {
 
             'okHttpVersion'          : '3.13.1',
 
-            'workManagerVersion'     : '1.0.0-beta05',
+            'workManagerVersion'     : '1.0.0',
             'roomVersion'            : '2.1.0-alpha04',
 
             'testCoreVersion'        : '1.1.0',

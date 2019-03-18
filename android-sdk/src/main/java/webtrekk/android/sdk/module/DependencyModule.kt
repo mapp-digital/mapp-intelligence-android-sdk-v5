@@ -35,7 +35,11 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import webtrekk.android.sdk.domain.Scheduler
 import webtrekk.android.sdk.domain.Sessions
-import webtrekk.android.sdk.domain.internal.*
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.domain.internal.CacheTrackRequest
+import webtrekk.android.sdk.domain.internal.ExecuteRequest
+import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
+import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 
 internal val dataModule = module {
     single<TrackRequestRepository> { TrackRequestRepositoryImpl(get()) }

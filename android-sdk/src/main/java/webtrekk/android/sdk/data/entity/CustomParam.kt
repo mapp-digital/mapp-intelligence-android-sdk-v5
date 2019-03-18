@@ -25,8 +25,12 @@
 
 package webtrekk.android.sdk.data.entity
 
-import androidx.room.*
+import androidx.room.Entity
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.ForeignKey
+import androidx.room.Index
 
 @Entity(
     tableName = "custom_params",

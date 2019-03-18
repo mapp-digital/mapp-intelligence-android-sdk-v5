@@ -31,8 +31,10 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import webtrekk.android.sdk.data.*
+import webtrekk.android.sdk.data.DbTest
+import webtrekk.android.sdk.data.dataTracks
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.trackRequests
 
 @RunWith(AndroidJUnit4::class)
 internal class TrackRequestDaoTest : DbTest() {

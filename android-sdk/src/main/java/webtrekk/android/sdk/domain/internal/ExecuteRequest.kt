@@ -25,7 +25,7 @@
 
 package webtrekk.android.sdk.domain.internal
 
-import okhttp3.*
+import okhttp3.Request
 import webtrekk.android.sdk.api.SyncRequestsDataSource
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest

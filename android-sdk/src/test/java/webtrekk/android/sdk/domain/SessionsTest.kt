@@ -23,52 +23,35 @@
  *
  */
 
-package webtrekk.android.sdk
+package webtrekk.android.sdk.domain
 
-import android.util.Log
-import java.text.SimpleDateFormat
-import java.util.Date
+import io.kotlintest.shouldBe
+import io.kotlintest.specs.StringSpec
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockkClass
+import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.util.generateEverId
 
-internal class WebtrekkLogger(level: Logger.Level) : Logger {
+internal class SessionsTest : StringSpec({
 
-    private var basicMessage: String? = null
+    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
+    val sessions = Sessions(webtrekkSharedPrefs)
+    val everId = generateEverId()
 
-    private val _dateFormat = SimpleDateFormat.getDateTimeInstance()
-    private val date
-        inline get() = _dateFormat.format(Date())
+    "generate ever ID then verify that the app is first start" {
+        every {
+            webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)
+        } returns false
 
-    init {
-        basicMessage = when (level) {
-            Logger.Level.NONE -> null
-            Logger.Level.BASIC -> date.toString()
-        }
+        every { webtrekkSharedPrefs.everId } returns everId
+        every { webtrekkSharedPrefs.everId = everId } just Runs
+
+//        every { webtrekkSharedPrefs.everId } returns everId
+//        every { webtrekkSharedPrefs.appFirstStart} returns "1"
+
+        sessions.getEverId() shouldBe (everId)
+//        sessions.getAppFirstStart() shouldBe ("1")
     }
-
-    override fun info(message: String) {
-        basicMessage?.let {
-            Log.i(TAG, "$basicMessage -> $message")
-        }
-    }
-
-    override fun debug(message: String) {
-        basicMessage?.let {
-            Log.d(TAG, "$basicMessage -> $message")
-        }
-    }
-
-    override fun warn(message: String) {
-        basicMessage?.let {
-            Log.w(TAG, "$basicMessage -> $message")
-        }
-    }
-
-    override fun error(message: String) {
-        basicMessage?.let {
-            Log.wtf(TAG, "$basicMessage -> $message")
-        }
-    }
-
-    companion object {
-        private const val TAG = "webtrekk"
-    }
-}
+})

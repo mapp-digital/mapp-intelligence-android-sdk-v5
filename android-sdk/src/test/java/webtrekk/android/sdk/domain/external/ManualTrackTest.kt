@@ -25,11 +25,19 @@
 
 package webtrekk.android.sdk.domain.external
 
-import io.mockk.*
+import io.mockk.Called
+import io.mockk.coEvery
+import io.mockk.coVerifyAll
+import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.trackRequest
+import webtrekk.android.sdk.util.trackingParams
+import webtrekk.android.sdk.util.cacheTrackRequestParams
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.dataTrack
+import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
 internal class ManualTrackTest : AbstractExternalInteractor() {
 

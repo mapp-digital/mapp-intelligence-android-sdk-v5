@@ -28,7 +28,17 @@ package webtrekk.android.sdk.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.currentApiLevel
+import webtrekk.android.sdk.util.currentOsVersion
+import webtrekk.android.sdk.util.currentDeviceManufacturer
+import webtrekk.android.sdk.util.currentDeviceModel
+import webtrekk.android.sdk.util.currentCountry
+import webtrekk.android.sdk.util.currentLanguage
+import webtrekk.android.sdk.util.currentTimeZone
+import webtrekk.android.sdk.util.currentTimeStamp
+import webtrekk.android.sdk.util.currentSession
+import webtrekk.android.sdk.util.appFirstStart
+import webtrekk.android.sdk.util.currentWebtrekkVersion
 
 @Entity(tableName = "tracking_data")
 internal data class TrackRequest(

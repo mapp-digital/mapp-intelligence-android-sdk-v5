@@ -36,7 +36,7 @@ internal class RequestStateConverterTest {
     fun testRequestStateConverter() {
         val requestState = TrackRequest.RequestState.DONE
 
-        assertThat(RequestStateConverter().requestStateToString(requestState), `is` ("DONE"))
+        assertThat(RequestStateConverter().requestStateToString(requestState), `is`("DONE"))
 
         assertThat(RequestStateConverter().stringToRequestState("DONE"), `is`(requestState))
     }
