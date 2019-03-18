@@ -1,5 +1,7 @@
 language: android
 
+sudo: false
+
 jdk:
   - openjdk11
 
@@ -11,9 +13,15 @@ env:
 android:
   components:
     - android-$ANDROID_API
-    - tools
     - build-tools-$ANDROID_BUILD_TOOLS
+    - tools
     - platform-tools
+
+before_script:
+  - echo no | android create avd --force -n test -t android-28 --abi armeabi-v7a -c 100M
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 branches:
   only:
