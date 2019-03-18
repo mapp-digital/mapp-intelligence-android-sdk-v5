@@ -16,6 +16,10 @@ android:
     - build-tools-$ANDROID_BUILD_TOOLS
     - tools
     - platform-tools
+    - extra-google-google_play_services
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - sys-img-armeabi-v7a-android-28
 
 before_script:
   - echo no | android create avd --force -n test -t android-28 --abi armeabi-v7a -c 100M
