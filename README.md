@@ -1,5 +1,5 @@
-# Webtrekk Android SDK v5
-Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your Android apps. Collect your app usage, define how your users using your app, define specific pages and custom events. And send the data to Webtrekk analytics servers to be used for further analysis.
+# Webtrekk Android SDK v5 **[BETA]**
+Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your Android apps. Collect your app usage, track how your users are using your app, define specific pages and custom events. And send the data to Webtrekk analytics servers to be used for further analysis.
 
 Webtrekk Android SDK v5 is built in [Kotlin](https://kotlinlang.org/) and uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) under the hood, [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for enqueuing and sending the track requests to optimize the device battery and performance.
 Webtrekk internally, collects and caches the data that you specify for tracking, and later, it sends those data to Webtrekk analytics server in periodic time.
@@ -31,7 +31,7 @@ In progress
 # Usage
 
 <a name=configuration></a>
-### Configuration
+## Configuration
 To start integrating with Webtrekk, [WebtrekkConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/WebtrekkConfiguration.kt) is the entry point where you can set up all your configurations that will be used by the SDK. It's recommended to set up the configurations in your [Application](https://developer.android.com/reference/android/app/Application) class. Note that `trackIds` and `trackDomain` are the mandatory.
 
 ```kotlin
@@ -43,7 +43,7 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
 ```
 
 <a name=workmanager_constraints></a>
-##### WorkManager Constraints
+### WorkManager Constraints
 Since the SDK uses WorkManager for enqueueing the requests (cached data) and sending them in [Config.sendDelay](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) time in the background in order. It guarantees to send those data requests in periodic time even if your app is not in the background, and that's for enhancing your app's usage battery and that you don't have to worry about the performance.
 You can customize the WorkManager constraints. Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 ```kotlin
@@ -59,7 +59,7 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
 ```
 
 <a name=okhttpclient_builder></a>
-##### OkHttpClient Builder
+### OkHttpClient Builder
 Also, you can customize the [okHttpClient](https://github.com/square/okhttp) used in the SDK, to give your more freedom of setting up your pinning certificates, interceptors...etc.
 ```kotlin
 val okHttpClient = OkHttpClient.Builder()
@@ -73,12 +73,12 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
 ```
 
 <a name=default_configuration></a>
-##### Default Configuration
+### Default Configuration
 Only `trackIds` and `trackDomain` are the mandatory to be defined in the configurations, all other configurations have default values.
 Check out [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 
 <a name=initialize></a>
-### Initialize
+## Initialize
 To start using [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt), you must retrieve an instance first and then initialize the context [Context](https://developer.android.com/reference/android/content/Context) and Webtrekk configurations [Config](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt). Without specifying the context nor the configurations first, Webtrekk will throw [IllegalStateException](https://docs.oracle.com/javase/8/docs/api/index.html?java/lang/IllegalStateException.html) upon invoking any method.
 
 ```kotlin
@@ -104,14 +104,14 @@ Make sure your app's manifest has the network permission.
 ```
 
 <a name=tracking></a>
-### Tracking
+## Tracking
 
 <a name=auto_track></a>
-##### Auto Track
+### Auto Track
 At minimum usage, just initializing the SDK without disabling the auto track, the SDK will start tracking your activities and fragments, sending them to Webtrekk's server. Note, that auto track is enabled by default, to disable auto track, call `disableAutoTracking()` in configurations.
 
 <a name=manual_track></a>
-##### Manual Track
+### Manual Track
 In case of disabling the auto track, and interested in specific activities/fragments, use `trackPage()` method in your activities/fragments.
 Note, If auto tracking [Config.autoTracking](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) is enabled, then this function will return immediately without sending its tracking data, alongside with a warning indicating that auto tracking is enabled. Also, you can define some custom tracking params to be sent within this page. Please check out how to define [tracking params](#custom_params) below.
 
@@ -120,7 +120,7 @@ Webtrekk.getInstance().trackPage(context = this, customPageName = "Product activ
 ```
 
 <a name=track_custom_page></a>
-##### Track Custom Page
+### Track Custom Page
 Tracks a custom page, with some custom tracking params. Can be used alongside the auto tracking.
 
 ```kotlin
@@ -137,7 +137,7 @@ Webtrekk.getInstance().trackCustomPage(pageName = "First page", trackingParams =
 ``` 
 
 <a name=track_custom_event></a>
-##### Track Custom Event
+### Track Custom Event
 Tracks a specific custom event, with some custom tracking params. Can be used alongside the auto tracking.
 
 ```kotlin
@@ -152,7 +152,7 @@ Webtrekk.getInstance().trackCustomEvent(eventName = "Event campaign clicks", tra
 ``` 
 
 <a name=custom_params></a>
-### Custom Params
+## Custom Params
 You can define params to be sent with every manual track or custom page/event track. There are some predefined params in the SDK
 in [Params](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/ParamType.kt). In case you want to define your custom params, you can use `TrackingParams`, see the example below.
 
@@ -189,7 +189,7 @@ Webtrekk.getInstance().trackCustomPage("Product Page", params);
 ```
 
 <a name=opt_out></a>
-### Opt Out
+## Opt Out
 The SDK allows to opt out entirely from tracking. Internally, calling this method will cause to delete all the current tracking data that are cached in the database (if `sendCurrentData` is false), canceling sending requests, shutting down work manager's worker and disabling all incoming tracking requests.
 
 To opt out entirely and delete all caching data without sending them.
@@ -213,7 +213,7 @@ Webtrekk.getInstance().hasOptOut() // Will return true if opt out is active
 ```
 
 <a name=user_ever_id></a>
-### User Ever Id
+## User Ever Id
 The SDK generates a unique ID for each user at first initializing the SDK. That ID is being sent at ever track request to identify the user.
 To retrieve the Ever Id.
 
