@@ -21,6 +21,7 @@ android:
     - extra-google-google_play_services
     - extra-android-m2repository
     - extra-google-m2repository
+    - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
 
 before_script:
   - echo no | android create avd --force -n test -t android-$EMULATOR_API_LEVEL --abi armeabi-v7a -c 100M
