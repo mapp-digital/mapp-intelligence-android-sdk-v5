@@ -32,7 +32,10 @@ import io.mockk.mockkClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.customParams
+import webtrekk.android.sdk.util.dataTrack
+import webtrekk.android.sdk.util.trackRequest
 import java.io.IOException
 
 internal class CacheTrackRequestWithCustomParamsTest : StringSpec({

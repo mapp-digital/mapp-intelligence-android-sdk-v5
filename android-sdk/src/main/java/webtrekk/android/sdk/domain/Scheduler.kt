@@ -25,7 +25,11 @@
 
 package webtrekk.android.sdk.domain
 
-import androidx.work.*
+import androidx.work.WorkManager
+import androidx.work.PeriodicWorkRequest
+import androidx.work.OneTimeWorkRequest
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import java.util.concurrent.TimeUnit

@@ -31,7 +31,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.WebtrekkImpl
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.random.Random
 
 internal val currentOsVersion: String

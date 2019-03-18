@@ -27,7 +27,10 @@ package webtrekk.android.sdk.domain.external
 
 import android.content.Context
 import io.kotlintest.IsolationMode
-import io.mockk.*
+import io.mockk.Called
+import io.mockk.coVerifyAll
+import io.mockk.mockk
+import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.AppStateImpl
 import webtrekk.android.sdk.domain.Scheduler

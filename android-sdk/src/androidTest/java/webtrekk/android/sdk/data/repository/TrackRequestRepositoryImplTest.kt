@@ -32,9 +32,12 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import webtrekk.android.sdk.data.*
+import webtrekk.android.sdk.data.DbTest
+import webtrekk.android.sdk.data.customParams
+import webtrekk.android.sdk.data.dataTracks
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.trackRequests
 
 @RunWith(AndroidJUnit4::class)
 internal class TrackRequestRepositoryImplTest : DbTest() {

@@ -29,7 +29,7 @@ import androidx.work.Constraints
 import okhttp3.OkHttpClient
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
-import java.util.*
+import java.util.Objects
 import java.util.concurrent.TimeUnit
 
 /**
@@ -158,9 +158,9 @@ class WebtrekkConfiguration private constructor(
     override fun equals(other: Any?): Boolean {
         return when {
             other === this -> true
-            other is WebtrekkConfiguration -> trackIds == other.trackIds && trackDomain == other.trackDomain
-                && logLevel == other.logLevel && sendDelay == other.sendDelay && autoTracking == other.autoTracking
-                && workManagerConstraints == other.workManagerConstraints && okHttpClient == other.okHttpClient
+            other is WebtrekkConfiguration -> trackIds == other.trackIds && trackDomain == other.trackDomain &&
+                logLevel == other.logLevel && sendDelay == other.sendDelay && autoTracking == other.autoTracking &&
+                workManagerConstraints == other.workManagerConstraints && okHttpClient == other.okHttpClient
             else -> false
         }
     }
