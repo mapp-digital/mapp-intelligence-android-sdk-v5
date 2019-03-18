@@ -3,9 +3,6 @@ language: android
 jdk:
   - openjdk11
 
-before_install:
-  - yes | sdkmanager --licenses && yes | sdkmanager --update
-
 env:
   global:
     - ANDROID_API=28
