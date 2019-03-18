@@ -53,12 +53,12 @@ class SampleApplication : Application() {
             .build()
 
         val webtrekkConfigurations =
-            WebtrekkConfiguration.Builder(listOf("1"), "https://www.webtrekk.com")
+            WebtrekkConfiguration.Builder(listOf("385255285199574"), "https://q3.webtrekk.net")
                 .logLevel(Logger.Level.BASIC)
                 .sendDelay(TimeUnit.MINUTES, 15)
-                .disableAutoTracking()
                 .workManagerConstraints(constraints = constraints)
                 .okHttpClient(okHttpClient = okHttpClient)
+                .disableAutoTracking()
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)

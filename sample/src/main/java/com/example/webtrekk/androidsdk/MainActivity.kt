@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+        Webtrekk.getInstance().trackPage(this, "Product activity")
         Webtrekk.getInstance().trackCustomPage("First page", trackingParams)
     }
 }
