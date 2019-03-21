@@ -25,7 +25,23 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
 
 <a name=installation></a>
 # Installation
-In progress
+
+Gradle
+
+```groovy
+implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.0-beta01'
+```
+
+Maven
+
+```xml
+<dependency>
+	<groupId>com.webtrekk.webtrekksdk</groupId>
+	<artifactId>webtrekksdk-android</artifactId>
+	<version>5.0.0-beta01</version>
+	<type>pom</type>
+</dependency>
+```
 
 <a name=usage></a>
 # Usage
