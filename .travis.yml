@@ -46,4 +46,12 @@ script:
 branches:
   only:
     - master
+    - release
 
+deploy:
+  provider: script
+  script: ./gradlew :clean :android-sdk:assembleRelease :android-sdk:bintrayUpload
+  skip_cleanup: true
+  dry-run: false
+  on:
+    branch: release
