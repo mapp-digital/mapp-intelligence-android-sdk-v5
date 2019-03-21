@@ -99,11 +99,11 @@ bintray {
         }
     }
 
-    if (properties.contains("bintray.user")) {
+    if (properties.getProperty("bintray.user") != null) {
         user = properties.getProperty("bintray.user")
     }
 
-    if (properties.contains("bintray.apikey")) {
+    if (properties.getProperty("bintray.apikey") != null) {
         key = properties.getProperty("bintray.apikey")
     }
 
