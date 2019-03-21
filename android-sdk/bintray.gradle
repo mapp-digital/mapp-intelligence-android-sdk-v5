@@ -90,12 +90,22 @@ bintray {
     if (localPropFile.exists()) {
         properties.load(localPropFile.newDataInputStream())
     } else {
-        properties.setProperty("bintray.user", System.getenv('BINTRAY_USER'))
-        properties.setProperty("bintray.apikey", System.getenv('BINTRAY_API_KEY'))
+        if (System.hasProperty('BINTRAY_USER')) {
+            properties.setProperty("bintray.user", System.getenv('BINTRAY_USER'))
+        }
+
+        if (System.hasProperty('BINTRAY_API_KEY')) {
+            properties.setProperty("bintray.apikey", System.getenv('BINTRAY_API_KEY'))
+        }
     }
 
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+    if (properties.contains("bintray.user")) {
+        user = properties.getProperty("bintray.user")
+    }
+
+    if (properties.contains("bintray.apikey")) {
+        key = properties.getProperty("bintray.apikey")
+    }
 
     configurations = ['archives']
     pkg {
