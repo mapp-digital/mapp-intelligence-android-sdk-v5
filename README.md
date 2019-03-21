@@ -25,15 +25,12 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
 
 <a name=installation></a>
 # Installation
-
 Gradle
-
 ```groovy
 implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.0-beta01'
 ```
 
 Maven
-
 ```xml
 <dependency>
 	<groupId>com.webtrekk.webtrekksdk</groupId>
@@ -41,6 +38,19 @@ Maven
 	<version>5.0.0-beta01</version>
 	<type>pom</type>
 </dependency>
+```
+
+The SDK requires that you enable Java 8 in your builds.
+```groovy
+compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+}
+```
+
+Allow the network permission in your app manifest.
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
 ```
 
 <a name=usage></a>
@@ -113,10 +123,6 @@ class SampleApplication : Application() {
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
     }
 }
-```
-Make sure your app's manifest has the network permission.
-```xml
-<uses-permission android:name="android.permission.INTERNET"/>
 ```
 
 <a name=tracking></a>
