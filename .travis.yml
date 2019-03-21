@@ -50,7 +50,7 @@ branches:
 
 deploy:
   provider: script
-  script: ./gradlew :clean :android-sdk:assembleRelease :android-sdk:bintrayUpload
+  script: ./gradlew android-sdk:clean :android-sdk:assembleRelease :android-sdk:bintrayUpload
   skip_cleanup: true
   dry-run: false
   on:
