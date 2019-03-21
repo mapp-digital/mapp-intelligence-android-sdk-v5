@@ -82,10 +82,18 @@ artifacts {
     archives sourcesJar
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 bintray {
+    Properties properties = new Properties()
+    File localPropFile = project.rootProject.file('local.properties')
+
+    // If deployment from local repo, then fetch user and api key from local.properties. Otherwise, get them from Travis env remotely
+    if (localPropFile.exists()) {
+        properties.load(localPropFile.newDataInputStream())
+    } else {
+        properties.setProperty("bintray.user", System.getenv('BINTRAY_USER'))
+        properties.setProperty("bintray.apikey", System.getenv('BINTRAY_API_KEY'))
+    }
+
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
 
