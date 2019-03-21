@@ -29,7 +29,7 @@ import androidx.work.Constraints
 import okhttp3.OkHttpClient
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
-import java.util.Objects
+import java.util.Arrays
 import java.util.concurrent.TimeUnit
 
 /**
@@ -166,15 +166,14 @@ class WebtrekkConfiguration private constructor(
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            trackIds,
-            trackDomain,
-            logLevel,
-            sendDelay,
-            autoTracking,
-            workManagerConstraints,
-            okHttpClient
-        )
+        var hashValue = Arrays.hashCode(trackIds.toTypedArray())
+        hashValue = 31 * hashValue + trackDomain.hashCode()
+        hashValue = 31 * hashValue + logLevel.hashCode()
+        hashValue = 31 * hashValue + sendDelay.hashCode()
+        hashValue = 31 * hashValue + autoTracking.hashCode()
+        hashValue = 31 * hashValue + workManagerConstraints.hashCode()
+        hashValue = 31 * hashValue + okHttpClient.hashCode()
+        return hashValue
     }
 
     override fun toString(): String {
