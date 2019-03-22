@@ -90,11 +90,11 @@ bintray {
     if (localPropFile.exists()) {
         properties.load(localPropFile.newDataInputStream())
     } else {
-        if (System.hasProperty('BINTRAY_USER')) {
+        if (System.getenv('BINTRAY_USER') != null) {
             properties.setProperty("bintray.user", System.getenv('BINTRAY_USER'))
         }
 
-        if (System.hasProperty('BINTRAY_API_KEY')) {
+        if (System.getenv('BINTRAY_API_KEY') != null) {
             properties.setProperty("bintray.apikey", System.getenv('BINTRAY_API_KEY'))
         }
     }
