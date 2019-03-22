@@ -43,11 +43,6 @@ script:
   - ./gradlew check connectedCheck --stacktrace
   - ./gradlew ktlint
 
-branches:
-  only:
-    - master
-    - release
-
 deploy:
   provider: script
   script: ./gradlew android-sdk:clean :android-sdk:assembleRelease :android-sdk:bintrayUpload
