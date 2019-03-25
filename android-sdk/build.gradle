@@ -65,19 +65,19 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
     implementation "androidx.appcompat:appcompat:$versions.appCompatVersion"
     implementation "androidx.core:core-ktx:$versions.coreKtxVersion"
+
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
+
     implementation "org.koin:koin-android:$versions.koinVersion"
 
-    implementation "android.arch.work:work-runtime:$versions.workManagerVersion"
-    implementation "android.arch.work:work-runtime-ktx:$versions.workManagerVersion"
-    androidTestImplementation "android.arch.work:work-testing:$versions.workManagerVersion"
+    implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation "androidx.room:room-runtime:$versions.roomVersion"
     implementation "androidx.room:room-coroutines:$versions.roomVersion"
-    kapt "androidx.room:room-compiler:$versions.roomVersion"
-    androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
 
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
+
+    kapt "androidx.room:room-compiler:$versions.roomVersion"
 
     testImplementation "junit:junit:$versions.junitVersion"
     testImplementation "androidx.test:core:$versions.testCoreVersion"
@@ -89,6 +89,9 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$versions.coreTestingVersion"
     androidTestImplementation "io.mockk:mockk-android:$versions.mockkVersion"
+
+    androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
+    androidTestImplementation "androidx.work:work-testing:$versions.workManagerVersion"
 
     ktlint "com.github.shyiko:ktlint:$versions.ktlintVersion"
 }
