@@ -99,7 +99,7 @@ internal class OptoutTest : AbstractExternalInteractor() {
                 }
             }
 
-            scenario("opt in when setting optout to false") {
+            scenario("stop opting out when setting optout to false") {
                 val params = Optout.Params(
                     context = appContext,
                     optOutValue = false,
