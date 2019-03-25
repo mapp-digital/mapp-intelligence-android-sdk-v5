@@ -224,7 +224,7 @@ To send current caching data before opting out.
 Webtrekk.getInstance().optOut(value = true, sendCurrentData = true)
 ```
 
-To opt in again.
+To stop opting out.
 ```kotlin
 Webtrekk.getInstance().optOut(value = false)
 ```

@@ -157,7 +157,7 @@ abstract class Webtrekk protected constructor() {
      * all the current tracking data that are cached in the database (if sendCurrentData is false),
      * canceling sending requests, shutting down work manager's worker and disabling all incoming tracking requests.
      *
-     * If you want to opt in again, you have to set [optOut(false)].
+     * To stop opting out, you have to set [optOut(false)].
      *
      * In case there are some data already in the cache, and it's desirable to send them before
      * deleting all the data, set sendCurrentData to true, this allows to send first all current
