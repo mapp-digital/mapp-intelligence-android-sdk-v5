@@ -45,7 +45,7 @@ public class SampleApplication extends Application {
         List<String> ids = new ArrayList<>();
         ids.add("1");
 
-        WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(ids, "www.webtrekk.com")
+        WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(ids, "https://www.webtrekk.com")
                 .disableAutoTracking()
                 .setWorkManagerConstraints(new Constraints.Builder()
                         .setRequiresBatteryNotLow(true).build())
