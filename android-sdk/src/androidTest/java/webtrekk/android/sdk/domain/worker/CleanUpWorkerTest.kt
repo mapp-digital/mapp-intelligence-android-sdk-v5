@@ -26,14 +26,16 @@
 package webtrekk.android.sdk.domain.worker
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.work.*
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkInfo
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-internal class CleanUpWorkerTest: WorkManagerTest() {
+internal class CleanUpWorkerTest : WorkManagerTest() {
 
     @Test
     @Throws(Exception::class)
