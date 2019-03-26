@@ -32,3 +32,7 @@ import webtrekk.android.sdk.WebtrekkLogger
 val loggerModule = module {
     single { WebtrekkLogger(Logger.Level.BASIC) as Logger }
 }
+
+val coroutineDispatchers = module {
+    single { coroutinesDispatchersProvider() }
+}
