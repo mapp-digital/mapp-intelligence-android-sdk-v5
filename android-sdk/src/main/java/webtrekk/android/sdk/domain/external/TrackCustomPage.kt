@@ -58,8 +58,8 @@ internal class TrackCustomPage(
                     invokeParams.trackingParams
                 )
             )
-                .onSuccess { logger.debug("Cached the data track request: $it") }
-                .onFailure { logger.error("Error while caching the request: $it") }
+                .onSuccess { logger.debug("Cached custom page request: $it") }
+                .onFailure { logger.error("Error while caching custom page request: $it") }
         }
     }
 

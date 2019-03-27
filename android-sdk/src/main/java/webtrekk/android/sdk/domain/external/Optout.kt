@@ -71,7 +71,7 @@ internal class Optout(
                     start = CoroutineStart.ATOMIC
                 ) {
                     clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
-                        .onSuccess { logger.debug("Cleared all track requests") }
+                        .onSuccess { logger.debug("Cleared all track requests, opt out is active") }
                         .onFailure { logger.error("Failed to clear the track requests while opting out") }
                 }
             }

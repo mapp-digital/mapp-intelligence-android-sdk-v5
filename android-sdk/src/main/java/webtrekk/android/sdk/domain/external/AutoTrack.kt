@@ -55,12 +55,12 @@ internal class AutoTrack(
         if (invokeParams.isOptOut) return
 
         appState.startAutoTrack(invokeParams.context) { trackRequest ->
-            logger.info("Received new auto track request: $trackRequest")
+            logger.info("Received a request from auto track: $trackRequest")
 
             scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger)) {
                 cacheTrackRequest(CacheTrackRequest.Params(trackRequest))
                     .onSuccess { logger.debug("Cached auto track request: $it") }
-                    .onFailure { logger.error("Error while caching the request: $it") }
+                    .onFailure { logger.error("Error while caching auto track request: $it") }
             }
         }
     }
