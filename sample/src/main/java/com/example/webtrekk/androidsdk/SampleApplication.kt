@@ -55,7 +55,7 @@ class SampleApplication : Application() {
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(listOf("385255285199574"), "https://q3.webtrekk.net")
                 .logLevel(Logger.Level.BASIC)
-                .sendDelay(TimeUnit.MINUTES, 15)
+                .requestsInterval(TimeUnit.MINUTES, 15)
                 .workManagerConstraints(constraints = constraints)
                 .okHttpClient(okHttpClient = okHttpClient)
                 .disableAutoTracking()

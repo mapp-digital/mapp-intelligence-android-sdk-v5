@@ -37,7 +37,7 @@ class WebtrekkConfigurationTest {
 
     private val webtrekkConfiguration =
         WebtrekkConfiguration.Builder(listOf("123456789", "123"), "www.webtrekk.com")
-            .sendDelay(sendDelay = 20)
+            .requestsInterval(interval = 20)
             .disableAutoTracking()
             .build()
 
@@ -79,7 +79,7 @@ class WebtrekkConfigurationTest {
         val expectedWebtrekkConfiguration =
             WebtrekkConfiguration.Builder(listOf("123"), "www.webtrekk.com")
                 .logLevel(DefaultConfiguration.LOG_LEVEL_VALUE)
-                .sendDelay(sendDelay = DefaultConfiguration.SEND_DELAY_VALUE)
+                .requestsInterval(interval = DefaultConfiguration.REQUESTS_INTERVAL)
                 .workManagerConstraints(DefaultConfiguration.WORK_MANAGER_CONSTRAINTS)
                 .okHttpClient(DefaultConfiguration.OKHTTP_CLIENT).build()
 
@@ -94,7 +94,7 @@ class WebtrekkConfigurationTest {
             webtrekkConfiguration.logLevel,
             DefaultConfiguration.LOG_LEVEL_VALUE
         )
-        assertEquals(webtrekkConfiguration.sendDelay, TimeUnit.MINUTES.toMillis(20))
+        assertEquals(webtrekkConfiguration.requestsInterval, TimeUnit.MINUTES.toMillis(20))
         assertEquals(webtrekkConfiguration.autoTracking, false)
         assertEquals(
             webtrekkConfiguration.workManagerConstraints,

@@ -40,7 +40,7 @@ import android.content.Context
  * As a matter of performance, Webtrekk uses [kotlinx.coroutines] for caching, collecting and sending
  * the data in the background (pool of threads). Hence, Webtrekk doesn't block the main thread.
  *
- * Webtrekk uses [androidx.work.WorkManager] for enqueueing the requests (cached data) and sending them in [Config.sendDelay]
+ * Webtrekk uses [androidx.work.WorkManager] for enqueueing the requests (cached data) and sending them in [Config.requestsInterval]
  * time in the background in order. It guarantees to send those data requests in periodic time even if your app is not in the background,
  * and that's for enhancing your app's usage battery and that you don't have to worry about the performance.
  *
@@ -56,7 +56,7 @@ import android.content.Context
  *
  * val webtrekkConfigurations = WebtrekkConfiguration.Builder(trackIds = listOf("1234567"), trackDomain = "https://www.webtrekk.com")
  *  .logLevel(Logger.Level.BASIC)
- *  .sendDelay(TimeUnit.HOURS, 10)
+ *  .requestsInterval(TimeUnit.HOURS, 10)
  *  .build()
  *
  * val webtrekk = Webtrekk.getInstance()
@@ -64,7 +64,7 @@ import android.content.Context
  *
  * *NOTE* auto tracking is enabled by default, so once you put this code in your [android.app.Application] class,
  * you will start receiving your app activities and fragments tracking data, getting cached, and will be sent to
- * Webtrekk analytics in [Config.sendDelay] time.
+ * Webtrekk analytics in [Config.requestsInterval] time.
  *
  * Since webtrekk internally uses [okhttp3.OkHttpClient] for networking, you could configure [okhttp3.OkHttpClient]
  * through the configurations. Hence, you could add your own certificate, interceptor and so on.
@@ -79,7 +79,7 @@ import android.content.Context
  *
  * val webtrekkConfigurations = WebtrekkConfiguration.Builder(trackIds = listOf("1234567"), trackDomain = "https://www.webtrekk.com")
  *  .logLevel(Logger.Level.BASIC)
- *  .sendDelay(TimeUnit.HOURS, 10)
+ *  .requestsInterval(TimeUnit.HOURS, 10)
  *  .okHttpClient(okHttpClient = okHttpClientConfig)
  *  .build()
  *

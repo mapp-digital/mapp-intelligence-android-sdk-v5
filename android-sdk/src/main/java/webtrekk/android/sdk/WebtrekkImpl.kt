@@ -195,7 +195,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
 
         scheduler.scheduleCleanUp()
         scheduler.scheduleSendRequests(
-            sendDelay = config.sendDelay,
+            repeatInterval = config.requestsInterval,
             constraints = config.workManagerConstraints
         )
 
