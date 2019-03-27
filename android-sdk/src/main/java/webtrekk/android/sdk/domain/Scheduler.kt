@@ -36,10 +36,10 @@ import java.util.concurrent.TimeUnit
 
 internal class Scheduler(private val workManager: WorkManager) {
 
-    fun scheduleSendRequests(sendDelay: Long, constraints: Constraints) {
+    fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints) {
         val sendRequestWorker = PeriodicWorkRequest.Builder(
             SendRequestsWorker::class.java,
-            sendDelay,
+            repeatInterval,
             TimeUnit.MILLISECONDS
         )
             .setConstraints(constraints)

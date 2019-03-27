@@ -63,7 +63,7 @@ Allow the network permission in your app manifest.
 ```kotlin
 val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("track Id"), trackDomain = "track domain")
        .logLevel(Logger.Level.BASIC)
-       .sendDelay(TimeUnit.HOURS, 12) // The periodic time for sending the cached tracking data to the server
+       .requestsInterval(TimeUnit.HOURS, 12) // The periodic time for sending the cached tracking data to the server
        .disableAutoTracking() // Auto tracking is enabled by default
        .build()
 ```
@@ -75,7 +75,7 @@ Check out [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-
 
 <a name=workmanager_constraints></a>
 ### WorkManager Constraints *(Optional)*
-The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in periodic times [Config.sendDelay](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) in the background. It guarantees to execute even if your app exits, and that's to enhance the device battery and the overall performance.
+The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in periodic times [Config.requestsInterval](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) in the background. It guarantees to execute even if your app exits, and that's to enhance the device battery and the overall performance.
 You can customize the WorkManager constraints. Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 ```kotlin
 val workManagerConstraints = Constraints.Builder()
@@ -116,7 +116,7 @@ class SampleApplication : Application() {
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(listOf("track Id"), "track domain")
                 .logLevel(Logger.Level.BASIC)
-                .sendDelay(TimeUnit.HOURS, 12)
+                .requestsInterval(TimeUnit.HOURS, 12)
                 .disableAutoTracking()
                 .build()
 

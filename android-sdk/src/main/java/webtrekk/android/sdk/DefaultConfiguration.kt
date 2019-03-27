@@ -48,12 +48,12 @@ object DefaultConfiguration {
     const val AUTO_TRACK_ENABLED = true
 
     /**
-     * The default interval time that's used in [WebtrekkConfiguration.Builder.sendDelay].
+     * The default interval time that's used in [WebtrekkConfiguration.Builder.requestsInterval].
      */
-    const val SEND_DELAY_VALUE: Long = 15 // minutes
+    const val REQUESTS_INTERVAL: Long = 15 // minutes
 
     /**
-     * The default time unit that is used in [WebtrekkConfiguration.Builder.sendDelay].
+     * The default time unit that is used in [WebtrekkConfiguration.Builder.requestsInterval].
      */
     val TIME_UNIT_VALUE = TimeUnit.MINUTES
 

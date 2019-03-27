@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit
  * A sample usage:
  * val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("123", "456"), trackDomain = "https://www.webtrekk.com")
  *      .logLevel(Logger.Level.BASIC)
- *      .sendDelay(TimeUnit.HOURS, 12)
+ *      .requestsInterval(TimeUnit.HOURS, 12)
  *      .disableAutoTracking()
  *      .build()
  *
@@ -50,7 +50,7 @@ class WebtrekkConfiguration private constructor(
     override val trackIds: List<String>,
     override val trackDomain: String,
     override val logLevel: Logger.Level,
-    override val sendDelay: Long,
+    override val requestsInterval: Long,
     override val autoTracking: Boolean,
     override val workManagerConstraints: Constraints,
     override val okHttpClient: OkHttpClient
@@ -62,8 +62,8 @@ class WebtrekkConfiguration private constructor(
      */
     class Builder(private val trackIds: List<String>, private val trackDomain: String) {
         private var logLevel = DefaultConfiguration.LOG_LEVEL_VALUE
-        private var sendDelay =
-            DefaultConfiguration.TIME_UNIT_VALUE.toMillis(DefaultConfiguration.SEND_DELAY_VALUE)
+        private var requestsInterval =
+            DefaultConfiguration.TIME_UNIT_VALUE.toMillis(DefaultConfiguration.REQUESTS_INTERVAL)
         private var autoTracking = DefaultConfiguration.AUTO_TRACK_ENABLED
         private var constraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
         private var okHttpClientBuilder = DefaultConfiguration.OKHTTP_CLIENT
@@ -81,17 +81,17 @@ class WebtrekkConfiguration private constructor(
         /**
          * Set when should the cached tracking data be sent to the server in interval time.
          *
-         * [Webtrekk] uses [androidx.work.WorkManager] for enqueueing and sending the requests in [sendDelay] time
+         * [Webtrekk] uses [androidx.work.WorkManager] for enqueueing and sending the requests in [requestsInterval] time
          * in the background in order. It guarantees to send those data requests in periodic time even if your app is not in the background,
          * and that's for enhancing your app's usage battery and that you don't have to worry about the performance.
          *
          * *NOTE* the minimum interval period is 15 minutes.
          *
-         * @see [DefaultConfiguration.SEND_DELAY_VALUE] for the default value.
+         * @see [DefaultConfiguration.REQUESTS_INTERVAL] for the default value.
          */
-        @JvmName("setSendDelay")
-        fun sendDelay(timeUnit: TimeUnit = TimeUnit.MINUTES, sendDelay: Long) =
-            apply { this.sendDelay = timeUnit.toMillis(sendDelay) }
+        @JvmName("setRequestsInterval")
+        fun requestsInterval(timeUnit: TimeUnit = TimeUnit.MINUTES, interval: Long) =
+            apply { this.requestsInterval = timeUnit.toMillis(interval) }
 
         /**
          * The auto tracking is enabled by default. The auto tracking will track your activities
@@ -107,7 +107,7 @@ class WebtrekkConfiguration private constructor(
          * Customize when should the lib send the tracking requests to the server when some device constraints
          * are met.
          *
-         * @see [androidx.work.Constraints] Once the constraints are met, within [sendDelay] time,
+         * @see [androidx.work.Constraints] Once the constraints are met, within [requestsInterval] time,
          * then the lib will start sending the requests to the server by using [androidx.work.WorkManager] worker.
          *
          * A sample usage:
@@ -148,7 +148,7 @@ class WebtrekkConfiguration private constructor(
             trackIds.validateEntireList("trackIds"),
             trackDomain.nullOrEmptyThrowError("trackDomain"),
             logLevel,
-            sendDelay,
+            requestsInterval,
             autoTracking,
             constraints,
             okHttpClientBuilder
@@ -159,7 +159,7 @@ class WebtrekkConfiguration private constructor(
         return when {
             other === this -> true
             other is WebtrekkConfiguration -> trackIds == other.trackIds && trackDomain == other.trackDomain &&
-                logLevel == other.logLevel && sendDelay == other.sendDelay && autoTracking == other.autoTracking &&
+                logLevel == other.logLevel && requestsInterval == other.requestsInterval && autoTracking == other.autoTracking &&
                 workManagerConstraints == other.workManagerConstraints && okHttpClient == other.okHttpClient
             else -> false
         }
@@ -169,7 +169,7 @@ class WebtrekkConfiguration private constructor(
         var hashValue = Arrays.hashCode(trackIds.toTypedArray())
         hashValue = 31 * hashValue + trackDomain.hashCode()
         hashValue = 31 * hashValue + logLevel.hashCode()
-        hashValue = 31 * hashValue + sendDelay.hashCode()
+        hashValue = 31 * hashValue + requestsInterval.hashCode()
         hashValue = 31 * hashValue + autoTracking.hashCode()
         hashValue = 31 * hashValue + workManagerConstraints.hashCode()
         hashValue = 31 * hashValue + okHttpClient.hashCode()
@@ -180,7 +180,7 @@ class WebtrekkConfiguration private constructor(
         return "Configurations: trackIds = $trackIds \n " +
             "trackDomain = $trackDomain \n " +
             "logLevel = $logLevel \n " +
-            "sendDelay = $sendDelay \n " +
+            "requestsInterval = $requestsInterval \n " +
             "autoTracking = $autoTracking"
     }
 }

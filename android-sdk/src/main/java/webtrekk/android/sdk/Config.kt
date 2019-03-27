@@ -66,15 +66,15 @@ interface Config {
     val logLevel: Logger.Level
 
     /**
-     * [sendDelay] the interval period in [java.util.concurrent.TimeUnit.MILLISECONDS]
+     * [requestsInterval] the interval period in [java.util.concurrent.TimeUnit.MILLISECONDS]
      * when [Webtrekk] sends the cached tracking data through network to the analytics.
      *
      * Webtrekk uses [androidx.work.WorkManager] for enqueuing and sending the requests in the background, for battery optimization.
      *
      * *NOTE* the minimum interval period is 15 minutes.
-     * In [WebtrekkConfiguration] the default is [DefaultConfiguration.SEND_DELAY_VALUE]
+     * In [WebtrekkConfiguration] the default is [DefaultConfiguration.REQUESTS_INTERVAL]
      */
-    val sendDelay: Long
+    val requestsInterval: Long
 
     /**
      * [autoTracking] set to true to enable the auto tracking. Set to false to disable the auto tracking.
