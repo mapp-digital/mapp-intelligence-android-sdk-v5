@@ -191,7 +191,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun internalInit() = launch(coroutineExceptionHandler(logger)) {
         sessions.setEverId()
-        sessions.startNewSession()
+        sessions.startNewSession().also { logger.info("A new session has started") }
 
         scheduler.scheduleCleanUp()
         scheduler.scheduleSendRequests(
@@ -205,7 +205,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     context = context,
                     isOptOut = hasOptOut()
                 ), coroutineDispatchers
-            ).also { logger.info("Webtrekk started auto tracking") }
+            ).also { logger.info("Webtrekk has started auto tracking") }
         } else {
             appState.disableAutoTrack(context)
         }

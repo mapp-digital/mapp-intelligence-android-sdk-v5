@@ -54,7 +54,7 @@ internal class ManualTrack(
         if (invokeParams.isOptOut) return
 
         if (invokeParams.autoTrack) {
-            logger.warn("Auto track is enabled by default")
+            logger.warn("Auto track is enabled, call 'disableAutoTrack()' in the configurations to disable the auto tracking")
 
             return
         }
