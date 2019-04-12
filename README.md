@@ -20,6 +20,7 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
     * [Custom Params](#custom-params)
     * [Opt Out](#opt-out)
     * [User Ever Id](#user-ever-id)
+    * [App to Web](#app-to-web)
 * [Read more](#read-more)
 * [License](#license)
 
@@ -250,6 +251,29 @@ To retrieve the Ever Id.
 
 ```kotlin
 Webtrekk.getInstance().getEverId()
+```
+
+<a name=app-to-web></a>
+## App to Web
+To support tracking [WebView](https://developer.android.com/guide/webapps/webview) in apps, the [User Ever Id](#user-ever-id) must be sent to Pixel Web SDK on the web side, to resume tracking of the current user visit.
+To achieve this, there are two options:
+
+First: by using [WebtrekkWebInterface](https://github.com/Webtrekk/webtrekk-android-sdk-BETA/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/WebtrekkWebInterface.kt), just pass this object to [WebView](https://developer.android.com/guide/webapps/webview) JavaScript interface.
+
+```kotlin
+webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
+```
+
+Second: by appending `wt_eid` to the Url with [User Ever Id](#user-ever-id).
+
+```kotlin
+webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
+```
+
+*Note*: you must enable JavaScript in [WebView](https://developer.android.com/guide/webapps/webview) when uses this feature.
+
+```kotlin
+webView.settings.javaScriptEnabled = true
 ```
 
 <a name=read_more></a>

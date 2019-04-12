@@ -1,9 +1,10 @@
 # Change Log
 
 ## Version 5.0.0-beta04 *(In progress)*
+* Support track from App to Web by sending ever Id to Pixel Web SDK.
 
 ## Version 5.0.0-beta03 *(2019-03-28)*
-* "sendDelay" in the configurations renamed to "requestsInterval".
+* `sendDelay` in the configurations renamed to `requestsInterval`.
 * Update WorkManager to 2.0.0.
 
 ## Version 5.0.0-beta02 *(2019-03-22)*
