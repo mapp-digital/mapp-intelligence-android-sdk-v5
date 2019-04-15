@@ -96,10 +96,20 @@ class WebtrekkConfigurationTest {
         )
         assertEquals(webtrekkConfiguration.requestsInterval, TimeUnit.MINUTES.toMillis(20))
         assertEquals(webtrekkConfiguration.autoTracking, false)
+        assertEquals(webtrekkConfiguration.fragmentsAutoTracking, false)
         assertEquals(
             webtrekkConfiguration.workManagerConstraints,
             DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
         )
         assertEquals(webtrekkConfiguration.okHttpClient, DefaultConfiguration.OKHTTP_CLIENT)
+    }
+
+    @Test
+    fun `test fragments auto track is disabled when auto track is disabled`() {
+        val defaultWebtrekkConfiguration =
+            WebtrekkConfiguration.Builder(listOf("123"), "www.webtrekk.com")
+                .disableAutoTracking().build()
+
+        assertEquals(defaultWebtrekkConfiguration.fragmentsAutoTracking, false)
     }
 }
