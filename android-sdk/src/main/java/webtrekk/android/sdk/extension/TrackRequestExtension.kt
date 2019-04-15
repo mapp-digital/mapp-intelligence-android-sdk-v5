@@ -73,6 +73,7 @@ internal fun DataTrack.buildUrl(trackDomain: String, trackIds: List<String>): St
         "&${UrlParams.EVER_ID}=$currentEverId" +
         "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
+        "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
         customParams.buildCustomParams()
 }
 
