@@ -52,6 +52,7 @@ class WebtrekkConfiguration private constructor(
     override val logLevel: Logger.Level,
     override val requestsInterval: Long,
     override val autoTracking: Boolean,
+    override val fragmentsAutoTracking: Boolean,
     override val workManagerConstraints: Constraints,
     override val okHttpClient: OkHttpClient
 ) : Config {
@@ -65,6 +66,7 @@ class WebtrekkConfiguration private constructor(
         private var requestsInterval =
             DefaultConfiguration.TIME_UNIT_VALUE.toMillis(DefaultConfiguration.REQUESTS_INTERVAL)
         private var autoTracking = DefaultConfiguration.AUTO_TRACK_ENABLED
+        private var fragmentsAutoTracking = DefaultConfiguration.FRAGMENTS_AUTO_TRACK_ENABLED
         private var constraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
         private var okHttpClientBuilder = DefaultConfiguration.OKHTTP_CLIENT
 
@@ -101,7 +103,19 @@ class WebtrekkConfiguration private constructor(
          *
          * Call [disableAutoTracking] to disable the auto tracking.
          */
-        fun disableAutoTracking() = apply { this.autoTracking = false }
+        fun disableAutoTracking() = apply {
+            this.autoTracking = false
+            this.fragmentsAutoTracking = false
+        }
+
+        /**
+         * When auto tracking is enabled, the auto tracking of fragments is enabled by default.
+         *
+         * Call [disableFragmentsAutoTracking] to disable the auto tracking of fragments, and only auto track activities.
+         *
+         * *NOTE* if auto track is disabled [disableAutoTracking], then auto tracking of fragments is disabled as well.
+         */
+        fun disableFragmentsAutoTracking() = apply { this.fragmentsAutoTracking = false }
 
         /**
          * Customize when should the lib send the tracking requests to the server when some device constraints
@@ -150,6 +164,7 @@ class WebtrekkConfiguration private constructor(
             logLevel,
             requestsInterval,
             autoTracking,
+            fragmentsAutoTracking,
             constraints,
             okHttpClientBuilder
         )
@@ -160,7 +175,8 @@ class WebtrekkConfiguration private constructor(
             other === this -> true
             other is WebtrekkConfiguration -> trackIds == other.trackIds && trackDomain == other.trackDomain &&
                 logLevel == other.logLevel && requestsInterval == other.requestsInterval && autoTracking == other.autoTracking &&
-                workManagerConstraints == other.workManagerConstraints && okHttpClient == other.okHttpClient
+                fragmentsAutoTracking == other.fragmentsAutoTracking && workManagerConstraints == other.workManagerConstraints &&
+                okHttpClient == other.okHttpClient
             else -> false
         }
     }
@@ -171,6 +187,7 @@ class WebtrekkConfiguration private constructor(
         hashValue = 31 * hashValue + logLevel.hashCode()
         hashValue = 31 * hashValue + requestsInterval.hashCode()
         hashValue = 31 * hashValue + autoTracking.hashCode()
+        hashValue = 31 * hashValue + fragmentsAutoTracking.hashCode()
         hashValue = 31 * hashValue + workManagerConstraints.hashCode()
         hashValue = 31 * hashValue + okHttpClient.hashCode()
         return hashValue
@@ -181,6 +198,7 @@ class WebtrekkConfiguration private constructor(
             "trackDomain = $trackDomain \n " +
             "logLevel = $logLevel \n " +
             "requestsInterval = $requestsInterval \n " +
-            "autoTracking = $autoTracking"
+            "autoTracking = $autoTracking \n " +
+            "fragmentsAutoTracking = $fragmentsAutoTracking"
     }
 }
