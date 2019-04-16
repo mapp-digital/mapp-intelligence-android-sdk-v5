@@ -26,7 +26,6 @@
 package webtrekk.android.sdk
 
 import android.app.Activity
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -40,9 +39,18 @@ internal class AppStateImpl : AppState<TrackRequest>() {
         activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest()) }
     }
 
-    override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
-        super.onFragmentCreated(fm, f, savedInstanceState)
+    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+        super.onFragmentStarted(fm, f)
 
         lifecycleReceiver.onLifecycleEventReceived(f.toTrackRequest())
+    }
+}
+
+internal class ActivityAppStateImpl : AppState<TrackRequest>() {
+
+    override fun onActivityStarted(activity: Activity?) {
+        super.onActivityStarted(activity)
+
+        activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest()) }
     }
 }
