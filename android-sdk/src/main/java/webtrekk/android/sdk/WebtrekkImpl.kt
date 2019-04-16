@@ -85,40 +85,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     override val coroutineContext: CoroutineContext
         get() = _job + coroutineDispatchers.defaultDispatcher
 
-    init {
-        val mainModule = module {
-            single { WebtrekkSharedPrefs(context) }
-            single { config.okHttpClient }
-            single { WorkManager.getInstance() }
-            single { getWebtrekkDatabase(context).trackRequestDao() }
-            single { getWebtrekkDatabase(context).customParamDataDao() }
-            single { WebtrekkLogger(config.logLevel) as Logger }
-            single { CoroutineDispatchers(Dispatchers.Main, Dispatchers.Default, Dispatchers.IO) }
-            single { AppStateImpl() as AppState<TrackRequest> }
-        }
-
-        val externalInteractorsModule = module {
-            single { AutoTrack(coroutineContext, get(), get()) }
-            single { ManualTrack(coroutineContext, get(), get()) }
-            single { TrackCustomPage(coroutineContext, get()) }
-            single { TrackCustomEvent(coroutineContext, get()) }
-            single { Optout(coroutineContext, get(), get(), get(), get()) }
-        }
-
-        startKoin(
-            listOf(
-                mainModule,
-                dataModule,
-                internalInteractorsModule,
-                externalInteractorsModule
-            ), logger = EmptyLogger()
-        )
-    }
-
     override fun init(context: Context, config: Config) {
         this.context = context.applicationContext
         this.config = config
 
+        loadModules()
         internalInit()
     }
 
@@ -186,6 +157,42 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
 
     override fun getEverId(): String = context.run {
         sessions.getEverId()
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    private fun loadModules() {
+        val mainModule = module {
+            single { WebtrekkSharedPrefs(context) }
+            single { config.okHttpClient }
+            single { WorkManager.getInstance() }
+            single { getWebtrekkDatabase(context).trackRequestDao() }
+            single { getWebtrekkDatabase(context).customParamDataDao() }
+            single { WebtrekkLogger(config.logLevel) as Logger }
+            single { CoroutineDispatchers(Dispatchers.Main, Dispatchers.Default, Dispatchers.IO) }
+            if (config.fragmentsAutoTracking) single { AppStateImpl() as AppState<TrackRequest> }
+            else single { ActivityAppStateImpl() as AppState<TrackRequest> }
+        }
+
+        val externalInteractorsModule = module {
+            single { AutoTrack(coroutineContext, get(), get()) }
+            single { ManualTrack(coroutineContext, get(), get()) }
+            single { TrackCustomPage(coroutineContext, get()) }
+            single { TrackCustomEvent(coroutineContext, get()) }
+            single { Optout(coroutineContext, get(), get(), get(), get()) }
+        }
+
+        try {
+            startKoin(
+                listOf(
+                    mainModule,
+                    dataModule,
+                    internalInteractorsModule,
+                    externalInteractorsModule
+                ), logger = EmptyLogger()
+            )
+        } catch (e: Exception) {
+            logger.error("Webtrekk is already in use: $e")
+        }
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)

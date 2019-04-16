@@ -93,7 +93,7 @@ abstract class Webtrekk protected constructor() {
      * Initializes the [Context.getApplicationContext] context and [Config] Webtrekk's configurations
      * that will be used through the entire life of [Webtrekk] object.
      *
-     * *NOTE* this method must be called first before invoking any other method. Invoking any other method
+     * *NOTE* this method must be called once and first before invoking any other method. Invoking any other method
      * without initializing the context nor the configurations, will throw [IllegalStateException].
      *
      * It's preferred to initialize in the [android.app.Application].
