@@ -2,6 +2,7 @@
 
 ## Version 5.0.0-beta04 *(In progress)*
 * Support track from App to Web by sending ever Id to Pixel Web SDK.
+* Support disable fragments auto tracking in the configurations `disableFragmentsAutoTracking()`.
 * Add "language" query param to the request URL `la`.
 
 ## Version 5.0.0-beta03 *(2019-03-28)*
