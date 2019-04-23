@@ -1,5 +1,7 @@
 # Change Log
 
+## Version 5.0.0-beta05 *(In progress)*
+
 ## Version 5.0.0-beta04 *(2019-04-23)*
 * Support track from App to Web by sending ever Id to Pixel Web SDK.
 * Support disable fragments auto tracking in the configurations `disableFragmentsAutoTracking()`.
