@@ -1,6 +1,8 @@
 # Change Log
 
 ## Version 5.0.0-beta05 *(In progress)*
+* Update `kotlin-gradle-plugin` to `1.3.30`.
+* Update `WorkManager` to `2.1.0-alpha01` and adapt to its API behaviour.
 
 ## Version 5.0.0-beta04 *(2019-04-23)*
 * Support track from App to Web by sending ever Id to Pixel Web SDK.
