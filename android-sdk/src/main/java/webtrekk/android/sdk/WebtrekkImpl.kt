@@ -164,7 +164,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         val mainModule = module {
             single { WebtrekkSharedPrefs(context) }
             single { config.okHttpClient }
-            single { WorkManager.getInstance() }
+            single { WorkManager.getInstance(context) }
             single { getWebtrekkDatabase(context).trackRequestDao() }
             single { getWebtrekkDatabase(context).customParamDataDao() }
             single { WebtrekkLogger(config.logLevel) as Logger }

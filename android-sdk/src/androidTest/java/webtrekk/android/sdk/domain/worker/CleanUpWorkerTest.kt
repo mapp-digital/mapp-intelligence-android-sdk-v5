@@ -43,13 +43,12 @@ internal class CleanUpWorkerTest : WorkManagerTest() {
         val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .build()
 
-        val workManager = WorkManager.getInstance()
+        val workManager = WorkManager.getInstance(context)
 
         workManager.enqueue(cleanUpWorker).result.get()
 
         val workInfo = workManager.getWorkInfoById(cleanUpWorker.id).get()
 
-        // The work info will be failed, since doWork() is suspend
-        assertThat(workInfo.state, `is`(WorkInfo.State.FAILED))
+        assertThat(workInfo.state, `is`(WorkInfo.State.RUNNING))
     }
 }
