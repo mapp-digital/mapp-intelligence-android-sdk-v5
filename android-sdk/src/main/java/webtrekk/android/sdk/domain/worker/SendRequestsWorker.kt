@@ -28,7 +28,7 @@ package webtrekk.android.sdk.domain.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import webtrekk.android.sdk.Logger
@@ -49,41 +49,41 @@ internal class SendRequestsWorker(
     private val coroutineDispatchers: CoroutineDispatchers by inject()
     private val getCachedDataTracks: GetCachedDataTracks by inject()
     private val executeRequest: ExecuteRequest by inject()
-    private val logger by inject<Logger>()
-
-    override val coroutineContext: CoroutineDispatcher
-        get() = coroutineDispatchers.ioDispatcher
+    private val logger: Logger by inject()
 
     override suspend fun doWork(): Result {
-        getCachedDataTracks(
-            GetCachedDataTracks.Params(
-                requestStates = listOf(
-                    TrackRequest.RequestState.NEW,
-                    TrackRequest.RequestState.FAILED
+        // todo handle Result.failure()
+        withContext(coroutineDispatchers.ioDispatcher) {
+            getCachedDataTracks(
+                GetCachedDataTracks.Params(
+                    requestStates = listOf(
+                        TrackRequest.RequestState.NEW,
+                        TrackRequest.RequestState.FAILED
+                    )
                 )
             )
-        )
-            .onSuccess { dataTracks ->
-                if (dataTracks.isNotEmpty()) {
-                    logger.info("Executing the requests")
+                .onSuccess { dataTracks ->
+                    if (dataTracks.isNotEmpty()) {
+                        logger.info("Executing the requests")
 
-                    // Must execute requests sync and in order
-                    dataTracks.forEach { dataTrack ->
-                        val urlRequest = dataTrack.buildUrlRequest(trackDomain, trackIds)
-                        logger.info("Sending request = $urlRequest")
+                        // Must execute requests sync and in order
+                        dataTracks.forEach { dataTrack ->
+                            val urlRequest = dataTrack.buildUrlRequest(trackDomain, trackIds)
+                            logger.info("Sending request = $urlRequest")
 
-                        executeRequest(
-                            ExecuteRequest.Params(
-                                request = urlRequest,
-                                dataTrack = dataTrack
+                            executeRequest(
+                                ExecuteRequest.Params(
+                                    request = urlRequest,
+                                    dataTrack = dataTrack
+                                )
                             )
-                        )
-                            .onSuccess { logger.debug("Sent the request successfully $it") }
-                            .onFailure { logger.error("Failed to send the request $it") }
+                                .onSuccess { logger.debug("Sent the request successfully $it") }
+                                .onFailure { logger.error("Failed to send the request $it") }
+                        }
                     }
                 }
-            }
-            .onFailure { logger.error("Error getting cached data tracks: $it") }
+                .onFailure { logger.error("Error getting cached data tracks: $it") }
+        }
 
         return Result.success()
     }

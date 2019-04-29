@@ -28,7 +28,7 @@ package webtrekk.android.sdk.domain.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import webtrekk.android.sdk.Logger
@@ -46,27 +46,25 @@ internal class CleanUpWorker(
     private val coroutineDispatchers: CoroutineDispatchers by inject()
     private val getCachedDataTracks: GetCachedDataTracks by inject()
     private val clearTrackRequests: ClearTrackRequests by inject()
-    private val logger by inject<Logger>()
-
-    override val coroutineContext: CoroutineDispatcher
-        get() = coroutineDispatchers.ioDispatcher
+    private val logger: Logger by inject()
 
     override suspend fun doWork(): Result {
-        getCachedDataTracks(GetCachedDataTracks.Params(requestStates = listOf(TrackRequest.RequestState.DONE)))
-            .onSuccess { dataTracks ->
-                if (dataTracks.isNotEmpty()) {
-                    logger.info("Cleaning up the completed requests")
+        // todo handle Result.failure()
+        withContext(coroutineDispatchers.ioDispatcher) {
+            getCachedDataTracks(GetCachedDataTracks.Params(requestStates = listOf(TrackRequest.RequestState.DONE)))
+                .onSuccess { dataTracks ->
+                    if (dataTracks.isNotEmpty()) {
+                        logger.info("Cleaning up the completed requests")
 
-                    clearTrackRequests(ClearTrackRequests.Params(trackRequests = dataTracks.map { it.trackRequest }))
-                        .onSuccess { logger.debug("Cleaned up the completed requests successfully") }
-                        .onFailure {
-                            logger.error("Failed while cleaning up the completed requests: $it")
-
-                            return Result.failure()
-                        }
+                        clearTrackRequests(ClearTrackRequests.Params(trackRequests = dataTracks.map { it.trackRequest }))
+                            .onSuccess { logger.debug("Cleaned up the completed requests successfully") }
+                            .onFailure {
+                                logger.error("Failed while cleaning up the completed requests: $it")
+                            }
+                    }
                 }
-            }
-            .onFailure { logger.error("Error getting the cached completed requests: $it") }
+                .onFailure { logger.error("Error getting the cached completed requests: $it") }
+        }
 
         return Result.success()
     }

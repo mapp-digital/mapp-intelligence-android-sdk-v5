@@ -46,15 +46,15 @@ internal class SendRequestsWorkerTest : WorkManagerTest() {
         )
             .build()
 
-        val workManager = WorkManager.getInstance()
-        val testDriver = WorkManagerTestInitHelper.getTestDriver()
+        val workManager = WorkManager.getInstance(context)
+        val testDriver = WorkManagerTestInitHelper.getTestDriver(context)
 
         workManager.enqueue(sendRequestWorker).result.get()
 
-        testDriver.setPeriodDelayMet(sendRequestWorker.id)
+        testDriver?.setPeriodDelayMet(sendRequestWorker.id)
 
         val workInfo = workManager.getWorkInfoById(sendRequestWorker.id).get()
 
-        assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
+        assertThat(workInfo.state, `is`(WorkInfo.State.RUNNING))
     }
 }
