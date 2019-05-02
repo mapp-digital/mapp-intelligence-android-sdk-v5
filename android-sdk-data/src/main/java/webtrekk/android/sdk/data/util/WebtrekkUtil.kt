@@ -23,41 +23,49 @@
  *
  */
 
-package webtrekk.android.sdk.data
+package webtrekk.android.sdk.data.util
 
 import android.content.Context
-import androidx.room.Database
+import android.os.Build
+import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import webtrekk.android.sdk.data.converter.RequestStateConverter
-import webtrekk.android.sdk.data.dao.CustomParamDao
-import webtrekk.android.sdk.data.dao.TrackRequestDao
-import webtrekk.android.sdk.data.entity.CustomParam
-import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.util.buildRoomDatabase
+import webtrekk.android.sdk.data.BuildConfig
+import java.util.Locale
+import java.util.TimeZone
 
-internal const val DATABASE_NAME = "webtrekk-test-db"
+val currentOsVersion: String
+    inline get() = Build.VERSION.RELEASE ?: ""
 
-@Database(
-    entities = [TrackRequest::class, CustomParam::class],
-    version = 3,
-    exportSchema = false
-)
-@TypeConverters(RequestStateConverter::class)
-internal abstract class WebtrekkDatabase : RoomDatabase() {
+val currentApiLevel: Int
+    inline get() = Build.VERSION.SDK_INT
 
-    abstract fun trackRequestDao(): TrackRequestDao
-    abstract fun customParamDataDao(): CustomParamDao
-}
+val currentDeviceManufacturer: String
+    inline get() = Build.MANUFACTURER ?: ""
 
-private lateinit var INSTANCE: WebtrekkDatabase
+val currentDeviceModel: String
+    inline get() = Build.MODEL ?: ""
 
-internal fun getWebtrekkDatabase(context: Context): WebtrekkDatabase {
-    synchronized(WebtrekkDatabase::class) {
-        if (!::INSTANCE.isInitialized) {
-            INSTANCE = buildRoomDatabase(context, DATABASE_NAME, WebtrekkDatabase::class.java)
-        }
-    }
+val currentCountry: String
+    inline get() = Locale.getDefault().country
 
-    return INSTANCE
-}
+val currentLanguage: String
+    inline get() = Locale.getDefault().language
+
+val currentTimeZone: Int
+    inline get() = TimeZone.getDefault().rawOffset / 1000 / 60 / 60
+
+val currentTimeStamp: Long
+    inline get() = System.currentTimeMillis()
+
+val currentWebtrekkVersion: String
+    inline get() = BuildConfig.VERSION_NAME
+
+fun <T : RoomDatabase> buildRoomDatabase(
+    context: Context,
+    databaseName: String,
+    database: Class<T>
+): T = Room.databaseBuilder(
+    context.applicationContext,
+    database,
+    databaseName
+).build()

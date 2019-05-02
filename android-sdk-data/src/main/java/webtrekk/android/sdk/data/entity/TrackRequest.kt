@@ -28,20 +28,18 @@ package webtrekk.android.sdk.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import webtrekk.android.sdk.util.currentApiLevel
-import webtrekk.android.sdk.util.currentOsVersion
-import webtrekk.android.sdk.util.currentDeviceManufacturer
-import webtrekk.android.sdk.util.currentDeviceModel
-import webtrekk.android.sdk.util.currentCountry
-import webtrekk.android.sdk.util.currentLanguage
-import webtrekk.android.sdk.util.currentTimeZone
-import webtrekk.android.sdk.util.currentTimeStamp
-import webtrekk.android.sdk.util.currentSession
-import webtrekk.android.sdk.util.appFirstStart
-import webtrekk.android.sdk.util.currentWebtrekkVersion
+import webtrekk.android.sdk.data.util.currentApiLevel
+import webtrekk.android.sdk.data.util.currentCountry
+import webtrekk.android.sdk.data.util.currentDeviceManufacturer
+import webtrekk.android.sdk.data.util.currentDeviceModel
+import webtrekk.android.sdk.data.util.currentOsVersion
+import webtrekk.android.sdk.data.util.currentLanguage
+import webtrekk.android.sdk.data.util.currentTimeZone
+import webtrekk.android.sdk.data.util.currentTimeStamp
+import webtrekk.android.sdk.data.util.currentWebtrekkVersion
 
 @Entity(tableName = "tracking_data")
-internal data class TrackRequest(
+data class TrackRequest(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
     @ColumnInfo(name = "context_name") val name: String,
     @ColumnInfo(name = "api_level") val apiLevel: String? = currentApiLevel.toString(),
@@ -53,12 +51,12 @@ internal data class TrackRequest(
     @ColumnInfo(name = "screen_resolution") val screenResolution: String? = "0",
     @ColumnInfo(name = "time_zone") val timeZone: String? = currentTimeZone.toString(),
     @ColumnInfo(name = "time_stamp") val timeStamp: String? = currentTimeStamp.toString(),
-    @ColumnInfo(name = "fns") val fns: String = currentSession,
-    @ColumnInfo(name = "app_first_start") val one: String = appFirstStart,
+    @ColumnInfo(name = "fns") val fns: String,
+    @ColumnInfo(name = "app_first_start") val one: String,
     @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion,
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW
 ) {
-    internal enum class RequestState(val value: String) {
+    enum class RequestState(val value: String) {
         NEW("NEW"),
         DONE("DONE"),
         FAILED("FAILED")

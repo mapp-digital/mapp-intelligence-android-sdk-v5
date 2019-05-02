@@ -26,12 +26,11 @@
 package webtrekk.android.sdk.data
 
 import android.content.Context
+import android.content.SharedPreferences
 
-internal const val SHARED_PREFS_NAME = "webtrekk_sharedPref"
+class WebtrekkSharedPrefs(context: Context) {
 
-internal class WebtrekkSharedPrefs(context: Context) {
-
-    private val sharedPreferences =
+    val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
     var everId: String
@@ -54,6 +53,7 @@ internal class WebtrekkSharedPrefs(context: Context) {
 
     companion object {
 
+        const val SHARED_PREFS_NAME = "webtrekk_sharedPref"
         const val EVER_ID_KEY = "everId"
         const val APP_FIRST_START = "appFirstStart"
         const val NEW_SESSION_KEY = "fns"

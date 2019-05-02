@@ -23,24 +23,22 @@
  *
  */
 
-package webtrekk.android.sdk.api
+package webtrekk.android.sdk.data.dao
 
-internal object UrlParams {
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import webtrekk.android.sdk.data.entity.CustomParam
 
-    const val WEBTREKK_PARAM = "p"
+@Dao
+interface CustomParamDao {
 
-    const val EVER_ID = "eid"
+    @Insert
+    suspend fun setCustomParams(customParams: List<CustomParam>): List<Long>
 
-    const val FORCE_NEW_SESSION = "fns"
+    @Query("SELECT * FROM custom_params")
+    suspend fun getCustomParams(): List<CustomParam>
 
-    const val APP_FIRST_START = "one"
-
-    // todo add to the url
-    const val TIME_ZONE = "tz"
-
-    const val USER_AGENT = "X-WT-UA"
-
-    const val LANGUAGE = "la"
-
-    const val EVENT_NAME = "ct"
+    @Query("SELECT * FROM custom_params WHERE track_id = :trackId")
+    suspend fun getCustomParamsByTrackId(trackId: Long): List<CustomParam>
 }

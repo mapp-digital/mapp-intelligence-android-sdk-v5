@@ -36,7 +36,7 @@ import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
 @Dao
-internal interface TrackRequestDao {
+interface TrackRequestDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setTrackRequest(trackRequest: TrackRequest): Long

@@ -23,15 +23,28 @@
  *
  */
 
-package webtrekk.android.sdk.data.entity
+repositories {
+    jcenter()
+}
 
-import androidx.room.Embedded
-import androidx.room.Relation
+configurations {
+    ktlint
+}
 
-internal data class DataTrack(
-    @Embedded var trackRequest: TrackRequest,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "track_id"
-    ) var customParams: List<CustomParam> = arrayListOf()
-)
+dependencies {
+    ktlint "com.github.shyiko:ktlint:$versions.ktlintVersion"
+}
+
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "src/**/*.kt"
+}
+
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "-F", "src/**/*.kt"
+}
