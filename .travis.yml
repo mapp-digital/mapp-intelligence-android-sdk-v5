@@ -41,7 +41,7 @@ before_script:
 
 script:
   - ./gradlew check connectedCheck --stacktrace
-  - ./gradlew ktlint
+  - ./gradlew android-sdk:ktlint android-sdk-data:ktlint
 
 deploy:
   provider: script

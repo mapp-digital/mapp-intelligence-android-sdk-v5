@@ -32,13 +32,17 @@ import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.util.appFirstStart
 import webtrekk.android.sdk.util.currentEverId
+import webtrekk.android.sdk.util.currentSession
 
 internal fun Activity.toTrackRequest(): TrackRequest =
-    TrackRequest(name = this.localClassName, screenResolution = this.resolution())
+    TrackRequest(name = this.localClassName, screenResolution = this.resolution(), fns = currentSession,
+        one = appFirstStart)
 
 internal fun Fragment.toTrackRequest(): TrackRequest =
-    TrackRequest(name = this.javaClass.simpleName, screenResolution = this.context?.resolution())
+    TrackRequest(name = this.javaClass.simpleName, screenResolution = this.context?.resolution(), fns = currentSession,
+        one = appFirstStart)
 
 internal val TrackRequest.webtrekkRequestParams
     inline get() = "$webtrekkVersion,${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"

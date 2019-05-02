@@ -23,24 +23,17 @@
  *
  */
 
-package webtrekk.android.sdk.api
+package webtrekk.android.sdk.data.repository
 
-internal object UrlParams {
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 
-    const val WEBTREKK_PARAM = "p"
+interface TrackRequestRepository {
 
-    const val EVER_ID = "eid"
-
-    const val FORCE_NEW_SESSION = "fns"
-
-    const val APP_FIRST_START = "one"
-
-    // todo add to the url
-    const val TIME_ZONE = "tz"
-
-    const val USER_AGENT = "X-WT-UA"
-
-    const val LANGUAGE = "la"
-
-    const val EVENT_NAME = "ct"
+    suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest>
+    suspend fun getTrackRequests(): Result<List<DataTrack>>
+    suspend fun getTrackRequestsByState(requestStates: List<TrackRequest.RequestState>): Result<List<DataTrack>>
+    suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>>
+    suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean>
+    suspend fun deleteAllTrackRequests(): Result<Boolean>
 }

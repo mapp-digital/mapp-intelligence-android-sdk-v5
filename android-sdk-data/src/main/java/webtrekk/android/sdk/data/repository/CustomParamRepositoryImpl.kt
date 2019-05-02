@@ -23,28 +23,23 @@
  *
  */
 
-package webtrekk.android.sdk.data.entity
+package webtrekk.android.sdk.data.repository
 
-import androidx.room.Entity
-import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
-import androidx.room.ColumnInfo
-import androidx.room.ForeignKey
-import androidx.room.Index
+import webtrekk.android.sdk.data.dao.CustomParamDao
+import webtrekk.android.sdk.data.entity.CustomParam
 
-@Entity(
-    tableName = "custom_params",
-    foreignKeys = [ForeignKey(
-        entity = TrackRequest::class,
-        parentColumns = ["id"],
-        childColumns = ["track_id"],
-        onDelete = CASCADE
-    )],
-    indices = [Index("track_id")]
-)
-internal data class CustomParam(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "custom_id") var customParamId: Long = 0,
-    @ColumnInfo(name = "track_id") val trackId: Long,
-    @ColumnInfo(name = "param_key") val paramKey: String,
-    @ColumnInfo(name = "param_value") val paramValue: String
-)
+class CustomParamRepositoryImpl(private val customParamDao: CustomParamDao) :
+    CustomParamRepository {
+
+    override suspend fun addCustomParams(customParams: List<CustomParam>): Result<List<CustomParam>> {
+        return runCatching {
+            customParamDao.setCustomParams(customParams).run { customParams }
+        }
+    }
+
+    override suspend fun getCustomParamsByTrackId(trackId: Long): Result<List<CustomParam>> {
+        return runCatching {
+            customParamDao.getCustomParamsByTrackId(trackId)
+        }
+    }
+}

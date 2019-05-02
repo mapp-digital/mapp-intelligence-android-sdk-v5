@@ -26,5 +26,6 @@
 rootProject.name = 'webtrekk-android-sdk'
 
 include ':android-sdk'
+include ':android-sdk-data'
 include ':sample'
 include ':samplejava'

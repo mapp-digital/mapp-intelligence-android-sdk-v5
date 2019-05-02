@@ -29,7 +29,7 @@ import webtrekk.android.sdk.data.dao.TrackRequestDao
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
-internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequestDao) :
+class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequestDao) :
     TrackRequestRepository {
 
     override suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest> {
