@@ -23,15 +23,12 @@
  *
  */
 
-package webtrekk.android.sdk.data.entity
+package webtrekk.android.sdk.data.repository
 
-import androidx.room.Embedded
-import androidx.room.Relation
+import webtrekk.android.sdk.data.entity.CustomParam
 
-internal data class DataTrack(
-    @Embedded var trackRequest: TrackRequest,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "track_id"
-    ) var customParams: List<CustomParam> = arrayListOf()
-)
+interface CustomParamRepository {
+
+    suspend fun addCustomParams(customParams: List<CustomParam>): Result<List<CustomParam>>
+    suspend fun getCustomParamsByTrackId(trackId: Long): Result<List<CustomParam>>
+}

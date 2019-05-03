@@ -25,15 +25,21 @@
 
 package webtrekk.android.sdk.data.repository
 
-import webtrekk.android.sdk.data.entity.DataTrack
-import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.dao.CustomParamDao
+import webtrekk.android.sdk.data.entity.CustomParam
 
-internal interface TrackRequestRepository {
+class CustomParamRepositoryImpl(private val customParamDao: CustomParamDao) :
+    CustomParamRepository {
 
-    suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest>
-    suspend fun getTrackRequests(): Result<List<DataTrack>>
-    suspend fun getTrackRequestsByState(requestStates: List<TrackRequest.RequestState>): Result<List<DataTrack>>
-    suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>>
-    suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean>
-    suspend fun deleteAllTrackRequests(): Result<Boolean>
+    override suspend fun addCustomParams(customParams: List<CustomParam>): Result<List<CustomParam>> {
+        return runCatching {
+            customParamDao.setCustomParams(customParams).run { customParams }
+        }
+    }
+
+    override suspend fun getCustomParamsByTrackId(trackId: Long): Result<List<CustomParam>> {
+        return runCatching {
+            customParamDao.getCustomParamsByTrackId(trackId)
+        }
+    }
 }

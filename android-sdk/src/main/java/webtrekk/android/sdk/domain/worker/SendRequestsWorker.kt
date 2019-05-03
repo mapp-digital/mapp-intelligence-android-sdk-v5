@@ -36,9 +36,9 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.extension.buildUrlRequest
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.trackDomain
-import webtrekk.android.sdk.util.trackIds
+import webtrekk.android.sdk.utils.CoroutineDispatchers
+import webtrekk.android.sdk.utils.trackDomain
+import webtrekk.android.sdk.utils.trackIds
 
 internal class SendRequestsWorker(
     context: Context,

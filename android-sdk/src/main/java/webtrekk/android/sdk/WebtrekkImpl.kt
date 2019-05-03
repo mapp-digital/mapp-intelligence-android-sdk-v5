@@ -52,8 +52,10 @@ import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.utils.CoroutineDispatchers
+import webtrekk.android.sdk.utils.appFirstStart
+import webtrekk.android.sdk.utils.coroutineExceptionHandler
+import webtrekk.android.sdk.utils.currentSession
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
@@ -104,7 +106,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             ManualTrack.Params(
                 trackRequest = TrackRequest(
                     name = contextName,
-                    screenResolution = context.resolution()
+                    screenResolution = context.resolution(),
+                    fns = currentSession,
+                    one = appFirstStart
                 ),
                 trackingParams = trackingParams,
                 autoTrack = autoTracking,
@@ -119,7 +123,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 TrackCustomPage.Params(
                     trackRequest = TrackRequest(
                         name = pageName,
-                        screenResolution = context.resolution()
+                        screenResolution = context.resolution(),
+                        fns = currentSession,
+                        one = appFirstStart
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()
@@ -133,7 +139,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 TrackCustomEvent.Params(
                     trackRequest = TrackRequest(
                         name = eventName,
-                        screenResolution = context.resolution()
+                        screenResolution = context.resolution(),
+                        fns = currentSession,
+                        one = appFirstStart
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()

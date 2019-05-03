@@ -23,28 +23,17 @@
  *
  */
 
-package webtrekk.android.sdk.domain
+package webtrekk.android.sdk.data.repository
 
-import io.kotlintest.specs.StringSpec
+import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.data.entity.TrackRequest
 
-internal class SessionsTest : StringSpec({
+interface TrackRequestRepository {
 
-//    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
-//    val sessions = Sessions(webtrekkSharedPrefs)
-//    val everId = generateEverId()
-
-//    "generate ever ID then verify that the app is first start" {
-//        every {
-//            webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)
-//        } returns false
-//
-//        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.everId = everId } just Runs
-//
-//        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.appFirstStart} returns "1"
-//
-//        sessions.getEverId() shouldBe (everId)
-//        sessions.getAppFirstStart() shouldBe ("1")
-//    }
-})
+    suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest>
+    suspend fun getTrackRequests(): Result<List<DataTrack>>
+    suspend fun getTrackRequestsByState(requestStates: List<TrackRequest.RequestState>): Result<List<DataTrack>>
+    suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>>
+    suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean>
+    suspend fun deleteAllTrackRequests(): Result<Boolean>
+}
