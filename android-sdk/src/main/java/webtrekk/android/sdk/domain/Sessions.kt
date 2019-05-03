@@ -26,14 +26,15 @@
 package webtrekk.android.sdk.domain
 
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
-import webtrekk.android.sdk.util.generateEverId
+import webtrekk.android.sdk.utils.generateEverId
 
 internal class Sessions(private val webtrekkSharedPrefs: WebtrekkSharedPrefs) {
 
     // if first time, generate the ever id alongside setting appFirstStart = 1 as it's app first start
     fun setEverId() {
         if (!webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
-            webtrekkSharedPrefs.everId = generateEverId().also { webtrekkSharedPrefs.appFirstStart = "1" }
+            webtrekkSharedPrefs.everId = generateEverId()
+                .also { webtrekkSharedPrefs.appFirstStart = "1" }
         }
     }
 
@@ -44,7 +45,8 @@ internal class Sessions(private val webtrekkSharedPrefs: WebtrekkSharedPrefs) {
     }
 
     // after first getting app first start, set it to 0 forever
-    fun getAppFirstStart(): String = webtrekkSharedPrefs.appFirstStart.also { webtrekkSharedPrefs.appFirstStart = "0" }
+    fun getAppFirstStart(): String =
+        webtrekkSharedPrefs.appFirstStart.also { webtrekkSharedPrefs.appFirstStart = "0" }
 
     fun startNewSession() {
         webtrekkSharedPrefs.fns = "1"

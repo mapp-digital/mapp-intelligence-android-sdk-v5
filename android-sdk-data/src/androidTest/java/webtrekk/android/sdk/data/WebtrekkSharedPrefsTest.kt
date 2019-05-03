@@ -45,9 +45,6 @@ internal class WebtrekkSharedPrefsTest {
 
     @Test
     fun testEverId() {
-        // Verify default value
-        assertThat(webtrekkSharedPrefs.everId, `is`(""))
-
         webtrekkSharedPrefs.everId = "1"
 
         // Verify ever id is set correctly
@@ -56,9 +53,6 @@ internal class WebtrekkSharedPrefsTest {
 
     @Test
     fun testAppFirstStart() {
-        // Verify default value
-        assertThat(webtrekkSharedPrefs.appFirstStart, `is`("0"))
-
         webtrekkSharedPrefs.appFirstStart = "1"
 
         // Verify appFirstStart is set correctly
@@ -67,9 +61,6 @@ internal class WebtrekkSharedPrefsTest {
 
     @Test
     fun testFns() {
-        // Verify default value
-        assertThat(webtrekkSharedPrefs.fns, `is`("0"))
-
         webtrekkSharedPrefs.fns = "1"
 
         // Verify fns is set correctly
@@ -78,9 +69,6 @@ internal class WebtrekkSharedPrefsTest {
 
     @Test
     fun testOptOut() {
-        // Verify default value
-        assertThat(webtrekkSharedPrefs.optOut, `is`(false))
-
         webtrekkSharedPrefs.optOut = true
 
         // Verify optOut is set correctly

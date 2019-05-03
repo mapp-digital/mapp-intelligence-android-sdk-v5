@@ -23,28 +23,18 @@
  *
  */
 
-package webtrekk.android.sdk.domain
+package webtrekk.android.sdk.utils
 
-import io.kotlintest.specs.StringSpec
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import webtrekk.android.sdk.Logger
 
-internal class SessionsTest : StringSpec({
+internal fun coroutineExceptionHandler(logger: Logger) = CoroutineExceptionHandler { _, exception ->
+    logger.error("Caught coroutine exception $exception")
+}
 
-//    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
-//    val sessions = Sessions(webtrekkSharedPrefs)
-//    val everId = generateEverId()
-
-//    "generate ever ID then verify that the app is first start" {
-//        every {
-//            webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)
-//        } returns false
-//
-//        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.everId = everId } just Runs
-//
-//        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.appFirstStart} returns "1"
-//
-//        sessions.getEverId() shouldBe (everId)
-//        sessions.getAppFirstStart() shouldBe ("1")
-//    }
-})
+internal data class CoroutineDispatchers(
+    val mainDispatcher: CoroutineDispatcher,
+    val defaultDispatcher: CoroutineDispatcher,
+    val ioDispatcher: CoroutineDispatcher
+)

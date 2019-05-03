@@ -23,22 +23,15 @@
  *
  */
 
-package webtrekk.android.sdk.data.dao
+package webtrekk.android.sdk.data.entity
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import webtrekk.android.sdk.data.entity.CustomParam
+import androidx.room.Embedded
+import androidx.room.Relation
 
-@Dao
-internal interface CustomParamDao {
-
-    @Insert
-    suspend fun setCustomParams(customParams: List<CustomParam>): List<Long>
-
-    @Query("SELECT * FROM custom_params")
-    suspend fun getCustomParams(): List<CustomParam>
-
-    @Query("SELECT * FROM custom_params WHERE track_id = :trackId")
-    suspend fun getCustomParamsByTrackId(trackId: Long): List<CustomParam>
-}
+data class DataTrack(
+    @Embedded var trackRequest: TrackRequest,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "track_id"
+    ) var customParams: List<CustomParam> = arrayListOf()
+)

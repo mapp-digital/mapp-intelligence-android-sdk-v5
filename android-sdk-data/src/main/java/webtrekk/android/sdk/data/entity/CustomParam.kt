@@ -42,7 +42,7 @@ import androidx.room.Index
     )],
     indices = [Index("track_id")]
 )
-internal data class CustomParam(
+data class CustomParam(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "custom_id") var customParamId: Long = 0,
     @ColumnInfo(name = "track_id") val trackId: Long,
     @ColumnInfo(name = "param_key") val paramKey: String,
