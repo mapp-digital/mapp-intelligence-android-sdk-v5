@@ -26,15 +26,12 @@
 package webtrekk.android.sdk.domain
 
 import io.kotlintest.specs.StringSpec
-import io.mockk.mockkClass
-import webtrekk.android.sdk.data.WebtrekkSharedPrefs
-import webtrekk.android.sdk.util.generateEverId
 
 internal class SessionsTest : StringSpec({
 
-    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
-    val sessions = Sessions(webtrekkSharedPrefs)
-    val everId = generateEverId()
+//    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
+//    val sessions = Sessions(webtrekkSharedPrefs)
+//    val everId = generateEverId()
 
 //    "generate ever ID then verify that the app is first start" {
 //        every {
