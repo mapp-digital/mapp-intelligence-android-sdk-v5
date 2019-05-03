@@ -52,10 +52,10 @@ import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.appFirstStart
-import webtrekk.android.sdk.util.coroutineExceptionHandler
-import webtrekk.android.sdk.util.currentSession
+import webtrekk.android.sdk.utils.CoroutineDispatchers
+import webtrekk.android.sdk.utils.appFirstStart
+import webtrekk.android.sdk.utils.coroutineExceptionHandler
+import webtrekk.android.sdk.utils.currentSession
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 

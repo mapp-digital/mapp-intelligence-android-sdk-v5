@@ -39,8 +39,8 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.Scheduler
 import webtrekk.android.sdk.domain.Sessions
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.utils.CoroutineDispatchers
+import webtrekk.android.sdk.utils.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
 
 internal class Optout(

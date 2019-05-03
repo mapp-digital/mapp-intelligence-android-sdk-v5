@@ -26,6 +26,11 @@
 package webtrekk.android.sdk.util
 
 import kotlinx.coroutines.Dispatchers
+import webtrekk.android.sdk.utils.CoroutineDispatchers
 
 internal fun coroutinesDispatchersProvider(): CoroutineDispatchers =
-    CoroutineDispatchers(Dispatchers.Unconfined, Dispatchers.Unconfined, Dispatchers.Unconfined)
+    CoroutineDispatchers(
+        Dispatchers.Unconfined,
+        Dispatchers.Unconfined,
+        Dispatchers.Unconfined
+    )
