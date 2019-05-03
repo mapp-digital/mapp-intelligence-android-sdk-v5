@@ -36,8 +36,8 @@ import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.utils.CoroutineDispatchers
+import webtrekk.android.sdk.utils.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
 
 internal class AutoTrack(

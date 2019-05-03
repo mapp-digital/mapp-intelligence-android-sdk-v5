@@ -23,30 +23,18 @@
  *
  */
 
-package webtrekk.android.sdk.util
+package webtrekk.android.sdk.utils
 
-import webtrekk.android.sdk.WebtrekkImpl
-import webtrekk.android.sdk.data.util.currentTimeStamp
-import kotlin.random.Random
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import webtrekk.android.sdk.Logger
 
-internal val currentEverId: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getEverId()
-
-internal val currentSession: String
-    @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
-
-internal val appFirstStart: String
-    @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstStart()
-
-internal val trackDomain: String
-    inline get() = WebtrekkImpl.getInstance().config.trackDomain
-
-internal val trackIds: List<String>
-    inline get() = WebtrekkImpl.getInstance().config.trackIds
-
-internal fun generateEverId(): String {
-    val date = currentTimeStamp / 1000
-    val random = Random
-
-    return "6${String.format("%010d%08d", date, random.nextLong(100000000))}"
+internal fun coroutineExceptionHandler(logger: Logger) = CoroutineExceptionHandler { _, exception ->
+    logger.error("Caught coroutine exception $exception")
 }
+
+internal data class CoroutineDispatchers(
+    val mainDispatcher: CoroutineDispatcher,
+    val defaultDispatcher: CoroutineDispatcher,
+    val ioDispatcher: CoroutineDispatcher
+)

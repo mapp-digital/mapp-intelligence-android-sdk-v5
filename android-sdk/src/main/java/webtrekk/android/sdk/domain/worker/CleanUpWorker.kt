@@ -35,7 +35,7 @@ import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
-import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.utils.CoroutineDispatchers
 
 internal class CleanUpWorker(
     context: Context,
