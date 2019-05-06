@@ -80,6 +80,7 @@ internal fun DataTrack.buildUrl(trackDomain: String, trackIds: List<String>): St
         "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
+        "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +
         customParams.buildCustomParams()
 }
 
