@@ -31,6 +31,6 @@ package webtrekk.android.sdk.annotation
 @Experimental
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class Track(val contextName: String = "", val trackingParams: Array<TrackParams> = emptyArray())
+internal annotation class Track(val contextName: String = "", val trackingParams: Array<TrackParams> = emptyArray())
 
-annotation class TrackParams(val paramKey: String, val paramVal: String)
+internal annotation class TrackParams(val paramKey: String, val paramVal: String)
