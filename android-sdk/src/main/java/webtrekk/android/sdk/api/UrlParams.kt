@@ -35,7 +35,6 @@ internal object UrlParams {
 
     const val APP_FIRST_START = "one"
 
-    // todo add to the url
     const val TIME_ZONE = "tz"
 
     const val USER_AGENT = "X-WT-UA"

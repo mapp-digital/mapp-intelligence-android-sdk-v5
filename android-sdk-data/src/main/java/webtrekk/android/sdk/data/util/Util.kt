@@ -32,6 +32,8 @@ import androidx.room.RoomDatabase
 import webtrekk.android.sdk.data.BuildConfig
 import java.util.Locale
 import java.util.TimeZone
+import java.util.Date
+import java.util.concurrent.TimeUnit
 
 val currentOsVersion: String
     inline get() = Build.VERSION.RELEASE ?: ""
@@ -52,7 +54,15 @@ val currentLanguage: String
     inline get() = Locale.getDefault().language
 
 val currentTimeZone: Int
-    inline get() = TimeZone.getDefault().rawOffset / 1000 / 60 / 60
+    inline get() {
+        val timeZone = TimeZone.getDefault()
+        var offset = timeZone.rawOffset
+        if (timeZone.inDaylightTime(Date())) {
+            offset += timeZone.dstSavings
+        }
+
+        return TimeUnit.HOURS.convert(offset.toLong(), TimeUnit.MILLISECONDS).toInt()
+    }
 
 val currentTimeStamp: Long
     inline get() = System.currentTimeMillis()
