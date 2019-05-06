@@ -32,14 +32,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.annotation.Track
-import webtrekk.android.sdk.annotation.TrackParams
 
 // Experimental
-@Track(
-    contextName = "Product activity",
-    trackingParams = [TrackParams(paramKey = Param.INTERNAL_SEARCH, paramVal = "search")]
-)
+//@Track(
+//    contextName = "Product activity",
+//    trackingParams = [TrackParams(paramKey = Param.INTERNAL_SEARCH, paramVal = "search")]
+//)
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
