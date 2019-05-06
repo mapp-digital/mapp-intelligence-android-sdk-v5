@@ -37,12 +37,18 @@ import webtrekk.android.sdk.utils.currentEverId
 import webtrekk.android.sdk.utils.currentSession
 
 internal fun Activity.toTrackRequest(): TrackRequest =
-    TrackRequest(name = this.localClassName, screenResolution = this.resolution(), fns = currentSession,
+    TrackRequest(
+        name = this.localClassName,
+        screenResolution = this.resolution(),
+        fns = currentSession,
         one = appFirstStart
     )
 
 internal fun Fragment.toTrackRequest(): TrackRequest =
-    TrackRequest(name = this.javaClass.simpleName, screenResolution = this.context?.resolution(), fns = currentSession,
+    TrackRequest(
+        name = this.javaClass.simpleName,
+        screenResolution = this.context?.resolution(),
+        fns = currentSession,
         one = appFirstStart
     )
 
