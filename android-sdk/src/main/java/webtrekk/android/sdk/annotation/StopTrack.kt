@@ -31,4 +31,4 @@ package webtrekk.android.sdk.annotation
 @Experimental
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class StopTrack
+internal annotation class StopTrack
