@@ -84,7 +84,9 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
     androidTestImplementation "androidx.work:work-testing:$versions.workManagerVersion"
 
-    implementation(project(':android-sdk-data'))
+    implementation(project(':core'))
+    implementation(project(':data'))
+    implementation(project(':domain'))
 }
 
 dokka {

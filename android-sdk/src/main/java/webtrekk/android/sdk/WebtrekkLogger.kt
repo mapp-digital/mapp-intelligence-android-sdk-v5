@@ -26,10 +26,29 @@
 package webtrekk.android.sdk
 
 import android.util.Log
+import webtrekk.android.sdk.core.Logger
 import java.text.SimpleDateFormat
 import java.util.Date
 
-internal class WebtrekkLogger(level: Logger.Level) : Logger {
+class WebtrekkLogger(level: Level) : Logger {
+
+    /**
+     * Enum class represents the log level that will be used in the lib.
+     *
+     * You can customize the log level in the configurations [WebtrekkConfiguration.logLevel].
+     * The default log level in the configuration [DefaultConfiguration.LOG_LEVEL_VALUE].
+     */
+    enum class Level {
+        /**
+         * AT this level, will not print any logs.
+         */
+        NONE,
+
+        /**
+         * The basic level of logging, including "webtrekk" tag, date and time of the log message.
+         */
+        BASIC,
+    }
 
     private var basicMessage: String? = null
 
@@ -39,8 +58,8 @@ internal class WebtrekkLogger(level: Logger.Level) : Logger {
 
     init {
         basicMessage = when (level) {
-            Logger.Level.NONE -> null
-            Logger.Level.BASIC -> date.toString()
+            Level.NONE -> null
+            Level.BASIC -> date.toString()
         }
     }
 
