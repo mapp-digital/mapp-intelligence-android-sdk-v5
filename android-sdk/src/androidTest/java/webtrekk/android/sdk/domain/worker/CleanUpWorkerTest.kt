@@ -33,6 +33,7 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import webtrekk.android.sdk.worker.CleanUpWorker
 
 @RunWith(AndroidJUnit4::class)
 internal class CleanUpWorkerTest : WorkManagerTest() {

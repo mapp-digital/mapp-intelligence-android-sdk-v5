@@ -29,12 +29,10 @@ import android.app.Application;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import androidx.work.Constraints;
 import webtrekk.android.sdk.Webtrekk;
 import webtrekk.android.sdk.WebtrekkConfiguration;
-import webtrekk.android.sdk.WebtrekkImpl;
 
 public class SampleApplication extends Application {
 
