@@ -72,7 +72,7 @@ internal class OptoutTest : AbstractExternalInteractor() {
 
                     coVerifyAll {
                         sessions.optOut(params.optOutValue)
-                        appState.disableAutoTrack(params.context)
+                        appState.disable(params.context)
                         scheduler.cancelScheduleSendRequests()
                         clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
                     }
@@ -92,7 +92,7 @@ internal class OptoutTest : AbstractExternalInteractor() {
 
                     coVerifyAll {
                         sessions.optOut(params.optOutValue)
-                        appState.disableAutoTrack(params.context)
+                        appState.disable(params.context)
                         scheduler.cancelScheduleSendRequests()
                         scheduler.sendRequestsThenCleanUp()
                         clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList())) wasNot Called

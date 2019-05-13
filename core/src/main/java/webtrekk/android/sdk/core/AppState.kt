@@ -37,7 +37,7 @@ abstract class AppState<T : Any> : LifecycleWrapper() {
 
     lateinit var lifecycleReceiver: LifecycleReceiver<T>
 
-    inline fun startAutoTrack(context: Context, crossinline onReceive: (T) -> Unit) {
+    inline fun listenToLifeCycle(context: Context, crossinline onReceive: (T) -> Unit) {
         (context as? Application)?.registerActivityLifecycleCallbacks(this)?.let {
             lifecycleReceiver = object : LifecycleReceiver<T> {
                 override fun onLifecycleEventReceived(event: T) {
@@ -47,7 +47,7 @@ abstract class AppState<T : Any> : LifecycleWrapper() {
         }
     }
 
-    fun disableAutoTrack(context: Context) {
+    fun disable(context: Context) {
         (context as? Application)?.unregisterActivityLifecycleCallbacks(this)
     }
 }
