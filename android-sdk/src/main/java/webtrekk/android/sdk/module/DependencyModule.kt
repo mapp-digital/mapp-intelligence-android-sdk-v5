@@ -26,15 +26,17 @@
 package webtrekk.android.sdk.module
 
 import org.koin.dsl.module.module
-import webtrekk.android.sdk.api.SyncRequestsDataSource
-import webtrekk.android.sdk.api.SyncRequestsDataSourceImpl
+import webtrekk.android.sdk.core.Scheduler
+import webtrekk.android.sdk.core.Sessions
+import webtrekk.android.sdk.datasource.SyncRequestsDataSource
+import webtrekk.android.sdk.datasource.SyncRequestsDataSourceImpl
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
-import webtrekk.android.sdk.domain.Scheduler
-import webtrekk.android.sdk.domain.Sessions
+import webtrekk.android.sdk.impl.SchedulerImpl
+import webtrekk.android.sdk.impl.SessionsImpl
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
@@ -48,8 +50,8 @@ internal val dataModule = module {
 }
 
 internal val internalInteractorsModule = module {
-    single { Sessions(get()) }
-    single { Scheduler(get()) }
+    single<Sessions> { SessionsImpl(get()) }
+    single<Scheduler> { SchedulerImpl(get()) }
 
     factory { CacheTrackRequest(get()) }
     factory { GetCachedDataTracks(get()) }

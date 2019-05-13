@@ -30,7 +30,7 @@ import io.kotlintest.specs.StringSpec
 internal class SessionsTest : StringSpec({
 
 //    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
-//    val sessions = Sessions(webtrekkSharedPrefs)
+//    val sessions = SessionsImpl(webtrekkSharedPrefs)
 //    val everId = generateEverId()
 
 //    "generate ever ID then verify that the app is first start" {

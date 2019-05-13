@@ -31,9 +31,9 @@ import androidx.work.NetworkType
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
-import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
+import webtrekk.android.sdk.WebtrekkLogger
 import java.util.concurrent.TimeUnit
 
 class SampleApplication : Application() {
@@ -53,7 +53,7 @@ class SampleApplication : Application() {
 
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(listOf("385255285199574"), "https://q3.webtrekk.net")
-                .logLevel(Logger.Level.BASIC)
+                .logLevel(WebtrekkLogger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .workManagerConstraints(constraints = constraints)
                 .okHttpClient(okHttpClient = okHttpClient)
