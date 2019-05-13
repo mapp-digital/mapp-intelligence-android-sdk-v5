@@ -62,7 +62,7 @@ interface Config {
      * [logLevel], the log level that is used through the library.
      *
      * In [WebtrekkConfiguration] the default is [Logger.Level.BASIC].
-     * To disable logging, then set up the [logLevel] to [Logger.Level.NONE]
+     * To disable logging, then set up the [logLevel] to [WebtrekkLogger.Level.NONE]
      */
     val logLevel: WebtrekkLogger.Level
 

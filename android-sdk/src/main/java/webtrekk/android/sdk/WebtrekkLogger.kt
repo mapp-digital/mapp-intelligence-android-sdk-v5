@@ -30,6 +30,9 @@ import webtrekk.android.sdk.core.Logger
 import java.text.SimpleDateFormat
 import java.util.Date
 
+/**
+ * Webtrekk simple logger.
+ */
 class WebtrekkLogger(level: Level) : Logger {
 
     /**
