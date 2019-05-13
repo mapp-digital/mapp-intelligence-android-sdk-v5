@@ -60,7 +60,7 @@ class Optout(
         sessions.optOut(invokeParams.optOutValue)
 
         if (invokeParams.optOutValue) {
-            appState.disableAutoTrack(invokeParams.context)
+            appState.disable(invokeParams.context)
             scheduler.cancelScheduleSendRequests()
 
             if (invokeParams.sendCurrentData) {

@@ -61,7 +61,7 @@ internal class AutoTrackTest : AbstractExternalInteractor() {
 //                val params = AutoTrack.Params(context = appContext, isOptOut = false)
 //
 //                // todo will fail since it's not possible to mock inline functions
-//                every { appState.startAutoTrack(params.context, any()) } answers {
+//                every { appState.listenToLifeCycle(params.context, any()) } answers {
 //                    secondArg<(TrackRequest) -> Unit>().invoke(trackRequest)
 //                }
 //

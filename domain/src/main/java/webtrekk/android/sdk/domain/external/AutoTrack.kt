@@ -54,7 +54,7 @@ class AutoTrack(
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         if (invokeParams.isOptOut) return
 
-        appState.startAutoTrack(invokeParams.context) { trackRequest ->
+        appState.listenToLifeCycle(invokeParams.context) { trackRequest ->
             logger.info("Received a request from auto track: $trackRequest")
 
             scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger)) {

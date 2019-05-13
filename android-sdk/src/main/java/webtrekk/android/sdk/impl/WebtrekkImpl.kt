@@ -227,7 +227,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 ), coroutineDispatchers
             ).also { logger.info("Webtrekk has started auto tracking") }
         } else {
-            appState.disableAutoTrack(context)
+            appState.disable(context)
         }
     }
 

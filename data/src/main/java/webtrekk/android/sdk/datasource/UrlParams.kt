@@ -46,11 +46,6 @@ object UrlParams {
     const val EVENT_NAME = "ct"
 }
 
-/**
- * Enum class to specify either the type of the request is a page or an event.
- *
- * This is internal class and should not be used in your application.
- */
 enum class RequestType(val value: String) {
 
     PAGE(""),

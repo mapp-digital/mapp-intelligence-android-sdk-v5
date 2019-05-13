@@ -25,11 +25,6 @@
 
 package webtrekk.android.sdk.core
 
-/**
- * A logger interface that should be implemented in the library, to print the logs.
- *
- * The concrete implementation [WebtrekkLogger].
- */
 interface Logger {
 
     fun info(message: String)
