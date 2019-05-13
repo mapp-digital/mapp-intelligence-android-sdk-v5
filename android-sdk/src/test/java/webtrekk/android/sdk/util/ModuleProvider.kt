@@ -26,11 +26,11 @@
 package webtrekk.android.sdk.util
 
 import org.koin.dsl.module.module
-import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.WebtrekkLogger
+import webtrekk.android.sdk.core.Logger
 
 val loggerModule = module {
-    single { WebtrekkLogger(Logger.Level.BASIC) as Logger }
+    single { WebtrekkLogger(WebtrekkLogger.Level.BASIC) as Logger }
 }
 
 val coroutineDispatchers = module {

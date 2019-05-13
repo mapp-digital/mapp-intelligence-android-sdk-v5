@@ -158,14 +158,3 @@ typealias TrackingParams = LinkedHashMap<String, String>
 @JvmName("createCustomParam")
 fun customParam(paramType: ParamType, @IntRange(from = 0, to = 500) value: Int): String =
     "${paramType.value}$value"
-
-/**
- * Enum class to specify either the type of the request is a page or an event.
- *
- * This is internal class and should not be used in your application.
- */
-internal enum class RequestType(val value: String) {
-
-    PAGE(""),
-    EVENT("ct")
-}

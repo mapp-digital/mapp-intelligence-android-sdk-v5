@@ -26,6 +26,7 @@
 package webtrekk.android.sdk
 
 import android.content.Context
+import webtrekk.android.sdk.impl.WebtrekkImpl
 
 /**
  * Webtrekk is a library used to collect your app usage, how your customers interacting with your app,
