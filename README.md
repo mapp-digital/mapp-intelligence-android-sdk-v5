@@ -54,7 +54,7 @@ Allow the network permission in your app manifest.
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-Note that the SDK uses [AndroidX](https://developer.android.com/jetpack/androidx), make sure to migrate your app to [AndroidX Migration](https://developer.android.com/jetpack/androidx#using_androidx) to avoid Manifest merger failed.
+Note that the SDK uses [AndroidX](https://developer.android.com/jetpack/androidx), make sure to migrate your app to [AndroidX Migration](https://developer.android.com/jetpack/androidx#using_androidx) to avoid Manifest merger failure.
 
 <a name=usage></a>
 # Usage
