@@ -1,6 +1,6 @@
 # Change Log
 
-## Version 5.0.0-beta05 *(2019-05-17)*
+## Version 5.0.0-beta05 *(In progress)*
 * Update `kotlin-gradle-plugin` to `1.3.30`.
 * Update `WorkManager` to `2.1.0-alpha01` and adapt to its API behaviour.
 * Add "TimeZone" query param to the request URL `tz`.
