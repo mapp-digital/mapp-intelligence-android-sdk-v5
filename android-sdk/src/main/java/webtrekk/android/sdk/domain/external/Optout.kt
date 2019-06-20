@@ -43,7 +43,7 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import kotlin.coroutines.CoroutineContext
 
-class Optout(
+internal class Optout(
     coroutineContext: CoroutineContext,
     private val sessions: Sessions,
     private val scheduler: Scheduler,

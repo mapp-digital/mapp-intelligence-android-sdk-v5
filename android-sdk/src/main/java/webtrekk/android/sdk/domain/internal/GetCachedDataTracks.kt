@@ -30,7 +30,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 
-class GetCachedDataTracks(
+internal class GetCachedDataTracks(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<GetCachedDataTracks.Params, List<DataTrack>> {
 

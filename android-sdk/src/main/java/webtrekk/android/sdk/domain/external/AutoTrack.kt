@@ -40,7 +40,7 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import kotlin.coroutines.CoroutineContext
 
-class AutoTrack(
+internal class AutoTrack(
     coroutineContext: CoroutineContext,
     private val appState: AppState<TrackRequest>,
     private val cacheTrackRequest: CacheTrackRequest
