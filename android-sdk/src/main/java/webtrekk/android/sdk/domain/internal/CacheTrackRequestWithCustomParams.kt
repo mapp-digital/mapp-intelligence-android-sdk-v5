@@ -32,7 +32,7 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 import webtrekk.android.sdk.extension.toCustomParams
 
-class CacheTrackRequestWithCustomParams(
+internal class CacheTrackRequestWithCustomParams(
     private val trackRequestRepository: TrackRequestRepository,
     private val customParamRepository: CustomParamRepository
 ) : InternalInteractor<CacheTrackRequestWithCustomParams.Params, DataTrack> {

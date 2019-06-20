@@ -38,7 +38,7 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
 
-class TrackCustomPage(
+internal class TrackCustomPage(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<TrackCustomPage.Params>, KoinComponent {

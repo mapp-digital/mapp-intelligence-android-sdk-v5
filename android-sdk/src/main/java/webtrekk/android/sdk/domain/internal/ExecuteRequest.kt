@@ -32,7 +32,7 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.datasource.SyncRequestsDataSource
 import webtrekk.android.sdk.domain.InternalInteractor
 
-class ExecuteRequest(
+internal class ExecuteRequest(
     private val trackRequestRepository: TrackRequestRepository,
     private val syncRequestsDataSource: SyncRequestsDataSource<DataTrack>
 ) : InternalInteractor<ExecuteRequest.Params, DataTrack> {
