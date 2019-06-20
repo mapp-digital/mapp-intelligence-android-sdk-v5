@@ -25,45 +25,53 @@
 
 package webtrekk.android.sdk.domain.internal
 
-import buildUrlRequestForTesting
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.datasource.SyncRequestsDataSourceImpl
-import webtrekk.android.sdk.domain.util.dataTrack
+import webtrekk.android.sdk.util.trackRequests
+import java.io.IOException
 
-internal class ExecuteRequestTest : StringSpec({
+internal class ClearTrackRequestsTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val syncRequestDataSource = mockkClass(SyncRequestsDataSourceImpl::class)
-    val executeRequest = ExecuteRequest(trackRequestRepository, syncRequestDataSource)
+    val clearTrackRequests = ClearTrackRequests(trackRequestRepository)
 
-    val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
-    val params = ExecuteRequest.Params(request = urlRequest, dataTrack = dataTrack)
+    "clear all track requests and return success" {
+        val resultSuccess = Result.success(true)
 
-    "execute the request then update its track request's state" {
-        val resultSuccess = Result.success(dataTrack)
+        // We send emptyList of track requests to clear all track requests
+        val emptyParams = ClearTrackRequests.Params(emptyList())
 
         coEvery {
-            syncRequestDataSource.sendRequest(urlRequest, dataTrack)
+            trackRequestRepository.deleteAllTrackRequests()
         } returns resultSuccess
 
-        val syncRequestSuccess = syncRequestDataSource.sendRequest(urlRequest, dataTrack)
+        clearTrackRequests(emptyParams) shouldBe (resultSuccess)
+    }
 
-        if (syncRequestSuccess.isSuccess) {
-            val updatedTrackRequest = syncRequestSuccess.getOrThrow().trackRequest
-            updatedTrackRequest.requestState = TrackRequest.RequestState.DONE
+    "clear list of track requests and return success" {
+        val resultSuccess = Result.success(true)
 
-            val updatedTrackRequestSuccess = Result.success(listOf(updatedTrackRequest))
+        val params = ClearTrackRequests.Params(trackRequests)
 
-            coEvery {
-                trackRequestRepository.updateTrackRequests(updatedTrackRequest)
-            } returns updatedTrackRequestSuccess
+        coEvery {
+            trackRequestRepository.deleteTrackRequests(trackRequests)
+        } returns resultSuccess
 
-            executeRequest(params) shouldBe (resultSuccess)
-        }
+        clearTrackRequests(params) shouldBe (resultSuccess)
+    }
+
+    "clear track requests and return failure" {
+        val resultFailure = Result.failure<Boolean>(IOException("error"))
+
+        val emptyParams = ClearTrackRequests.Params(emptyList())
+
+        coEvery {
+            trackRequestRepository.deleteAllTrackRequests()
+        } returns resultFailure
+
+        clearTrackRequests(emptyParams) shouldBe (resultFailure)
     }
 })

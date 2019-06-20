@@ -23,7 +23,7 @@
  *
  */
 
-package webtrekk.android.sdk.worker
+package webtrekk.android.sdk.domain.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -34,10 +34,14 @@ import org.koin.standalone.inject
 import webtrekk.android.sdk.core.Logger
 import webtrekk.android.sdk.core.util.CoroutineDispatchers
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.domain.internal.ClearTrackRequests
+import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
+import webtrekk.android.sdk.extension.buildUrlRequest
+import webtrekk.android.sdk.util.currentEverId
+import webtrekk.android.sdk.util.trackDomain
+import webtrekk.android.sdk.util.trackIds
 
-internal class CleanUpWorker(
+internal class SendRequestsWorker(
     context: Context,
     workerParameters: WorkerParameters
 ) :
@@ -45,31 +49,48 @@ internal class CleanUpWorker(
 
     private val coroutineDispatchers: CoroutineDispatchers by inject()
     private val getCachedDataTracks: GetCachedDataTracks by inject()
-    private val clearTrackRequests: ClearTrackRequests by inject()
+    private val executeRequest: ExecuteRequest by inject()
     private val logger: Logger by inject()
 
     override suspend fun doWork(): Result {
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
-            getCachedDataTracks(GetCachedDataTracks.Params(requestStates = listOf(TrackRequest.RequestState.DONE)))
+            getCachedDataTracks(
+                GetCachedDataTracks.Params(
+                    requestStates = listOf(
+                        TrackRequest.RequestState.NEW,
+                        TrackRequest.RequestState.FAILED
+                    )
+                )
+            )
                 .onSuccess { dataTracks ->
                     if (dataTracks.isNotEmpty()) {
-                        logger.info("Cleaning up the completed requests")
+                        logger.info("Executing the requests")
 
-                        clearTrackRequests(ClearTrackRequests.Params(trackRequests = dataTracks.map { it.trackRequest }))
-                            .onSuccess { logger.debug("Cleaned up the completed requests successfully") }
-                            .onFailure {
-                                logger.error("Failed while cleaning up the completed requests: $it")
-                            }
+                        // Must execute requests sync and in order
+                        dataTracks.forEach { dataTrack ->
+                            val urlRequest = dataTrack.buildUrlRequest(trackDomain, trackIds, currentEverId)
+                            logger.info("Sending request = $urlRequest")
+
+                            executeRequest(
+                                ExecuteRequest.Params(
+                                    request = urlRequest,
+                                    dataTrack = dataTrack
+                                )
+                            )
+                                .onSuccess { logger.debug("Sent the request successfully $it") }
+                                .onFailure { logger.error("Failed to send the request $it") }
+                        }
                     }
                 }
-                .onFailure { logger.error("Error getting the cached completed requests: $it") }
+                .onFailure { logger.error("Error getting cached data tracks: $it") }
         }
 
         return Result.success()
     }
 
     companion object {
-        const val TAG = "clean_up"
+        const val TAG = "send_track_requests"
+        const val TAG_ONE_TIME_WORKER = "send_track_requests_now"
     }
 }

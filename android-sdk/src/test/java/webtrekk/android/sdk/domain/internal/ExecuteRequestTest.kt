@@ -25,47 +25,46 @@
 
 package webtrekk.android.sdk.domain.internal
 
+import buildUrlRequestForTesting
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.domain.util.cacheTrackRequestWithCustomParamsParams
-import webtrekk.android.sdk.domain.util.customParams
-import webtrekk.android.sdk.domain.util.dataTrack
-import webtrekk.android.sdk.domain.util.trackRequest
-import java.io.IOException
+import webtrekk.android.sdk.datasource.SyncRequestsDataSourceImpl
+import webtrekk.android.sdk.util.dataTrack
 
-internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
+internal class ExecuteRequestTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val customParamRepository = mockkClass(CustomParamRepository::class)
-    val cacheTrackRequestWithCustomParams =
-        CacheTrackRequestWithCustomParams(trackRequestRepository, customParamRepository)
+    val syncRequestDataSource = mockkClass(SyncRequestsDataSourceImpl::class)
+    val executeRequest =
+        ExecuteRequest(trackRequestRepository, syncRequestDataSource)
 
-    "cache track request with its custom params and return success" {
+    val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
+    val params = ExecuteRequest.Params(request = urlRequest, dataTrack = dataTrack)
+
+    "execute the request then update its track request's state" {
         val resultSuccess = Result.success(dataTrack)
 
         coEvery {
-            trackRequestRepository.addTrackRequest(trackRequest)
-        } returns Result.success(trackRequest)
+            syncRequestDataSource.sendRequest(urlRequest, dataTrack)
+        } returns resultSuccess
 
-        coEvery {
-            customParamRepository.addCustomParams(customParams)
-        } returns Result.success(customParams)
+        val syncRequestSuccess = syncRequestDataSource.sendRequest(urlRequest, dataTrack)
 
-        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultSuccess)
-    }
+        if (syncRequestSuccess.isSuccess) {
+            val updatedTrackRequest = syncRequestSuccess.getOrThrow().trackRequest
+            updatedTrackRequest.requestState = TrackRequest.RequestState.DONE
 
-    "cache track request with its custom params and return failure" {
-        val resultFailure = Result.failure<TrackRequest>(IOException("error"))
+            val updatedTrackRequestSuccess = Result.success(listOf(updatedTrackRequest))
 
-        coEvery {
-            trackRequestRepository.addTrackRequest(trackRequest)
-        } returns resultFailure
+            coEvery {
+                trackRequestRepository.updateTrackRequests(updatedTrackRequest)
+            } returns updatedTrackRequestSuccess
 
-        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultFailure)
+            executeRequest(params) shouldBe (resultSuccess)
+        }
     }
 })

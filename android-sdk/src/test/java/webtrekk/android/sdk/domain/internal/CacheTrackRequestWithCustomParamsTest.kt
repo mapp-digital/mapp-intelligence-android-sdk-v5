@@ -30,33 +30,45 @@ import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.domain.util.cacheTrackRequestParams
-import webtrekk.android.sdk.domain.util.trackRequest
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.customParams
+import webtrekk.android.sdk.util.dataTrack
+import webtrekk.android.sdk.util.trackRequest
 import java.io.IOException
 
-internal class CacheTrackRequestTest : StringSpec({
+internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
+    val customParamRepository = mockkClass(CustomParamRepository::class)
+    val cacheTrackRequestWithCustomParams =
+        CacheTrackRequestWithCustomParams(
+            trackRequestRepository,
+            customParamRepository
+        )
 
-    "cache trackRequest and return success" {
-        val resultSuccess = Result.success(trackRequest)
+    "cache track request with its custom params and return success" {
+        val resultSuccess = Result.success(dataTrack)
 
         coEvery {
             trackRequestRepository.addTrackRequest(trackRequest)
-        } returns resultSuccess
+        } returns Result.success(trackRequest)
 
-        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultSuccess)
+        coEvery {
+            customParamRepository.addCustomParams(customParams)
+        } returns Result.success(customParams)
+
+        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultSuccess)
     }
 
-    "cache trackRequest and return failure encapsulating the exception" {
+    "cache track request with its custom params and return failure" {
         val resultFailure = Result.failure<TrackRequest>(IOException("error"))
 
         coEvery {
             trackRequestRepository.addTrackRequest(trackRequest)
         } returns resultFailure
 
-        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultFailure)
+        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultFailure)
     }
 })
