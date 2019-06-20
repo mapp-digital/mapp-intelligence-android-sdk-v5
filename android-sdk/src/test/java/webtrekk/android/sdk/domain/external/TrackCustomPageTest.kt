@@ -30,15 +30,18 @@ import io.mockk.coVerify
 import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.util.cacheTrackRequestWithCustomParamsParams
-import webtrekk.android.sdk.domain.util.coroutinesDispatchersProvider
-import webtrekk.android.sdk.domain.util.trackRequest
-import webtrekk.android.sdk.domain.util.trackingParams
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.coroutinesDispatchersProvider
+import webtrekk.android.sdk.util.trackRequest
+import webtrekk.android.sdk.util.trackingParams
 
 internal class TrackCustomPageTest : AbstractExternalInteractor() {
 
     val cacheTrackRequestWithCustomParams = mockkClass(CacheTrackRequestWithCustomParams::class)
-    val trackCustomPage = TrackCustomPage(coroutineContext, cacheTrackRequestWithCustomParams)
+    val trackCustomPage = TrackCustomPage(
+        coroutineContext,
+        cacheTrackRequestWithCustomParams
+    )
 
     init {
         feature("track custom page") {

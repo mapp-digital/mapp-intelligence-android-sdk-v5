@@ -32,13 +32,14 @@ import io.mockk.mockkClass
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.domain.util.dataTracks
+import webtrekk.android.sdk.util.dataTracks
 import java.io.IOException
 
 internal class GetCachedDataTracksTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val getCachedDataTracks = GetCachedDataTracks(trackRequestRepository)
+    val getCachedDataTracks =
+        GetCachedDataTracks(trackRequestRepository)
 
     "get all data tracks and return success of their results" {
         val resultSuccess = Result.success(dataTracks)

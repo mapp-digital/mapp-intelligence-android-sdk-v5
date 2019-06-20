@@ -38,7 +38,8 @@ internal class AutoTrackTest : AbstractExternalInteractor() {
     private val appState: AppState<TrackRequest> = mockk(relaxed = true)
     private val cacheTrackRequest = mockkClass(CacheTrackRequest::class)
     private val appContext = mockk<Context>(relaxed = true)
-    private val autoTrack = AutoTrack(coroutineContext, appState, cacheTrackRequest)
+    private val autoTrack =
+        AutoTrack(coroutineContext, appState, cacheTrackRequest)
 
     override fun isolationMode(): IsolationMode = IsolationMode.InstancePerTest
 

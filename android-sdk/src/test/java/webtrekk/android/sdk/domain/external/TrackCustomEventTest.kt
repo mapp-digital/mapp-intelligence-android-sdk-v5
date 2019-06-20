@@ -31,15 +31,18 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.datasource.RequestType
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.util.cacheTrackRequestWithCustomParamsParams
-import webtrekk.android.sdk.domain.util.coroutinesDispatchersProvider
-import webtrekk.android.sdk.domain.util.trackRequest
-import webtrekk.android.sdk.domain.util.trackingParams
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.coroutinesDispatchersProvider
+import webtrekk.android.sdk.util.trackRequest
+import webtrekk.android.sdk.util.trackingParams
 
 internal class TrackCustomEventTest : AbstractExternalInteractor() {
 
     val cacheTrackRequestWithCustomParams = mockkClass(CacheTrackRequestWithCustomParams::class)
-    val trackCustomEvent = TrackCustomEvent(coroutineContext, cacheTrackRequestWithCustomParams)
+    val trackCustomEvent = TrackCustomEvent(
+        coroutineContext,
+        cacheTrackRequestWithCustomParams
+    )
 
     init {
         feature("track custom event") {

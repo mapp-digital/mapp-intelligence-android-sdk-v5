@@ -187,11 +187,36 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         }
 
         val externalInteractorsModule = module {
-            single { AutoTrack(coroutineContext, get(), get()) }
-            single { ManualTrack(coroutineContext, get(), get()) }
+            single {
+                AutoTrack(
+                    coroutineContext,
+                    get(),
+                    get()
+                )
+            }
+            single {
+                ManualTrack(
+                    coroutineContext,
+                    get(),
+                    get()
+                )
+            }
             single { TrackCustomPage(coroutineContext, get()) }
-            single { TrackCustomEvent(coroutineContext, get()) }
-            single { Optout(coroutineContext, get(), get(), get(), get()) }
+            single {
+                TrackCustomEvent(
+                    coroutineContext,
+                    get()
+                )
+            }
+            single {
+                Optout(
+                    coroutineContext,
+                    get(),
+                    get(),
+                    get(),
+                    get()
+                )
+            }
         }
 
         try {

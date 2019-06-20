@@ -29,49 +29,34 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.mockk.coEvery
 import io.mockk.mockkClass
+import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.domain.util.trackRequests
+import webtrekk.android.sdk.util.cacheTrackRequestParams
+import webtrekk.android.sdk.util.trackRequest
 import java.io.IOException
 
-internal class ClearTrackRequestsTest : StringSpec({
+internal class CacheTrackRequestTest : StringSpec({
 
     val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val clearTrackRequests = ClearTrackRequests(trackRequestRepository)
+    val cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
 
-    "clear all track requests and return success" {
-        val resultSuccess = Result.success(true)
-
-        // We send emptyList of track requests to clear all track requests
-        val emptyParams = ClearTrackRequests.Params(emptyList())
+    "cache trackRequest and return success" {
+        val resultSuccess = Result.success(trackRequest)
 
         coEvery {
-            trackRequestRepository.deleteAllTrackRequests()
+            trackRequestRepository.addTrackRequest(trackRequest)
         } returns resultSuccess
 
-        clearTrackRequests(emptyParams) shouldBe (resultSuccess)
+        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultSuccess)
     }
 
-    "clear list of track requests and return success" {
-        val resultSuccess = Result.success(true)
-
-        val params = ClearTrackRequests.Params(trackRequests)
+    "cache trackRequest and return failure encapsulating the exception" {
+        val resultFailure = Result.failure<TrackRequest>(IOException("error"))
 
         coEvery {
-            trackRequestRepository.deleteTrackRequests(trackRequests)
-        } returns resultSuccess
-
-        clearTrackRequests(params) shouldBe (resultSuccess)
-    }
-
-    "clear track requests and return failure" {
-        val resultFailure = Result.failure<Boolean>(IOException("error"))
-
-        val emptyParams = ClearTrackRequests.Params(emptyList())
-
-        coEvery {
-            trackRequestRepository.deleteAllTrackRequests()
+            trackRequestRepository.addTrackRequest(trackRequest)
         } returns resultFailure
 
-        clearTrackRequests(emptyParams) shouldBe (resultFailure)
+        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultFailure)
     }
 })
