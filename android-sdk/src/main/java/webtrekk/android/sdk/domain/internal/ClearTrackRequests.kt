@@ -29,7 +29,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 
-class ClearTrackRequests(
+internal class ClearTrackRequests(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<ClearTrackRequests.Params, Boolean> {
 

@@ -29,7 +29,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 
-class CacheTrackRequest(
+internal class CacheTrackRequest(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<CacheTrackRequest.Params, TrackRequest> {
 

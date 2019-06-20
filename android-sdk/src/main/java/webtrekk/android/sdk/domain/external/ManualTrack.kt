@@ -39,7 +39,7 @@ import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
 
-class ManualTrack(
+internal class ManualTrack(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequest: CacheTrackRequest,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
