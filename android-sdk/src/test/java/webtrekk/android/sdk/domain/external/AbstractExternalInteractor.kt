@@ -23,14 +23,38 @@
  *
  */
 
-package webtrekk.android.sdk.domain.util
+package webtrekk.android.sdk.domain.external
 
-import kotlinx.coroutines.Dispatchers
-import webtrekk.android.sdk.core.util.CoroutineDispatchers
+import io.kotlintest.Spec
+import io.kotlintest.specs.FeatureSpec
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.test.TestCoroutineContext
+import org.koin.log.EmptyLogger
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.StandAloneContext.startKoin
+import org.koin.standalone.StandAloneContext.stopKoin
+import webtrekk.android.sdk.util.loggerModule
+import kotlin.coroutines.CoroutineContext
 
-internal fun coroutinesDispatchersProvider(): CoroutineDispatchers =
-    CoroutineDispatchers(
-        Dispatchers.Unconfined,
-        Dispatchers.Unconfined,
-        Dispatchers.Unconfined
-    )
+internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineScope, FeatureSpec() {
+
+    private val job = SupervisorJob()
+    private val testCoroutineContext = TestCoroutineContext()
+    override val coroutineContext: CoroutineContext
+        get() = job + testCoroutineContext
+
+    override fun beforeSpec(spec: Spec) {
+        startKoin(
+            listOf(
+                loggerModule
+            ), logger = EmptyLogger()
+        )
+    }
+
+    override fun afterSpec(spec: Spec) {
+        stopKoin()
+        coroutineContext.cancel()
+    }
+}

@@ -37,7 +37,7 @@ import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
-import webtrekk.android.sdk.domain.util.coroutinesDispatchersProvider
+import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
 internal class OptoutTest : AbstractExternalInteractor() {
 

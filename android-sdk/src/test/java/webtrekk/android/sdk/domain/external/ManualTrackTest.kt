@@ -32,22 +32,23 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.util.coroutinesDispatchersProvider
-import webtrekk.android.sdk.domain.util.trackingParams
-import webtrekk.android.sdk.domain.util.cacheTrackRequestParams
-import webtrekk.android.sdk.domain.util.cacheTrackRequestWithCustomParamsParams
-import webtrekk.android.sdk.domain.util.dataTrack
-import webtrekk.android.sdk.domain.util.trackRequest
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.cacheTrackRequestParams
+import webtrekk.android.sdk.util.trackingParams
+import webtrekk.android.sdk.util.coroutinesDispatchersProvider
+import webtrekk.android.sdk.util.dataTrack
+import webtrekk.android.sdk.util.trackRequest
 
 internal class ManualTrackTest : AbstractExternalInteractor() {
 
     val cacheTrackRequest = mockkClass(CacheTrackRequest::class)
     val cacheTrackRequestWithCustomParams = mockkClass(CacheTrackRequestWithCustomParams::class)
-    val manualTrack: ManualTrack = ManualTrack(
-        coroutineContext,
-        cacheTrackRequest,
-        cacheTrackRequestWithCustomParams
-    )
+    val manualTrack: ManualTrack =
+        ManualTrack(
+            coroutineContext,
+            cacheTrackRequest,
+            cacheTrackRequestWithCustomParams
+        )
 
     init {
         feature("the manual track is called") {

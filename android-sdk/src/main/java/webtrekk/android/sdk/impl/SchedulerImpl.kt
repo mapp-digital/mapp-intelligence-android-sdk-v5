@@ -31,8 +31,8 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import webtrekk.android.sdk.core.Scheduler
-import webtrekk.android.sdk.worker.SendRequestsWorker
-import webtrekk.android.sdk.worker.CleanUpWorker
+import webtrekk.android.sdk.domain.worker.SendRequestsWorker
+import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import java.util.concurrent.TimeUnit
 
 internal class SchedulerImpl(private val workManager: WorkManager) : Scheduler {
