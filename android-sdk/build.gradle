@@ -88,8 +88,6 @@ dependencies {
 
     androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
     androidTestImplementation "androidx.work:work-testing:$versions.workManagerVersion"
-
-    implementation(project(':core'))
 }
 
 dokka {

@@ -27,7 +27,6 @@ package webtrekk.android.sdk
 
 import androidx.work.Constraints
 import okhttp3.OkHttpClient
-import webtrekk.android.sdk.core.Logger
 
 /**
  * A configuration interface used to customize [Webtrekk] behaviour.
@@ -62,9 +61,9 @@ interface Config {
      * [logLevel], the log level that is used through the library.
      *
      * In [WebtrekkConfiguration] the default is [Logger.Level.BASIC].
-     * To disable logging, then set up the [logLevel] to [WebtrekkLogger.Level.NONE]
+     * To disable logging, then set up the [logLevel] to [Logger.Level.NONE]
      */
-    val logLevel: WebtrekkLogger.Level
+    val logLevel: Logger.Level
 
     /**
      * [requestsInterval] the interval period in [java.util.concurrent.TimeUnit.MILLISECONDS]

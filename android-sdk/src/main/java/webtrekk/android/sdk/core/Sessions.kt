@@ -25,7 +25,7 @@
 
 package webtrekk.android.sdk.core
 
-interface Sessions {
+internal interface Sessions {
 
     fun setEverId()
 

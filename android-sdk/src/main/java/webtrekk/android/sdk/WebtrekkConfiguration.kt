@@ -27,8 +27,8 @@ package webtrekk.android.sdk
 
 import androidx.work.Constraints
 import okhttp3.OkHttpClient
-import webtrekk.android.sdk.core.extension.nullOrEmptyThrowError
-import webtrekk.android.sdk.core.extension.validateEntireList
+import webtrekk.android.sdk.extension.nullOrEmptyThrowError
+import webtrekk.android.sdk.extension.validateEntireList
 import java.util.Arrays
 import java.util.concurrent.TimeUnit
 
@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit
 class WebtrekkConfiguration private constructor(
     override val trackIds: List<String>,
     override val trackDomain: String,
-    override val logLevel: WebtrekkLogger.Level,
+    override val logLevel: Logger.Level,
     override val requestsInterval: Long,
     override val autoTracking: Boolean,
     override val fragmentsAutoTracking: Boolean,
@@ -78,7 +78,7 @@ class WebtrekkConfiguration private constructor(
          * @see [DefaultConfiguration.LOG_LEVEL_VALUE] for the default.
          */
         @JvmName("setLogLevel")
-        fun logLevel(logLevel: WebtrekkLogger.Level) = apply { this.logLevel = logLevel }
+        fun logLevel(logLevel: Logger.Level) = apply { this.logLevel = logLevel }
 
         /**
          * Set when should the cached tracking data be sent to the server in interval time.

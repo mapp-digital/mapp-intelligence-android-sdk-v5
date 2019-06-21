@@ -23,7 +23,7 @@
  *
  */
 
-package webtrekk.android.sdk.impl
+package webtrekk.android.sdk.core
 
 import android.app.Activity
 import android.content.Context
@@ -38,17 +38,13 @@ import org.koin.log.EmptyLogger
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
-import webtrekk.android.sdk.WebtrekkLogger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.Config
-import webtrekk.android.sdk.core.AppState
-import webtrekk.android.sdk.core.Logger
-import webtrekk.android.sdk.core.Scheduler
-import webtrekk.android.sdk.core.Sessions
-import webtrekk.android.sdk.core.extension.initOrException
-import webtrekk.android.sdk.core.extension.resolution
-import webtrekk.android.sdk.core.util.CoroutineDispatchers
-import webtrekk.android.sdk.core.util.coroutineExceptionHandler
+import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.extension.initOrException
+import webtrekk.android.sdk.extension.resolution
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
@@ -181,7 +177,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             single { getWebtrekkDatabase(context).trackRequestDao() }
             single { getWebtrekkDatabase(context).customParamDataDao() }
             single { WebtrekkLogger(config.logLevel) as Logger }
-            single { CoroutineDispatchers(Dispatchers.Main, Dispatchers.Default, Dispatchers.IO) }
+            single {
+                CoroutineDispatchers(
+                    Dispatchers.Main,
+                    Dispatchers.Default,
+                    Dispatchers.IO
+                )
+            }
             if (config.fragmentsAutoTracking) single { AppStateImpl() as AppState<TrackRequest> }
             else single { ActivityAppStateImpl() as AppState<TrackRequest> }
         }
