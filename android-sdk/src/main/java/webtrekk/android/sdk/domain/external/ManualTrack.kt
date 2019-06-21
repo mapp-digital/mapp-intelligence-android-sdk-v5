@@ -30,9 +30,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import webtrekk.android.sdk.core.Logger
-import webtrekk.android.sdk.core.util.CoroutineDispatchers
-import webtrekk.android.sdk.core.util.coroutineExceptionHandler
+import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
@@ -59,7 +59,10 @@ internal class ManualTrack(
             return
         }
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger)) {
+        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+            logger
+        )
+        ) {
             if (invokeParams.trackingParams.isEmpty()) {
                 cacheTrackRequest(CacheTrackRequest.Params(invokeParams.trackRequest))
                     .onSuccess { logger.debug("Cached the track request: $it") }

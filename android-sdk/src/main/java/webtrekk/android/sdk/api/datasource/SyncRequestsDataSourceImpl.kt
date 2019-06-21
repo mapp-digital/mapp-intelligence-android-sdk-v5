@@ -27,7 +27,7 @@ package webtrekk.android.sdk.api.datasource
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import webtrekk.android.sdk.core.extension.executeRequestForResult
+import webtrekk.android.sdk.extension.executeRequestForResult
 import webtrekk.android.sdk.data.entity.DataTrack
 
 internal class SyncRequestsDataSourceImpl(private val okHttpClient: OkHttpClient) :

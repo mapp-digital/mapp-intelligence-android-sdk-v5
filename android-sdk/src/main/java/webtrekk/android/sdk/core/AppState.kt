@@ -33,7 +33,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
-abstract class AppState<T : Any> : LifecycleWrapper() {
+internal abstract class AppState<T : Any> : LifecycleWrapper() {
 
     lateinit var lifecycleReceiver: LifecycleReceiver<T>
 
@@ -52,12 +52,12 @@ abstract class AppState<T : Any> : LifecycleWrapper() {
     }
 }
 
-interface LifecycleReceiver<in T> {
+internal interface LifecycleReceiver<in T> {
 
     fun onLifecycleEventReceived(event: T)
 }
 
-open class LifecycleWrapper :
+internal open class LifecycleWrapper :
     Application.ActivityLifecycleCallbacks,
     FragmentManager.FragmentLifecycleCallbacks() {
 

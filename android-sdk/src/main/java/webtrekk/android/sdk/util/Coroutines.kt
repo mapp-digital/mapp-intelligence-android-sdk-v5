@@ -23,30 +23,18 @@
  *
  */
 
-package webtrekk.android.sdk.core.extension
+package webtrekk.android.sdk.util
 
-import java.net.URLEncoder
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import webtrekk.android.sdk.Logger
 
-inline fun <reified T : Any> T?.nullOrEmptyThrowError(propertyName: T): T {
-    when (this) {
-        is String? -> if (this.isNullOrBlank())
-            error("$propertyName is missing in the configurations. $propertyName is required in the configurations.")
-
-        is List<*>? -> if (this.isNullOrEmpty())
-            error("$propertyName is missing in the configurations. $propertyName is required in the configurations.")
-    }
-
-    return this as T
+fun coroutineExceptionHandler(logger: Logger) = CoroutineExceptionHandler { _, exception ->
+    logger.error("Caught coroutine exception $exception")
 }
 
-fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
-    this.nullOrEmptyThrowError(propertyName)
-
-    this?.forEach {
-        it.nullOrEmptyThrowError(propertyName)
-    }
-
-    return this as List<T>
-}
-
-fun String.encodeToUTF8(): String = URLEncoder.encode(this, "UTF-8")
+data class CoroutineDispatchers(
+    val mainDispatcher: CoroutineDispatcher,
+    val defaultDispatcher: CoroutineDispatcher,
+    val ioDispatcher: CoroutineDispatcher
+)

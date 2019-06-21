@@ -23,19 +23,19 @@
  *
  */
 
-package webtrekk.android.sdk.impl
+package webtrekk.android.sdk.core
 
 import androidx.work.WorkManager
 import androidx.work.PeriodicWorkRequest
 import androidx.work.OneTimeWorkRequest
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
-import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import java.util.concurrent.TimeUnit
 
-internal class SchedulerImpl(private val workManager: WorkManager) : Scheduler {
+internal class SchedulerImpl(private val workManager: WorkManager) :
+    Scheduler {
 
     override fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints) {
         val sendRequestWorker = PeriodicWorkRequest.Builder(

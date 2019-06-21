@@ -23,35 +23,24 @@
  *
  */
 
-package webtrekk.android.sdk.impl
+package webtrekk.android.sdk.extension
 
-import android.app.Activity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import webtrekk.android.sdk.core.AppState
-import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.extension.toTrackRequest
+import kotlin.properties.Delegates
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
-internal class AppStateImpl : AppState<TrackRequest>() {
+fun <T : Any> Delegates.initOrException(errorMessage: String): ReadWriteProperty<Any?, T> =
+    InitOrException(errorMessage)
 
-    override fun onActivityStarted(activity: Activity?) {
-        super.onActivityStarted(activity)
+class InitOrException<T : Any>(errorMessage: String) : ReadWriteProperty<Any?, T> {
+    private var value: T? = null
+    private val errorMsg = errorMessage
 
-        activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest()) }
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return value ?: throw IllegalStateException(errorMsg)
     }
 
-    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
-        super.onFragmentStarted(fm, f)
-
-        lifecycleReceiver.onLifecycleEventReceived(f.toTrackRequest())
-    }
-}
-
-internal class ActivityAppStateImpl : AppState<TrackRequest>() {
-
-    override fun onActivityStarted(activity: Activity?) {
-        super.onActivityStarted(activity)
-
-        activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest()) }
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
     }
 }

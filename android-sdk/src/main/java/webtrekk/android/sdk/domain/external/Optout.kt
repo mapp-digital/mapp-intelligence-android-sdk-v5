@@ -33,11 +33,11 @@ import kotlinx.coroutines.launch
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import webtrekk.android.sdk.core.AppState
-import webtrekk.android.sdk.core.Logger
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
-import webtrekk.android.sdk.core.util.CoroutineDispatchers
-import webtrekk.android.sdk.core.util.coroutineExceptionHandler
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
@@ -67,7 +67,9 @@ internal class Optout(
                 scheduler.sendRequestsThenCleanUp()
             } else {
                 scope.launch(
-                    context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(logger),
+                    context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                        logger
+                    ),
                     start = CoroutineStart.ATOMIC
                 ) {
                     clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
