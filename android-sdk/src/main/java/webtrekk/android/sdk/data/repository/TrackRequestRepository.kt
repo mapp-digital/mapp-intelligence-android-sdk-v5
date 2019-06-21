@@ -23,30 +23,17 @@
  *
  */
 
-import okhttp3.Request
-import webtrekk.android.sdk.core.extension.encodeToUTF8
+package webtrekk.android.sdk.data.repository
+
 import webtrekk.android.sdk.data.entity.DataTrack
-import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.buildCustomParams
-import webtrekk.android.sdk.extension.userAgent
-import webtrekk.android.sdk.extension.webtrekkRequestParams
+import webtrekk.android.sdk.data.entity.TrackRequest
 
-internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<String>): String {
-    return "$trackDomain/${trackIds.joinToString(separator = ",")}" +
-        "/wt" +
-        "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
-        "&${UrlParams.EVER_ID}=123456789" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
-        customParams.buildCustomParams()
-}
+internal interface TrackRequestRepository {
 
-internal fun DataTrack.buildUrlRequestForTesting(
-    trackDomain: String,
-    trackIds: List<String>
-): Request {
-    return Request.Builder()
-        .url(buildUrlForTesting(trackDomain, trackIds))
-        .build()
+    suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest>
+    suspend fun getTrackRequests(): Result<List<DataTrack>>
+    suspend fun getTrackRequestsByState(requestStates: List<TrackRequest.RequestState>): Result<List<DataTrack>>
+    suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>>
+    suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean>
+    suspend fun deleteAllTrackRequests(): Result<Boolean>
 }

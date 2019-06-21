@@ -23,30 +23,41 @@
  *
  */
 
-import okhttp3.Request
-import webtrekk.android.sdk.core.extension.encodeToUTF8
+package webtrekk.android.sdk.data.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.OnConflictStrategy
+import androidx.room.Transaction
+import androidx.room.Update
+import androidx.room.Delete
 import webtrekk.android.sdk.data.entity.DataTrack
-import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.buildCustomParams
-import webtrekk.android.sdk.extension.userAgent
-import webtrekk.android.sdk.extension.webtrekkRequestParams
+import webtrekk.android.sdk.data.entity.TrackRequest
 
-internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<String>): String {
-    return "$trackDomain/${trackIds.joinToString(separator = ",")}" +
-        "/wt" +
-        "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
-        "&${UrlParams.EVER_ID}=123456789" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
-        customParams.buildCustomParams()
-}
+@Dao
+internal interface TrackRequestDao {
 
-internal fun DataTrack.buildUrlRequestForTesting(
-    trackDomain: String,
-    trackIds: List<String>
-): Request {
-    return Request.Builder()
-        .url(buildUrlForTesting(trackDomain, trackIds))
-        .build()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun setTrackRequest(trackRequest: TrackRequest): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun setTrackRequests(trackRequests: List<TrackRequest>)
+
+    @Transaction
+    @Query("SELECT * FROM tracking_data ORDER BY time_stamp")
+    suspend fun getTrackRequests(): List<DataTrack>
+
+    @Transaction
+    @Query("SELECT * FROM tracking_data WHERE request_state IN (:requestStates) ORDER BY time_stamp")
+    suspend fun getTrackRequestsByState(requestStates: List<String>): List<DataTrack>
+
+    @Update
+    suspend fun updateTrackRequests(vararg trackRequests: TrackRequest)
+
+    @Delete
+    suspend fun clearTrackRequests(trackRequests: List<TrackRequest>)
+
+    @Query("DELETE FROM tracking_data")
+    suspend fun clearAllTrackRequests()
 }

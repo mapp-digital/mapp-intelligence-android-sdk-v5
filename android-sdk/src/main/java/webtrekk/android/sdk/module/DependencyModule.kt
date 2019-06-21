@@ -28,8 +28,8 @@ package webtrekk.android.sdk.module
 import org.koin.dsl.module.module
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
-import webtrekk.android.sdk.datasource.SyncRequestsDataSource
-import webtrekk.android.sdk.datasource.SyncRequestsDataSourceImpl
+import webtrekk.android.sdk.api.datasource.SyncRequestsDataSource
+import webtrekk.android.sdk.api.datasource.SyncRequestsDataSourceImpl
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
@@ -44,9 +44,21 @@ import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 
 internal val dataModule = module {
-    single<TrackRequestRepository> { TrackRequestRepositoryImpl(get()) }
-    single<CustomParamRepository> { CustomParamRepositoryImpl(get()) }
-    single<SyncRequestsDataSource<DataTrack>> { SyncRequestsDataSourceImpl(get()) }
+    single<TrackRequestRepository> {
+        TrackRequestRepositoryImpl(
+            get()
+        )
+    }
+    single<CustomParamRepository> {
+        CustomParamRepositoryImpl(
+            get()
+        )
+    }
+    single<SyncRequestsDataSource<DataTrack>> {
+        SyncRequestsDataSourceImpl(
+            get()
+        )
+    }
 }
 
 internal val internalInteractorsModule = module {

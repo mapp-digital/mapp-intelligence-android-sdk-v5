@@ -23,30 +23,31 @@
  *
  */
 
-import okhttp3.Request
-import webtrekk.android.sdk.core.extension.encodeToUTF8
-import webtrekk.android.sdk.data.entity.DataTrack
-import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.buildCustomParams
-import webtrekk.android.sdk.extension.userAgent
-import webtrekk.android.sdk.extension.webtrekkRequestParams
+package webtrekk.android.sdk.api
 
-internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<String>): String {
-    return "$trackDomain/${trackIds.joinToString(separator = ",")}" +
-        "/wt" +
-        "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
-        "&${UrlParams.EVER_ID}=123456789" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
-        customParams.buildCustomParams()
+import webtrekk.android.sdk.api.UrlParams.EVENT_NAME
+
+internal object UrlParams {
+
+    const val WEBTREKK_PARAM = "p"
+
+    const val EVER_ID = "eid"
+
+    const val FORCE_NEW_SESSION = "fns"
+
+    const val APP_FIRST_START = "one"
+
+    const val TIME_ZONE = "tz"
+
+    const val USER_AGENT = "X-WT-UA"
+
+    const val LANGUAGE = "la"
+
+    const val EVENT_NAME = "ct"
 }
 
-internal fun DataTrack.buildUrlRequestForTesting(
-    trackDomain: String,
-    trackIds: List<String>
-): Request {
-    return Request.Builder()
-        .url(buildUrlForTesting(trackDomain, trackIds))
-        .build()
+internal enum class RequestType(val value: String) {
+
+    PAGE(""),
+    EVENT(EVENT_NAME)
 }
