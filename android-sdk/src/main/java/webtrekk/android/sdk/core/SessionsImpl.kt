@@ -23,13 +23,13 @@
  *
  */
 
-package webtrekk.android.sdk.impl
+package webtrekk.android.sdk.core
 
-import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.util.generateEverId
 
-internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs) : Sessions {
+internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs) :
+    Sessions {
 
     // if first time, generate the ever id alongside setting appFirstStart = 1 as it's app first start
     override fun setEverId() {

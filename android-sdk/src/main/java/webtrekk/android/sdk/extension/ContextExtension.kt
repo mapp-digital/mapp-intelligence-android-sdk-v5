@@ -23,18 +23,21 @@
  *
  */
 
-package webtrekk.android.sdk.core.util
+package webtrekk.android.sdk.extension
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineExceptionHandler
-import webtrekk.android.sdk.core.Logger
+import android.content.Context
+import android.content.res.Configuration
+import android.util.DisplayMetrics
+import android.view.WindowManager
 
-fun coroutineExceptionHandler(logger: Logger) = CoroutineExceptionHandler { _, exception ->
-    logger.error("Caught coroutine exception $exception")
+val Context.isPortrait
+    inline get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+fun Context.resolution(): String {
+    val displayMetrics = DisplayMetrics()
+    val windowManager =
+        this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+    windowManager.defaultDisplay.getMetrics(displayMetrics)
+    return String.format("%sx%s", displayMetrics.widthPixels, displayMetrics.heightPixels)
 }
-
-data class CoroutineDispatchers(
-    val mainDispatcher: CoroutineDispatcher,
-    val defaultDispatcher: CoroutineDispatcher,
-    val ioDispatcher: CoroutineDispatcher
-)

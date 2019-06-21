@@ -25,8 +25,7 @@
 
 package webtrekk.android.sdk.util
 
-import webtrekk.android.sdk.impl.WebtrekkImpl
-import webtrekk.android.sdk.core.util.currentTimeStamp
+import webtrekk.android.sdk.core.WebtrekkImpl
 import kotlin.random.Random
 
 internal val currentEverId: String

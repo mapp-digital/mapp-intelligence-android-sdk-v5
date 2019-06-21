@@ -27,7 +27,6 @@ package webtrekk.android.sdk.extension
 
 import okhttp3.Request
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.core.extension.encodeToUTF8
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest

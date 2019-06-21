@@ -23,46 +23,17 @@
  *
  */
 
-package webtrekk.android.sdk.core.util
+package webtrekk.android.sdk.core
 
-import android.os.Build
-import webtrekk.android.sdk.core.BuildConfig
-import java.util.Locale
-import java.util.TimeZone
-import java.util.Date
-import java.util.concurrent.TimeUnit
+import androidx.work.Constraints
 
-val currentOsVersion: String
-    inline get() = Build.VERSION.RELEASE ?: ""
+internal interface Scheduler {
 
-val currentApiLevel: Int
-    inline get() = Build.VERSION.SDK_INT
+    fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints)
 
-val currentDeviceManufacturer: String
-    inline get() = Build.MANUFACTURER ?: ""
+    fun sendRequestsThenCleanUp()
 
-val currentDeviceModel: String
-    inline get() = Build.MODEL ?: ""
+    fun scheduleCleanUp()
 
-val currentCountry: String
-    inline get() = Locale.getDefault().country
-
-val currentLanguage: String
-    inline get() = Locale.getDefault().language
-
-val currentTimeZone: Int
-    inline get() {
-        val timeZone = TimeZone.getDefault()
-        var offset = timeZone.rawOffset
-        if (timeZone.inDaylightTime(Date())) {
-            offset += timeZone.dstSavings
-        }
-
-        return TimeUnit.HOURS.convert(offset.toLong(), TimeUnit.MILLISECONDS).toInt()
-    }
-
-val currentTimeStamp: Long
-    inline get() = System.currentTimeMillis()
-
-val currentWebtrekkVersion: String
-    inline get() = BuildConfig.VERSION_NAME
+    fun cancelScheduleSendRequests()
+}

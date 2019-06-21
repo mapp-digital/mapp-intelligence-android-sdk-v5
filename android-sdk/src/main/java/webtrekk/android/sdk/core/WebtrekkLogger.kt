@@ -25,13 +25,55 @@
 
 package webtrekk.android.sdk.core
 
-interface Logger {
+import android.util.Log
+import webtrekk.android.sdk.Logger
+import java.text.SimpleDateFormat
+import java.util.Date
 
-    fun info(message: String)
+/**
+ * Webtrekk simple logger.
+ */
+internal class WebtrekkLogger(level: Logger.Level) :
+    Logger {
 
-    fun debug(message: String)
+    private var basicMessage: String? = null
 
-    fun warn(message: String)
+    private val _dateFormat = SimpleDateFormat.getDateTimeInstance()
+    private val date
+        inline get() = _dateFormat.format(Date())
 
-    fun error(message: String)
+    init {
+        basicMessage = when (level) {
+            Logger.Level.NONE -> null
+            Logger.Level.BASIC -> date.toString()
+        }
+    }
+
+    override fun info(message: String) {
+        basicMessage?.let {
+            Log.i(TAG, "$basicMessage -> $message")
+        }
+    }
+
+    override fun debug(message: String) {
+        basicMessage?.let {
+            Log.d(TAG, "$basicMessage -> $message")
+        }
+    }
+
+    override fun warn(message: String) {
+        basicMessage?.let {
+            Log.w(TAG, "$basicMessage -> $message")
+        }
+    }
+
+    override fun error(message: String) {
+        basicMessage?.let {
+            Log.wtf(TAG, "$basicMessage -> $message")
+        }
+    }
+
+    companion object {
+        private const val TAG = "webtrekk"
+    }
 }

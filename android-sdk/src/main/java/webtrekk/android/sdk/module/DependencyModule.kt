@@ -35,8 +35,8 @@ import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
-import webtrekk.android.sdk.impl.SchedulerImpl
-import webtrekk.android.sdk.impl.SessionsImpl
+import webtrekk.android.sdk.core.SchedulerImpl
+import webtrekk.android.sdk.core.SessionsImpl
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest

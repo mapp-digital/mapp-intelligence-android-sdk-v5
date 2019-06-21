@@ -26,7 +26,7 @@
 package webtrekk.android.sdk.domain
 
 import kotlinx.coroutines.CoroutineScope
-import webtrekk.android.sdk.core.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.CoroutineDispatchers
 
 internal interface InternalInteractor<in T, R : Any> {
 
