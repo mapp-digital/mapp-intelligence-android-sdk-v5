@@ -23,30 +23,28 @@
  *
  */
 
-import okhttp3.Request
-import webtrekk.android.sdk.core.extension.encodeToUTF8
-import webtrekk.android.sdk.data.entity.DataTrack
-import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.buildCustomParams
-import webtrekk.android.sdk.extension.userAgent
-import webtrekk.android.sdk.extension.webtrekkRequestParams
+package webtrekk.android.sdk.data.entity
 
-internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<String>): String {
-    return "$trackDomain/${trackIds.joinToString(separator = ",")}" +
-        "/wt" +
-        "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
-        "&${UrlParams.EVER_ID}=123456789" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
-        customParams.buildCustomParams()
-}
+import androidx.room.Entity
+import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.ForeignKey
+import androidx.room.Index
 
-internal fun DataTrack.buildUrlRequestForTesting(
-    trackDomain: String,
-    trackIds: List<String>
-): Request {
-    return Request.Builder()
-        .url(buildUrlForTesting(trackDomain, trackIds))
-        .build()
-}
+@Entity(
+    tableName = "custom_params",
+    foreignKeys = [ForeignKey(
+        entity = TrackRequest::class,
+        parentColumns = ["id"],
+        childColumns = ["track_id"],
+        onDelete = CASCADE
+    )],
+    indices = [Index("track_id")]
+)
+internal data class CustomParam(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "custom_id") var customParamId: Long = 0,
+    @ColumnInfo(name = "track_id") val trackId: Long,
+    @ColumnInfo(name = "param_key") val paramKey: String,
+    @ColumnInfo(name = "param_value") val paramValue: String
+)

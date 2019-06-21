@@ -29,7 +29,7 @@ import io.mockk.Called
 import io.mockk.coVerify
 import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
-import webtrekk.android.sdk.datasource.RequestType
+import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider

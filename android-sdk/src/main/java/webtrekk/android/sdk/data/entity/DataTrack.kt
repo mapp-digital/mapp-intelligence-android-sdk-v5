@@ -23,30 +23,15 @@
  *
  */
 
-import okhttp3.Request
-import webtrekk.android.sdk.core.extension.encodeToUTF8
-import webtrekk.android.sdk.data.entity.DataTrack
-import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.buildCustomParams
-import webtrekk.android.sdk.extension.userAgent
-import webtrekk.android.sdk.extension.webtrekkRequestParams
+package webtrekk.android.sdk.data.entity
 
-internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<String>): String {
-    return "$trackDomain/${trackIds.joinToString(separator = ",")}" +
-        "/wt" +
-        "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
-        "&${UrlParams.EVER_ID}=123456789" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
-        customParams.buildCustomParams()
-}
+import androidx.room.Embedded
+import androidx.room.Relation
 
-internal fun DataTrack.buildUrlRequestForTesting(
-    trackDomain: String,
-    trackIds: List<String>
-): Request {
-    return Request.Builder()
-        .url(buildUrlForTesting(trackDomain, trackIds))
-        .build()
-}
+internal data class DataTrack(
+    @Embedded var trackRequest: TrackRequest,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "track_id"
+    ) var customParams: List<CustomParam> = arrayListOf()
+)
