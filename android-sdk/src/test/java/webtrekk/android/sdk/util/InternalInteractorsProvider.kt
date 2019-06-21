@@ -33,7 +33,11 @@ import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.extension.toCustomParams
 
 // Data objects
-internal val trackRequest = TrackRequest(name = "page 1", fns = "1", one = "1").apply { id = 1 }
+internal val trackRequest = TrackRequest(
+    name = "page 1",
+    fns = "1",
+    one = "1"
+).apply { id = 1 }
 internal val trackingParams = mapOf(
     "cs" to "val 1",
     "cd" to "val 2"
@@ -58,8 +62,16 @@ internal val dataTracks = listOf(
             requestState = TrackRequest.RequestState.NEW
         ).apply { id = 1 },
         customParams = listOf(
-            CustomParam(trackId = 1, paramKey = "cs", paramValue = "val 1"),
-            CustomParam(trackId = 1, paramKey = "cd", paramValue = "val 2")
+            CustomParam(
+                trackId = 1,
+                paramKey = "cs",
+                paramValue = "val 1"
+            ),
+            CustomParam(
+                trackId = 1,
+                paramKey = "cd",
+                paramValue = "val 2"
+            )
         )
     ),
     DataTrack(
@@ -71,7 +83,13 @@ internal val dataTracks = listOf(
         ).apply {
             this.id = 2
         },
-        customParams = listOf(CustomParam(trackId = 2, paramKey = "cs", paramValue = "val 3"))
+        customParams = listOf(
+            CustomParam(
+                trackId = 2,
+                paramKey = "cs",
+                paramValue = "val 3"
+            )
+        )
     ),
     DataTrack(
         trackRequest = TrackRequest(
