@@ -32,7 +32,7 @@ import io.mockk.coEvery
 import io.mockk.mockkClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.datasource.SyncRequestsDataSourceImpl
+import webtrekk.android.sdk.api.datasource.SyncRequestsDataSourceImpl
 import webtrekk.android.sdk.util.dataTrack
 
 internal class ExecuteRequestTest : StringSpec({

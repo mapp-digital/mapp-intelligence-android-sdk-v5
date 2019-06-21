@@ -47,7 +47,10 @@ internal class CacheTrackRequestWithCustomParams(
 
             val cachedCustomParams = customParamRepository.addCustomParams(customParams)
 
-            DataTrack(cachedTrackRequest.getOrThrow(), cachedCustomParams.getOrThrow())
+            DataTrack(
+                cachedTrackRequest.getOrThrow(),
+                cachedCustomParams.getOrThrow()
+            )
         }
     }
 

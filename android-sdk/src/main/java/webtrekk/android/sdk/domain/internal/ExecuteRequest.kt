@@ -29,7 +29,7 @@ import okhttp3.Request
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.datasource.SyncRequestsDataSource
+import webtrekk.android.sdk.api.datasource.SyncRequestsDataSource
 import webtrekk.android.sdk.domain.InternalInteractor
 
 internal class ExecuteRequest(

@@ -34,7 +34,7 @@ import webtrekk.android.sdk.core.Logger
 import webtrekk.android.sdk.core.util.CoroutineDispatchers
 import webtrekk.android.sdk.core.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.datasource.RequestType
+import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext

@@ -71,6 +71,10 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
 
+    implementation "androidx.room:room-runtime:$versions.roomVersion"
+    implementation "androidx.room:room-coroutines:$versions.roomVersion"
+    kapt "androidx.room:room-compiler:$versions.roomVersion"
+
     testImplementation "junit:junit:$versions.junitVersion"
     testImplementation "androidx.test:core:$versions.testCoreVersion"
     testImplementation "io.mockk:mockk:$versions.mockkVersion"
@@ -80,12 +84,12 @@ dependencies {
     androidTestImplementation "androidx.test:core:$versions.testCoreVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
     androidTestImplementation "io.mockk:mockk-android:$versions.mockkVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$versions.coreTestingVersion"
 
     androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
     androidTestImplementation "androidx.work:work-testing:$versions.workManagerVersion"
 
     implementation(project(':core'))
-    implementation(project(':data'))
 }
 
 dokka {
