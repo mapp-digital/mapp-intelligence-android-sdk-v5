@@ -27,7 +27,6 @@ package webtrekk.android.sdk.extension
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
-import webtrekk.android.sdk.core.extension.resolution
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.appFirstStart
 import webtrekk.android.sdk.util.currentSession

@@ -26,7 +26,6 @@
 package webtrekk.android.sdk.util
 
 import kotlinx.coroutines.Dispatchers
-import webtrekk.android.sdk.core.util.CoroutineDispatchers
 
 internal fun coroutinesDispatchersProvider(): CoroutineDispatchers =
     CoroutineDispatchers(
