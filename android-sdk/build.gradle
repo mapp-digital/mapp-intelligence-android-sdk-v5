@@ -58,36 +58,37 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
-    implementation "androidx.appcompat:appcompat:$versions.appCompatVersion"
-    implementation "androidx.core:core-ktx:$versions.coreKtxVersion"
+    implementation libs.kotlinStdlib
+    implementation libs.appCompat
+    implementation libs.coreKtx
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
+    implementation libs.coroutinesCore
+    implementation libs.coroutinesAndroid
 
-    implementation "org.koin:koin-android:$versions.koinVersion"
+    implementation libs.koinAndroid
 
-    implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
+    implementation libs.workmanager
 
-    implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
+    implementation libs.okHttp
 
-    implementation "androidx.room:room-runtime:$versions.roomVersion"
-    implementation "androidx.room:room-coroutines:$versions.roomVersion"
-    kapt "androidx.room:room-compiler:$versions.roomVersion"
+    implementation libs.room
+    implementation libs.roomCoroutines
+    kapt libs.roomCompiler
 
-    testImplementation "junit:junit:$versions.junitVersion"
-    testImplementation "androidx.test:core:$versions.testCoreVersion"
-    testImplementation "io.mockk:mockk:$versions.mockkVersion"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlinCoroutines"
-    testImplementation "io.kotlintest:kotlintest-runner-junit5:$versions.kotlinTestVersion"
-    androidTestImplementation "androidx.test.ext:junit:$versions.testCoreVersion"
-    androidTestImplementation "androidx.test:core:$versions.testCoreVersion"
-    androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
-    androidTestImplementation "io.mockk:mockk-android:$versions.mockkVersion"
-    androidTestImplementation "androidx.arch.core:core-testing:$versions.coreTestingVersion"
+    testImplementation libs.junit
+    testImplementation libs.androidTestCore
+    testImplementation libs.mockk
+    testImplementation libs.coroutinesTest
+    testImplementation libs.kotlinTest
 
-    androidTestImplementation "androidx.room:room-testing:$versions.roomVersion"
-    androidTestImplementation "androidx.work:work-testing:$versions.workManagerVersion"
+    androidTestImplementation libs.androidTestJunit
+    androidTestImplementation libs.androidTestCore
+    androidTestImplementation libs.runner
+    androidTestImplementation libs.androidMockk
+    androidTestImplementation libs.androidArchCoreTest
+
+    androidTestImplementation libs.androidRoomTest
+    androidTestImplementation libs.androidWorkmanagerTest
 }
 
 dokka {
