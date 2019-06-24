@@ -45,6 +45,7 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
         )
             .setConstraints(constraints)
             .addTag(SendRequestsWorker.TAG)
+            .setInitialDelay(repeatInterval, TimeUnit.MILLISECONDS)
             .build()
 
         workManager.enqueueUniquePeriodicWork(
