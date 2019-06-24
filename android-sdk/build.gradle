@@ -72,7 +72,7 @@ dependencies {
     implementation libs.okHttp
 
     implementation libs.room
-    implementation libs.roomCoroutines
+    implementation libs.roomKtx
     kapt libs.roomCompiler
 
     testImplementation libs.junit
