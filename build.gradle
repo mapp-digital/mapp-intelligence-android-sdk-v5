@@ -43,7 +43,7 @@ buildscript {
 
             'kotlinCoroutines'       : '1.1.1',
             'coreKtxVersion'         : '1.0.2',
-            'koinVersion'            : '1.0.2',
+            'koinAndroidVersion'     : '1.0.2',
 
             'okHttpVersion'          : '3.13.1',
 
@@ -60,6 +60,33 @@ buildscript {
 
             'ktlintVersion'          : '0.30.0',
             'dokkaVersion'           : '0.9.17'
+    ]
+
+    ext.libs = [
+            kotlinStdlib          : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion",
+            appCompat             : "androidx.appcompat:appcompat:$versions.appCompatVersion",
+            coreKtx               : "androidx.core:core-ktx:$versions.coreKtxVersion",
+            constraintLayout      : "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion",
+            coroutinesCore        : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines",
+            coroutinesAndroid     : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines",
+            okHttp                : "com.squareup.okhttp3:okhttp:$versions.okHttpVersion",
+            koinAndroid           : "org.koin:koin-android:$versions.koinAndroidVersion",
+            room                  : "androidx.room:room-runtime:$versions.roomVersion",
+            roomCoroutines        : "androidx.room:room-coroutines:$versions.roomVersion",
+            roomCompiler          : "androidx.room:room-compiler:$versions.roomVersion",
+            workmanager           : "androidx.work:work-runtime-ktx:$versions.workManagerVersion",
+            junit                 : "junit:junit:$versions.junitVersion",
+            runner                : "androidx.test:runner:$versions.runnerVersion",
+            espresso              : "androidx.test.espresso:espresso-core:$versions.espressoCoreVersion",
+            androidTestCore       : "androidx.test:core:$versions.testCoreVersion",
+            mockk                 : "io.mockk:mockk:$versions.mockkVersion",
+            coroutinesTest        : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlinCoroutines",
+            kotlinTest            : "io.kotlintest:kotlintest-runner-junit5:$versions.kotlinTestVersion",
+            androidTestJunit      : "androidx.test.ext:junit:$versions.testCoreVersion",
+            androidMockk          : "io.mockk:mockk-android:$versions.mockkVersion",
+            androidArchCoreTest   : "androidx.arch.core:core-testing:$versions.coreTestingVersion",
+            androidRoomTest       : "androidx.room:room-testing:$versions.roomVersion",
+            androidWorkmanagerTest: "androidx.work:work-testing:$versions.workManagerVersion"
     ]
 
     repositories {
