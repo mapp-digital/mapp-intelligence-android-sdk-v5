@@ -1,5 +1,7 @@
 # Change Log
 
+## Version 5.0.0 *(in progress)*
+
 ## Version 5.0.0-beta06 *(2019-06-26)*
 * Update `kotlin-gradle-plugin` to `1.3.31`.
 * Update `WorkManager` to `2.1.0-beta02`, set initial delay to send requests worker.
