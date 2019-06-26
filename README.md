@@ -280,7 +280,7 @@ webView.settings.javaScriptEnabled = true
 
 <a name=read_more></a>
 # Read more
-Check out the [docs](https://docs.webtrekk.com) on the site to learn more about tracking and uses cases. 
+Check out the [docs](https://docs.webtrekk.com/display/ASVB) on the site to learn more about tracking and uses cases. 
 
 <a name=license></a>
 # License
