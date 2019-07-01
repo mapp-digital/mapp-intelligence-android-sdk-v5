@@ -212,7 +212,7 @@ Webtrekk.getInstance().trackCustomPage("Product Page", trackingParams)
 In Java:
 ```java
 // Define custom params (names/keys) as they are in the server. For example, if that param has key in server with name "cp100", then you can define it in your app in this way.
-private static final String BACKGROUND_PARAM = createCustomParam(ParamType.PAGE_CATEGORY, 100); // This is equal to "cp100"
+private static final String BACKGROUND_PARAM = createCustomParam(ParamType.PAGE_PARAM, 100); // This is equal to "cp100"
 
 // Build a map, mapping your servers (names/keys) to the values.
 Map<String, String> params = new LinkedHashMap<>();
