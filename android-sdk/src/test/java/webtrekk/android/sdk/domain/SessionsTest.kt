@@ -42,9 +42,9 @@ internal class SessionsTest : StringSpec({
 //        every { webtrekkSharedPrefs.everId = everId } just Runs
 //
 //        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.appFirstStart} returns "1"
+//        every { webtrekkSharedPrefs.appFirstOpen} returns "1"
 //
 //        sessions.getEverId() shouldBe (everId)
-//        sessions.getAppFirstStart() shouldBe ("1")
+//        sessions.getAppFirstOpen() shouldBe ("1")
 //    }
 })

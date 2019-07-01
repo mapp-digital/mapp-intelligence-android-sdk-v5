@@ -52,18 +52,18 @@ internal class WebtrekkSharedPrefsTest {
     }
 
     @Test
-    fun testAppFirstStart() {
-        webtrekkSharedPrefs.appFirstStart = "1"
+    fun testAppFirstOpen() {
+        webtrekkSharedPrefs.appFirstOpen = "1"
 
-        // Verify appFirstStart is set correctly
-        assertThat(webtrekkSharedPrefs.appFirstStart, `is`("1"))
+        // Verify appFirstOpen is set correctly
+        assertThat(webtrekkSharedPrefs.appFirstOpen, `is`("1"))
     }
 
     @Test
     fun testFns() {
         webtrekkSharedPrefs.fns = "1"
 
-        // Verify fns is set correctly
+        // Verify forceNewSession is set correctly
         assertThat(webtrekkSharedPrefs.fns, `is`("1"))
     }
 
