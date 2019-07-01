@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Map<String, String> params = new LinkedHashMap<>();
-        params.put(BACKGROUND_PARAM, "lol");
-        params.put(Param.INTERNAL_SEARCH, "lel");
+        params.put(BACKGROUND_PARAM, "blue");
+        params.put(Param.INTERNAL_SEARCH, "searching");
 
-        webtrekk.trackCustomPage("my page", params);
+        webtrekk.trackCustomPage("product page", params);
     }
 }
