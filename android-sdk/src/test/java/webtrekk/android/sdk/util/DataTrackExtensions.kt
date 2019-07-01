@@ -37,8 +37,8 @@ internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<St
         "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
         "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
         "&${UrlParams.EVER_ID}=123456789" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
+        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
+        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         customParams.buildCustomParams()
 }
 

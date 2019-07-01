@@ -62,8 +62,8 @@ internal fun DataTrack.buildUrl(trackDomain: String, trackIds: List<String>, cur
         "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
         "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
         "&${UrlParams.EVER_ID}=$currentEverId" +
-        "&${UrlParams.APP_FIRST_START}=${this.trackRequest.one}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.fns}" +
+        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
+        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
         "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +
         customParams.buildCustomParams()

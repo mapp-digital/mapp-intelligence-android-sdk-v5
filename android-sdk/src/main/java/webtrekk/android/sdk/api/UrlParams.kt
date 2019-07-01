@@ -35,7 +35,7 @@ internal object UrlParams {
 
     const val FORCE_NEW_SESSION = "fns"
 
-    const val APP_FIRST_START = "one"
+    const val APP_FIRST_OPEN = "one"
 
     const val TIME_ZONE = "tz"
 

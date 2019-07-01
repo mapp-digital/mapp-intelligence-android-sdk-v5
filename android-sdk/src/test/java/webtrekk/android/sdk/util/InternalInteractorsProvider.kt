@@ -35,8 +35,8 @@ import webtrekk.android.sdk.extension.toCustomParams
 // Data objects
 internal val trackRequest = TrackRequest(
     name = "page 1",
-    fns = "1",
-    one = "1"
+    forceNewSession = "1",
+    appFirstOpen = "1"
 ).apply { id = 1 }
 internal val trackingParams = mapOf(
     "cs" to "val 1",
@@ -48,17 +48,17 @@ internal val dataTrack = DataTrack(
     customParams = customParams
 )
 internal val trackRequests = listOf(
-    TrackRequest(name = "page 1", fns = "1", one = "1").apply { this.id = 1 },
-    TrackRequest(name = "page 2", fns = "0", one = "0").apply { this.id = 2 },
-    TrackRequest(name = "page 3", fns = "0", one = "0").apply { this.id = 3 },
-    TrackRequest(name = "page 4", fns = "0", one = "0").apply { this.id = 4 }
+    TrackRequest(name = "page 1", forceNewSession = "1", appFirstOpen = "1").apply { this.id = 1 },
+    TrackRequest(name = "page 2", forceNewSession = "0", appFirstOpen = "0").apply { this.id = 2 },
+    TrackRequest(name = "page 3", forceNewSession = "0", appFirstOpen = "0").apply { this.id = 3 },
+    TrackRequest(name = "page 4", forceNewSession = "0", appFirstOpen = "0").apply { this.id = 4 }
 )
 internal val dataTracks = listOf(
     DataTrack(
         trackRequest = TrackRequest(
             name = "page 1",
-            fns = "1",
-            one = "1",
+            forceNewSession = "1",
+            appFirstOpen = "1",
             requestState = TrackRequest.RequestState.NEW
         ).apply { id = 1 },
         customParams = listOf(
@@ -77,8 +77,8 @@ internal val dataTracks = listOf(
     DataTrack(
         trackRequest = TrackRequest(
             name = "page 2",
-            fns = "0",
-            one = "0",
+            forceNewSession = "0",
+            appFirstOpen = "0",
             requestState = TrackRequest.RequestState.NEW
         ).apply {
             this.id = 2
@@ -94,8 +94,8 @@ internal val dataTracks = listOf(
     DataTrack(
         trackRequest = TrackRequest(
             name = "page 3",
-            fns = "0",
-            one = "0",
+            forceNewSession = "0",
+            appFirstOpen = "0",
             requestState = TrackRequest.RequestState.FAILED
         ).apply {
             this.id = 3
@@ -105,8 +105,8 @@ internal val dataTracks = listOf(
     DataTrack(
         trackRequest = TrackRequest(
             name = "page 4",
-            fns = "0",
-            one = "0",
+            forceNewSession = "0",
+            appFirstOpen = "0",
             requestState = TrackRequest.RequestState.DONE
         ).apply {
             this.id = 4

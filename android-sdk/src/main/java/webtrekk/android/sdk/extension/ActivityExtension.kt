@@ -28,21 +28,21 @@ package webtrekk.android.sdk.extension
 import android.app.Activity
 import androidx.fragment.app.Fragment
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.util.appFirstStart
+import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
 
 internal fun Activity.toTrackRequest(): TrackRequest =
     TrackRequest(
         name = this.localClassName,
         screenResolution = this.resolution(),
-        fns = currentSession,
-        one = appFirstStart
+        forceNewSession = currentSession,
+        appFirstOpen = appFirstOpen
     )
 
 internal fun Fragment.toTrackRequest(): TrackRequest =
     TrackRequest(
         name = this.javaClass.simpleName,
         screenResolution = this.context?.resolution(),
-        fns = currentSession,
-        one = appFirstStart
+        forceNewSession = currentSession,
+        appFirstOpen = appFirstOpen
     )

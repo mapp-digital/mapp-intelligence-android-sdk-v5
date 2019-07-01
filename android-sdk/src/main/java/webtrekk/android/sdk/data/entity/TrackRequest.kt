@@ -51,8 +51,8 @@ internal data class TrackRequest(
     @ColumnInfo(name = "screen_resolution") val screenResolution: String? = "0",
     @ColumnInfo(name = "time_zone") val timeZone: String? = currentTimeZone.toString(),
     @ColumnInfo(name = "time_stamp") val timeStamp: String? = currentTimeStamp.toString(),
-    @ColumnInfo(name = "fns") val fns: String,
-    @ColumnInfo(name = "app_first_start") val one: String,
+    @ColumnInfo(name = "force_new_session") val forceNewSession: String,
+    @ColumnInfo(name = "app_first_open") val appFirstOpen: String,
     @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion,
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW
 ) {
