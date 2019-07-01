@@ -55,7 +55,7 @@ import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
-import webtrekk.android.sdk.util.appFirstStart
+import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -108,8 +108,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 trackRequest = TrackRequest(
                     name = contextName,
                     screenResolution = context.resolution(),
-                    fns = currentSession,
-                    one = appFirstStart
+                    forceNewSession = currentSession,
+                    appFirstOpen = appFirstOpen
                 ),
                 trackingParams = trackingParams,
                 autoTrack = autoTracking,
@@ -125,8 +125,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     trackRequest = TrackRequest(
                         name = pageName,
                         screenResolution = context.resolution(),
-                        fns = currentSession,
-                        one = appFirstStart
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()
@@ -141,8 +141,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     trackRequest = TrackRequest(
                         name = eventName,
                         screenResolution = context.resolution(),
-                        fns = currentSession,
-                        one = appFirstStart
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()

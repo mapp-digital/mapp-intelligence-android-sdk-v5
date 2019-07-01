@@ -31,7 +31,7 @@ internal interface Sessions {
 
     fun getEverId(): String
 
-    fun getAppFirstStart(): String
+    fun getAppFirstOpen(): String
 
     fun startNewSession()
 
