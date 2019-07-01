@@ -32,10 +32,10 @@ internal val currentEverId: String
     inline get() = WebtrekkImpl.getInstance().sessions.getEverId()
 
 internal val currentSession: String
-    @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
+     inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
 
 internal val appFirstStart: String
-    @Synchronized inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstStart()
+     inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstStart()
 
 internal val trackDomain: String
     inline get() = WebtrekkImpl.getInstance().config.trackDomain
