@@ -57,7 +57,7 @@ import webtrekk.android.sdk.core.WebtrekkImpl
  *
  * val webtrekkConfigurations = WebtrekkConfiguration.Builder(trackIds = listOf("1234567"), trackDomain = "https://www.webtrekk.com")
  *  .logLevel(Logger.Level.BASIC)
- *  .requestsInterval(TimeUnit.HOURS, 10)
+ *  .requestsInterval(TimeUnit.MINUTES, 15)
  *  .build()
  *
  * val webtrekk = Webtrekk.getInstance()
@@ -80,7 +80,7 @@ import webtrekk.android.sdk.core.WebtrekkImpl
  *
  * val webtrekkConfigurations = WebtrekkConfiguration.Builder(trackIds = listOf("1234567"), trackDomain = "https://www.webtrekk.com")
  *  .logLevel(Logger.Level.BASIC)
- *  .requestsInterval(TimeUnit.HOURS, 10)
+ *  .requestsInterval(TimeUnit.MINUTES, 15)
  *  .okHttpClient(okHttpClient = okHttpClientConfig)
  *  .build()
  *
