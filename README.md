@@ -66,7 +66,7 @@ Note that the SDK uses [AndroidX](https://developer.android.com/jetpack/androidx
 ```kotlin
 val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("track Id"), trackDomain = "track domain")
        .logLevel(Logger.Level.BASIC)
-       .requestsInterval(TimeUnit.HOURS, 12) // The periodic time for sending the cached tracking data to the server
+       .requestsInterval(TimeUnit.MINUTES, 15) // The periodic time for sending the cached tracking data to the server
        .disableAutoTracking() // Auto tracking is enabled by default
        .build()
 ```
@@ -119,7 +119,7 @@ class SampleApplication : Application() {
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(listOf("track Id"), "track domain")
                 .logLevel(Logger.Level.BASIC)
-                .requestsInterval(TimeUnit.HOURS, 12)
+                .requestsInterval(TimeUnit.MINUTES, 15)
                 .disableAutoTracking()
                 .build()
 
