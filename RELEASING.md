@@ -2,7 +2,7 @@
 
 * All branches must be merged to `master` except `release`.
 * Merge `master` to `release`.
-* Travis job will start building `release` branch, and after success, it will deploy automatically the artifacts of current version x.y.z to Bintray.
+* Travis job will start automatically building `release` branch, and after success, it will deploy automatically the artifacts of current version x.y.z to Bintray.
 * After deploying successfully, `release` branch, update `README` with latest download versions and in `CHANGELOG`, change `in progress` to the release date. The commit message "released version x.y.z".
 * Go to Github and create a Tag (release) of current `release` with Tag version = current deployed version.
 * Merge `release` to `master`.
