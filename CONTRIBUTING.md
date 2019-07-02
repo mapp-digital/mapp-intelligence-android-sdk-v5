@@ -4,8 +4,8 @@ To start contributing to the SDK, you can start by forking this repository, crea
 
 Also, please follow the existing code conventions and style in order to keep the code as readable as possible.
 And run those two gradle scripts to ensure the code conventions and unit testing are working fine
-`./gradlew check connectedCheck --stacktrace`
-`./gradlew android-sdk:ktlint`
+* `./gradlew check connectedCheck --stacktrace`
+* `./gradlew android-sdk:ktlint`
 
 # License 
 
