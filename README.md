@@ -1,4 +1,4 @@
-# Webtrekk Android SDK v5 **[BETA]**
+# Webtrekk Android SDK v5 **[BETA]** [![Build Status](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-BETA.svg?branch=master)](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-BETA)
 Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your Android apps. Collect meaningful data about how your apps are used, track how your users interact with your app, how they view specific pages, and custom events. Based on the tracking data from apps different indicators can be measured, which are already known from the web analytics, such as page impressions, events, screen size, operating system, e-commerce tracking, etc.
 
 Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/) and uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) for non-blocking executions, [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for enqueuing and sending the track requests to optimize the device battery and app performance.
