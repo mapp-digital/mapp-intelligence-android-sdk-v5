@@ -136,7 +136,7 @@ class SampleApplication : Application() {
 
 <a name=auto_track></a>
 ### Auto Track
-At the minimum usage, by just initializing the SDK [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt) without disabling the auto track in the configurations, the SDK will start automatically tracking your activities and fragments, caching the data, and later send the data to the servers. Note, that auto track is enabled by default, to disable auto track of (activities and fragments), call `disableAutoTracking()` in configurations. If you want to disable auto track for fragments, call `disableFragmentsAutoTracking()`.
+At the minimum usage, by just initializing the SDK [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt) without disabling the auto track in the configurations, the SDK will start automatically tracking your activities and fragments, caching the data, and later send the data to the servers. Note, that auto track is enabled by default, to disable auto track of (activities and fragments), call `disableAutoTracking()` in configurations. If you want to disable auto track for fragments only, call `disableFragmentsAutoTracking()`.
 
 ```kotlin
 val webtrekkConfigurations =
