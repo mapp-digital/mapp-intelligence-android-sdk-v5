@@ -3,7 +3,7 @@
 To start contributing to the SDK, you can start by forking this repository, create a new branch from `master` and send the pull request.
 
 Also, please follow the existing code conventions and style in order to keep the code as readable as possible.
-And run those two gradle scripts to ensure the code conventions and unit testing are working fine
+And run those two gradle tasks to ensure the code conventions and unit testing are working fine
 * `./gradlew check connectedCheck --stacktrace`
 * `./gradlew android-sdk:ktlint`
 
