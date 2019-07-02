@@ -285,7 +285,7 @@ webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
 
 <a name=read_more></a>
 # Read more
-Check out the [docs](https://docs.webtrekk.com/display/ASVB) on the site to learn more about tracking server and custom params. 
+Check out the [docs](https://docs.webtrekk.com/display/ASVN) on the site to learn more about tracking server and custom params. 
 
 <a name=contributing></a>
 # Contributing
