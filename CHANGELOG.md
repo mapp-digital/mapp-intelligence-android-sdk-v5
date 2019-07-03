@@ -2,6 +2,7 @@
 
 ## Version 5.0.0-beta07 *(in progress)*
 * Add Android API tracking parameter as part of the tracking request.
+* Auto track of the app version name & code.
 
 ## Version 5.0.0-beta06 *(2019-06-26)*
 * Update `kotlin-gradle-plugin` to `1.3.31`.

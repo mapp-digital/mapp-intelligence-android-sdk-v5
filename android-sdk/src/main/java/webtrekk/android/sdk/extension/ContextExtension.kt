@@ -27,6 +27,7 @@ package webtrekk.android.sdk.extension
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowManager
 
@@ -41,3 +42,15 @@ fun Context.resolution(): String {
     windowManager.defaultDisplay.getMetrics(displayMetrics)
     return String.format("%sx%s", displayMetrics.widthPixels, displayMetrics.heightPixels)
 }
+
+val Context.appVersionName: String
+    inline get() = this.packageManager.getPackageInfo(this.packageName, 0).versionName
+
+val Context.appVersionCode: String
+    inline get() {
+        return if (Build.VERSION.SDK_INT >= 28) {
+            this.packageManager.getPackageInfo(this.packageName, 0).longVersionCode.toString()
+        } else {
+            this.packageManager.getPackageInfo(this.packageName, 0).versionCode.toString()
+        }
+    }
