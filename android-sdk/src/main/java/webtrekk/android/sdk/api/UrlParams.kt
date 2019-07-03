@@ -25,7 +25,9 @@
 
 package webtrekk.android.sdk.api
 
+import webtrekk.android.sdk.ParamType
 import webtrekk.android.sdk.api.UrlParams.EVENT_NAME
+import webtrekk.android.sdk.customParam
 
 internal object UrlParams {
 
@@ -44,6 +46,8 @@ internal object UrlParams {
     const val LANGUAGE = "la"
 
     const val EVENT_NAME = "ct"
+
+    val ANDROID_API_LEVEL = customParam(ParamType.SESSION_PARAM, 814)
 }
 
 internal enum class RequestType(val value: String) {
