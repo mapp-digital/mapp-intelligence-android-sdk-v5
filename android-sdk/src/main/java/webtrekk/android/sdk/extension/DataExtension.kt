@@ -66,6 +66,7 @@ internal fun DataTrack.buildUrl(trackDomain: String, trackIds: List<String>, cur
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
         "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +
+        "&${UrlParams.ANDROID_API_LEVEL}=${this.trackRequest.apiLevel}" +
         customParams.buildCustomParams()
 }
 
