@@ -25,8 +25,6 @@
 
 package webtrekk.android.sdk
 
-import androidx.annotation.IntRange
-
 /**
  * This file, contains all the predefined custom params. and helper function that helps you create your
  * own custom params depend on their names/keys in the analytics.
@@ -156,5 +154,5 @@ typealias TrackingParams = LinkedHashMap<String, String>
  * val customParam = customParam(EVENT_PARAM, 15)
  */
 @JvmName("createCustomParam")
-fun customParam(paramType: ParamType, @IntRange(from = 0, to = 500) value: Int): String =
+fun customParam(paramType: ParamType, value: Int): String =
     "${paramType.value}$value"
