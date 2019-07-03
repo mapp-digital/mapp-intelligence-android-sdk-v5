@@ -53,6 +53,8 @@ import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.TrackCustomPage
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.Optout
+import webtrekk.android.sdk.extension.appVersionCode
+import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
 import webtrekk.android.sdk.util.appFirstOpen
@@ -109,7 +111,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     name = contextName,
                     screenResolution = context.resolution(),
                     forceNewSession = currentSession,
-                    appFirstOpen = appFirstOpen
+                    appFirstOpen = appFirstOpen,
+                    appVersionName = context.appVersionName,
+                    appVersionCode = context.appVersionCode
                 ),
                 trackingParams = trackingParams,
                 autoTrack = autoTracking,
@@ -126,7 +130,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                         name = pageName,
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
-                        appFirstOpen = appFirstOpen
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()
@@ -142,7 +148,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                         name = eventName,
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
-                        appFirstOpen = appFirstOpen
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut()
