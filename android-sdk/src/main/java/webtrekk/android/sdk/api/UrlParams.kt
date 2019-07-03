@@ -48,6 +48,10 @@ internal object UrlParams {
     const val EVENT_NAME = "ct"
 
     val ANDROID_API_LEVEL = customParam(ParamType.SESSION_PARAM, 814)
+
+    val APP_VERSION_NAME = customParam(ParamType.SESSION_PARAM, 804)
+
+    val APP_VERSION_CODE = customParam(ParamType.SESSION_PARAM, 805)
 }
 
 internal enum class RequestType(val value: String) {

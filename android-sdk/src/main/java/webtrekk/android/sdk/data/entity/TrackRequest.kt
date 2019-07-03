@@ -54,6 +54,8 @@ internal data class TrackRequest(
     @ColumnInfo(name = "force_new_session") val forceNewSession: String,
     @ColumnInfo(name = "app_first_open") val appFirstOpen: String,
     @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion,
+    @ColumnInfo(name = "app_version_name") val appVersionName: String? = "0",
+    @ColumnInfo(name = "app_version_code") val appVersionCode: String? = "0",
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW
 ) {
     enum class RequestState(val value: String) {

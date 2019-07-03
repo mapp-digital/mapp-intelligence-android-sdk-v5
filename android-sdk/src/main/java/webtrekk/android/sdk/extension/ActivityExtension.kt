@@ -36,7 +36,9 @@ internal fun Activity.toTrackRequest(): TrackRequest =
         name = this.localClassName,
         screenResolution = this.resolution(),
         forceNewSession = currentSession,
-        appFirstOpen = appFirstOpen
+        appFirstOpen = appFirstOpen,
+        appVersionName = this.appVersionName,
+        appVersionCode = this.appVersionCode
     )
 
 internal fun Fragment.toTrackRequest(): TrackRequest =
@@ -44,5 +46,7 @@ internal fun Fragment.toTrackRequest(): TrackRequest =
         name = this.javaClass.simpleName,
         screenResolution = this.context?.resolution(),
         forceNewSession = currentSession,
-        appFirstOpen = appFirstOpen
+        appFirstOpen = appFirstOpen,
+        appVersionName = this.context?.appVersionName,
+        appVersionCode = this.context?.appVersionCode
     )
