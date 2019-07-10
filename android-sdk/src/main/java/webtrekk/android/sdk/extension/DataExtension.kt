@@ -32,7 +32,7 @@ import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal val TrackRequest.webtrekkRequestParams
-    inline get() = "$webtrekkVersion,${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
+    inline get() = "${webtrekkVersion.replace(".", "")},${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
 
 internal val TrackRequest.userAgent
     inline get() = "Tracking Library $webtrekkVersion (Android $osVersion; $deviceManufacturer $deviceModel; ${language}_$country)"
