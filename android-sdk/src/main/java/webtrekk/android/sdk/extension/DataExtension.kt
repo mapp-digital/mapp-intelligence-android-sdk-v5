@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.extension
 
 import okhttp3.Request
+import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
@@ -51,7 +52,11 @@ internal fun List<CustomParam>.buildCustomParams(): String {
     if (this == emptyArray<CustomParam>()) return ""
 
     val string = StringBuilder()
-    this.forEach { string.append("&${it.paramKey.encodeToUTF8()}=${it.paramValue.encodeToUTF8()}") }
+    this.forEach {
+        val paramVal = if (it.paramKey == Param.MEDIA_CODE) "wt_mc=" + it.paramValue else it.paramValue
+
+        string.append("&${it.paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
+    }
 
     return string.toString()
 }
