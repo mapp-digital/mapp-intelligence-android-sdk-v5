@@ -1,5 +1,7 @@
 # Change Log
 
+## Version 5.0.0-beta08 *(in progress)*
+
 ## Version 5.0.0-beta07 *(2019-07-11)*
 * Add Android API tracking parameter as part of the tracking request.
 * Auto track of the app version name & code.
