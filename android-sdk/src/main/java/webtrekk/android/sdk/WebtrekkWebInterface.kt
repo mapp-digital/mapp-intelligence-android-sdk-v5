@@ -56,6 +56,22 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
         return webtrekk.getEverId()
     }
 
+    /**
+     * Tracks custom page coming from Smart Pixel SDK.
+     */
+    @JavascriptInterface
+    fun trackCustomPage(pageName: String, params: String) {
+        //todo parse params to map and call webtrekk.trackCustomPage
+    }
+
+    /**
+     * Track Custom event coming from Smart Pixel SDK.
+     */
+    @JavascriptInterface
+    fun trackCustomEvent(eventName: String, params: String) {
+        //todo parse params to map and call webtrekk.trackCustomEvent
+    }
+
     companion object {
         /**
          * The JavaScript interface name that Pixel Web SDK expects.
