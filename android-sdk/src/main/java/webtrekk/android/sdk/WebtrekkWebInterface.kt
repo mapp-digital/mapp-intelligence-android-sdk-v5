@@ -61,7 +61,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomPage(pageName: String, params: String) {
-        //todo parse params to map and call webtrekk.trackCustomPage
+        // todo parse params to map and call webtrekk.trackCustomPage
     }
 
     /**
@@ -69,7 +69,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomEvent(eventName: String, params: String) {
-        //todo parse params to map and call webtrekk.trackCustomEvent
+        // todo parse params to map and call webtrekk.trackCustomEvent
     }
 
     companion object {
