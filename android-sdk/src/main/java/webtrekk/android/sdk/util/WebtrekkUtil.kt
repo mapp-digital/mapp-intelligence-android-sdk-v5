@@ -37,6 +37,9 @@ internal val currentSession: String
 internal val appFirstOpen: String
     inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstOpen()
 
+internal val appUpdated: Boolean
+    inline get() = WebtrekkImpl.getInstance().isAppUpdate()
+
 internal val trackDomain: String
     inline get() = WebtrekkImpl.getInstance().config.trackDomain
 

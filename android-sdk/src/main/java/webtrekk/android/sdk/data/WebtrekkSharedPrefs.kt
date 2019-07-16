@@ -49,6 +49,10 @@ internal class WebtrekkSharedPrefs(context: Context) {
         inline get() = sharedPreferences.getBoolean(USER_OPT_OUT, false)
         set(value) = sharedPreferences.edit().putBoolean(USER_OPT_OUT, value).apply()
 
+    var appVersion: String
+        inline get() = sharedPreferences.getString(APP_VERSION, "") ?: ""
+        set(value) = sharedPreferences.edit().putString(APP_VERSION, value).apply()
+
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     companion object {
@@ -58,5 +62,6 @@ internal class WebtrekkSharedPrefs(context: Context) {
         const val APP_FIRST_OPEN = "appFirstOpen"
         const val NEW_SESSION_KEY = "forceNewSession"
         const val USER_OPT_OUT = "optOut"
+        const val APP_VERSION = "appVersion"
     }
 }

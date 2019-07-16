@@ -63,4 +63,16 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
     override fun isOptOut(): Boolean {
         return webtrekkSharedPrefs.optOut
     }
+
+    override fun isAppUpdated(currentAppVersion: String): Boolean {
+        return if (!webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.APP_VERSION)) {
+            webtrekkSharedPrefs.appVersion = currentAppVersion
+
+            false
+        } else {
+            val storedAppVersion = webtrekkSharedPrefs.appVersion
+
+            storedAppVersion != currentAppVersion.apply { webtrekkSharedPrefs.appVersion = currentAppVersion }
+        }
+    }
 }
