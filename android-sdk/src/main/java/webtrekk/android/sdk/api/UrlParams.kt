@@ -52,6 +52,8 @@ internal object UrlParams {
     val APP_VERSION_NAME = customParam(ParamType.SESSION_PARAM, 804)
 
     val APP_VERSION_CODE = customParam(ParamType.SESSION_PARAM, 805)
+
+    val APP_UPDATED = customParam(ParamType.SESSION_PARAM, 815)
 }
 
 internal enum class RequestType(val value: String) {

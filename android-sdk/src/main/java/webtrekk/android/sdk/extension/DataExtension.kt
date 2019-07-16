@@ -33,7 +33,10 @@ import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal val TrackRequest.webtrekkRequestParams
-    inline get() = "${webtrekkVersion.replace(".", "")},${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
+    inline get() = "${webtrekkVersion.replace(
+        ".",
+        ""
+    )},${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
 
 internal val TrackRequest.userAgent
     inline get() = "Tracking Library $webtrekkVersion (Android $osVersion; $deviceManufacturer $deviceModel; ${language}_$country)"
@@ -53,7 +56,8 @@ internal fun List<CustomParam>.buildCustomParams(): String {
 
     val string = StringBuilder()
     this.forEach {
-        val paramVal = if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue
+        val paramVal =
+            if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue
 
         string.append("&${it.paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
     }
@@ -61,7 +65,11 @@ internal fun List<CustomParam>.buildCustomParams(): String {
     return string.toString()
 }
 
-internal fun DataTrack.buildUrl(trackDomain: String, trackIds: List<String>, currentEverId: String): String {
+internal fun DataTrack.buildUrl(
+    trackDomain: String,
+    trackIds: List<String>,
+    currentEverId: String
+): String {
     return "$trackDomain/${trackIds.joinToString(separator = ",")}" +
         "/wt" +
         "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
@@ -77,7 +85,11 @@ internal fun DataTrack.buildUrl(trackDomain: String, trackIds: List<String>, cur
         customParams.buildCustomParams()
 }
 
-internal fun DataTrack.buildUrlRequest(trackDomain: String, trackIds: List<String>, currentEverId: String): Request {
+internal fun DataTrack.buildUrlRequest(
+    trackDomain: String,
+    trackIds: List<String>,
+    currentEverId: String
+): Request {
     return Request.Builder()
         .url(buildUrl(trackDomain, trackIds, currentEverId))
         .build()

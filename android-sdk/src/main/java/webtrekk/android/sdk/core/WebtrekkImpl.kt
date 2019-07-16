@@ -38,9 +38,11 @@ import org.koin.log.EmptyLogger
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
+import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.util.CoroutineDispatchers
@@ -248,6 +250,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         sessions.setEverId()
         sessions.startNewSession().also { logger.info("A new session has started") }
 
+        if (isAppUpdate()) {
+            logger.info("The app has new version")
+
+            sendAppUpdateEvent()
+        }
+
         scheduler.scheduleCleanUp()
         scheduler.scheduleSendRequests(
             repeatInterval = config.requestsInterval,
@@ -267,11 +275,30 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    internal fun isAppUpdate(): Boolean {
+        return sessions.isAppUpdated(context.appVersionName)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    internal fun sendAppUpdateEvent() {
+        val trackingParams = TrackingParams()
+        trackingParams.putAll(
+            mapOf(
+                UrlParams.APP_UPDATED to "1"
+            )
+        )
+
+        trackCustomEvent(APP_UPDATE_EVENT, trackingParams)
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     internal fun cancelParentJob() {
         _job.cancel()
     }
 
     companion object {
+
+        const val APP_UPDATE_EVENT = "app_updated"
 
         @Volatile
         private lateinit var INSTANCE: WebtrekkImpl
