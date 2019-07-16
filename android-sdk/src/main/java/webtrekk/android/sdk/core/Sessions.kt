@@ -40,4 +40,6 @@ internal interface Sessions {
     fun optOut(value: Boolean)
 
     fun isOptOut(): Boolean
+
+    fun isAppUpdated(currentAppVersion: String): Boolean
 }
