@@ -57,7 +57,7 @@ internal fun List<CustomParam>.buildCustomParams(): String {
     val string = StringBuilder()
     this.forEach {
         val paramVal =
-            if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue
+            if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue // For media code param, it needs to be double encoded
 
         string.append("&${it.paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
     }
