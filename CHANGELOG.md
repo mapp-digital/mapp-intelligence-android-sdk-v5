@@ -1,5 +1,7 @@
 # Change Log
 
+## Version 5.0.0-beta09 *(in progress)*
+
 ## Version 5.0.0-beta08 *(2019-07-26)*
 * App Update Event is auto tracked.
 * Auto tracking full name activity/fragment support.
