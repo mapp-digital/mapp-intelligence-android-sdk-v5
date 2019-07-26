@@ -33,7 +33,7 @@ import webtrekk.android.sdk.util.currentSession
 
 internal fun Activity.toTrackRequest(): TrackRequest =
     TrackRequest(
-        name = this.localClassName,
+        name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",
         screenResolution = this.resolution(),
         forceNewSession = currentSession,
         appFirstOpen = appFirstOpen,
@@ -43,7 +43,7 @@ internal fun Activity.toTrackRequest(): TrackRequest =
 
 internal fun Fragment.toTrackRequest(): TrackRequest =
     TrackRequest(
-        name = this.javaClass.simpleName,
+        name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",
         screenResolution = this.context?.resolution(),
         forceNewSession = currentSession,
         appFirstOpen = appFirstOpen,
