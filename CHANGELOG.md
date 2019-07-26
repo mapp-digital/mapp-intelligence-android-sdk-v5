@@ -2,6 +2,7 @@
 
 ## Version 5.0.0-beta08 *(in progress)*
 * App Update Event is auto tracked.
+* Auto tracking full name activity/fragment support.
 
 ## Version 5.0.0-beta07 *(2019-07-11)*
 * Add Android API tracking parameter as part of the tracking request.
