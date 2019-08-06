@@ -34,9 +34,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.dsl.module.module
-import org.koin.log.EmptyLogger
 import org.koin.standalone.KoinComponent
-import org.koin.standalone.StandAloneContext.startKoin
+import org.koin.standalone.StandAloneContext.loadKoinModules
 import org.koin.standalone.inject
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
@@ -232,13 +231,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         }
 
         try {
-            startKoin(
-                listOf(
-                    mainModule,
-                    dataModule,
-                    internalInteractorsModule,
-                    externalInteractorsModule
-                ), logger = EmptyLogger()
+            loadKoinModules(
+                mainModule,
+                dataModule,
+                internalInteractorsModule,
+                externalInteractorsModule
             )
         } catch (e: Exception) {
             logger.error("Webtrekk is already in use: $e")
