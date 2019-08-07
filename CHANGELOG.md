@@ -1,6 +1,7 @@
 # Change Log
 
 ## Version 5.0.0-beta09 *(in progress)*
+* Fix Koin conflict if `startKoin` is called from app side.
 
 ## Version 5.0.0-beta08 *(2019-07-26)*
 * App Update Event is auto tracked.
