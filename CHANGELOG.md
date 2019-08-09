@@ -1,5 +1,7 @@
 # Change Log
 
+## Version 5.0.0-beta10 *(in progress)*
+
 ## Version 5.0.0-beta09 *(2019-08-09)*
 * Fix Koin conflict if `startKoin` is called from app side.
 
