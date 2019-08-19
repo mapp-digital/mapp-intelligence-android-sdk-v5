@@ -29,7 +29,7 @@ import androidx.work.Constraints
 import okhttp3.OkHttpClient
 
 /**
- * A configuration interface used to customize [Webtrekk] behaviour.
+ * A configuration interface for customizing [Webtrekk] configurations.
  *
  * You should NOT implement this interface. Use [WebtrekkConfiguration] to set up the configuration, which is a concrete implementation of
  * this interface with a builder pattern.
@@ -37,7 +37,7 @@ import okhttp3.OkHttpClient
  * Ideally, you must set valid [trackIds] and [trackDomain], without setting them up, webtrekk won't send
  * any tracking data.
  *
- * All other config parameters have default values, which you may override those values.
+ * All other config parameters have default values, which you may override their values.
  * @see [DefaultConfiguration] for the default values (behaviour) of each parameter.
  */
 interface Config {

@@ -32,7 +32,11 @@ import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
+/**
+ * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
+ */
 internal val TrackRequest.webtrekkRequestParams
+    // The webtrekk version number must be sent without '.'.
     inline get() = "${webtrekkVersion.replace(
         ".",
         ""
@@ -57,7 +61,8 @@ internal fun List<CustomParam>.buildCustomParams(): String {
     val string = StringBuilder()
     this.forEach {
         val paramVal =
-            if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue // For media code param, it needs to be double encoded
+            // For media code param, it needs to be double encoded
+            if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue
 
         string.append("&${it.paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
     }
