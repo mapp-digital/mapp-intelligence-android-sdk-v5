@@ -27,6 +27,13 @@ package webtrekk.android.sdk.extension
 
 import java.net.URLEncoder
 
+/**
+ * This file contains helper general extension functions.
+ */
+
+/**
+ * Validates if a property is empty or null, will throw [error] indicating the missing element.
+ */
 inline fun <reified T : Any> T?.nullOrEmptyThrowError(propertyName: T): T {
     when (this) {
         is String? -> if (this.isNullOrBlank())
@@ -39,6 +46,9 @@ inline fun <reified T : Any> T?.nullOrEmptyThrowError(propertyName: T): T {
     return this as T
 }
 
+/**
+ * Validates that a list is not empty.
+ */
 fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
     this.nullOrEmptyThrowError(propertyName)
 

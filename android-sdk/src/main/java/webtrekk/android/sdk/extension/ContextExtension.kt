@@ -31,6 +31,9 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowManager
 
+/**
+ * [Context] extension functions.
+ */
 val Context.isPortrait
     inline get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 

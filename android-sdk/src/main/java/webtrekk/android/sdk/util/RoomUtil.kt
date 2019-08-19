@@ -29,6 +29,13 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+/**
+ * A generic helper function for building a room database. Returns an instance of [RoomDatabase].
+ *
+ * @param [context] the app context.
+ * @param [databaseName] the database name.
+ * @param [database] the database class that extends [RoomDatabase].
+ */
 fun <T : RoomDatabase> buildRoomDatabase(
     context: Context,
     databaseName: String,

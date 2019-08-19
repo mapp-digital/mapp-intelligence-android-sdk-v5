@@ -32,6 +32,10 @@ import java.util.TimeZone
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
+/**
+ * Util properties for Android.
+ */
+
 val currentOsVersion: String
     inline get() = Build.VERSION.RELEASE ?: ""
 

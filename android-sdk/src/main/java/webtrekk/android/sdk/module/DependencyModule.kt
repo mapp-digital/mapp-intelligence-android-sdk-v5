@@ -43,6 +43,9 @@ import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 
+/**
+ * Module for all dependencies of the data layer (internal repositories and api data sources) injected in [WebtrekkImpl].
+ */
 internal val dataModule = module {
     single<TrackRequestRepository> {
         TrackRequestRepositoryImpl(
@@ -61,6 +64,9 @@ internal val dataModule = module {
     }
 }
 
+/**
+ * Module for all the internal interactors in the domain layer injected in [WebtrekkImpl].
+ */
 internal val internalInteractorsModule = module {
     single<Sessions> { SessionsImpl(get()) }
     single<Scheduler> { SchedulerImpl(get()) }
