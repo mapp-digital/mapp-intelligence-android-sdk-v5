@@ -29,10 +29,18 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import webtrekk.android.sdk.Logger
 
+/**
+ * Static function for catching exceptions in coroutines.
+ *
+ * @param logger to log the exception.
+ */
 fun coroutineExceptionHandler(logger: Logger) = CoroutineExceptionHandler { _, exception ->
     logger.error("Caught coroutine exception $exception")
 }
 
+/**
+ * A wrapper class for Coroutine Dispatchers, for providing the dispatchers to be injected.
+ */
 data class CoroutineDispatchers(
     val mainDispatcher: CoroutineDispatcher,
     val defaultDispatcher: CoroutineDispatcher,

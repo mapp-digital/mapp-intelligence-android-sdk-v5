@@ -29,9 +29,21 @@ import kotlin.properties.Delegates
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+/**
+ * Returns a property delegate for a read/write property with a non-`null` value that is initialized not during
+ * object construction time but at a later time. Trying to read the property before the initial value has been
+ * assigned results in an exception with a customized error message.
+ *
+ * @param errorMessage the message you want to be shown when the exception is thrown.
+ */
 fun <T : Any> Delegates.initOrException(errorMessage: String): ReadWriteProperty<Any?, T> =
     InitOrException(errorMessage)
 
+/**
+ * A [ReadWriteProperty] class which you can override the error message.
+ *
+ * @param errorMessage the message you want to be shown when the exception is thrown.
+ */
 class InitOrException<T : Any>(errorMessage: String) : ReadWriteProperty<Any?, T> {
     private var value: T? = null
     private val errorMsg = errorMessage

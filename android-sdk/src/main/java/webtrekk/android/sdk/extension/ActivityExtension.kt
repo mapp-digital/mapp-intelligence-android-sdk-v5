@@ -31,6 +31,9 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
 
+/**
+ * Extension function to create a [TrackRequest] from [Activity] to be inserted in the DB.
+ */
 internal fun Activity.toTrackRequest(): TrackRequest =
     TrackRequest(
         name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",
@@ -41,6 +44,9 @@ internal fun Activity.toTrackRequest(): TrackRequest =
         appVersionCode = this.appVersionCode
     )
 
+/**
+ * Extension function to create a [TrackRequest] from [Fragment] to be inserted in the DB.
+ */
 internal fun Fragment.toTrackRequest(): TrackRequest =
     TrackRequest(
         name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",

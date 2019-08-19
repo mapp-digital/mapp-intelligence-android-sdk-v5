@@ -28,6 +28,9 @@ package webtrekk.android.sdk.util
 import webtrekk.android.sdk.core.WebtrekkImpl
 import kotlin.random.Random
 
+/**
+ * Utils for Webtrekk SDK.
+ */
 internal val currentEverId: String
     inline get() = WebtrekkImpl.getInstance().sessions.getEverId()
 

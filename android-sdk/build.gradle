@@ -91,6 +91,9 @@ dependencies {
     androidTestImplementation libs.androidWorkmanagerTest
 }
 
+/**
+ * Generate Java docs.
+ */
 dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/javadoc"

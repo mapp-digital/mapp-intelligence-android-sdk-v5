@@ -33,6 +33,9 @@ import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+/**
+ * A suspendable coroutine version of [Call] in [OkHttp3].
+ */
 suspend fun Call.await(): Response {
     return suspendCancellableCoroutine { cont ->
         enqueue(object : Callback {
@@ -49,6 +52,9 @@ suspend fun Call.await(): Response {
     }
 }
 
+/**
+ * A suspendable function that executes a high-order function or lambda and returns the result encapsulated in [Result].
+ */
 suspend inline fun <T> Call.executeRequestForResult(block: () -> T): Result<T> {
     var response: Response? = null
 
