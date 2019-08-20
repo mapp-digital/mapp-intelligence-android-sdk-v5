@@ -27,6 +27,8 @@ package webtrekk.android.sdk
 
 import android.webkit.JavascriptInterface
 import webtrekk.android.sdk.extension.jsonToMap
+import webtrekk.android.sdk.util.webtrekkLogger
+import java.lang.Exception
 
 /**
  * Use analytics in a WebView.
@@ -61,7 +63,11 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomPage(pageName: String, params: String) {
-        webtrekk.trackCustomPage(pageName, params.jsonToMap())
+        try {
+            webtrekk.trackCustomPage(pageName, params.jsonToMap())
+        } catch (e: Exception) {
+            webtrekkLogger.info(e.message ?: "Something is a wrong")
+        }
     }
 
     /**
@@ -69,7 +75,11 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomEvent(eventName: String, params: String) {
-        webtrekk.trackCustomEvent(eventName, params.jsonToMap())
+        try {
+            webtrekk.trackCustomEvent(eventName, params.jsonToMap())
+        } catch (e: Exception) {
+            webtrekkLogger.info(e.message ?: "Something is a wrong")
+        }
     }
 
     companion object {
