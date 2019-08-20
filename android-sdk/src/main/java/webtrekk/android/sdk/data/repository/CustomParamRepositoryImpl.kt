@@ -28,6 +28,9 @@ package webtrekk.android.sdk.data.repository
 import webtrekk.android.sdk.data.dao.CustomParamDao
 import webtrekk.android.sdk.data.entity.CustomParam
 
+/**
+ * A concrete implementation of [CustomParamRepository] that depends on Room database.
+ */
 internal class CustomParamRepositoryImpl(private val customParamDao: CustomParamDao) :
     CustomParamRepository {
 

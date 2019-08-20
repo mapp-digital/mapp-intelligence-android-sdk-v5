@@ -29,6 +29,9 @@ import webtrekk.android.sdk.data.dao.TrackRequestDao
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
+/**
+ * A concrete implementation of [TrackRequestRepository] that depends on Room database.
+ */
 internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequestDao) :
     TrackRequestRepository {
 

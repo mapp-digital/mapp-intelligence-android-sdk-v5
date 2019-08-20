@@ -28,6 +28,9 @@ package webtrekk.android.sdk.data.converter
 import androidx.room.TypeConverter
 import webtrekk.android.sdk.data.entity.TrackRequest
 
+/**
+ * Converter used by Room to convert the [TrackRequest.RequestState] to [String] and vice versa to be stored in the database.
+ */
 internal class RequestStateConverter {
 
     @TypeConverter

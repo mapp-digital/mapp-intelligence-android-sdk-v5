@@ -32,6 +32,9 @@ import androidx.room.ColumnInfo
 import androidx.room.ForeignKey
 import androidx.room.Index
 
+/**
+ * A table represents the custom params associated per tracking request [TrackRequest.id].
+ */
 @Entity(
     tableName = "custom_params",
     foreignKeys = [ForeignKey(

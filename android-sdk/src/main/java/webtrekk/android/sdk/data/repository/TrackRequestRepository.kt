@@ -28,12 +28,49 @@ package webtrekk.android.sdk.data.repository
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
+/**
+ * A repository interface that represents the [TrackRequest] operations in the data layer. The domain layer interacts ONLY with repositories interfaces and not directly with Room.
+ *
+ * All the methods are suspendable and use Coroutines under the hood for the I/O operations.
+ * All the methods return the object encapsulated in a [Result], and handling the success or the failure of the results are done in the domain layer.
+ */
 internal interface TrackRequestRepository {
 
+    /**
+     * Returns the [TrackRequest] encapsulated in a [Result] indicating if the [trackRequest] is added in the database or not.
+     *
+     * @param trackRequest
+     */
     suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest>
+
+    /**
+     * Returns list of [DataTrack] from the database encapsulated in a [Result].
+     */
     suspend fun getTrackRequests(): Result<List<DataTrack>>
+
+    /**
+     * Returns list of [DataTrack] based on the track request state [TrackRequest.RequestState] encapsulated in a [Result].
+     *
+     * @param requestStates list of track request states.
+     */
     suspend fun getTrackRequestsByState(requestStates: List<TrackRequest.RequestState>): Result<List<DataTrack>>
+
+    /**
+     * Returns list of [TrackRequest] with the updating new states encapsulated in a [Result].
+     *
+     * @param trackRequests that have new states.
+     */
     suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>>
+
+    /**
+     * Returns true if list of [TrackRequest] are deleted from the database, false otherwise, encapsulated in a [Result].
+     *
+     * @param trackRequests list of [TrackRequest] that need to be deleted from the database.
+     */
     suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean>
+
+    /**
+     * Returns true if all [TrackRequest] are deleted from the database, false otherwise, encapsulated in a [Result].
+     */
     suspend fun deleteAllTrackRequests(): Result<Boolean>
 }

@@ -38,6 +38,9 @@ import webtrekk.android.sdk.util.currentTimeZone
 import webtrekk.android.sdk.util.currentTimeStamp
 import webtrekk.android.sdk.util.currentWebtrekkVersion
 
+/**
+ * A table represents the tracking data per each request in the database.
+ */
 @Entity(tableName = "tracking_data")
 internal data class TrackRequest(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,

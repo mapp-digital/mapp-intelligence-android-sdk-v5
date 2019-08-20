@@ -27,7 +27,16 @@ package webtrekk.android.sdk.api.datasource
 
 import okhttp3.Request
 
+/**
+ * Interface represents the data source of interacting with the Api.
+ */
 internal interface SyncRequestsDataSource<R> {
 
+    /**
+     * Returns the result of a [Request] encapsulated in a [Result] with the [receiver].
+     *
+     * @param request the request url.
+     * @param receiver the object that will be encapsulated within a [Result].
+     */
     suspend fun sendRequest(request: Request, receiver: R): Result<R>
 }

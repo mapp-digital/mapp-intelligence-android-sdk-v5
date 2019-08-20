@@ -30,6 +30,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import webtrekk.android.sdk.data.entity.CustomParam
 
+/**
+ * Dao interface has [CustomParam] database interactions.
+ */
 @Dao
 internal interface CustomParamDao {
 

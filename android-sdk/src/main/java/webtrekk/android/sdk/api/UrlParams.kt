@@ -29,6 +29,9 @@ import webtrekk.android.sdk.ParamType
 import webtrekk.android.sdk.api.UrlParams.EVENT_NAME
 import webtrekk.android.sdk.customParam
 
+/**
+ * This file contains the predefined URL params that Webtrekk Api expects used in the SDK when sending the requests.
+ */
 internal object UrlParams {
 
     const val WEBTREKK_PARAM = "p"
@@ -37,6 +40,7 @@ internal object UrlParams {
 
     const val FORCE_NEW_SESSION = "fns"
 
+    // todo to be changed, since the app first open will have a new param
     const val APP_FIRST_OPEN = "one"
 
     const val TIME_ZONE = "tz"
@@ -56,6 +60,9 @@ internal object UrlParams {
     val APP_UPDATED = customParam(ParamType.SESSION_PARAM, 815)
 }
 
+/**
+ * Enum class represents the type of the request. For now the request is either Page request or Event request.
+ */
 internal enum class RequestType(val value: String) {
 
     PAGE(""),

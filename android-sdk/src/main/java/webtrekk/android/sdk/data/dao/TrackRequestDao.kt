@@ -35,6 +35,9 @@ import androidx.room.Delete
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
+/**
+ * Dao interface has [TrackRequest] database interactions.
+ */
 @Dao
 internal interface TrackRequestDao {
 
