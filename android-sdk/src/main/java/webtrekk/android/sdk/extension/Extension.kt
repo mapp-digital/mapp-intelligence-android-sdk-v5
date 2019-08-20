@@ -63,10 +63,7 @@ fun String?.jsonToMap(): Map<String, String> {
             val value = obj.getString(key)
             map[key] = value
         }
-    } catch (e: JSONException) {
-        error(e)
     } catch (e: Exception) {
-        error(e)
     }
     return map
 }
