@@ -26,7 +26,7 @@
 package webtrekk.android.sdk
 
 import android.webkit.JavascriptInterface
-import webtrekk.android.sdk.util.jsonToMap
+import webtrekk.android.sdk.extension.jsonToMap
 
 /**
  * Use analytics in a WebView.
@@ -48,7 +48,6 @@ import webtrekk.android.sdk.util.jsonToMap
  *
  */
 open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
-
     /**
      * Returns the ever Id, that will be used by Pixel Web SDK, to continue the current user visit.
      */
@@ -62,7 +61,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomPage(pageName: String, params: String) {
-        webtrekk.trackCustomPage(pageName, jsonToMap(params))
+        webtrekk.trackCustomPage(pageName, params.jsonToMap())
     }
 
     /**
@@ -70,7 +69,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomEvent(eventName: String, params: String) {
-        webtrekk.trackCustomEvent(eventName, jsonToMap(params))
+        webtrekk.trackCustomEvent(eventName, params.jsonToMap())
     }
 
     companion object {
