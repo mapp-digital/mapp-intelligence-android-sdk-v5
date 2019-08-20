@@ -26,6 +26,7 @@
 package webtrekk.android.sdk
 
 import android.webkit.JavascriptInterface
+import webtrekk.android.sdk.util.jsonToMap
 
 /**
  * Use analytics in a WebView.
@@ -38,7 +39,7 @@ import android.webkit.JavascriptInterface
  * @sample webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
  * On the web, Pixel Web SDK expects [WebtrekkWebInterface.TAG] alongside [WebtrekkWebInterface.getEverId]. They must be sent in this way.
  * Also, you can implement this class with extra JavaScript methods, but the JavaScript interface name must be [WebtrekkWebInterface.TAG].
- *
+ * [WebtrekkWebInterface.trackCustomEvent]   [WebtrekkWebInterface.trackCustomPage]
  * Second: Append "wt_eid" with ever Id [Webtrekk.getEverId] to the URL that will be loaded by the [WebView].
  * @sample webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
  *
@@ -61,7 +62,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomPage(pageName: String, params: String) {
-        // todo parse params to map and call webtrekk.trackCustomPage
+        webtrekk.trackCustomPage(pageName, jsonToMap(params))
     }
 
     /**
@@ -69,7 +70,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomEvent(eventName: String, params: String) {
-        // todo parse params to map and call webtrekk.trackCustomEvent
+        webtrekk.trackCustomEvent(eventName, jsonToMap(params))
     }
 
     companion object {

@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.util
 
 import android.os.Build
+import org.json.JSONObject
 import webtrekk.android.sdk.BuildConfig
 import java.util.Locale
 import java.util.TimeZone
@@ -66,3 +67,15 @@ val currentTimeStamp: Long
 
 val currentWebtrekkVersion: String
     inline get() = BuildConfig.VERSION_NAME
+
+fun jsonToMap(params: String): Map<String, String> {
+    val obj = JSONObject(params)
+    val keysItr = obj.keys()
+    val map = HashMap<String, String>()
+    while (keysItr.hasNext()) {
+        val key = keysItr.next()
+        val value = obj.getString(key)
+        map[key] = value
+    }
+    return map
+}
