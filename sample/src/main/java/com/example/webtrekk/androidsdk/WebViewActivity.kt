@@ -25,46 +25,29 @@
 
 package com.example.webtrekk.androidsdk
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.web_view_activity.*
+import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackingParams
-import webtrekk.android.sdk.Webtrekk
+import android.webkit.WebSettings
+import webtrekk.android.sdk.WebtrekkWebInterface
 
-// Experimental
-//@Track(
-//    contextName = "Product activity",
-//    trackingParams = [TrackParams(paramKey = Param.INTERNAL_SEARCH, paramVal = "search")]
-//)
-class MainActivity : AppCompatActivity() {
 
+class WebViewActivity : AppCompatActivity() {
+
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.web_view_activity)
+        webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
+        webView.settings.javaScriptEnabled=true
+        webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
 
-        startDetailsActivity.setOnClickListener {
-            val intent = Intent(this, DetailsActivity::class.java)
-            startActivity(intent)
-        }
 
-        webViewActivity.setOnClickListener {
-            val intent = Intent(this, WebViewActivity::class.java)
-            startActivity(intent)
-        }
 
-        val trackingParams = TrackingParams()
 
-        trackingParams.putAll(
-            mapOf(
-                Param.INTERNAL_SEARCH to "search",
-                Param.BACKGROUND_COLOR to "blue",
-                Param.TRACKING_LOCATION to "my new location"
-            )
-        )
-
-        Webtrekk.getInstance().trackPage(this, "Product activity")
-        Webtrekk.getInstance().trackCustomPage("First page", trackingParams)
     }
 }
