@@ -48,6 +48,7 @@ internal abstract class WebtrekkDatabase : RoomDatabase() {
     abstract fun customParamDataDao(): CustomParamDao
 
     companion object {
+        // todo change the database name to "webtrekk-db" when going out of beta.
         const val DATABASE_NAME = "webtrekk-test-db"
     }
 }

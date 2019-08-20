@@ -27,8 +27,25 @@ package webtrekk.android.sdk.data.repository
 
 import webtrekk.android.sdk.data.entity.CustomParam
 
+/**
+ * A repository interface that represents the [CustomParam] operations in the data layer. The domain layer interacts ONLY with repositories interfaces and not directly with Room.
+ *
+ * All the methods are suspendable and use Coroutines under the hood for the I/O operations.
+ * All the methods return the object encapsulated in a [Result], and handling the success or the failure of the results are done in the domain layer.
+ */
 internal interface CustomParamRepository {
 
+    /**
+     * Returns list of [CustomParam] after adding in the database encapsulated in a [Result].
+     *
+     * @param customParams list of [CustomParam] to be added in the database.
+     */
     suspend fun addCustomParams(customParams: List<CustomParam>): Result<List<CustomParam>>
+
+    /**
+     * Returns list of [CustomParam] for a [TrackRequest] by track request id, encapsulated in a [Result].
+     *
+     * @param trackId the [TrackRequest] Id.
+     */
     suspend fun getCustomParamsByTrackId(trackId: Long): Result<List<CustomParam>>
 }
