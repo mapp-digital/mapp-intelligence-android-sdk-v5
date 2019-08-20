@@ -43,11 +43,7 @@ class WebViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.web_view_activity)
         webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
-        webView.settings.javaScriptEnabled=true
+        webView.settings.javaScriptEnabled = true
         webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
-
-
-
-
     }
 }

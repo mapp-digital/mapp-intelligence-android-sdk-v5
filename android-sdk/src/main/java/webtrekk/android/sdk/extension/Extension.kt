@@ -25,6 +25,9 @@
 
 package webtrekk.android.sdk.extension
 
+import org.json.JSONException
+import org.json.JSONObject
+import java.lang.Exception
 import java.net.URLEncoder
 
 inline fun <reified T : Any> T?.nullOrEmptyThrowError(propertyName: T): T {
@@ -50,3 +53,20 @@ fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
 }
 
 fun String.encodeToUTF8(): String = URLEncoder.encode(this, "UTF-8")
+fun String?.jsonToMap(): Map<String, String> {
+    val map = HashMap<String, String>()
+    try {
+        val obj = JSONObject(this)
+        val keysItr = obj.keys()
+        while (keysItr.hasNext()) {
+            val key = keysItr.next()
+            val value = obj.getString(key)
+            map[key] = value
+        }
+    } catch (e: JSONException) {
+        error(e)
+    } catch (e: Exception) {
+        error(e)
+    }
+    return map
+}
