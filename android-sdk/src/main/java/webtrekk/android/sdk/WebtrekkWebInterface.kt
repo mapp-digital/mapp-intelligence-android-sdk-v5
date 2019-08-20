@@ -26,6 +26,9 @@
 package webtrekk.android.sdk
 
 import android.webkit.JavascriptInterface
+import webtrekk.android.sdk.extension.jsonToMap
+import webtrekk.android.sdk.util.webtrekkLogger
+import java.lang.Exception
 
 /**
  * Use analytics in a WebView.
@@ -38,7 +41,7 @@ import android.webkit.JavascriptInterface
  * @sample webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
  * On the web, Pixel Web SDK expects [WebtrekkWebInterface.TAG] alongside [WebtrekkWebInterface.getEverId]. They must be sent in this way.
  * Also, you can implement this class with extra JavaScript methods, but the JavaScript interface name must be [WebtrekkWebInterface.TAG].
- *
+ * [WebtrekkWebInterface.trackCustomEvent]   [WebtrekkWebInterface.trackCustomPage]
  * Second: Append "wt_eid" with ever Id [Webtrekk.getEverId] to the URL that will be loaded by the [WebView].
  * @sample webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
  *
@@ -47,7 +50,6 @@ import android.webkit.JavascriptInterface
  *
  */
 open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
-
     /**
      * Returns the ever Id, that will be used by Pixel Web SDK, to continue the current user visit.
      */
@@ -61,7 +63,11 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomPage(pageName: String, params: String) {
-        // todo parse params to map and call webtrekk.trackCustomPage
+        try {
+            webtrekk.trackCustomPage(pageName, params.jsonToMap())
+        } catch (e: Exception) {
+            webtrekkLogger.info(e.message ?: "Unknown exception caught in WebView while tracking custom page")
+        }
     }
 
     /**
@@ -69,7 +75,11 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun trackCustomEvent(eventName: String, params: String) {
-        // todo parse params to map and call webtrekk.trackCustomEvent
+        try {
+            webtrekk.trackCustomEvent(eventName, params.jsonToMap())
+        } catch (e: Exception) {
+            webtrekkLogger.info(e.message ?: "Unknown exception caught in WebView while tracking custom event")
+        }
     }
 
     companion object {

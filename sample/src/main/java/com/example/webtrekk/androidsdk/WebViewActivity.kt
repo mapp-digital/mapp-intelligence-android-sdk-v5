@@ -23,39 +23,27 @@
  *
  */
 
-package webtrekk.android.sdk.util
+package com.example.webtrekk.androidsdk
 
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.core.WebtrekkImpl
-import kotlin.random.Random
+import android.annotation.SuppressLint
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.web_view_activity.*
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.Param
+import webtrekk.android.sdk.TrackingParams
+import android.webkit.WebSettings
+import webtrekk.android.sdk.WebtrekkWebInterface
 
-/**
- * Utils for Webtrekk SDK.
- */
-internal val currentEverId: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getEverId()
 
-internal val currentSession: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
+class WebViewActivity : AppCompatActivity() {
 
-internal val appFirstOpen: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstOpen()
-
-internal val appUpdated: Boolean
-    inline get() = WebtrekkImpl.getInstance().isAppUpdate()
-
-internal val trackDomain: String
-    inline get() = WebtrekkImpl.getInstance().config.trackDomain
-
-internal val trackIds: List<String>
-    inline get() = WebtrekkImpl.getInstance().config.trackIds
-
-internal val webtrekkLogger: Logger
-    inline get() = WebtrekkImpl.getInstance().logger
-
-internal fun generateEverId(): String {
-    val date = currentTimeStamp / 1000
-    val random = Random
-
-    return "6${String.format("%010d%08d", date, random.nextLong(100000000))}"
+    @SuppressLint("SetJavaScriptEnabled")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.web_view_activity)
+        webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
+        webView.settings.javaScriptEnabled = true
+        webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
+    }
 }

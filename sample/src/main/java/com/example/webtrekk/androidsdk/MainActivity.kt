@@ -49,6 +49,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        webViewActivity.setOnClickListener {
+            val intent = Intent(this, WebViewActivity::class.java)
+            startActivity(intent)
+        }
+
         val trackingParams = TrackingParams()
 
         trackingParams.putAll(
