@@ -28,6 +28,9 @@ package webtrekk.android.sdk.data
 import android.content.Context
 import android.content.SharedPreferences
 
+/**
+ * A class that manages all of Webtrekk internal SharedPreferences.
+ */
 internal class WebtrekkSharedPrefs(context: Context) {
 
     val sharedPreferences: SharedPreferences =

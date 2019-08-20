@@ -30,9 +30,18 @@ import okhttp3.Request
 import webtrekk.android.sdk.extension.executeRequestForResult
 import webtrekk.android.sdk.data.entity.DataTrack
 
+/**
+ * The concrete implementation of [SyncRequestsDataSource], depending on [OkHttpClient].
+ */
 internal class SyncRequestsDataSourceImpl(private val okHttpClient: OkHttpClient) :
     SyncRequestsDataSource<DataTrack> {
 
+    /**
+     * Returns the result of a [Request] encapsulated in a [Result] with the [receiver] of [DataTrack].
+     *
+     * @param request the request url.
+     * @param receiver an instance of [DataTrack] that will be encapsulated within a [Result].
+     */
     override suspend fun sendRequest(request: Request, receiver: DataTrack): Result<DataTrack> {
         return okHttpClient.newCall(request).executeRequestForResult {
             receiver

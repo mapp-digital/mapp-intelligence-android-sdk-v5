@@ -28,6 +28,9 @@ package webtrekk.android.sdk.data.entity
 import androidx.room.Embedded
 import androidx.room.Relation
 
+/**
+ * A data class that is used to combine a track request with its custom params in one class when selecting from the database.
+ */
 internal data class DataTrack(
     @Embedded var trackRequest: TrackRequest,
     @Relation(
