@@ -46,8 +46,10 @@ internal val trackDomain: String
 
 internal val trackIds: List<String>
     inline get() = WebtrekkImpl.getInstance().config.trackIds
+
 internal val webtrekkLogger: Logger
     inline get() = WebtrekkImpl.getInstance().logger
+
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random
