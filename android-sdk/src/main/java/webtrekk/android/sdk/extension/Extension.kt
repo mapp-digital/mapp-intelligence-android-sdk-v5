@@ -62,7 +62,7 @@ fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
 
 fun String.encodeToUTF8(): String = URLEncoder.encode(this, "UTF-8")
 
-fun String?.jsonToMap(): Map<String, String> {
+fun String.jsonToMap(): Map<String, String> {
     val map = HashMap<String, String>()
     val obj = JSONObject(this)
     val keysItr = obj.keys()
