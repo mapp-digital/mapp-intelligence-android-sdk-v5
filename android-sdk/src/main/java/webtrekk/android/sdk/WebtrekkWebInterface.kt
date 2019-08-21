@@ -59,7 +59,10 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
     }
 
     /**
-     * Tracks custom page coming from Smart Pixel SDK.
+     * Track custom page coming from Smart Pixel Web SDK.
+     *
+     * @param pageName the page name in the web view.
+     * @param params a json string has all the custom params coming from Smart Pixel.
      */
     @JavascriptInterface
     fun trackCustomPage(pageName: String, params: String) {
@@ -71,7 +74,10 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
     }
 
     /**
-     * Track Custom event coming from Smart Pixel SDK.
+     * Track custom event coming from Smart Pixel Web SDK.
+     *
+     * @param eventName the event name happening in the web view.
+     * @param params a json string has all the custom params coming from Smart Pixel.
      */
     @JavascriptInterface
     fun trackCustomEvent(eventName: String, params: String) {
