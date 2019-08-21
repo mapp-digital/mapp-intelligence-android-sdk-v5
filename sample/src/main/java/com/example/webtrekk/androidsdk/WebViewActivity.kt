@@ -30,11 +30,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.web_view_activity.*
 import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.Param
-import webtrekk.android.sdk.TrackingParams
-import android.webkit.WebSettings
 import webtrekk.android.sdk.WebtrekkWebInterface
-
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -42,7 +38,11 @@ class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.web_view_activity)
-        webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
+
+        webView.addJavascriptInterface(
+            WebtrekkWebInterface(Webtrekk.getInstance()),
+            WebtrekkWebInterface.TAG
+        )
         webView.settings.javaScriptEnabled = true
         webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
     }
