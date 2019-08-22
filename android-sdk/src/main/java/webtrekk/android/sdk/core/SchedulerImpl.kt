@@ -34,6 +34,9 @@ import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import java.util.concurrent.TimeUnit
 
+/**
+ * The implementation of [Scheduler] using [WorkManager].
+ */
 internal class SchedulerImpl(private val workManager: WorkManager) :
     Scheduler {
 
@@ -69,7 +72,7 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
             .enqueue()
     }
 
-    // To be changed to clean up upon executing the requests
+    // To be changed to clean up after executing the requests
     override fun scheduleCleanUp() {
         val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .addTag(CleanUpWorker.TAG)

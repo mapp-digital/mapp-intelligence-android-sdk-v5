@@ -25,21 +25,52 @@
 
 package webtrekk.android.sdk.core
 
+/**
+ * An interface contains all the methods that are used by SharedPreferences in the SDK.
+ */
 internal interface Sessions {
 
+    /**
+     * Generate and set the ever id that uniquely associated per user.
+     */
     fun setEverId()
 
+    /**
+     * Returns the ever id which is stored in the SharedPreferences.
+     */
     fun getEverId(): String
 
+    /**
+     * Returns "1" if the app is first used by the SDK, after that always returns "0".
+     */
     fun getAppFirstOpen(): String
 
+    /**
+     * Starting a new session when the app is freshly opened, setting its value to "1".
+     */
     fun startNewSession()
 
+    /**
+     * Returns "1: when the app is freshly opened indicating that that app has a new session, otherwise returns "0".
+     */
     fun getCurrentSession(): String
 
+    /**
+     * Set the opt out value in SharedPreferences, true means to opt out, false to stop opting out.
+     *
+     * @param value the opt out is true, false to stop opt out.
+     */
     fun optOut(value: Boolean)
 
+    /**
+     * Returns true if opt out is active, false otherwise.
+     */
     fun isOptOut(): Boolean
 
+    /**
+     * Returns true if the app is updated, by comparing the current app version number to the previously stored app version number. If the app is updated, returns true and replace the old app version number with the current new one. Return false if the app is not updated.
+     *
+     * @param currentAppVersion the current app version number.
+     */
     fun isAppUpdated(currentAppVersion: String): Boolean
 }

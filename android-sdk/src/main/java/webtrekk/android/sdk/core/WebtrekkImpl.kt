@@ -63,6 +63,9 @@ import webtrekk.android.sdk.util.currentSession
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
+/**
+ * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, CoroutineScope {
 
@@ -177,6 +180,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         sessions.getEverId()
     }
 
+    /**
+     * Loading and init the dependencies that will be injected.
+     */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun loadModules() {
         val mainModule = module {
@@ -242,23 +248,31 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         }
     }
 
+    /**
+     * The internal starting point of the SDK, where sessions, schedulers..etc are used.
+     */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun internalInit() = launch(coroutineExceptionHandler(logger)) {
-        sessions.setEverId()
+        sessions.setEverId() // Setting up the ever id at first start of using the SDK.
+
+        // Starting a new session at every freshly app open.
         sessions.startNewSession().also { logger.info("A new session has started") }
 
+        // If there's a new update, auto track it as an event.
         if (isAppUpdate()) {
             logger.info("The app has new version")
 
             sendAppUpdateEvent()
         }
 
+        // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
         scheduler.scheduleCleanUp()
         scheduler.scheduleSendRequests(
             repeatInterval = config.requestsInterval,
             constraints = config.workManagerConstraints
         )
 
+        // If auto tracked is enabled, start [AutoTrack] use case.
         if (config.autoTracking) {
             autoTrack(
                 AutoTrack.Params(
@@ -271,11 +285,17 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         }
     }
 
+    /**
+     * Returns true if the app has a new update, false otherwise.
+     */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     internal fun isAppUpdate(): Boolean {
         return sessions.isAppUpdated(context.appVersionName)
     }
 
+    /**
+     * Track the app updated as an event tracking.
+     */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     internal fun sendAppUpdateEvent() {
         val trackingParams = TrackingParams()
