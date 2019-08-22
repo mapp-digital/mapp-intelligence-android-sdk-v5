@@ -31,6 +31,9 @@ import androidx.fragment.app.FragmentManager
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.extension.toTrackRequest
 
+/**
+ * The implementation of [AppState]. This class listens to both activity and fragments life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
+ */
 internal class AppStateImpl : AppState<TrackRequest>() {
 
     override fun onActivityStarted(activity: Activity?) {
@@ -46,6 +49,9 @@ internal class AppStateImpl : AppState<TrackRequest>() {
     }
 }
 
+/**
+ * The implementation of [AppState]. This class listens to ONLY activity life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
+ */
 internal class ActivityAppStateImpl : AppState<TrackRequest>() {
 
     override fun onActivityStarted(activity: Activity?) {
