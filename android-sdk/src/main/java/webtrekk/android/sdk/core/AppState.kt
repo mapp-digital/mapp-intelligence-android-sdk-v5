@@ -33,10 +33,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
+/**
+ * An abstract class, used for listening to the events coming from [LifecycleWrapper] and propagate their events data.
+ */
 internal abstract class AppState<T : Any> : LifecycleWrapper() {
 
+    /**
+     * The callback which is used in children classes whenever they receive an event and propagate the values to the lambda.
+     */
     lateinit var lifecycleReceiver: LifecycleReceiver<T>
 
+    /**
+     * Register to the application life cycle, to auto track the current activities and fragments.
+     *
+     * @param context the application context.
+     * @param onReceive the lambda that will be used on the caller whenever there is an event comes from the lifecycle and the children propagate that event.
+     */
     inline fun listenToLifeCycle(context: Context, crossinline onReceive: (T) -> Unit) {
         (context as? Application)?.registerActivityLifecycleCallbacks(this)?.let {
             lifecycleReceiver = object : LifecycleReceiver<T> {
@@ -47,16 +59,32 @@ internal abstract class AppState<T : Any> : LifecycleWrapper() {
         }
     }
 
+    /**
+     * Used to unregister the activity lifecycle callbacks.
+     *
+     * @param context the application context.
+     */
     fun disable(context: Context) {
         (context as? Application)?.unregisterActivityLifecycleCallbacks(this)
     }
 }
 
+/**
+ * An interface used as a receiver, so whenever the parent class receives an event from [LifecycleWrapper], the [onLifecycleEventReceived] is used to pass that event to the caller.
+ */
 internal interface LifecycleReceiver<in T> {
 
+    /**
+     * A callback used to pass the events coming from receiver to be used in the caller side.
+     *
+     * @param event
+     */
     fun onLifecycleEventReceived(event: T)
 }
 
+/**
+ * A wrapper class merging the activity lifecycle callbacks and fragments lifecycle callbacks in one class.
+ */
 internal open class LifecycleWrapper :
     Application.ActivityLifecycleCallbacks,
     FragmentManager.FragmentLifecycleCallbacks() {

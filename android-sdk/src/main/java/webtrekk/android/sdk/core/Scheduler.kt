@@ -27,13 +27,33 @@ package webtrekk.android.sdk.core
 
 import androidx.work.Constraints
 
+/**
+ * An interface contains all the methods that will be used for scheduling the workers by [WorkManager].
+ */
 internal interface Scheduler {
 
+    /**
+     * Schedule a periodic worker to send the requests every [repeatInterval] times with the [constraints] in the [Config].
+     *
+     * NOTE, that the minimum period is 15 minutes by the [WorkManager], and the maximum should be up to 1 hour, so our servers can show the correct data in the time frames.
+     *
+     * @param repeatInterval the periodic time that will be used by [WorkManager] to send the requests from the cache to the server.
+     * @param constraints the [WorkManager] constraints that will be applied on that worker.
+     */
     fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints)
 
+    /**
+     * A one time worker that will be used to send all available requests in the cache to the server, then cleaning up the cache. Used for Opt out.
+     */
     fun sendRequestsThenCleanUp()
 
+    /**
+     * A worker that is scheduled to clean up the requests in the cache that are already sent to the server.
+     */
     fun scheduleCleanUp()
 
+    /**
+     * Cancel current periodic worker that is used to send the request every n times. Used for Opt out.
+     */
     fun cancelScheduleSendRequests()
 }
