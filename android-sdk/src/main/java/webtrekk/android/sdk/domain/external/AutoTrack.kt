@@ -40,6 +40,9 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * The auto track use case. The auto track listens to activity and/or fragments life cycles, and at each event coming from life cycle, will be inserted in the data base.
+ */
 internal class AutoTrack(
     coroutineContext: CoroutineContext,
     private val appState: AppState<TrackRequest>,
@@ -47,13 +50,18 @@ internal class AutoTrack(
 ) : ExternalInteractor<AutoTrack.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext)
+    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger by inject<Logger>()
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
+        // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
+        // Listen to the life cycle listeners, and cache the data
         appState.listenToLifeCycle(invokeParams.context) { trackRequest ->
             logger.info("Received a request from auto track: $trackRequest")
 
@@ -68,5 +76,11 @@ internal class AutoTrack(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param [context] the application context, which will be used to start the auto track listeners.
+     * @param [isOptOut] the value of the opt out.
+     */
     data class Params(val context: Context, val isOptOut: Boolean)
 }

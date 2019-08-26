@@ -30,11 +30,15 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 
+/**
+ * Get all the cached data tracks from the data base.
+ */
 internal class GetCachedDataTracks(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<GetCachedDataTracks.Params, List<DataTrack>> {
 
     override suspend operator fun invoke(invokeParams: Params): Result<List<DataTrack>> {
+        // If the track request state list is empty, the get all the data in the data base. otherwise, just get the data that are related to the specific list of states.
         return if (invokeParams.requestStates.isEmpty()) {
             trackRequestRepository.getTrackRequests()
         } else {
@@ -42,5 +46,10 @@ internal class GetCachedDataTracks(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param [requestStates] list of the track requests state that will retrieve the track requests from the data base based on those states.
+     */
     data class Params(val requestStates: List<TrackRequest.RequestState>)
 }

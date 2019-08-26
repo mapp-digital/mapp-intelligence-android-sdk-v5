@@ -39,17 +39,24 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Track custom event use case. The track custom event will append the 'ct' param automatically to the custom params.
+ */
 internal class TrackCustomEvent(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<TrackCustomEvent.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext)
+    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger by inject<Logger>()
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
+        // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
         scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
@@ -57,8 +64,9 @@ internal class TrackCustomEvent(
         )
         ) {
             val params = invokeParams.trackingParams.toMutableMap()
-            params[RequestType.EVENT.value] = invokeParams.trackRequest.name
+            params[RequestType.EVENT.value] = invokeParams.trackRequest.name // Appending the 'ct' param (event) to the custom params.
 
+            // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
@@ -70,6 +78,13 @@ internal class TrackCustomEvent(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param trackRequest the track request that is created and will be cached in the data base.
+     * @param trackingParams the custom params associated with the [trackRequest].
+     * @param isOptOut the opt out value.
+     */
     data class Params(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
