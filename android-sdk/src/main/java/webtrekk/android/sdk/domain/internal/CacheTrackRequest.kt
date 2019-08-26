@@ -29,6 +29,9 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 
+/**
+ * Caching the created data in the database.
+ */
 internal class CacheTrackRequest(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<CacheTrackRequest.Params, TrackRequest> {
@@ -37,5 +40,10 @@ internal class CacheTrackRequest(
         return trackRequestRepository.addTrackRequest(invokeParams.trackRequest)
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param trackRequest the track request that will be cached in the data base.
+     */
     data class Params(val trackRequest: TrackRequest)
 }

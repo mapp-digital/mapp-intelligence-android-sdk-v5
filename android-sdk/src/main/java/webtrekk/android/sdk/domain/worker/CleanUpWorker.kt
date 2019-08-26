@@ -37,18 +37,37 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 
+/**
+ * [WorkManager] worker responsible about cleaning the successfully executed cached requests.
+ */
 internal class CleanUpWorker(
     context: Context,
     workerParameters: WorkerParameters
 ) :
     CoroutineWorker(context, workerParameters), KoinComponent {
 
+    /**
+     * [coroutineDispatchers] the injected coroutine dispatchers.
+     */
     private val coroutineDispatchers: CoroutineDispatchers by inject()
+
+    /**
+     * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+     */
     private val getCachedDataTracks: GetCachedDataTracks by inject()
+
+    /**
+     * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
+     */
     private val clearTrackRequests: ClearTrackRequests by inject()
+
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger: Logger by inject()
 
     override suspend fun doWork(): Result {
+        // get the data from the data base with state DONE only.
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
             getCachedDataTracks(GetCachedDataTracks.Params(requestStates = listOf(TrackRequest.RequestState.DONE)))

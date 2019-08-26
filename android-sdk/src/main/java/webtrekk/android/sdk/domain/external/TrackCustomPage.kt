@@ -38,23 +38,31 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Track custom page use case. The main difference between [TrackCustomPage] and [ManualTrack], that is manual track relies on [Context] and is used for tracking activity/fragments specifically, while track custom page is used to track any kind of pages without relying on [Context].
+ */
 internal class TrackCustomPage(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<TrackCustomPage.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext)
+    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger by inject<Logger>()
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
+        // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
         scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
             logger
         )
         ) {
+            // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
@@ -66,6 +74,13 @@ internal class TrackCustomPage(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param trackRequest the track request that is created and will be cached in the data base.
+     * @param trackingParams the custom params associated with the [trackRequest].
+     * @param isOptOut the opt out value.
+     */
     data class Params(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,

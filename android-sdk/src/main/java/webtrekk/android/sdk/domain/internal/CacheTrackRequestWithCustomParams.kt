@@ -32,6 +32,9 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 import webtrekk.android.sdk.extension.toCustomParams
 
+/**
+ * Caching the created data and its custom param in the database.
+ */
 internal class CacheTrackRequestWithCustomParams(
     private val trackRequestRepository: TrackRequestRepository,
     private val customParamRepository: CustomParamRepository
@@ -39,12 +42,15 @@ internal class CacheTrackRequestWithCustomParams(
 
     override suspend operator fun invoke(invokeParams: Params): Result<DataTrack> {
         return runCatching {
+            // First, add the track request to the data base
             val cachedTrackRequest =
                 trackRequestRepository.addTrackRequest(invokeParams.trackRequest)
 
+            // Create the custom params with the id of the inserted track request
             val customParams =
                 invokeParams.trackingParams.toCustomParams(cachedTrackRequest.getOrThrow().id)
 
+            // insert the custom params in the data base
             val cachedCustomParams = customParamRepository.addCustomParams(customParams)
 
             DataTrack(
@@ -54,5 +60,11 @@ internal class CacheTrackRequestWithCustomParams(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param trackRequest the track request that will be cached in the data base.
+     * @param trackingParams the custom params that related to [trackRequest] that will be cached in the data base.
+     */
     data class Params(val trackRequest: TrackRequest, val trackingParams: Map<String, String>)
 }

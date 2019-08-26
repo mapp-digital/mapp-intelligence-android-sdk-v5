@@ -39,6 +39,9 @@ import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * The manual track use case. NOTE that manual track won't work if auto track is enabled because manual track works if [Context] is provided, and intentionally it's used to track activity/fragment, while [TrackCustomPage] could be used to track any custom page because it's not dependent on [Context].
+ */
 internal class ManualTrack(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequest: CacheTrackRequest,
@@ -46,13 +49,18 @@ internal class ManualTrack(
 ) : ExternalInteractor<ManualTrack.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext)
+    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger by inject<Logger>()
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
+        // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
+        // If auto track is enabled, then return
         if (invokeParams.autoTrack) {
             logger.warn("Auto track is enabled, call 'disableAutoTrack()' in the configurations to disable the auto tracking")
 
@@ -63,11 +71,12 @@ internal class ManualTrack(
             logger
         )
         ) {
+            // If there are no custom param, then cache as a single track request.
             if (invokeParams.trackingParams.isEmpty()) {
                 cacheTrackRequest(CacheTrackRequest.Params(invokeParams.trackRequest))
                     .onSuccess { logger.debug("Cached the track request: $it") }
                     .onFailure { logger.warn("Error while caching the request: $it") }
-            } else {
+            } else { // If has custom params, then cache as a track request with custom params.
                 cacheTrackRequestWithCustomParams(
                     CacheTrackRequestWithCustomParams.Params(
                         invokeParams.trackRequest,
@@ -80,6 +89,14 @@ internal class ManualTrack(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param trackRequest the track request that is created and will be cached in the data base.
+     * @param trackingParams the custom params associated with the [trackRequest].
+     * @param autoTrack the auto track config value.
+     * @param isOptOut the opt out value.
+     */
     data class Params(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
