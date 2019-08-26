@@ -43,6 +43,9 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * The opting out use case, opting out will stop the SDK from tracking data, clearing all the data in the data base, or send them first then clean up, and canceling all work manager workers.
+ */
 internal class Optout(
     coroutineContext: CoroutineContext,
     private val sessions: Sessions,
@@ -52,17 +55,23 @@ internal class Optout(
 ) : ExternalInteractor<Optout.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext)
+    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger by inject<Logger>()
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
+        // Store the opt out value in the shared preferences.
         sessions.optOut(invokeParams.optOutValue)
 
+        // If opt out value is set to true, then disable tracking data, cancel all work manager workers and detete or send then delete current data in the data base.
         if (invokeParams.optOutValue) {
-            appState.disable(invokeParams.context)
-            scheduler.cancelScheduleSendRequests()
+            appState.disable(invokeParams.context) // Disable the auto track
+            scheduler.cancelScheduleSendRequests() // Cancel the work manager workers
 
+            // If sendCurrentData is true, then one time worker will send current data requests to the server, then clean up the data base.
             if (invokeParams.sendCurrentData) {
                 scheduler.sendRequestsThenCleanUp()
             } else {
@@ -82,6 +91,13 @@ internal class Optout(
 
     fun isActive(): Boolean = sessions.isOptOut()
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param context the application context.
+     * @param optOutValue the opt out value.
+     * @param sendCurrentData the flag of sending the current cached data in the data base before opting out or not.
+     */
     data class Params(
         val context: Context,
         val optOutValue: Boolean,

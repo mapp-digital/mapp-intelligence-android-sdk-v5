@@ -32,6 +32,9 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.api.datasource.SyncRequestsDataSource
 import webtrekk.android.sdk.domain.InternalInteractor
 
+/**
+ * Execute the track requests URLs.
+ */
 internal class ExecuteRequest(
     private val trackRequestRepository: TrackRequestRepository,
     private val syncRequestsDataSource: SyncRequestsDataSource<DataTrack>
@@ -52,5 +55,11 @@ internal class ExecuteRequest(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param [request] the request that will be sent.
+     * @param [dataTrack] the data track which will be returned with the new state after [request] is executed successfully.
+     */
     data class Params(val request: Request, val dataTrack: DataTrack)
 }

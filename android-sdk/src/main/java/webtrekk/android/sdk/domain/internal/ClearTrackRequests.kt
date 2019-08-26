@@ -29,11 +29,15 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.InternalInteractor
 
+/**
+ * Clean the data requests in the data base.
+ */
 internal class ClearTrackRequests(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<ClearTrackRequests.Params, Boolean> {
 
     override suspend operator fun invoke(invokeParams: Params): Result<Boolean> {
+        // If track requests list is empty, then delete everything in the data base, otherwise, just cleaned the specified track requests.
         return if (invokeParams.trackRequests.isEmpty()) {
             trackRequestRepository.deleteAllTrackRequests()
         } else {
@@ -41,5 +45,10 @@ internal class ClearTrackRequests(
         }
     }
 
+    /**
+     * A data class encapsulating the specific params related to this use case.
+     *
+     * @param [trackRequests] list of track requests that will be deleted from the data base.
+     */
     data class Params(val trackRequests: List<TrackRequest>)
 }

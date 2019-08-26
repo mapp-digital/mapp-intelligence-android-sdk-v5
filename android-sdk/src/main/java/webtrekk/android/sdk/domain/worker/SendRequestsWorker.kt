@@ -41,18 +41,37 @@ import webtrekk.android.sdk.util.currentEverId
 import webtrekk.android.sdk.util.trackDomain
 import webtrekk.android.sdk.util.trackIds
 
+/**
+ * [WorkManager] worker that retrieves the data from the data base, builds the requests and send them to the server.
+ */
 internal class SendRequestsWorker(
     context: Context,
     workerParameters: WorkerParameters
 ) :
     CoroutineWorker(context, workerParameters), KoinComponent {
 
+    /**
+     * [coroutineDispatchers] the injected coroutine dispatchers.
+     */
     private val coroutineDispatchers: CoroutineDispatchers by inject()
+
+    /**
+     * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+     */
     private val getCachedDataTracks: GetCachedDataTracks by inject()
+
+    /**
+     * [executeRequest] the injected internal interactor for executing the requests.
+     */
     private val executeRequest: ExecuteRequest by inject()
+
+    /**
+     * [logger] the injected logger from Webtrekk.
+     */
     private val logger: Logger by inject()
 
     override suspend fun doWork(): Result {
+        // retrieves the data in the data base with state of NEW or FAILED only.
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
             getCachedDataTracks(
