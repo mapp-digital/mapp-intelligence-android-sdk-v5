@@ -57,7 +57,6 @@ class SampleApplication : Application() {
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .workManagerConstraints(constraints = constraints)
                 .okHttpClient(okHttpClient = okHttpClient)
-                .disableAutoTracking()
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
