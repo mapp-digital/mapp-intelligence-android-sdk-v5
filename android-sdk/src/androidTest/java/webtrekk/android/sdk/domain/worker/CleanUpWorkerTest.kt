@@ -49,6 +49,6 @@ internal class CleanUpWorkerTest : WorkManagerTest() {
 
         val workInfo = workManager.getWorkInfoById(cleanUpWorker.id).get()
 
-        assertThat(workInfo.state, `is`(WorkInfo.State.RUNNING))
+        assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
     }
 }
