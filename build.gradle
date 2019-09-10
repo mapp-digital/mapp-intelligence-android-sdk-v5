@@ -34,9 +34,9 @@ buildscript {
             'mavenPluginVersion'     : '2.1',
             'bintrayPluginVersion'   : '1.8.4',
 
-            'compileSdkVersion'      : 29,
+            'compileSdkVersion'      : 28,
             'minSdkVersion'          : 21,
-            'targetSdkVersion'       : 29,
+            'targetSdkVersion'       : 28,
 
             'appCompatVersion'       : '1.1.0',
             'constraintLayoutVersion': '2.0.0-beta2',
