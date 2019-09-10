@@ -40,8 +40,7 @@ internal object UrlParams {
 
     const val FORCE_NEW_SESSION = "fns"
 
-    // todo to be changed, since the app first open will have a new param
-    const val APP_FIRST_OPEN = "one"
+    val APP_FIRST_OPEN = customParam(ParamType.SESSION_PARAM, 821)
 
     const val TIME_ZONE = "tz"
 
