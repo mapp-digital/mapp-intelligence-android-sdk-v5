@@ -41,7 +41,7 @@ internal class WebtrekkSharedPrefs(context: Context) {
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
 
     var appFirstOpen: String
-        inline get() = sharedPreferences.getString(APP_FIRST_OPEN, "0") ?: "0"
+        inline get() = sharedPreferences.getString(APP_FIRST_OPEN, "0") ?: "1"
         set(value) = sharedPreferences.edit().putString(APP_FIRST_OPEN, value).apply()
 
     var fns: String
