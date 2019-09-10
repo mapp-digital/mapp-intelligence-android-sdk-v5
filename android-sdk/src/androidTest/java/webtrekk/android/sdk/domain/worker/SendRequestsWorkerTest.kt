@@ -40,11 +40,11 @@ internal class SendRequestsWorkerTest : WorkManagerTest() {
     @Throws(Exception::class)
     fun testSendRequestsWorker_PeriodicWork() {
         val sendRequestWorker = PeriodicWorkRequest.Builder(
-            SendRequestsWorker::class.java,
-            15,
-            TimeUnit.MINUTES
+                SendRequestsWorker::class.java,
+                15,
+                TimeUnit.MINUTES
         )
-            .build()
+                .build()
 
         val workManager = WorkManager.getInstance(context)
         val testDriver = WorkManagerTestInitHelper.getTestDriver(context)
@@ -55,6 +55,6 @@ internal class SendRequestsWorkerTest : WorkManagerTest() {
 
         val workInfo = workManager.getWorkInfoById(sendRequestWorker.id).get()
 
-        assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED) )
+        assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
     }
 }
