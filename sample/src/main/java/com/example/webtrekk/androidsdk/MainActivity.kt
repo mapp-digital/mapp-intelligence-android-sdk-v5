@@ -54,17 +54,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val trackingParams = TrackingParams()
-
-        trackingParams.putAll(
-            mapOf(
-                Param.INTERNAL_SEARCH to "search",
-                Param.BACKGROUND_COLOR to "blue",
-                Param.TRACKING_LOCATION to "my new location"
-            )
-        )
-
-        Webtrekk.getInstance().trackPage(this, "Product activity")
-        Webtrekk.getInstance().trackCustomPage("First page", trackingParams)
+//        val trackingParams = TrackingParams()
+//
+//        trackingParams.putAll(
+//            mapOf(
+//                Param.INTERNAL_SEARCH to "search",
+//                Param.BACKGROUND_COLOR to "blue",
+//                Param.TRACKING_LOCATION to "my new location"
+//            )
+//        )
+//
+//        Webtrekk.getInstance().trackPage(this, "Product activity")
+//        Webtrekk.getInstance().trackCustomPage("First page", trackingParams)
     }
 }
