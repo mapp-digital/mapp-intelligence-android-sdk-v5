@@ -40,6 +40,8 @@ internal interface Sessions {
      */
     fun getEverId(): String
 
+    fun getUserAgent(): String
+
     /**
      * Returns "1" if the app is first used by the SDK, after that always returns "0".
      */

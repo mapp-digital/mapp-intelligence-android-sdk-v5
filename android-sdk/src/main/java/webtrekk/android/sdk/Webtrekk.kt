@@ -185,6 +185,8 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun getEverId(): String
 
+    abstract fun getUserAgent(): String
+
     companion object {
 
         /**

@@ -180,6 +180,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         sessions.getEverId()
     }
 
+    override fun getUserAgent(): String = context.run {
+        sessions.getUserAgent()
+    }
+
     /**
      * Loading and init the dependencies that will be injected.
      */
