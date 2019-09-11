@@ -42,7 +42,7 @@ internal object UrlParams {
 
     val APP_FIRST_OPEN = customParam(ParamType.SESSION_PARAM, 821)
 
-    const val APP_ONE_PARM = "one"
+    const val APP_ONE = "one"
 
     const val TIME_ZONE = "tz"
 

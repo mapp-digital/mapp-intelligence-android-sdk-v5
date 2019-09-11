@@ -90,7 +90,7 @@ internal fun DataTrack.buildUrl(
         "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
         "&${UrlParams.EVER_ID}=$currentEverId" +
         "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
-        "&${UrlParams.APP_ONE_PARM}=${this.trackRequest.appFirstOpen}" +
+        "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
         "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +
