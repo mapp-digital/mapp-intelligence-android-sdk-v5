@@ -41,7 +41,7 @@ import java.lang.Exception
  * @sample webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
  * On the web, Pixel Web SDK expects [WebtrekkWebInterface.TAG] alongside [WebtrekkWebInterface.getEverId]. They must be sent in this way.
  * Also, you can implement this class with extra JavaScript methods, but the JavaScript interface name must be [WebtrekkWebInterface.TAG].
- * [WebtrekkWebInterface.trackCustomEvent]   [WebtrekkWebInterface.trackCustomPage]
+ * [WebtrekkWebInterface.trackCustomEvent]   [WebtrekkWebInterface.trackCustomPage] [WebtrekkWebInterface.getUserAgent]
  * Second: Append "wt_eid" with ever Id [Webtrekk.getEverId] to the URL that will be loaded by the [WebView].
  * @sample webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
  *
@@ -69,7 +69,8 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
         try {
             webtrekk.trackCustomPage(pageName, params.jsonToMap())
         } catch (e: Exception) {
-            webtrekkLogger.info(e.message ?: "Unknown exception caught in WebView while tracking custom page")
+            webtrekkLogger.info(e.message
+                    ?: "Unknown exception caught in WebView while tracking custom page")
         }
     }
 
@@ -84,8 +85,17 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
         try {
             webtrekk.trackCustomEvent(eventName, params.jsonToMap())
         } catch (e: Exception) {
-            webtrekkLogger.info(e.message ?: "Unknown exception caught in WebView while tracking custom event")
+            webtrekkLogger.info(e.message
+                    ?: "Unknown exception caught in WebView while tracking custom event")
         }
+    }
+
+    /**
+     * Returns Webtrekk specific UserAgent to Smart Pixel SDK.
+     */
+    @JavascriptInterface
+    fun getUserAgent(): String {
+        return webtrekk.getUserAgent()
     }
 
     companion object {

@@ -31,6 +31,12 @@ import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.util.currentDeviceManufacturer
+import webtrekk.android.sdk.util.currentDeviceModel
+import webtrekk.android.sdk.util.currentOsVersion
+import webtrekk.android.sdk.util.currentWebtrekkVersion
+import webtrekk.android.sdk.util.currentLanguage
+import webtrekk.android.sdk.util.currentCountry
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -44,6 +50,9 @@ internal val TrackRequest.webtrekkRequestParams
 
 internal val TrackRequest.userAgent
     inline get() = "Tracking Library $webtrekkVersion (Android $osVersion; $deviceManufacturer $deviceModel; ${language}_$country)"
+
+internal val generateUserAgent
+    inline get() = "Tracking Library $currentWebtrekkVersion (Android $currentOsVersion; $currentDeviceManufacturer $currentDeviceModel; ${currentLanguage}_$currentCountry)"
 
 internal fun Map<String, String>.toCustomParams(trackRequestId: Long): List<CustomParam> {
     return this.map {
@@ -81,6 +90,7 @@ internal fun DataTrack.buildUrl(
         "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
         "&${UrlParams.EVER_ID}=$currentEverId" +
         "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
+        "&${UrlParams.APP_ONE_PARM}=${this.trackRequest.appFirstOpen}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
         "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +

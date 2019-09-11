@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.core
 
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.extension.generateUserAgent
 import webtrekk.android.sdk.util.generateEverId
 
 /**
@@ -46,6 +47,10 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         setEverId()
 
         return webtrekkSharedPrefs.everId
+    }
+
+    override fun getUserAgent(): String {
+        return generateUserAgent
     }
 
     // after getting app first start, set it to 0 forever.
