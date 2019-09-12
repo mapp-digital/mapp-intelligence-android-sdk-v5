@@ -39,7 +39,6 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
     override fun setEverId() {
         if (!webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
             webtrekkSharedPrefs.everId = generateEverId()
-                    .also { webtrekkSharedPrefs.appFirstOpen = "1" }
         }
     }
 
