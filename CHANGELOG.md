@@ -1,6 +1,6 @@
 # Change Log
 
-## Version 5.0.0-beta10 *(in progress)*
+## Version 5.0.0-beta11 *(in progress)*
 
 ## Version 5.0.0-beta10 *(2019-09-17)*
 * Add Pixel integration in the android.
