@@ -47,6 +47,10 @@ object DefaultConfiguration {
      */
     const val AUTO_TRACK_ENABLED = true
 
+    const val BATCH_SUPPORT_ENABLED = false
+
+    const val REQUEST_PER_BATCH = 10000
+
     /**
      * The auto track of fragments in the configurations is enabled by default. And it's only enabled when [Config.autoTracking]
      * is enabled.

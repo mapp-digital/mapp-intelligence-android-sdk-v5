@@ -119,4 +119,22 @@ interface Config {
      * In [WebtrekkConfiguration] the defailt okHttplclient is [DefaultConfiguration.OKHTTP_CLIENT]
      */
     val okHttpClient: OkHttpClient
+
+    /**
+     * [batchSupport] is the client that is used for allowing request batching.
+     *
+     * You can customize it, if allow sdk will send data in the batch
+     *
+     * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.BATCH_SUPPORT_ENABLED]
+     */
+    val batchSupport: Boolean
+
+    /**
+     * [requestPerBatch] is the client that is used for networking.
+     *
+     * You can customize it, biggest number will allow biggest batch
+     *
+     * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.REQUEST_PER_BATCH]
+     */
+    val requestPerBatch: Int
 }

@@ -29,7 +29,6 @@ import androidx.work.Constraints
 import okhttp3.OkHttpClient
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
-import java.util.Arrays
 import java.util.concurrent.TimeUnit
 
 /**
@@ -54,7 +53,9 @@ class WebtrekkConfiguration private constructor(
     override val autoTracking: Boolean,
     override val fragmentsAutoTracking: Boolean,
     override val workManagerConstraints: Constraints,
-    override val okHttpClient: OkHttpClient
+    override val okHttpClient: OkHttpClient,
+    override val requestPerBatch: Int,
+    override val batchSupport: Boolean
 ) : Config {
 
     /**
@@ -69,6 +70,8 @@ class WebtrekkConfiguration private constructor(
         private var fragmentsAutoTracking = DefaultConfiguration.FRAGMENTS_AUTO_TRACK_ENABLED
         private var constraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
         private var okHttpClientBuilder = DefaultConfiguration.OKHTTP_CLIENT
+        private var requestPerBatch = DefaultConfiguration.REQUEST_PER_BATCH
+        private var batchSupport = DefaultConfiguration.BATCH_SUPPORT_ENABLED
 
         /**
          * Configure the log level of the lib.
@@ -106,6 +109,14 @@ class WebtrekkConfiguration private constructor(
         fun disableAutoTracking() = apply {
             this.autoTracking = false
             this.fragmentsAutoTracking = false
+        }
+
+        fun setBatchSupport(
+            batchEnable: Boolean,
+            requestsInBatch: Int = DefaultConfiguration.REQUEST_PER_BATCH
+        ) = apply {
+            this.batchSupport = batchEnable
+            this.requestPerBatch = requestsInBatch
         }
 
         /**
@@ -166,39 +177,47 @@ class WebtrekkConfiguration private constructor(
             autoTracking,
             fragmentsAutoTracking,
             constraints,
-            okHttpClientBuilder
+            okHttpClientBuilder,
+            requestPerBatch,
+            batchSupport
         )
     }
 
     override fun equals(other: Any?): Boolean {
-        return when {
-            other === this -> true
-            other is WebtrekkConfiguration -> trackIds == other.trackIds && trackDomain == other.trackDomain &&
-                logLevel == other.logLevel && requestsInterval == other.requestsInterval && autoTracking == other.autoTracking &&
-                fragmentsAutoTracking == other.fragmentsAutoTracking && workManagerConstraints == other.workManagerConstraints &&
-                okHttpClient == other.okHttpClient
-            else -> false
-        }
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as WebtrekkConfiguration
+
+        if (trackIds != other.trackIds) return false
+        if (trackDomain != other.trackDomain) return false
+        if (logLevel != other.logLevel) return false
+        if (requestsInterval != other.requestsInterval) return false
+        if (autoTracking != other.autoTracking) return false
+        if (fragmentsAutoTracking != other.fragmentsAutoTracking) return false
+        if (workManagerConstraints != other.workManagerConstraints) return false
+        if (okHttpClient != other.okHttpClient) return false
+        if (requestPerBatch != other.requestPerBatch) return false
+        if (batchSupport != other.batchSupport) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        var hashValue = Arrays.hashCode(trackIds.toTypedArray())
-        hashValue = 31 * hashValue + trackDomain.hashCode()
-        hashValue = 31 * hashValue + logLevel.hashCode()
-        hashValue = 31 * hashValue + requestsInterval.hashCode()
-        hashValue = 31 * hashValue + autoTracking.hashCode()
-        hashValue = 31 * hashValue + fragmentsAutoTracking.hashCode()
-        hashValue = 31 * hashValue + workManagerConstraints.hashCode()
-        hashValue = 31 * hashValue + okHttpClient.hashCode()
-        return hashValue
+        var result = trackIds.hashCode()
+        result = 31 * result + trackDomain.hashCode()
+        result = 31 * result + logLevel.hashCode()
+        result = 31 * result + requestsInterval.hashCode()
+        result = 31 * result + autoTracking.hashCode()
+        result = 31 * result + fragmentsAutoTracking.hashCode()
+        result = 31 * result + workManagerConstraints.hashCode()
+        result = 31 * result + okHttpClient.hashCode()
+        result = 31 * result + requestPerBatch
+        result = 31 * result + batchSupport.hashCode()
+        return result
     }
 
     override fun toString(): String {
-        return "Configurations: trackIds = $trackIds \n " +
-            "trackDomain = $trackDomain \n " +
-            "logLevel = $logLevel \n " +
-            "requestsInterval = $requestsInterval \n " +
-            "autoTracking = $autoTracking \n " +
-            "fragmentsAutoTracking = $fragmentsAutoTracking"
+        return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport)"
     }
 }
