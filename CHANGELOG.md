@@ -2,6 +2,12 @@
 
 ## Version 5.0.0-beta10 *(in progress)*
 
+## Version 5.0.0-beta10 *(2019-09-17)*
+* Add Pixel integration in the android.
+* Add AppFirstOpen parameter.
+* Fix bug now auto and manual tracking works together on first Android Screen.
+* Update dependency.
+
 ## Version 5.0.0-beta09 *(2019-08-09)*
 * Fix Koin conflict if `startKoin` is called from app side.
 
