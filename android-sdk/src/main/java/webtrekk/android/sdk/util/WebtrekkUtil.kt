@@ -47,6 +47,12 @@ internal val appUpdated: Boolean
 internal val trackDomain: String
     inline get() = WebtrekkImpl.getInstance().config.trackDomain
 
+internal val batchSupported: Boolean
+    inline get() = WebtrekkImpl.getInstance().config.batchSupport
+
+internal val requestPerBatch: Int
+    inline get() = WebtrekkImpl.getInstance().config.requestPerBatch
+
 internal val trackIds: List<String>
     inline get() = WebtrekkImpl.getInstance().config.trackIds
 
