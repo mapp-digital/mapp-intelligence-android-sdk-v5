@@ -47,8 +47,18 @@ object DefaultConfiguration {
      */
     const val AUTO_TRACK_ENABLED = true
 
-    const val BATCH_SUPPORT_ENABLED = false
+    /**
+     * The batch support in the configurations is disabled by default.
+     *
+     * To enable the batch support, call [WebtrekkConfiguration.Builder.setBatchSupport]  with true
+     */
 
+    const val BATCH_SUPPORT_ENABLED = true
+    /**
+     * The request per batch in the configurations is 10000 by default.
+     *
+     * To can be changed in call [WebtrekkConfiguration.Builder.setBatchSupport]
+     */
     const val REQUEST_PER_BATCH = 10000
 
     /**
