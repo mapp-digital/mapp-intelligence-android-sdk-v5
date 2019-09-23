@@ -25,15 +25,19 @@
 
 package webtrekk.android.sdk.extension
 
-import okhttp3.MediaType
+import okhttp3.FormBody
 import okhttp3.Request
-import okhttp3.RequestBody
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.currentWebtrekkVersion
+import webtrekk.android.sdk.util.currentOsVersion
+import webtrekk.android.sdk.util.currentDeviceManufacturer
+import webtrekk.android.sdk.util.currentDeviceModel
+import webtrekk.android.sdk.util.currentLanguage
+import webtrekk.android.sdk.util.currentCountry
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -92,40 +96,48 @@ internal fun buildUrlOnly(
     return "$trackDomain/${trackIds.joinToString(separator = ",")}"
 }
 
-internal fun buildBatchUrl(
+internal fun List<DataTrack>.buildBatchUrl(
     trackDomain: String,
-    trackIds: List<String>
+    trackIds: List<String>,
+    currentEverId: String
 ): String {
-    return buildUrlOnly(trackDomain, trackIds) + "/batch"
+    return buildUrlOnly(trackDomain, trackIds) + "/batch?" + "${UrlParams.EVER_ID}=$currentEverId" +
+        "&${UrlParams.USER_AGENT}=${this[0].trackRequest.userAgent.encodeToUTF8()}"
 }
 
-internal fun DataTrack.buildBody(currentEverId: String): String {
-    return "/wt" +
-        "?${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}" +
-        "&${UrlParams.EVER_ID}=$currentEverId" +
-        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
+internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = true): String {
+    var stringBuffer = ""
+    if (everIdInUrl)
+        stringBuffer = "/wt?"
+    stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
+        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
         "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +
         "&${UrlParams.ANDROID_API_LEVEL}=${this.trackRequest.apiLevel}" +
         "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
-        "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}" +
-        customParams.buildCustomParams()
-}
+        "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
 
+    if (everIdInUrl) {
+        stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
+            "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}"
+    }
+
+    stringBuffer += customParams.buildCustomParams()
+    return stringBuffer
+}
 
 internal fun DataTrack.buildUrlRequest(
     trackDomain: String,
     trackIds: List<String>,
     currentEverId: String
 ): Request {
+
     return Request.Builder()
         .url(buildUrl(trackDomain, trackIds, currentEverId))
         .build()
 }
-
 
 internal fun List<DataTrack>.buildPostRequest(
     trackDomain: String,
@@ -133,20 +145,18 @@ internal fun List<DataTrack>.buildPostRequest(
     currentEverId: String
 ): Request {
     return Request.Builder()
-        .url(buildBatchUrl(trackDomain, trackIds))
+        .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
         .post(
-            RequestBody.create(
-                MediaType.get("text/plain; charset=utf-8"),
-                this.buildUrlRequests(currentEverId)
-            )
+            FormBody.Builder().add("\$wt?", this.buildUrlRequests(currentEverId)).build()
         )
+        .header("Content-Type", "application/x-www-form-urlencoded")
         .build()
 }
 
 internal fun List<DataTrack>.buildUrlRequests(currentEverId: String): String {
     var string = ""
     this.forEach { dataTrack ->
-        string = dataTrack.buildBody(currentEverId) + "\\n"
+        string += dataTrack.buildBody(currentEverId, false) + "\n"
     }
     return string
 }

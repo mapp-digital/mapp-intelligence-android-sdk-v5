@@ -58,6 +58,9 @@ internal interface TrackRequestDao {
     @Update
     suspend fun updateTrackRequests(vararg trackRequests: TrackRequest)
 
+    @Update
+    suspend fun updateTrackRequests(trackRequests: List<TrackRequest>)
+
     @Delete
     suspend fun clearTrackRequests(trackRequests: List<TrackRequest>)
 

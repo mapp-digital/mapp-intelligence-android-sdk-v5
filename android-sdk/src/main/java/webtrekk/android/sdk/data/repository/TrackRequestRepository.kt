@@ -62,6 +62,8 @@ internal interface TrackRequestRepository {
      */
     suspend fun updateTrackRequests(vararg trackRequests: TrackRequest): Result<List<TrackRequest>>
 
+    suspend fun updateTrackRequests(trackRequests: List<TrackRequest>): Result<List<TrackRequest>>
+
     /**
      * Returns true if list of [TrackRequest] are deleted from the database, false otherwise, encapsulated in a [Result].
      *

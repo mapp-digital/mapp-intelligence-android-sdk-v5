@@ -29,7 +29,7 @@ import okhttp3.Request
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.api.datasource.SyncRequestsDataSource
+import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.domain.InternalInteractor
 
 /**
@@ -37,20 +37,24 @@ import webtrekk.android.sdk.domain.InternalInteractor
  */
 internal class ExecutePostRequest(
     private val trackRequestRepository: TrackRequestRepository,
-    private val syncRequestsDataSource: SyncRequestsDataSource<List<DataTrack>>
-) : InternalInteractor<ExecutePostRequest.ParamsPost, List<DataTrack>> {
+    private val syncRequestsDataSource: SyncPostRequestsDataSource<List<DataTrack>>
+) : InternalInteractor<ExecutePostRequest.Params, List<DataTrack>> {
 
-    override suspend operator fun invoke(invokeParams: ParamsPost): Result<List<DataTrack>> {
+    override suspend operator fun invoke(invokeParams: Params): Result<List<DataTrack>> {
         return with(invokeParams) {
             // Send the request and update its state if the request sent successfully or failed.
             syncRequestsDataSource.sendRequest(request, dataTracks)
                 .onSuccess {
-//                    it.trackRequest.requestState = TrackRequest.RequestState.DONE
-//                    trackRequestRepository.updateTrackRequests(it.trackRequest)
+                    it.forEach { dataTrack ->
+                        dataTrack.trackRequest.requestState = TrackRequest.RequestState.DONE
+                        trackRequestRepository.updateTrackRequests(dataTrack.trackRequest)
+                    }
                 }
                 .onFailure {
-//                    dataTrack.trackRequest.requestState = TrackRequest.RequestState.FAILED
-//                    trackRequestRepository.updateTrackRequests(dataTrack.trackRequest)
+                    dataTracks.forEach { dataTrack ->
+                        dataTrack.trackRequest.requestState = TrackRequest.RequestState.FAILED
+                        trackRequestRepository.updateTrackRequests(dataTrack.trackRequest)
+                    }
                 }
         }
     }
@@ -61,5 +65,5 @@ internal class ExecutePostRequest(
      * @param [request] the request that will be sent.
      * @param [dataTrack] the data track which will be returned with the new state after [request] is executed successfully.
      */
-    data class ParamsPost(val request: Request, val dataTracks:List<DataTrack> )
+    data class Params(val request: Request, val dataTracks: List<DataTrack>)
 }
