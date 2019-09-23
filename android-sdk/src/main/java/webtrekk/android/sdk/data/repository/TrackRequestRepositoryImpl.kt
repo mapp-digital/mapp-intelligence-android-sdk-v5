@@ -35,6 +35,13 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequestDao) :
     TrackRequestRepository {
 
+    override suspend fun updateTrackRequests(trackRequests: List<TrackRequest>): Result<List<TrackRequest>> {
+        return runCatching {
+            trackRequestDao.updateTrackRequests(trackRequests)
+            trackRequests
+        }
+    }
+
     override suspend fun addTrackRequest(trackRequest: TrackRequest): Result<TrackRequest> {
         return runCatching {
             trackRequestDao.setTrackRequest(trackRequest).also { trackRequest.id = it }

@@ -26,6 +26,8 @@
 package webtrekk.android.sdk.module
 
 import org.koin.dsl.module.module
+import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
+import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSourceImpl
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.api.datasource.SyncRequestsDataSource
@@ -37,11 +39,12 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import webtrekk.android.sdk.core.SchedulerImpl
 import webtrekk.android.sdk.core.SessionsImpl
-import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.domain.internal.ClearTrackRequests
+import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
-import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 
 /**
  * Module for all dependencies of the data layer (internal repositories and api data sources) injected in [WebtrekkImpl].
@@ -62,6 +65,12 @@ internal val dataModule = module {
             get()
         )
     }
+
+    single<SyncPostRequestsDataSource<List<DataTrack>>> {
+        SyncPostRequestsDataSourceImpl(
+            get()
+        )
+    }
 }
 
 /**
@@ -75,5 +84,6 @@ internal val internalInteractorsModule = module {
     factory { GetCachedDataTracks(get()) }
     factory { CacheTrackRequestWithCustomParams(get(), get()) }
     factory { ExecuteRequest(get(), get()) }
+    factory { ExecutePostRequest(get(), get()) }
     factory { ClearTrackRequests(get()) }
 }

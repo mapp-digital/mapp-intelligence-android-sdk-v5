@@ -36,12 +36,15 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
+import webtrekk.android.sdk.extension.batch
 import webtrekk.android.sdk.extension.buildPostRequest
 import webtrekk.android.sdk.extension.buildUrlRequest
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.batchSupported
+import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.currentEverId
 import webtrekk.android.sdk.util.trackDomain
 import webtrekk.android.sdk.util.trackIds
+import webtrekk.android.sdk.util.requestPerBatch
 
 /**
  * [WorkManager] worker that retrieves the data from the data base, builds the requests and send them to the server.
@@ -66,7 +69,9 @@ internal class SendRequestsWorker(
      * [executeRequest] the injected internal interactor for executing the requests.
      */
     private val executeRequest: ExecuteRequest by inject()
-
+    /**
+     * [ExecutePostRequest] the injected internal interactor for executing the requests.
+     */
     private val executePostRequest: ExecutePostRequest by inject()
 
     /**
@@ -91,24 +96,24 @@ internal class SendRequestsWorker(
                         logger.info("Executing the requests")
                         // Must execute requests sync and in order
                         if (batchSupported) {
-                            val size=dataTracks.size/requestPerBatch;
-
-                           // dataTracks.forEach { dataTrack ->
+                            dataTracks.asSequence().batch(requestPerBatch).forEach { group ->
                                 val urlRequest =
-                                    dataTracks.buildPostRequest(trackDomain, trackIds, currentEverId)
+                                    group.buildPostRequest(trackDomain, trackIds, currentEverId)
                                 logger.info("Sending request = $urlRequest")
 
-                            executePostRequest(
-                                    ExecutePostRequest.ParamsPost(
+                                executePostRequest(
+                                    ExecutePostRequest.Params(
                                         request = urlRequest,
                                         dataTracks = dataTracks
                                     )
                                 )
                                     .onSuccess { logger.debug("Sent the request successfully $it") }
                                     .onFailure { logger.error("Failed to send the request $it") }
-                         //   }
+                                //   }
+                            }
                         } else {
                             dataTracks.forEach { dataTrack ->
+
                                 val urlRequest =
                                     dataTrack.buildUrlRequest(trackDomain, trackIds, currentEverId)
                                 logger.info("Sending request = $urlRequest")
@@ -123,7 +128,6 @@ internal class SendRequestsWorker(
                                     .onFailure { logger.error("Failed to send the request $it") }
                             }
                         }
-
                     }
                 }
                 .onFailure { logger.error("Error getting cached data tracks: $it") }
