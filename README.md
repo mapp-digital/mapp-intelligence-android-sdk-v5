@@ -11,6 +11,7 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
         - [Default Configuration](#default-configuration)
         - [WorkManager Constraints *(Optional)*](#workmanager-constraints) 
         - [OkHttpClient Builder *(Optional)*](#okhttpclient-builder)
+        - [BatchRequest Support *(Optional)*](#batchrequest-support) 
     - [Initialization](#initialization)
     - [Tracking](#tracking)
         - [Auto Track](#auto-track)
@@ -28,7 +29,7 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
 # Installation
 Gradle
 ```groovy
-implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.0-beta09'
+implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.0-beta10'
 ```
 
 Maven
@@ -36,7 +37,7 @@ Maven
 <dependency>
 	<groupId>com.webtrekk.webtrekksdk</groupId>
 	<artifactId>webtrekksdk-android</artifactId>
-	<version>5.0.0-beta09</version>
+	<version>5.0.0-beta10</version>
 	<type>pom</type>
 </dependency>
 ```
@@ -102,6 +103,20 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
             .okHttpClient(okHttpClient = okHttpClient) 
             .build()   
 ```
+### BatchRequest Support *(Optional)*
+The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in batch [Config.requestsInterval](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) in the background. It guarantees to execute if your app exits or even if the app is not in the background, and that's to enhance the device battery and the overall performance.
+You can customize the WorkManager constraints. Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
+```kotlin
+val workManagerConstraints = Constraints.Builder()
+            .setRequiresCharging(true)
+            .setRequiresBatteryNotLow(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+            
+val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("track Id"), trackDomain = "track domain")
+            .workManagerConstraints(constraints = workManagerConstraints)   
+            .build()
+```
 ## Initialization
 Obtain an instance of [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt) `Webtrekk.getInstance()`. Provide the context [Context](https://developer.android.com/reference/android/content/Context) and Webtrekk configurations [Config](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) to `Webtrekk.getInstance().init(this, webtrekkConfigurations)`. Without context or configurations, Webtrekk will throw [IllegalStateException](https://docs.oracle.com/javase/8/docs/api/index.html?java/lang/IllegalStateException.html) upon invoking any method.
 It's recommended to init [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt) in [Application](https://developer.android.com/reference/android/app/Application) class.
@@ -127,7 +142,7 @@ class SampleApplication : Application() {
 ## Tracking
 
 ### Auto Track
-At the minimum usage, by just initializing the SDK [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt) without disabling the auto track in the configurations, the SDK will start automatically tracking your activities and fragments, caching the data, and later send the data to the servers. Note, that auto track is enabled by default, to disable auto track of (activities and fragments), call `disableAutoTracking()` in configurations. If you want to disable auto track for fragments only, call `disableFragmentsAutoTracking()`.
+At the minimum usage, by just initializing the SDK [Webtrekk](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Webtrekk.kt) without disabling the auto track in the configurations, the SDK will start automatically tracking your activities and fragments, caching the data, and later send the data to the servers. Note, that auto track is enabled by default, to disable auto track of (activities and fragments), call `disableAutoTracking()` in configurations. If you want to disable auto track for fragments only, call `disableFragmentsAutoTracking()` or for activity only call `disableActivityAutoTracking()`.
 
 ```kotlin
 val webtrekkConfigurations =
