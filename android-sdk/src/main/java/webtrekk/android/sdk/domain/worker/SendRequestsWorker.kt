@@ -39,6 +39,7 @@ import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.extension.batch
 import webtrekk.android.sdk.extension.buildPostRequest
 import webtrekk.android.sdk.extension.buildUrlRequest
+import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.currentEverId
@@ -99,7 +100,7 @@ internal class SendRequestsWorker(
                             dataTracks.asSequence().batch(requestPerBatch).forEach { group ->
                                 val urlRequest =
                                     group.buildPostRequest(trackDomain, trackIds, currentEverId)
-                                logger.info("Sending request = $urlRequest")
+                                logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
                                 executePostRequest(
                                     ExecutePostRequest.Params(

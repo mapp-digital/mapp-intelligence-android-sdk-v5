@@ -27,6 +27,9 @@ package webtrekk.android.sdk.extension
 
 import org.json.JSONObject
 import java.net.URLEncoder
+import okhttp3.Request
+import okio.Buffer
+import java.io.IOException
 
 /**
  * This file contains helper general extension functions.
@@ -85,5 +88,16 @@ private class BatchingSequence<T>(val source: Sequence<T>, val batchSize: Int) :
             if (iterate.hasNext()) setNext(iterate.asSequence().take(batchSize).toList())
             else done()
         }
+    }
+}
+
+fun Request.stringifyRequestBody(): String {
+    return try {
+        val copy: Request = newBuilder().build()
+        val buffer = Buffer()
+        copy.body()!!.writeTo(buffer)
+        buffer.readUtf8()
+    } catch (e: IOException) {
+        return "did not work"
     }
 }
