@@ -203,8 +203,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     Dispatchers.IO
                 )
             }
-            if (config.fragmentsAutoTracking) single { AppStateImpl() as AppState<TrackRequest> }
-            else single { ActivityAppStateImpl() as AppState<TrackRequest> }
+            if (config.fragmentsAutoTracking && config.activityAutoTracking)
+                single { AppStateImpl() as AppState<TrackRequest> }
+            else if (config.fragmentsAutoTracking)
+                single { FragmentStateImpl() as AppState<TrackRequest> }
+            else
+                single { ActivityAppStateImpl() as AppState<TrackRequest> }
         }
 
         val externalInteractorsModule = module {

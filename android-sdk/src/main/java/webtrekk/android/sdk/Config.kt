@@ -99,6 +99,17 @@ interface Config {
     val fragmentsAutoTracking: Boolean
 
     /**
+     * [fragmentsAutoTracking] set to true to enable auto tracking of fragments when auto tracking is enabled.
+     * Set to false to disable auto tracking of fragments.
+     *
+     * *NOTE* [autoTracking] must be enabled first, to start auto tracking of fragments.
+     *
+     * In [WebtrekkConfiguration] the default is [DefaultConfiguration.FRAGMENTS_AUTO_TRACK_ENABLED] enabled.
+     * To disable the auto tracking of fragments in [WebtrekkConfiguration], call [WebtrekkConfiguration.Builder.disableFragmentsAutoTracking]
+     */
+    val activityAutoTracking: Boolean
+
+    /**
      * [workManagerConstraints] the constraints that will be used by the work manager to send the requests.
      *
      * Those constraints are important for your app battery performance and optimization. You can configure constraints
