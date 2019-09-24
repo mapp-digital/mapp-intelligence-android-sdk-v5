@@ -109,7 +109,7 @@ internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = t
     var stringBuffer: String = if (everIdInUrl)
         "/wt?"
     else {
-        "wt?"
+        ""
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
@@ -149,7 +149,7 @@ internal fun List<DataTrack>.buildPostRequest(
     return Request.Builder()
         .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
         .post(
-            FormBody.Builder().add("\$", this.buildUrlRequests(currentEverId)).build()
+            FormBody.Builder().add("\$wt?", this.buildUrlRequests(currentEverId)).build()
         )
         .header("Content-Type", "application/x-www-form-urlencoded")
         .build()
@@ -158,7 +158,7 @@ internal fun List<DataTrack>.buildPostRequest(
 internal fun List<DataTrack>.buildUrlRequests(currentEverId: String): String {
     var string = ""
     this.forEach { dataTrack ->
-        string += dataTrack.buildBody(currentEverId, false) + "\n"
+        string += dataTrack.buildBody(currentEverId, false) + "\nwt?"
     }
     return string
 }
