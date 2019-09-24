@@ -108,7 +108,7 @@ internal fun List<DataTrack>.buildBatchUrl(
 internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = true): String {
     var stringBuffer: String = if (everIdInUrl)
         "/wt?"
-    else{
+    else {
         "wt?"
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
