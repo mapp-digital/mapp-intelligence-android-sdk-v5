@@ -55,7 +55,8 @@ class WebtrekkConfiguration private constructor(
     override val workManagerConstraints: Constraints,
     override val okHttpClient: OkHttpClient,
     override val requestPerBatch: Int,
-    override val batchSupport: Boolean
+    override val batchSupport: Boolean,
+    override val activityAutoTracking: Boolean
 ) : Config {
 
     /**
@@ -72,6 +73,7 @@ class WebtrekkConfiguration private constructor(
         private var okHttpClientBuilder = DefaultConfiguration.OKHTTP_CLIENT
         private var requestPerBatch = DefaultConfiguration.REQUEST_PER_BATCH
         private var batchSupport = DefaultConfiguration.BATCH_SUPPORT_ENABLED
+        private var activityAutoTracking = DefaultConfiguration.ACTIVITY_AUTO_TRACK_ENABLED
 
         /**
          * Configure the log level of the lib.
@@ -109,6 +111,18 @@ class WebtrekkConfiguration private constructor(
         fun disableAutoTracking() = apply {
             this.autoTracking = false
             this.fragmentsAutoTracking = false
+            this.activityAutoTracking = false
+        }
+
+        /**
+         * When auto tracking is enabled, the auto tracking of fragments is enabled by default.
+         *
+         * Call [disableActivityAutoTracking] to disable the auto tracking of Activity, and only auto track fragments.
+         *
+         * *NOTE* if auto track is disabled [disableAutoTracking], then auto tracking of fragments is disabled as well.
+         */
+        fun disableActivityAutoTracking() = apply {
+            this.activityAutoTracking = false
         }
 
         fun setBatchSupport(
@@ -179,7 +193,8 @@ class WebtrekkConfiguration private constructor(
             constraints,
             okHttpClientBuilder,
             requestPerBatch,
-            batchSupport
+            batchSupport,
+            activityAutoTracking
         )
     }
 
