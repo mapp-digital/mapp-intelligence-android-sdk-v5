@@ -25,8 +25,9 @@
 
 package webtrekk.android.sdk.extension
 
-import okhttp3.FormBody
 import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.MediaType
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
@@ -109,7 +110,7 @@ internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = t
     var stringBuffer: String = if (everIdInUrl)
         "/wt?"
     else {
-        ""
+        "wt?"
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
@@ -149,16 +150,15 @@ internal fun List<DataTrack>.buildPostRequest(
     return Request.Builder()
         .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
         .post(
-            FormBody.Builder().add("\$wt?", this.buildUrlRequests(currentEverId)).build()
+            RequestBody.create(MediaType.parse("text/plain"), this.buildUrlRequests(currentEverId))
         )
-        .header("Content-Type", "application/x-www-form-urlencoded")
         .build()
 }
 
 internal fun List<DataTrack>.buildUrlRequests(currentEverId: String): String {
     var string = ""
     this.forEach { dataTrack ->
-        string += dataTrack.buildBody(currentEverId, false) + "\nwt?"
+        string += dataTrack.buildBody(currentEverId, false) + "\n"
     }
     return string
 }
