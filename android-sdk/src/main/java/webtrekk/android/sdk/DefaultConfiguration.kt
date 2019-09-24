@@ -70,6 +70,14 @@ object DefaultConfiguration {
     const val FRAGMENTS_AUTO_TRACK_ENABLED = true
 
     /**
+     * The auto track of fragments in the configurations is enabled by default. And it's only enabled when [Config.autoTracking]
+     * is enabled.
+     *
+     * To disable the auto tracking of fragments, call [WebtrekkConfiguration.Builder.disableFragmentsAutoTracking]
+     */
+    const val ACTIVITY_AUTO_TRACK_ENABLED = true
+
+    /**
      * The default interval time that's used in [WebtrekkConfiguration.Builder.requestsInterval].
      */
     const val REQUESTS_INTERVAL: Long = 15 // minutes

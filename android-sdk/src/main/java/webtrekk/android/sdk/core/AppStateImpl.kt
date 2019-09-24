@@ -60,3 +60,15 @@ internal class ActivityAppStateImpl : AppState<TrackRequest>() {
         activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest()) }
     }
 }
+
+/**
+ * The implementation of [AppState]. This class listens to ONLY fragment life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
+ */
+internal class FragmentStateImpl : AppState<TrackRequest>() {
+
+    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+        super.onFragmentStarted(fm, f)
+
+        lifecycleReceiver.onLifecycleEventReceived(f.toTrackRequest())
+    }
+}
