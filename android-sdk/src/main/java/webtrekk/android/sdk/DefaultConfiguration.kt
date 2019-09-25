@@ -53,13 +53,13 @@ object DefaultConfiguration {
      * To enable the batch support, call [WebtrekkConfiguration.Builder.setBatchSupport]  with true
      */
 
-    const val BATCH_SUPPORT_ENABLED = true
+    const val BATCH_SUPPORT_ENABLED = false
     /**
-     * The request per batch in the configurations is 10000 by default.
+     * The request per batch in the configurations is 1000 by default.
      *
      * To can be changed in call [WebtrekkConfiguration.Builder.setBatchSupport]
      */
-    const val REQUEST_PER_BATCH = 10000
+    const val REQUEST_PER_BATCH = 1000
 
     /**
      * The auto track of fragments in the configurations is enabled by default. And it's only enabled when [Config.autoTracking]
