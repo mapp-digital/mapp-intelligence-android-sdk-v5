@@ -9,9 +9,9 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
 - [Usage](#usage)
     - [Configuration](#configuration)
         - [Default Configuration](#default-configuration)
-        - [WorkManager Constraints *(Optional)*](#workmanager-constraints) 
-        - [OkHttpClient Builder *(Optional)*](#okhttpclient-builder)
-        - [BatchRequest Support *(Optional)*](#batchrequest-support) 
+        - [WorkManager Constraints](#workmanager-constraints) 
+        - [OkHttpClient Builder](#okhttpclient-builder)
+        - [BatchRequest Support](#batchrequest-support) 
     - [Initialization](#initialization)
     - [Tracking](#tracking)
         - [Auto Track](#auto-track)
@@ -76,7 +76,7 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
 `trackIds` and `trackDomain` are the mandatory to be defined in the configurations, all other configurations have default values which you can override their values.
 Check out [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 
-### WorkManager Constraints *(Optional)*
+### WorkManager Constraints
 The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in periodic times [Config.requestsInterval](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) in the background. It guarantees to execute if your app exits or even if the app is not in the background, and that's to enhance the device battery and the overall performance.
 You can customize the WorkManager constraints. Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 ```kotlin
@@ -91,8 +91,8 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
             .build()
 ```
 
-### OkHttpClient Builder *(Optional)*
-You can override the [okHttpClient](https://github.com/square/okhttp) used in the SDK, to setup certificates pinning, interceptors...etc.
+### OkHttpClient Builder
+You can override the [okHttpClient](https://github.com/square/okhttp) used in the SDK but this is optional, to setup certificates pinning, interceptors...etc.
 ```kotlin
 val okHttpClient = OkHttpClient.Builder()
             .readTimeout(15, TimeUnit.SECONDS)
@@ -103,18 +103,12 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
             .okHttpClient(okHttpClient = okHttpClient) 
             .build()   
 ```
-### BatchRequest Support *(Optional)*
-The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in batch [Config.requestsInterval](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) in the background. It guarantees to execute if your app exits or even if the app is not in the background, and that's to enhance the device battery and the overall performance.
-You can customize the WorkManager constraints. Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
+### BatchRequest Support
+The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in batch. You can configurate Batch constants [Config.batchSupport] and [Config.requestPerBatch]
+by default batch is disabled and size is 1000(the supported maximum is 10000). Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 ```kotlin
-val workManagerConstraints = Constraints.Builder()
-            .setRequiresCharging(true)
-            .setRequiresBatteryNotLow(true)
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-            
 val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("track Id"), trackDomain = "track domain")
-            .workManagerConstraints(constraints = workManagerConstraints)   
+            .setBatchSupport(true,1000)   
             .build()
 ```
 ## Initialization
