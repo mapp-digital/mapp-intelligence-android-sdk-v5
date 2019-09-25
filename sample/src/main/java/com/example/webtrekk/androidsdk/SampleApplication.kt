@@ -57,7 +57,7 @@ class SampleApplication : Application() {
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .workManagerConstraints(constraints = constraints)
                 .okHttpClient(okHttpClient = okHttpClient)
-                .setBatchSupport(true,100)
+                .setBatchSupport(true,1000)
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
