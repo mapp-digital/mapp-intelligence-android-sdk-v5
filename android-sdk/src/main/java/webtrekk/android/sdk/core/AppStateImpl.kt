@@ -40,13 +40,21 @@ internal class AppStateImpl : AppState<TrackRequest>() {
     override fun onActivityStarted(activity: Activity?) {
         super.onActivityStarted(activity)
 
-        activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest(),!activity.javaClass.isAnnotationPresent(StopTrack::class.java)) }
+        activity?.let {
+            lifecycleReceiver.onLifecycleEventReceived(
+                activity.toTrackRequest(),
+                !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
+            )
+        }
     }
 
     override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
         super.onFragmentStarted(fm, f)
 
-        lifecycleReceiver.onLifecycleEventReceived(f.toTrackRequest(),!f.javaClass.isAnnotationPresent(StopTrack::class.java))
+        lifecycleReceiver.onLifecycleEventReceived(
+            f.toTrackRequest(),
+            !f.javaClass.isAnnotationPresent(StopTrack::class.java)
+        )
     }
 }
 
@@ -58,7 +66,12 @@ internal class ActivityAppStateImpl : AppState<TrackRequest>() {
     override fun onActivityStarted(activity: Activity?) {
         super.onActivityStarted(activity)
 
-        activity?.let { lifecycleReceiver.onLifecycleEventReceived(activity.toTrackRequest(),  !activity.javaClass.isAnnotationPresent(StopTrack::class.java)) }
+        activity?.let {
+            lifecycleReceiver.onLifecycleEventReceived(
+                activity.toTrackRequest(),
+                !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
+            )
+        }
     }
 }
 
@@ -70,6 +83,9 @@ internal class FragmentStateImpl : AppState<TrackRequest>() {
     override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
         super.onFragmentStarted(fm, f)
 
-        lifecycleReceiver.onLifecycleEventReceived(f.toTrackRequest(),!f.javaClass.isAnnotationPresent(StopTrack::class.java))
+        lifecycleReceiver.onLifecycleEventReceived(
+            f.toTrackRequest(),
+            !f.javaClass.isAnnotationPresent(StopTrack::class.java)
+        )
     }
 }
