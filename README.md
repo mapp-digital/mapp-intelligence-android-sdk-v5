@@ -147,6 +147,14 @@ val webtrekkConfigurations =
 Webtrekk.getInstance().init(this, webtrekkConfigurations) // (Minimum usage) Auto track is enabled by default
 ```
 
+Auto tracking can be turned off for specific screens by adding Annotation @StopTrack 
+Same Annotation cen be used on the fragment and activity 
+```kotlin
+@StopTrack
+class MainActivity : AppCompatActivity() {
+}
+```
+
 ### Manual Track
 By default, auto tracking will track every page (activities/fragments) in the app. To track specific pages (activities/fragments), disable auto track first in the configuration `disableAutoTrack()`, then call `trackPage()` method within your activities/fragments.
 Note, calling `trackPage()` while auto track [Config.autoTracking](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) is still enabled, then this function will return immediately, alongside with a warning indicating that auto tracking is enabled.
