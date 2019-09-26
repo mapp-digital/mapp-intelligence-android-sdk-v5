@@ -23,12 +23,11 @@
  *
  */
 
-package webtrekk.android.sdk.annotation
+package webtrekk.android.sdk
 
 /**
  * Should be used when auto is enabled and want to exclude some pages
  */
-@Experimental
 @Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
-internal annotation class StopTrack
+@Retention(AnnotationRetention.RUNTIME)
+annotation class StopTrack
