@@ -53,8 +53,8 @@ internal abstract class AppState<T : Any> : LifecycleWrapper() {
         (context as? Application)?.registerActivityLifecycleCallbacks(this)?.let {
             lifecycleReceiver = object : LifecycleReceiver<T> {
                 override fun onLifecycleEventReceived(event: T, trackingEnabled: Boolean) {
-                    if(trackingEnabled)
-                    onReceive(event)
+                    if (trackingEnabled)
+                        onReceive(event)
                 }
             }
         }
@@ -80,7 +80,7 @@ internal interface LifecycleReceiver<in T> {
      *
      * @param event
      */
-    fun onLifecycleEventReceived(event: T, trackingEnabled: Boolean =true)
+    fun onLifecycleEventReceived(event: T, trackingEnabled: Boolean = true)
 }
 
 /**
