@@ -59,7 +59,7 @@ object DefaultConfiguration {
      *
      * To can be changed in call [WebtrekkConfiguration.Builder.setBatchSupport]
      */
-    const val REQUEST_PER_BATCH = 1000
+    const val REQUEST_PER_BATCH = 5000
 
     /**
      * The auto track of fragments in the configurations is enabled by default. And it's only enabled when [Config.autoTracking]

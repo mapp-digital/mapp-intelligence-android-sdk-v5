@@ -41,9 +41,10 @@ internal class AppStateImpl : AppState<TrackRequest>() {
         super.onActivityStarted(activity)
 
         activity?.let {
+            val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
-                activity.toTrackRequest(),
-                !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
+                activity.toTrackRequest(needToTrack),
+                needToTrack
             )
         }
     }
@@ -67,9 +68,10 @@ internal class ActivityAppStateImpl : AppState<TrackRequest>() {
         super.onActivityStarted(activity)
 
         activity?.let {
+            val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
-                activity.toTrackRequest(),
-                !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
+                activity.toTrackRequest(needToTrack),
+                needToTrack
             )
         }
     }
