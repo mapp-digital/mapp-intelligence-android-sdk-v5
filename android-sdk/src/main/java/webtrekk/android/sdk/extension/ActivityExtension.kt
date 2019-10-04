@@ -34,12 +34,12 @@ import webtrekk.android.sdk.util.currentSession
 /**
  * Extension function to create a [TrackRequest] from [Activity] to be inserted in the DB.
  */
-internal fun Activity.toTrackRequest(): TrackRequest =
+internal fun Activity.toTrackRequest(needToTrack: Boolean = true): TrackRequest =
     TrackRequest(
         name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",
         screenResolution = this.resolution(),
-        forceNewSession = currentSession,
-        appFirstOpen = appFirstOpen,
+        forceNewSession = if (needToTrack) currentSession else "1",
+        appFirstOpen = if (needToTrack) appFirstOpen else "1",
         appVersionName = this.appVersionName,
         appVersionCode = this.appVersionCode
     )
