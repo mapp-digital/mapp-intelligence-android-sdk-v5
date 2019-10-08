@@ -52,12 +52,12 @@ class SampleApplication : Application() {
             .build()
 
         val webtrekkConfigurations =
-            WebtrekkConfiguration.Builder(listOf("385255285199574"), "https://q3.webtrekk.net")
+            WebtrekkConfiguration.Builder(listOf("238713152098253"), "https://tracker-int-01.webtrekk.net")
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .workManagerConstraints(constraints = constraints)
                 .okHttpClient(okHttpClient = okHttpClient)
-                .setBatchSupport(true,1000)
+                .setBatchSupport(true)
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
