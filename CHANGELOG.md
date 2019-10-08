@@ -1,6 +1,10 @@
 # Change Log
+## Version 5.0.0-beta12 *(inProgress)*
 
-## Version 5.0.0-beta11 *(in progress)*
+## Version 5.0.0-beta11 *(2019-10-08)*
+* Add Batch support.
+* Support disable specific screens auto tracking.
+* Support disable Activity auto tracking.
 
 ## Version 5.0.0-beta10 *(2019-09-17)*
 * Add Pixel integration in the android.
