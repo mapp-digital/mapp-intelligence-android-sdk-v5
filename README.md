@@ -104,8 +104,8 @@ val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("tra
             .build()   
 ```
 ### BatchRequest Support
-The SDK uses [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for scheduling and sending the cached tracking data (requests) in batch. You can configurate Batch constants [Config.batchSupport] and [Config.requestPerBatch]
-by default batch is disabled and size is 5000(the supported maximum is 10000). Also check out the default constraints [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
+It is possible to send tracked data in batches instead of single requests. If you want to send batches you need to set batch support to “true” (default is false). The default size of a batch is set to 5000 requests per batch, the maximum number supported is 10000 per batch.
+If the cached track data exceeds the maximum number of allowed requests per batch, multiple batches are sent to the trackserver. Please also check the default constraints under [DefaultConfiguration](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/DefaultConfiguration.kt).
 ```kotlin
 val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds = listOf("track Id"), trackDomain = "track domain")
             .setBatchSupport(true,1000)   
