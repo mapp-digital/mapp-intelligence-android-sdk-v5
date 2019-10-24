@@ -27,7 +27,7 @@ package webtrekk.android.sdk.extension
 
 import okhttp3.Request
 import okhttp3.RequestBody
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
@@ -150,7 +150,7 @@ internal fun List<DataTrack>.buildPostRequest(
     return Request.Builder()
         .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
         .post(
-            RequestBody.create(MediaType.parse("text/plain"), this.buildUrlRequests(currentEverId))
+            RequestBody.create("text/plain".toMediaTypeOrNull(), this.buildUrlRequests(currentEverId))
         )
         .build()
 }

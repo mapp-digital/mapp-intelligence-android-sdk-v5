@@ -43,9 +43,9 @@ buildscript {
 
             'kotlinCoroutines'       : '1.1.1',
             'coreKtxVersion'         : '1.0.2',
-            'koinAndroidVersion'     : '1.0.2',
+            'koinAndroidVersion'     : '1.0.1',
 
-            'okHttpVersion'          : '3.13.1',
+            'okHttpVersion'          : '4.2.1',
 
             'workManagerVersion'     : '2.2.0',
             'roomVersion'            : '2.1.0',

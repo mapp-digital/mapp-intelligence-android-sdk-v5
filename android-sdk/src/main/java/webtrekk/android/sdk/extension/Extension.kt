@@ -95,7 +95,7 @@ fun Request.stringifyRequestBody(): String {
     return try {
         val copy: Request = newBuilder().build()
         val buffer = Buffer()
-        copy.body()!!.writeTo(buffer)
+        copy.body!!.writeTo(buffer)
         buffer.readUtf8()
     } catch (e: IOException) {
         return "did not work"
