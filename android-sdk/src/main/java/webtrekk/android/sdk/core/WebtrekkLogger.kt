@@ -37,37 +37,50 @@ internal class WebtrekkLogger(level: Logger.Level) :
     Logger {
 
     private var basicMessage: String? = null
-
+    private var logger: Logger.Level? = null
     private val _dateFormat = SimpleDateFormat.getDateTimeInstance()
     private val date
         inline get() = _dateFormat.format(Date())
 
     init {
+        logger = level
         basicMessage = when (level) {
             Logger.Level.NONE -> null
             Logger.Level.BASIC -> date.toString()
         }
     }
 
+    private fun getBasicMessage() {
+        basicMessage = when (logger) {
+            Logger.Level.NONE -> null
+            Logger.Level.BASIC -> date.toString()
+            else -> null
+        }
+    }
+
     override fun info(message: String) {
+        getBasicMessage()
         basicMessage?.let {
             Log.i(TAG, "$basicMessage -> $message")
         }
     }
 
     override fun debug(message: String) {
+        getBasicMessage()
         basicMessage?.let {
             Log.d(TAG, "$basicMessage -> $message")
         }
     }
 
     override fun warn(message: String) {
+        getBasicMessage()
         basicMessage?.let {
             Log.w(TAG, "$basicMessage -> $message")
         }
     }
 
     override fun error(message: String) {
+        getBasicMessage()
         basicMessage?.let {
             Log.wtf(TAG, "$basicMessage -> $message")
         }
