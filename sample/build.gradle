@@ -62,8 +62,6 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
-    implementation 'com.facebook.stetho:stetho:1.5.0'
-    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     implementation(project(':android-sdk'))
-//    implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.0-beta12'
+
 }
