@@ -44,15 +44,15 @@ android {
         }
     }
 
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
+//    compileOptions {
+//        targetCompatibility 1.8
+//        sourceCompatibility 1.8
+//    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
     implementation "androidx.appcompat:appcompat:$versions.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion"
     testImplementation "junit:junit:$versions.junitVersion"
