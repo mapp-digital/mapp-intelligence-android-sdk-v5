@@ -55,8 +55,8 @@ internal class AppStateImpl : AppState<TrackRequest>() {
         lifecycleReceiver.onLifecycleEventReceived(
             f.toTrackRequest(),
             !f.javaClass.isAnnotationPresent(StopTrack::class.java)
-        )
-    }
+    )
+}
 }
 
 /**

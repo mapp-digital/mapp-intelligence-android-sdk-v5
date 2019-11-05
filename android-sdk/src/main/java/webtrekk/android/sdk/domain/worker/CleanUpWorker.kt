@@ -66,6 +66,7 @@ internal class CleanUpWorker(
      */
     private val logger: Logger by inject()
 
+    // TODO add this::: delete if request is older then one hour (server limitation)
     override suspend fun doWork(): Result {
         // get the data from the data base with state DONE only.
         // todo handle Result.failure()
