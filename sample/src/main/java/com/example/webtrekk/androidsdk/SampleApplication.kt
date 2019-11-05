@@ -28,8 +28,8 @@ package com.example.webtrekk.androidsdk
 import android.app.Application
 import androidx.work.Constraints
 import androidx.work.NetworkType
-import com.facebook.stetho.Stetho
-import com.facebook.stetho.okhttp3.StethoInterceptor
+//import com.facebook.stetho.Stetho
+//import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
@@ -40,23 +40,23 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Stetho.initializeWithDefaults(this)
+       // Stetho.initializeWithDefaults(this)
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
             .setRequiredNetworkType(NetworkType.CONNECTED).build()
 
-        val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.SECONDS)
-            .addNetworkInterceptor(StethoInterceptor())
-            .build()
+//        val okHttpClient = OkHttpClient.Builder()
+//            .readTimeout(10, TimeUnit.SECONDS)
+//            .addNetworkInterceptor(StethoInterceptor())
+//            .build()
 
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(listOf("238713152098253"), "https://tracker-int-01.webtrekk.net")
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .workManagerConstraints(constraints = constraints)
-                .okHttpClient(okHttpClient = okHttpClient)
+//                .okHttpClient(okHttpClient = okHttpClient)
                 .setBatchSupport(true)
                 .build()
 
