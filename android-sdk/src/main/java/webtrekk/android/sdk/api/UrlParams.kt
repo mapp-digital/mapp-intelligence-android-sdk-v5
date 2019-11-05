@@ -34,31 +34,46 @@ import webtrekk.android.sdk.customParam
  */
 internal object UrlParams {
 
-    const val WEBTREKK_PARAM = "p"
+    const val WEBTREKK_PARAM = "p" // we need this in all requests
 
-    const val EVER_ID = "eid"
+    const val EVER_ID = "eid" // we need this in all requests
 
-    const val FORCE_NEW_SESSION = "fns"
+    const val FORCE_NEW_SESSION = "fns" // on app open (new instance of application is created)
 
-    val APP_FIRST_OPEN = customParam(ParamType.SESSION_PARAM, 821)
+    val APP_FIRST_OPEN = customParam(
+        ParamType.SESSION_PARAM,
+        821
+    ) // we need to send this on new session and when is changed
 
-    const val APP_ONE = "one"
+    const val APP_ONE = "one" // on the app install
 
-    const val TIME_ZONE = "tz"
+    const val TIME_ZONE = "tz" // remove
 
-    const val USER_AGENT = "X-WT-UA"
+    const val USER_AGENT = "X-WT-UA" // we need this in all requests
 
-    const val LANGUAGE = "la"
+    const val LANGUAGE = "la" // we need this
 
     const val EVENT_NAME = "ct"
 
-    val ANDROID_API_LEVEL = customParam(ParamType.SESSION_PARAM, 814)
+    val ANDROID_API_LEVEL = customParam(
+        ParamType.SESSION_PARAM,
+        814
+    ) // we need to send this on new session and when is changed
 
-    val APP_VERSION_NAME = customParam(ParamType.SESSION_PARAM, 804)
+    val APP_VERSION_NAME = customParam(
+        ParamType.SESSION_PARAM,
+        804
+    ) // we need to send this on new session and when is changed
 
-    val APP_VERSION_CODE = customParam(ParamType.SESSION_PARAM, 805)
+    val APP_VERSION_CODE = customParam(
+        ParamType.SESSION_PARAM,
+        805
+    ) // we need to send this on new session and when is changed
 
-    val APP_UPDATED = customParam(ParamType.SESSION_PARAM, 815)
+    val APP_UPDATED = customParam(
+        ParamType.SESSION_PARAM,
+        815
+    ) // we need to send this on new session and when is changed
 }
 
 /**
