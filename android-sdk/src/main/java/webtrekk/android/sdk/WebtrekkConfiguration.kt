@@ -125,6 +125,7 @@ class WebtrekkConfiguration private constructor(
             this.activityAutoTracking = false
         }
 
+        @JvmOverloads
         fun setBatchSupport(
             batchEnable: Boolean,
             requestsInBatch: Int = DefaultConfiguration.REQUEST_PER_BATCH
