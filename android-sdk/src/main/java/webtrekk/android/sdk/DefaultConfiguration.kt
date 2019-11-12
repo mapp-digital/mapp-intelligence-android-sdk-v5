@@ -90,7 +90,7 @@ object DefaultConfiguration {
     /**
      * The default log level that is used in [WebtrekkConfiguration.Builder.logLevel].
      */
-    val LOG_LEVEL_VALUE = Logger.Level.BASIC
+    val LOG_LEVEL_VALUE = Logger.Level.NONE
 
     /**
      * The default work manager constraints that are used by the library when sending the requests to the server.
