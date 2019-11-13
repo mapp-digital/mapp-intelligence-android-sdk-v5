@@ -51,7 +51,8 @@ internal class TrackCustomEventTest : AbstractExternalInteractor() {
                 val params = TrackCustomEvent.Params(
                     trackRequest = trackRequest,
                     trackingParams = trackingParams,
-                    isOptOut = true
+                    isOptOut = true,
+                    ctParams = trackRequest.name
                 )
 
                 runBlocking {
@@ -67,7 +68,8 @@ internal class TrackCustomEventTest : AbstractExternalInteractor() {
                 val params = TrackCustomEvent.Params(
                     trackRequest = trackRequest,
                     trackingParams = trackingParams,
-                    isOptOut = false
+                    isOptOut = false,
+                    ctParams = trackRequest.name
                 )
 
                 runBlocking {

@@ -44,4 +44,4 @@ fun <T : RoomDatabase> buildRoomDatabase(
     context.applicationContext,
     database,
     databaseName
-).build()
+).fallbackToDestructiveMigration().build()
