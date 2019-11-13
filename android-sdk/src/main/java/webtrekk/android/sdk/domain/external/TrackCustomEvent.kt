@@ -48,7 +48,8 @@ internal class TrackCustomEvent(
 ) : ExternalInteractor<TrackCustomEvent.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
+    override val scope =
+        CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     /**
      * [logger] the injected logger from Webtrekk.
@@ -59,12 +60,13 @@ internal class TrackCustomEvent(
         // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-            logger
-        )
+        scope.launch(
+            coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                logger
+            )
         ) {
             val params = invokeParams.trackingParams.toMutableMap()
-            params[RequestType.EVENT.value] = invokeParams.trackRequest.name // Appending the 'ct' param (event) to the custom params.
+            params[RequestType.EVENT.value] = invokeParams.ctParams // Appending the 'ct' param (event) to the custom params.
 
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
@@ -88,6 +90,7 @@ internal class TrackCustomEvent(
     data class Params(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
-        val isOptOut: Boolean
+        val isOptOut: Boolean,
+        val ctParams: String
     )
 }

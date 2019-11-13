@@ -149,7 +149,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             trackCustomEvent(
                 TrackCustomEvent.Params(
                     trackRequest = TrackRequest(
-                        name = eventName,
+                        name = "0",
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -157,7 +157,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                         appVersionCode = context.appVersionCode
                     ),
                     trackingParams = trackingParams,
-                    isOptOut = hasOptOut()
+                    isOptOut = hasOptOut(),
+                    ctParams = eventName
+
                 ), coroutineDispatchers
             )
         }
