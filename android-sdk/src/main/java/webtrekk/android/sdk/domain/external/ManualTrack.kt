@@ -61,11 +61,11 @@ internal class ManualTrack(
         if (invokeParams.isOptOut) return
 
         // If auto track is enabled, then return
-        if (invokeParams.autoTrack) {
-            logger.warn("Auto track is enabled, call 'disableAutoTrack()' in the configurations to disable the auto tracking")
-
-            return
-        }
+//        if (invokeParams.autoTrack) {
+//            logger.warn("Auto track is enabled, call 'disableAutoTrack()' in the configurations to disable the auto tracking")
+//
+//            return
+//        }
 
         scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
             logger
