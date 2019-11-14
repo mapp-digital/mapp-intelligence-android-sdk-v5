@@ -33,7 +33,7 @@ import webtrekk.android.sdk.util.generateEverId
  * The implementation of the [Sessions] based on [WebtrekkSharedPrefs].
  */
 internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs) :
-        Sessions {
+    Sessions {
 
     // if first time, generate the ever id alongside setting appFirstOpen = 1 as it's app first start.
     override fun setEverId() {
@@ -65,8 +65,13 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         webtrekkSharedPrefs.fns = "1"
     }
 
-    override fun getCurrentSession(): String =
-            webtrekkSharedPrefs.fns.also { webtrekkSharedPrefs.fns = "0" }
+    override fun getCurrentSession(): String {
+        val newSession = webtrekkSharedPrefs.fns
+        if (newSession == "1") {
+            webtrekkSharedPrefs.fns = "0"
+        }
+        return newSession
+    }
 
     override fun optOut(value: Boolean) {
         webtrekkSharedPrefs.optOut = value
@@ -85,7 +90,9 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         } else {
             val storedAppVersion = webtrekkSharedPrefs.appVersion
 
-            storedAppVersion != currentAppVersion.apply { webtrekkSharedPrefs.appVersion = currentAppVersion }
+            storedAppVersion != currentAppVersion.apply {
+                webtrekkSharedPrefs.appVersion = currentAppVersion
+            }
         }
     }
 }

@@ -47,7 +47,7 @@ internal object UrlParams {
 
     const val APP_ONE = "one" // on the app install
 
-    const val TIME_ZONE = "tz" // remove
+    const val TIME_ZONE = "tz" // removed
 
     const val USER_AGENT = "X-WT-UA" // we need this in all requests
 
