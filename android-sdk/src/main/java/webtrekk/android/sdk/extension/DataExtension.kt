@@ -114,13 +114,17 @@ internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = t
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
-        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
-        "&${UrlParams.LANGUAGE}=${this.trackRequest.language}" +
-        "&${UrlParams.TIME_ZONE}=${this.trackRequest.timeZone}" +
-        "&${UrlParams.ANDROID_API_LEVEL}=${this.trackRequest.apiLevel}" +
-        "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
-        "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
+        "&${UrlParams.LANGUAGE}=${this.trackRequest.language}"
+
+    stringBuffer += if (this.trackRequest.forceNewSession == "1") {
+        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
+            "&${UrlParams.ANDROID_API_LEVEL}=${this.trackRequest.apiLevel}" +
+            "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
+            "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
+    } else {
+        ""
+    }
 
     if (everIdInUrl) {
         stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
@@ -150,7 +154,10 @@ internal fun List<DataTrack>.buildPostRequest(
     return Request.Builder()
         .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
         .post(
-            RequestBody.create("text/plain".toMediaTypeOrNull(), this.buildUrlRequests(currentEverId))
+            RequestBody.create(
+                "text/plain".toMediaTypeOrNull(),
+                this.buildUrlRequests(currentEverId)
+            )
         )
         .build()
 }

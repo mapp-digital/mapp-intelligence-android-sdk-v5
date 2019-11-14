@@ -45,7 +45,7 @@ internal class WebtrekkSharedPrefs(context: Context) {
         set(value) = sharedPreferences.edit().putString(APP_FIRST_OPEN, value).apply()
 
     var fns: String
-        inline get() = sharedPreferences.getString(NEW_SESSION_KEY, "0") ?: "0"
+        inline get() = sharedPreferences.getString(NEW_SESSION_KEY, "1") ?: "1"
         set(value) = sharedPreferences.edit().putString(NEW_SESSION_KEY, value).apply()
 
     var optOut: Boolean
