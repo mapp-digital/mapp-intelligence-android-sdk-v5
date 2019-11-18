@@ -27,6 +27,7 @@ package webtrekk.android.sdk.extension
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
+import webtrekk.android.sdk.Track
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
@@ -36,7 +37,7 @@ import webtrekk.android.sdk.util.currentSession
  */
 internal fun Activity.toTrackRequest(needToTrack: Boolean = true): TrackRequest =
     TrackRequest(
-        name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",
+        name = getName(),
         screenResolution = this.resolution(),
         forceNewSession = if (needToTrack) currentSession else "1",
         appFirstOpen = if (needToTrack) appFirstOpen else "1",
@@ -49,10 +50,19 @@ internal fun Activity.toTrackRequest(needToTrack: Boolean = true): TrackRequest 
  */
 internal fun Fragment.toTrackRequest(): TrackRequest =
     TrackRequest(
-        name = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}",
+        name = getName(),
         screenResolution = this.context?.resolution(),
         forceNewSession = currentSession,
         appFirstOpen = appFirstOpen,
         appVersionName = this.context?.appVersionName,
         appVersionCode = this.context?.appVersionCode
     )
+
+private fun <T : Any> T.getName(): String {
+    var screenName = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}"
+    if (this.javaClass.isAnnotationPresent(Track::class.java)) {
+        val tracker = this.javaClass.getAnnotation(Track::class.java)
+        if (tracker != null && tracker.contextName.isNotEmpty()) screenName = tracker.contextName
+    }
+    return screenName
+}
