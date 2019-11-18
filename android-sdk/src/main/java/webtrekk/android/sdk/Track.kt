@@ -23,14 +23,13 @@
  *
  */
 
-package webtrekk.android.sdk.annotation
+package webtrekk.android.sdk
 
 /**
  * Should be used when auto track is disabled and want to track some manual pages
  */
-@Experimental
 @Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
-internal annotation class Track(val contextName: String = "", val trackingParams: Array<TrackParams> = emptyArray())
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Track(val contextName: String = "", val trackingParams: Array<TrackParams> = [])
 
-internal annotation class TrackParams(val paramKey: String, val paramVal: String)
+annotation class TrackParams(val paramKey: String, val paramVal: String)
