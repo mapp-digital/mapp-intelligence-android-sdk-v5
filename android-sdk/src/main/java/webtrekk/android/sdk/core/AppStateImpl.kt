@@ -29,13 +29,15 @@ import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import webtrekk.android.sdk.StopTrack
+import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.extension.getTrackerParams
 import webtrekk.android.sdk.extension.toTrackRequest
 
 /**
  * The implementation of [AppState]. This class listens to both activity and fragments life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
  */
-internal class AppStateImpl : AppState<TrackRequest>() {
+internal class AppStateImpl : AppState<DataAnnotationClass>() {
 
     override fun onActivityStarted(activity: Activity?) {
         super.onActivityStarted(activity)
@@ -43,7 +45,10 @@ internal class AppStateImpl : AppState<TrackRequest>() {
         activity?.let {
             val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
-                activity.toTrackRequest(needToTrack),
+                DataAnnotationClass(
+                    activity.toTrackRequest(needToTrack),
+                    activity.getTrackerParams()
+                ),
                 needToTrack
             )
         }
@@ -53,16 +58,16 @@ internal class AppStateImpl : AppState<TrackRequest>() {
         super.onFragmentStarted(fm, f)
 
         lifecycleReceiver.onLifecycleEventReceived(
-            f.toTrackRequest(),
+            DataAnnotationClass(f.toTrackRequest(), f.getTrackerParams()),
             !f.javaClass.isAnnotationPresent(StopTrack::class.java)
-    )
-}
+        )
+    }
 }
 
 /**
  * The implementation of [AppState]. This class listens to ONLY activity life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
  */
-internal class ActivityAppStateImpl : AppState<TrackRequest>() {
+internal class ActivityAppStateImpl : AppState<DataAnnotationClass>() {
 
     override fun onActivityStarted(activity: Activity?) {
         super.onActivityStarted(activity)
@@ -70,7 +75,10 @@ internal class ActivityAppStateImpl : AppState<TrackRequest>() {
         activity?.let {
             val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
-                activity.toTrackRequest(needToTrack),
+                DataAnnotationClass(
+                    activity.toTrackRequest(needToTrack),
+                    activity.getTrackerParams()
+                ),
                 needToTrack
             )
         }
@@ -80,13 +88,13 @@ internal class ActivityAppStateImpl : AppState<TrackRequest>() {
 /**
  * The implementation of [AppState]. This class listens to ONLY fragment life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
  */
-internal class FragmentStateImpl : AppState<TrackRequest>() {
+internal class FragmentStateImpl : AppState<DataAnnotationClass>() {
 
     override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
         super.onFragmentStarted(fm, f)
 
         lifecycleReceiver.onLifecycleEventReceived(
-            f.toTrackRequest(),
+            DataAnnotationClass(f.toTrackRequest(), f.getTrackerParams()),
             !f.javaClass.isAnnotationPresent(StopTrack::class.java)
         )
     }

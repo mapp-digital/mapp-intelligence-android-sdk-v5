@@ -29,6 +29,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import webtrekk.android.sdk.Param
+import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
@@ -169,3 +170,6 @@ internal fun List<DataTrack>.buildUrlRequests(currentEverId: String): String {
     }
     return string
 }
+
+internal fun Array<TrackParams>.toParam(): Map<String, String> =
+    map { it.paramKey to it.paramVal }.toMap()
