@@ -47,6 +47,7 @@ import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
 import webtrekk.android.sdk.domain.external.AutoTrack
@@ -206,11 +207,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                 )
             }
             if (config.fragmentsAutoTracking && config.activityAutoTracking)
-                single { AppStateImpl() as AppState<TrackRequest> }
+                single { AppStateImpl() as AppState<DataAnnotationClass> }
             else if (config.fragmentsAutoTracking)
-                single { FragmentStateImpl() as AppState<TrackRequest> }
+                single { FragmentStateImpl() as AppState<DataAnnotationClass> }
             else
-                single { ActivityAppStateImpl() as AppState<TrackRequest> }
+                single { ActivityAppStateImpl() as AppState<DataAnnotationClass> }
         }
 
         val externalInteractorsModule = module {

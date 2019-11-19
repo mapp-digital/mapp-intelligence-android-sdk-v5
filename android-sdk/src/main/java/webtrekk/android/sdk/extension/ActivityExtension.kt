@@ -28,6 +28,7 @@ package webtrekk.android.sdk.extension
 import android.app.Activity
 import androidx.fragment.app.Fragment
 import webtrekk.android.sdk.Track
+import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
@@ -65,4 +66,14 @@ private fun <T : Any> T.getName(): String {
         if (tracker != null && tracker.contextName.isNotEmpty()) screenName = tracker.contextName
     }
     return screenName
+}
+
+internal fun <T : Any> T.getTrackerParams(): Array<TrackParams> {
+    var trackers = emptyArray<TrackParams>()
+    if (this.javaClass.isAnnotationPresent(Track::class.java)) {
+        val tracker = this.javaClass.getAnnotation(Track::class.java)
+        if (tracker != null && tracker.trackingParams.isNotEmpty()) trackers =
+            tracker.trackingParams
+    }
+    return trackers
 }
