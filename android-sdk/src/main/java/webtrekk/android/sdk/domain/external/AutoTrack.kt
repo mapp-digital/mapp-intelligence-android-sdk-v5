@@ -33,11 +33,12 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
-import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
-import webtrekk.android.sdk.domain.internal.CacheTrackRequest
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.extension.toParam
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -45,12 +46,13 @@ import kotlin.coroutines.CoroutineContext
  */
 internal class AutoTrack(
     coroutineContext: CoroutineContext,
-    private val appState: AppState<TrackRequest>,
-    private val cacheTrackRequest: CacheTrackRequest
+    private val appState: AppState<DataAnnotationClass>,
+    private val cacheTrackRequest: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<AutoTrack.Params>, KoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
+    override val scope =
+        CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     /**
      * [logger] the injected logger from Webtrekk.
@@ -63,13 +65,19 @@ internal class AutoTrack(
 
         // Listen to the life cycle listeners, and cache the data
         appState.listenToLifeCycle(invokeParams.context) { trackRequest ->
-            logger.info("Received a request from auto track: $trackRequest")
+            logger.info("Received a request from auto track: ${trackRequest.trackRequest}")
 
-            scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-                logger
-            )
+            scope.launch(
+                coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                    logger
+                )
             ) {
-                cacheTrackRequest(CacheTrackRequest.Params(trackRequest))
+                cacheTrackRequest(
+                    CacheTrackRequestWithCustomParams.Params(
+                        trackRequest.trackRequest,
+                        trackRequest.trackParams.toParam()
+                    )
+                )
                     .onSuccess { logger.debug("Cached auto track request: $it") }
                     .onFailure { logger.error("Error while caching auto track request: $it") }
             }
