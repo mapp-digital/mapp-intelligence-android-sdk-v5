@@ -30,13 +30,13 @@ import io.kotlintest.IsolationMode
 import io.mockk.mockk
 import io.mockk.mockkClass
 import webtrekk.android.sdk.core.AppState
-import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.domain.internal.CacheTrackRequest
+import webtrekk.android.sdk.data.entity.DataAnnotationClass
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 
 internal class AutoTrackTest : AbstractExternalInteractor() {
 
-    private val appState: AppState<TrackRequest> = mockk(relaxed = true)
-    private val cacheTrackRequest = mockkClass(CacheTrackRequest::class)
+    private val appState: AppState<DataAnnotationClass> = mockk(relaxed = true)
+    private val cacheTrackRequest = mockkClass(CacheTrackRequestWithCustomParams::class)
     private val appContext = mockk<Context>(relaxed = true)
     private val autoTrack =
         AutoTrack(coroutineContext, appState, cacheTrackRequest)

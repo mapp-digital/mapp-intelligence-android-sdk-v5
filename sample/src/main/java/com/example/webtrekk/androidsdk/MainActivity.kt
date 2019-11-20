@@ -30,12 +30,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.Param
-import webtrekk.android.sdk.StopTrack
-import webtrekk.android.sdk.Track
+import webtrekk.android.sdk.TrackPageDetail
 import webtrekk.android.sdk.TrackParams
 
 
-@Track(
+@TrackPageDetail(
     contextName = "Sisarka",
     trackingParams = [TrackParams(paramKey = Param.INTERNAL_SEARCH, paramVal = "search")]
 )
