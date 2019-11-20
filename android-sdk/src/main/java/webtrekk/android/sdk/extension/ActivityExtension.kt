@@ -27,7 +27,7 @@ package webtrekk.android.sdk.extension
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
-import webtrekk.android.sdk.Track
+import webtrekk.android.sdk.TrackPageDetail
 import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.appFirstOpen
@@ -61,8 +61,8 @@ internal fun Fragment.toTrackRequest(): TrackRequest =
 
 private fun <T : Any> T.getName(): String {
     var screenName = "${this.javaClass.`package`?.name}.${this.javaClass.simpleName}"
-    if (this.javaClass.isAnnotationPresent(Track::class.java)) {
-        val tracker = this.javaClass.getAnnotation(Track::class.java)
+    if (this.javaClass.isAnnotationPresent(TrackPageDetail::class.java)) {
+        val tracker = this.javaClass.getAnnotation(TrackPageDetail::class.java)
         if (tracker != null && tracker.contextName.isNotEmpty()) screenName = tracker.contextName
     }
     return screenName
@@ -70,8 +70,8 @@ private fun <T : Any> T.getName(): String {
 
 internal fun <T : Any> T.getTrackerParams(): Array<TrackParams> {
     var trackers = emptyArray<TrackParams>()
-    if (this.javaClass.isAnnotationPresent(Track::class.java)) {
-        val tracker = this.javaClass.getAnnotation(Track::class.java)
+    if (this.javaClass.isAnnotationPresent(TrackPageDetail::class.java)) {
+        val tracker = this.javaClass.getAnnotation(TrackPageDetail::class.java)
         if (tracker != null && tracker.trackingParams.isNotEmpty()) trackers =
             tracker.trackingParams
     }
