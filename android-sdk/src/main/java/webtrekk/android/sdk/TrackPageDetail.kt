@@ -30,5 +30,5 @@ package webtrekk.android.sdk
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Track(val contextName: String = "", val trackingParams: Array<TrackParams> = [])
+annotation class TrackPageDetail(val contextName: String = "", val trackingParams: Array<TrackParams> = [])
 annotation class TrackParams(val paramKey: String, val paramVal: String)
