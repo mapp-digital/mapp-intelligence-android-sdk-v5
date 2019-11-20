@@ -25,9 +25,7 @@
 
 package webtrekk.android.sdk.domain.worker
 
-import android.content.Context
 import android.util.Log
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.testing.SynchronousExecutor
@@ -35,9 +33,7 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import org.junit.Before
 
 internal abstract class WorkManagerTest {
-
-    val context = ApplicationProvider.getApplicationContext<Context>()
-
+    val context = InstrumentationRegistry.getInstrumentation().targetContext
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext

@@ -27,16 +27,22 @@ package com.example.webtrekk.samplejava;
 
 import android.os.Bundle;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import webtrekk.android.sdk.TrackPageDetail;
+
+import webtrekk.android.sdk.TrackParams;
+
 import webtrekk.android.sdk.Webtrekk;
-import webtrekk.android.sdk.Param;
 import webtrekk.android.sdk.ParamType;
 
 import static webtrekk.android.sdk.ParamTypeKt.createCustomParam;
 
+@TrackPageDetail(
+        contextName= "Main Page",
+        trackingParams=  {@TrackParams(paramKey="is",paramVal= "search")}
+        )
 public class MainActivity extends AppCompatActivity {
 
     private final Webtrekk webtrekk = Webtrekk.getInstance();
@@ -47,10 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put(BACKGROUND_PARAM, "blue");
-        params.put(Param.INTERNAL_SEARCH, "searching");
 
-        webtrekk.trackCustomPage("product page", params);
+
     }
 }

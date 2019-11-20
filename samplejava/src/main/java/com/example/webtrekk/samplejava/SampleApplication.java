@@ -31,11 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.work.Constraints;
+
+import webtrekk.android.sdk.Logger;
 import webtrekk.android.sdk.Webtrekk;
 import webtrekk.android.sdk.WebtrekkConfiguration;
 
 public class SampleApplication extends Application {
-
+    final static String WEBSITE_NAME = "Baeldung";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,9 +46,9 @@ public class SampleApplication extends Application {
         ids.add("1");
 
         WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(ids, "https://www.webtrekk.com")
-                .disableAutoTracking()
                 .setWorkManagerConstraints(new Constraints.Builder()
                         .setRequiresBatteryNotLow(true).build())
+                .setLogLevel(Logger.Level.BASIC)
                 .build();
 
         Webtrekk.getInstance().init(this, webtrekkConfiguration);
