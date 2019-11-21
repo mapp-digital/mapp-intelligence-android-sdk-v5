@@ -154,6 +154,16 @@ Same Annotation cen be used on the fragment and activity
 class MainActivity : AppCompatActivity() {
 }
 ```
+Auto tracking allows the use of annotations to change the screen name or to add a custom parameters.
+Annotation is optional and only works when autoTracking is on
+```kotlin
+@TrackPageDetail(
+    contextName = "Main Page",
+    trackingParams = [TrackParams(paramKey = Param.INTERNAL_SEARCH, paramVal = "search")]
+)
+```
+
+
 
 ### Manual Track
 By default, auto tracking will track every page (activities/fragments) in the app. To track specific pages (activities/fragments), disable auto track first in the configuration `disableAutoTrack()`, then call `trackPage()` method within your activities/fragments.
