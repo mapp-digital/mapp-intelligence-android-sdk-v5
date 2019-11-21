@@ -104,7 +104,7 @@ abstract class Webtrekk protected constructor() {
      * @param config an interface that is used to set up Webtrekk configurations. Use [WebtrekkConfiguration]
      *   which is a concrete implementation of [Config] where you can set up all your configurations.
      */
-    abstract fun init(context: Context, config: Config)
+    abstract fun  init(context: Context, config: Config)
 
     /**
      * Used as a manual tracking in case of disabling the auto tracking in [Config.autoTracking].
@@ -139,7 +139,7 @@ abstract class Webtrekk protected constructor() {
      *
      * @throws [IllegalStateException] if [Config] config is not initialized.
      */
-    abstract fun trackCustomPage(pageName: String, trackingParams: Map<String, String>)
+    abstract fun trackCustomPage(pageName: String, trackingParams: Map<String, String> = emptyMap())
 
     /**
      * Tracks a specific custom event, with a custom tracking params.
@@ -151,7 +151,7 @@ abstract class Webtrekk protected constructor() {
      *
      * @throws [IllegalStateException] if [Config] config is not initialized.
      */
-    abstract fun trackCustomEvent(eventName: String, trackingParams: Map<String, String>)
+    abstract fun trackCustomEvent(eventName: String, trackingParams: Map<String, String> = emptyMap())
 
     /**
      * Allows to opt out entirely from tracking. Internally, calling this method will cause to delete
