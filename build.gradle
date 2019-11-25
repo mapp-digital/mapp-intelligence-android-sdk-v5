@@ -50,7 +50,8 @@ buildscript {
             'workManagerVersion'     : '2.2.0',
             'roomVersion'            : '2.2.2',
 
-            'testCoreVersion'        : '1.1.0',
+            'testCoreVersion'        : '1.2.0',
+            'testCoreVersionJunit'   : '1.1.1',
             'junitVersion'           : '4.12',
             'runnerVersion'          : '1.1.1',
             'espressoCoreVersion'    : '3.1.0',
@@ -82,7 +83,7 @@ buildscript {
             mockk                 : "io.mockk:mockk:$versions.mockkVersion",
             coroutinesTest        : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlinCoroutines",
             kotlinTest            : "io.kotlintest:kotlintest-runner-junit5:$versions.kotlinTestVersion",
-            androidTestJunit      : "androidx.test.ext:junit:$versions.testCoreVersion",
+            androidTestJunit      : "androidx.test.ext:junit:$versions.testCoreVersionJunit",
             androidMockk          : "io.mockk:mockk-android:$versions.mockkVersion",
             androidArchCoreTest   : "androidx.arch.core:core-testing:$versions.coreTestingVersion",
             androidRoomTest       : "androidx.room:room-testing:$versions.roomVersion",
