@@ -53,11 +53,11 @@ buildscript {
             'testCoreVersion'        : '1.2.0',
             'testCoreVersionJunit'   : '1.1.1',
             'junitVersion'           : '4.12',
-            'runnerVersion'          : '1.1.1',
-            'espressoCoreVersion'    : '3.1.0',
+            'runnerVersion'          : '1.2.0',
+            'espressoCoreVersion'    : '3.2.0',
             'coreTestingVersion'     : '2.0.0',
-            'mockkVersion'           : '1.9',
-            'kotlinTestVersion'      : '3.3.0',
+            'mockkVersion'           : '1.9.3',
+            'kotlinTestVersion'      : '3.4.2',
 
             'ktlintVersion'          : '0.31.0',
             'dokkaVersion'           : '0.9.17'
