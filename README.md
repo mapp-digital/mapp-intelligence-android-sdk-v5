@@ -167,7 +167,6 @@ Annotation is optional and only works when autoTracking is on
 
 ### Manual Track
 By default, auto tracking will track every page (activities/fragments) in the app. To track specific pages (activities/fragments), disable auto track first in the configuration `disableAutoTrack()`, then call `trackPage()` method within your activities/fragments.
-Note, calling `trackPage()` while auto track [Config.autoTracking](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/Config.kt) is still enabled, then this function will return immediately, alongside with a warning indicating that auto tracking is enabled.
 If you want to override the activity/fragment name *(optional)*, then set up the desired name in `customPageName`.
 You can define some custom tracking params *(optional)* that will be attached within this tracking page. Please check out how to define [tracking params](#custom_params) below.
 
