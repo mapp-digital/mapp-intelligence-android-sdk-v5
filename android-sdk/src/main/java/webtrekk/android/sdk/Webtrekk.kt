@@ -104,7 +104,7 @@ abstract class Webtrekk protected constructor() {
      * @param config an interface that is used to set up Webtrekk configurations. Use [WebtrekkConfiguration]
      *   which is a concrete implementation of [Config] where you can set up all your configurations.
      */
-    abstract fun  init(context: Context, config: Config)
+    abstract fun init(context: Context, config: Config)
 
     /**
      * Used as a manual tracking in case of disabling the auto tracking in [Config.autoTracking].

@@ -55,8 +55,11 @@ buildscript {
             'junitVersion'           : '4.12',
             'runnerVersion'          : '1.2.0',
             'espressoCoreVersion'    : '3.2.0',
+            //Version 2.1.0 depends on androidx.arch.core:core-runtime:2.1.0 which must be explicitly added in android-sdk gradle
             'coreTestingVersion'     : '2.0.0',
-            'mockkVersion'           : '1.9.3',
+            //Downgraded version from 1.9.3 to 1.9.2 while this issue is not resolved
+            //https://github.com/mockk/mockk/issues/281
+            'mockkVersion'           : '1.9.2',
             'kotlinTestVersion'      : '3.4.2',
 
             'ktlintVersion'          : '0.31.0',
