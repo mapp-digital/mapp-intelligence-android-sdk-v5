@@ -30,6 +30,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
         targetSdkVersion versions.targetSdkVersion
