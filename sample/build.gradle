@@ -30,6 +30,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "com.example.webtrekk.androidsdk"
