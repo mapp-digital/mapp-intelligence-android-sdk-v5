@@ -27,6 +27,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "com.example.webtrekk.samplejava"
