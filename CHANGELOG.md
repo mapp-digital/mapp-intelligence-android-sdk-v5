@@ -1,5 +1,7 @@
 # Change Log
 ## Version 5.0.0. *(inProgress)*
+
+## Version 5.0.0. *(2019-12-03)*
 * Add Annotation track configuration support.
 * Logger time bug fix.
 * Optimised internet communication.
