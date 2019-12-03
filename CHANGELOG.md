@@ -1,10 +1,11 @@
 # Change Log
-## Version 5.0.0-beta12 *(inProgress)*
+## Version 5.0.0. *(inProgress)*
 * Add Annotation track configuration support.
 * Logger time bug fix.
 * Optimised internet communication.
 * Logger is now disabled by default. 
 * Dependency update and code modernisation.
+* Minor bug fix.
 
 ## Version 5.0.0-beta11 *(2019-10-08)*
 * Add Batch support.
