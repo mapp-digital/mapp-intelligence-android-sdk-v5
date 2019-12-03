@@ -1,5 +1,5 @@
 # Change Log
-## Version 5.0.0. *(inProgress)*
+## Version 5.0.1.-beta1 *(inProgress)*
 
 ## Version 5.0.0. *(2019-12-03)*
 * Add Annotation track configuration support.
