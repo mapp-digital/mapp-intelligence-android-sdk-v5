@@ -107,19 +107,19 @@ internal fun List<DataTrack>.buildBatchUrl(
         "&${UrlParams.USER_AGENT}=${this[0].trackRequest.userAgent.encodeToUTF8()}"
 }
 
-internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = true): String {
-    var stringBuffer: String = if (everIdInUrl)
+internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean = true): String {
+    var stringBuffer: String = if (withOutBatching)
         "/wt?"
     else {
         "wt?"
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
-        "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
         "&${UrlParams.LANGUAGE}=${this.trackRequest.language}"
 
     stringBuffer += if (this.trackRequest.forceNewSession == "1") {
-        "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
+        "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
+            "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
+            "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
             "&${UrlParams.ANDROID_API_LEVEL}=${this.trackRequest.apiLevel}" +
             "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
             "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
@@ -127,7 +127,7 @@ internal fun DataTrack.buildBody(currentEverId: String, everIdInUrl: Boolean = t
         ""
     }
 
-    if (everIdInUrl) {
+    if (withOutBatching) {
         stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
             "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}"
     }
