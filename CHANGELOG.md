@@ -6,7 +6,7 @@
 * Logger time bug fix.
 * Optimised internet communication.
 * Logger is now disabled by default. 
-* Dependency update and code modernisation.
+* Dependency update and code modernization.
 * Minor bug fix.
 
 ## Version 5.0.0-beta11 *(2019-10-08)*
