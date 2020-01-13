@@ -156,10 +156,9 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
-
     abstract fun formTracking(
         context: Context,
-        resId: Int=0,
+        resId: Int = 0,
         formName: String? = null,
         trackingIds: List<Int> = emptyList(),
         renameFields: Map<Int, String> = emptyMap()

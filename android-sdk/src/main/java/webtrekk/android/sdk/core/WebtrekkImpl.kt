@@ -165,6 +165,16 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             )
         }
 
+    override fun formTracking(
+        context: Context,
+        resId: Int,
+        formName: String?,
+        trackingIds: List<Int>,
+        renameFields: Map<Int, String>
+    ) {
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun optOut(value: Boolean, sendCurrentData: Boolean) = context.run {
         optOutUser(
             Optout.Params(
