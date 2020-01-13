@@ -156,6 +156,15 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
+
+    abstract fun formTracking(
+        context: Context,
+        resId: Int=0,
+        formName: String? = null,
+        trackingIds: List<Int> = emptyList(),
+        renameFields: Map<Int, String> = emptyMap()
+    )
+
     /**
      * Allows to opt out entirely from tracking. Internally, calling this method will cause to delete
      * all the current tracking data that are cached in the database (if sendCurrentData is false),
