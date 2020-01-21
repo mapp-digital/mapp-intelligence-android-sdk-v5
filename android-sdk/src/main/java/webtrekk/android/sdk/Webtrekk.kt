@@ -26,6 +26,8 @@
 package webtrekk.android.sdk
 
 import android.content.Context
+import android.view.View
+import androidx.annotation.DrawableRes
 import webtrekk.android.sdk.core.WebtrekkImpl
 
 /**
@@ -158,8 +160,8 @@ abstract class Webtrekk protected constructor() {
 
     abstract fun formTracking(
         context: Context,
-        resId: Int = 0,
-        formName: String? = null,
+        view: View? = null,
+        formName: String = "",
         trackingIds: List<Int> = emptyList(),
         renameFields: Map<Int, String> = emptyMap()
     )
