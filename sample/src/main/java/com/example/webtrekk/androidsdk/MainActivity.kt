@@ -27,11 +27,14 @@ package com.example.webtrekk.androidsdk
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackPageDetail
 import webtrekk.android.sdk.TrackParams
+import webtrekk.android.sdk.Webtrekk
 
 
 @TrackPageDetail(
@@ -54,17 +57,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        val trackingParams = TrackingParams()
-//
-//        trackingParams.putAll(
-//            mapOf(
-//                Param.INTERNAL_SEARCH to "search",
-//                Param.BACKGROUND_COLOR to "blue",
-//                Param.TRACKING_LOCATION to "my new location"
-//            )
-//        )
-//
-//        Webtrekk.getInstance().trackPage(this, "Product activity")
-//        Webtrekk.getInstance().trackCustomPage("First page", trackingParams)
+        val view =
+            findViewById<View>(android.R.id.content).rootView
+
+        Webtrekk.getInstance().formTracking(this,view = view)
     }
 }
