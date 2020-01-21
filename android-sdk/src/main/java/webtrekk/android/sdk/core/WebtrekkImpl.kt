@@ -27,6 +27,8 @@ package webtrekk.android.sdk.core
 
 import android.app.Activity
 import android.content.Context
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RestrictTo
 import androidx.work.WorkManager
 import kotlinx.coroutines.CoroutineScope
@@ -50,11 +52,13 @@ import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
+import webtrekk.android.sdk.domain.external.*
 import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
-import webtrekk.android.sdk.domain.external.TrackCustomPage
-import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.Optout
+import webtrekk.android.sdk.domain.external.TrackCustomEvent
+import webtrekk.android.sdk.domain.external.TrackCustomForm
+import webtrekk.android.sdk.domain.external.TrackCustomPage
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.module.dataModule
@@ -81,6 +85,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     private val manualTrack by inject<ManualTrack>()
     private val trackCustomPage by inject<TrackCustomPage>()
     private val trackCustomEvent by inject<TrackCustomEvent>()
+    private val trackCustomForm by inject<TrackCustomForm>()
     private val optOutUser by inject<Optout>()
 
     internal val sessions by inject<Sessions>()
@@ -167,11 +172,36 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
 
     override fun formTracking(
         context: Context,
-        resId: Int,
-        formName: String?,
+        view: View?,
+        formName: String,
         trackingIds: List<Int>,
         renameFields: Map<Int, String>
     ) {
+        val contextName = if (formName.isEmpty()) context.javaClass.name else formName
+        val viewGroup = if (view != null) view.rootView as ViewGroup
+        else (context as Activity).findViewById<View>(android.R.id.content).rootView as ViewGroup
+        config.run {
+            trackCustomForm(
+                TrackCustomForm.Params(
+                    trackRequest = TrackRequest(
+                        name = "0",
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    isOptOut = hasOptOut(),
+                    viewGroup = viewGroup,
+                    formName = contextName,
+                    trackingIds = trackingIds,
+                    renameFields = renameFields
+
+                ), coroutineDispatchers
+            )
+        }
+
+
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
@@ -242,6 +272,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             single { TrackCustomPage(coroutineContext, get()) }
             single {
                 TrackCustomEvent(
+                    coroutineContext,
+                    get()
+                )
+            }
+
+            single {
+                TrackCustomForm(
                     coroutineContext,
                     get()
                 )
