@@ -27,6 +27,7 @@ package webtrekk.android.sdk.api
 
 import webtrekk.android.sdk.ParamType
 import webtrekk.android.sdk.api.UrlParams.EVENT_NAME
+import webtrekk.android.sdk.api.UrlParams.FORM_NAME
 import webtrekk.android.sdk.customParam
 
 /**
@@ -55,6 +56,10 @@ internal object UrlParams {
 
     const val EVENT_NAME = "ct"
 
+    const val FORM_NAME = "fn"
+
+    const val FORM_FIELD = "ft"
+
     val ANDROID_API_LEVEL = customParam(
         ParamType.SESSION_PARAM,
         814
@@ -82,5 +87,6 @@ internal object UrlParams {
 internal enum class RequestType(val value: String) {
 
     PAGE(""),
-    EVENT(EVENT_NAME)
+    EVENT(EVENT_NAME),
+    FORM(FORM_NAME)
 }

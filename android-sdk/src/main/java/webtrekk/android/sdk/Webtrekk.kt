@@ -27,7 +27,6 @@ package webtrekk.android.sdk
 
 import android.content.Context
 import android.view.View
-import androidx.annotation.DrawableRes
 import webtrekk.android.sdk.core.WebtrekkImpl
 
 /**
@@ -163,7 +162,10 @@ abstract class Webtrekk protected constructor() {
         view: View? = null,
         formName: String = "",
         trackingIds: List<Int> = emptyList(),
-        renameFields: Map<Int, String> = emptyMap()
+        renameFields: Map<Int, String> = emptyMap(),
+        changeFieldsValue: Map<Int, String> = emptyMap(),
+        confirmButton: Boolean = true,
+        anonymous: Boolean = false
     )
 
     /**
