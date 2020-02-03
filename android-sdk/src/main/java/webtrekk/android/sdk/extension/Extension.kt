@@ -25,11 +25,12 @@
 
 package webtrekk.android.sdk.extension
 
-import org.json.JSONObject
-import java.net.URLEncoder
 import okhttp3.Request
 import okio.Buffer
+import org.json.JSONObject
+import webtrekk.android.sdk.data.model.FormField
 import java.io.IOException
+import java.net.URLEncoder
 
 /**
  * This file contains helper general extension functions.
@@ -101,3 +102,14 @@ fun Request.stringifyRequestBody(): String {
         return "did not work"
     }
 }
+
+internal fun List<FormField>.toRequest(): String {
+    var request = ""
+    forEach { formField ->
+        request += formField.toRequest() + ";"
+    }
+    request.dropLast(1)
+    return request
+}
+
+fun Boolean.toInt() = if (this) 1 else 0

@@ -27,19 +27,26 @@ package webtrekk.android.sdk.domain.external
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IntegerRes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.api.RequestType
+import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.api.RequestType
+import webtrekk.android.sdk.data.model.FormField
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.extension.isTracable
+import webtrekk.android.sdk.extension.notTrackedView
+import webtrekk.android.sdk.extension.parseView
+import webtrekk.android.sdk.extension.toFormField
+import webtrekk.android.sdk.extension.toInt
+import webtrekk.android.sdk.extension.toRequest
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -68,19 +75,48 @@ internal class TrackCustomForm(
                 logger
             )
         ) {
-            val params = invokeParams.renameFields.toMutableMap()
-            //  params[RequestType.EVENT.value] = invokeParams.ctParams // Appending the 'ct' param (event) to the custom params.
-
-            // Cache the track request with its custom params.
+            val params = emptyMap<String, String>().toMutableMap()
+            params[RequestType.FORM.value] =
+                invokeParams.formName + "|" + invokeParams.confirmButton.toInt()
+            params[UrlParams.FORM_FIELD] = createField(
+                invokeParams.viewGroup,
+                invokeParams.trackingIds,
+                invokeParams.renameFields,
+                invokeParams.changeFieldsValue,
+                invokeParams.anonymous
+            )
+            // Cache the track request with its custom parafms.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
-                    emptyMap()
+                    params
                 )
             )
-                .onSuccess { logger.debug("Cached custom event request: $it") }
-                .onFailure { logger.error("Error while caching custom event request: $it") }
+                .onSuccess { logger.debug("Cached form request: $it") }
+                .onFailure { logger.error("Error while caching form request: $it") }
         }
+    }
+
+    private fun createField(
+        viewGroup: ViewGroup,
+        trackingIds: List<Int>,
+        renameFields: Map<Int, String>,
+        changeFieldsValue: Map<Int, String>,
+        anonymous: Boolean
+    ): String {
+
+        val array: MutableList<View> = mutableListOf()
+        viewGroup.parseView(array)
+        array.notTrackedView(trackingIds)
+        val listFormField = mutableListOf<FormField>()
+        array.forEach { view: View ->
+            if (view.isTracable()) {
+                val name: String? = renameFields[view.id]
+                val value: String? = changeFieldsValue[view.id]
+                listFormField.add(view.toFormField(name, anonymous, value))
+            }
+        }
+        return listFormField.toRequest()
     }
 
     /**
@@ -96,6 +132,9 @@ internal class TrackCustomForm(
         val viewGroup: ViewGroup,
         val formName: String,
         val trackingIds: List<Int>,
-        val renameFields: Map<Int, String>
+        val renameFields: Map<Int, String>,
+        val confirmButton: Boolean,
+        val anonymous: Boolean,
+        val changeFieldsValue: Map<Int, String>
     )
 }
