@@ -52,7 +52,6 @@ import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
-import webtrekk.android.sdk.domain.external.*
 import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
@@ -175,7 +174,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         view: View?,
         formName: String,
         trackingIds: List<Int>,
-        renameFields: Map<Int, String>
+        renameFields: Map<Int, String>,
+        changeFieldsValue: Map<Int, String>,
+        confirmButton: Boolean,
+        anonymous: Boolean
     ) {
         val contextName = if (formName.isEmpty()) context.javaClass.name else formName
         val viewGroup = if (view != null) view.rootView as ViewGroup
@@ -195,14 +197,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     viewGroup = viewGroup,
                     formName = contextName,
                     trackingIds = trackingIds,
-                    renameFields = renameFields
+                    renameFields = renameFields,
+                    confirmButton = confirmButton,
+                    anonymous = anonymous,
+                    changeFieldsValue = changeFieldsValue
 
                 ), coroutineDispatchers
             )
         }
-
-
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun optOut(value: Boolean, sendCurrentData: Boolean) = context.run {
