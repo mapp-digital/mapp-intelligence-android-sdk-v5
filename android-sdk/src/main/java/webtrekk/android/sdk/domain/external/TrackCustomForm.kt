@@ -123,8 +123,14 @@ internal class TrackCustomForm(
      * A data class encapsulating the specific params related to this use case.
      *
      * @param trackRequest the track request that is created and will be cached in the data base.
-     * @param trackingParams the custom params associated with the [trackRequest].
      * @param isOptOut the opt out value.
+     * @param viewGroup viewGroup for the analysis
+     * @param formName form name can be activity name or changed
+     * @param trackingIds only track specific elements of the view
+     * @param renameFields rename specific fields
+     * @param confirmButton clicked confirm or cancel button for the form
+     * @param anonymous hide content
+     * @param changeFieldsValue in some case is good to change value of the specific fields
      */
     data class Params(
         val trackRequest: TrackRequest,

@@ -157,15 +157,18 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
+    /**
+     * Tracks a specific custom event, with a custom tracking params.
+     * Could be used alongside the auto tracking.
+     * @param context context of the current activity.
+     * @param view *optional* overrides the local view used in activity
+     * @param formTrackingSettings *optional* contain additional settings for the form tracking
+     *
+     */
     abstract fun formTracking(
         context: Context,
         view: View? = null,
-        formName: String = "",
-        trackingIds: List<Int> = emptyList(),
-        renameFields: Map<Int, String> = emptyMap(),
-        changeFieldsValue: Map<Int, String> = emptyMap(),
-        confirmButton: Boolean = true,
-        anonymous: Boolean = false
+        formTrackingSettings: FormTrackingSettings = FormTrackingSettings()
     )
 
     /**
