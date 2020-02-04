@@ -86,27 +86,33 @@ internal fun View.toFormField(
         }
         is SearchView -> {
             formField.fieldValue = if (this.query != null) this.query.toString() else "empty"
-            formField.fieldType = "search_view"
+            if (formField.fieldValue.isEmpty()) {
+                formField.fieldValue = "empty"
+            }
+            if (anonymous and (formField.fieldValue != "empty")) {
+                formField.fieldValue = "filled_out"
+            }
+            formField.fieldType = "SearchView"
         }
         is RadioButton -> {
             formField.fieldValue = isChecked.toInt().toString()
-            formField.fieldType = "radio_button"
+            formField.fieldType = "RadioButton"
         }
         is ToggleButton -> {
             formField.fieldValue = isChecked.toInt().toString()
-            formField.fieldType = "toggle_button"
+            formField.fieldType = "ToggleButton"
         }
         is Switch -> {
             formField.fieldValue = isChecked.toInt().toString()
-            formField.fieldType = "switch"
+            formField.fieldType = "Switch"
         }
         is CheckBox -> {
             formField.fieldValue = isChecked.toInt().toString()
-            formField.fieldType = "check_box"
+            formField.fieldType = "CheckBox"
         }
         is RatingBar -> {
             formField.fieldValue = rating.toString()
-            formField.fieldType = "rating_bar"
+            formField.fieldType = "RatingBar"
         }
     }
     if (value != null) {
@@ -131,28 +137,28 @@ internal fun View.isTracable(): Boolean {
 internal fun EditText.getInputTypeString(): String {
     return when (this.inputType) {
         InputType.TYPE_TEXT_VARIATION_PERSON_NAME or InputType.TYPE_TEXT_FLAG_CAP_WORDS or InputType.TYPE_CLASS_TEXT -> {
-            "name"
+            "Name"
         }
         InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT -> {
-            "password"
+            "Password"
         }
         InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS or InputType.TYPE_CLASS_TEXT -> {
-            "email"
+            "Email"
         }
         InputType.TYPE_CLASS_PHONE -> {
-            "phone_number"
+            "PhoneNumber"
         }
         InputType.TYPE_CLASS_DATETIME -> {
-            "data"
+            "Data"
         }
         InputType.TYPE_CLASS_NUMBER -> {
-            "number"
+            "Number"
         }
         InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS -> {
-            "address"
+            "Address"
         }
         else -> {
-            "edit_text"
+            "EditText"
         }
     }
 }
