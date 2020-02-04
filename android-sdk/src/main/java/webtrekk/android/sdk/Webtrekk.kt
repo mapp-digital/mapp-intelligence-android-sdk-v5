@@ -158,8 +158,7 @@ abstract class Webtrekk protected constructor() {
     )
 
     /**
-     * Tracks a specific custom event, with a custom tracking params.
-     * Could be used alongside the auto tracking.
+     * Tracks a specific form events, in background we will take all import value from the view.
      * @param context context of the current activity.
      * @param view *optional* overrides the local view used in activity
      * @param formTrackingSettings *optional* contain additional settings for the form tracking
