@@ -39,10 +39,11 @@ import org.koin.dsl.module.module
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.StandAloneContext.loadKoinModules
 import org.koin.standalone.inject
-import webtrekk.android.sdk.TrackingParams
-import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.Config
+import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
@@ -172,21 +173,17 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     override fun formTracking(
         context: Context,
         view: View?,
-        formName: String,
-        trackingIds: List<Int>,
-        renameFields: Map<Int, String>,
-        changeFieldsValue: Map<Int, String>,
-        confirmButton: Boolean,
-        anonymous: Boolean
+        formTrackingSettings: FormTrackingSettings
     ) {
-        val contextName = if (formName.isEmpty()) context.javaClass.name else formName
+        val contextName =
+            if (formTrackingSettings.formName.isEmpty()) context.javaClass.name else formTrackingSettings.formName
         val viewGroup = if (view != null) view.rootView as ViewGroup
         else (context as Activity).findViewById<View>(android.R.id.content).rootView as ViewGroup
         config.run {
             trackCustomForm(
                 TrackCustomForm.Params(
                     trackRequest = TrackRequest(
-                        name = "0",
+                        name = contextName,
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -196,11 +193,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     isOptOut = hasOptOut(),
                     viewGroup = viewGroup,
                     formName = contextName,
-                    trackingIds = trackingIds,
-                    renameFields = renameFields,
-                    confirmButton = confirmButton,
-                    anonymous = anonymous,
-                    changeFieldsValue = changeFieldsValue
+                    trackingIds = formTrackingSettings.trackingIds,
+                    renameFields = formTrackingSettings.renameFields,
+                    confirmButton = formTrackingSettings.confirmButton,
+                    anonymous = formTrackingSettings.anonymous,
+                    changeFieldsValue = formTrackingSettings.changeFieldsValue
 
                 ), coroutineDispatchers
             )
