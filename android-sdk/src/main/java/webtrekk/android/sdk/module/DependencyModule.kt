@@ -39,7 +39,6 @@ import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
 import webtrekk.android.sdk.core.SchedulerImpl
 import webtrekk.android.sdk.core.SessionsImpl
-import webtrekk.android.sdk.domain.internal.CacheTrackForm
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
@@ -84,7 +83,6 @@ internal val internalInteractorsModule = module {
     factory { CacheTrackRequest(get()) }
     factory { GetCachedDataTracks(get()) }
     factory { CacheTrackRequestWithCustomParams(get(), get()) }
-    factory { CacheTrackForm(get(), get()) }
     factory { ExecuteRequest(get(), get()) }
     factory { ExecutePostRequest(get(), get()) }
     factory { ClearTrackRequests(get()) }

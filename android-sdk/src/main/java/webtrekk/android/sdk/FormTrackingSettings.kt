@@ -5,7 +5,7 @@ package webtrekk.android.sdk
  * Copyright (c) 2020 MAPP.
  *
  * @param formName form name can be activity name or changed
- * @param trackingIds only track specific elements of the view
+ * @param fieldIds only track specific elements of the view
  * @param renameFields rename specific fields
  * @param confirmButton clicked confirm or cancel button for the form
  * @param anonymous hide content
@@ -13,10 +13,10 @@ package webtrekk.android.sdk
  */
 
 data class FormTrackingSettings(
-    val formName: String = "",
-    val trackingIds: List<Int> = emptyList(),
-    val renameFields: Map<Int, String> = emptyMap(),
-    val changeFieldsValue: Map<Int, String> = emptyMap(),
-    val confirmButton: Boolean = true,
-    val anonymous: Boolean = false
+    var formName: String = "",
+    var fieldIds: List<Int> = emptyList(),
+    var renameFields: Map<Int, String> = emptyMap(),
+    var changeFieldsValue: Map<Int, String> = emptyMap(),
+    var confirmButton: Boolean = true,
+    var anonymous: Boolean = false
 )

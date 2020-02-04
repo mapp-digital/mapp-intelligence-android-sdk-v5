@@ -31,10 +31,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import webtrekk.android.sdk.Param
-import webtrekk.android.sdk.TrackPageDetail
-import webtrekk.android.sdk.TrackParams
-import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.*
 
 
 @TrackPageDetail(
@@ -60,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         val view =
             findViewById<View>(android.R.id.content).rootView
 
-        Webtrekk.getInstance().formTracking(this,view = view)
+        var form= FormTrackingSettings()
+        form.confirmButton=false
+        form.formName="test123"
+
+
+        Webtrekk.getInstance().formTracking(this,formTrackingSettings=form)
     }
 }

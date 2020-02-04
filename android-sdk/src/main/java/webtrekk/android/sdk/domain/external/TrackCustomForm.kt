@@ -41,7 +41,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.model.FormField
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.extension.isTracable
+import webtrekk.android.sdk.extension.isTrackable
 import webtrekk.android.sdk.extension.notTrackedView
 import webtrekk.android.sdk.extension.parseView
 import webtrekk.android.sdk.extension.toFormField
@@ -110,7 +110,7 @@ internal class TrackCustomForm(
         array.notTrackedView(trackingIds)
         val listFormField = mutableListOf<FormField>()
         array.forEach { view: View ->
-            if (view.isTracable()) {
+            if (view.isTrackable()) {
                 val name: String? = renameFields[view.id]
                 val value: String? = changeFieldsValue[view.id]
                 listFormField.add(view.toFormField(name, anonymous, value))
