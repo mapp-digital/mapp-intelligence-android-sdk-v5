@@ -121,7 +121,7 @@ internal fun View.toFormField(
     return formField
 }
 
-internal fun View.isTracable(): Boolean {
+internal fun View.isTrackable(): Boolean {
     return when (this) {
         is EditText -> true
         is SearchView -> true
@@ -136,13 +136,13 @@ internal fun View.isTracable(): Boolean {
 
 internal fun EditText.getInputTypeString(): String {
     return when (this.inputType) {
-        InputType.TYPE_TEXT_VARIATION_PERSON_NAME or InputType.TYPE_TEXT_FLAG_CAP_WORDS or InputType.TYPE_CLASS_TEXT -> {
+        InputType.TYPE_TEXT_VARIATION_PERSON_NAME or InputType.TYPE_TEXT_FLAG_CAP_WORDS -> {
             "Name"
         }
-        InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT -> {
+        InputType.TYPE_TEXT_VARIATION_PASSWORD -> {
             "Password"
         }
-        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS or InputType.TYPE_CLASS_TEXT -> {
+        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS -> {
             "Email"
         }
         InputType.TYPE_CLASS_PHONE -> {
