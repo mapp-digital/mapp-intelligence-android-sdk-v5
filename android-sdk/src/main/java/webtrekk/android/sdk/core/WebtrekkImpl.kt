@@ -193,7 +193,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     isOptOut = hasOptOut(),
                     viewGroup = viewGroup,
                     formName = contextName,
-                    trackingIds = formTrackingSettings.trackingIds,
+                    trackingIds = formTrackingSettings.fieldIds,
                     renameFields = formTrackingSettings.renameFields,
                     confirmButton = formTrackingSettings.confirmButton,
                     anonymous = formTrackingSettings.anonymous,
