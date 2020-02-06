@@ -1,4 +1,4 @@
-# [Webtrekk Android SDK v5](https://webtrekk.github.io/webtrekk-android-sdk-v5/) [![Build Status](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-BETA.svg?branch=master)](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-BETA)
+# [Webtrekk Android SDK v5](https://webtrekk.github.io/webtrekk-android-sdk-v5/) [![Build Status](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5.svg?branch=master)](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5)
 Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your Android apps. Collect meaningful data about how your apps are used, track how your users interact with your app, how they view specific pages, and custom events. Based on the tracking data from apps different indicators can be measured, which are already known from the web analytics, such as page impressions, events, screen size, operating system, e-commerce tracking, etc.
 
 Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/) and uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) for non-blocking executions, [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for enqueuing and sending the track requests to optimize the device battery and app performance.
@@ -275,7 +275,7 @@ Webtrekk.getInstance().getEverId()
 To support tracking [WebView](https://developer.android.com/guide/webapps/webview) in apps, the [User Ever Id](#user-ever-id) must be sent to Pixel Web SDK on the web side, to resume tracking of the current user visit.
 To achieve this, there are two options:
 
-First: by using [WebtrekkWebInterface](https://github.com/Webtrekk/webtrekk-android-sdk-BETA/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/WebtrekkWebInterface.kt), just pass this object to [WebView](https://developer.android.com/guide/webapps/webview) JavaScript interface.
+First: by using [WebtrekkWebInterface](https://github.com/Webtrekk/webtrekk-android-sdk-v5/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/WebtrekkWebInterface.kt), just pass this object to [WebView](https://developer.android.com/guide/webapps/webview) JavaScript interface.
 
 ```kotlin
 webView.addJavascriptInterface(WebtrekkWebInterface(Webtrekk.getInstance()), WebtrekkWebInterface.TAG)
@@ -297,7 +297,7 @@ webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
 Check out the [docs](https://docs.webtrekk.com/display/ASVN) on the site to learn more about tracking server and custom params. 
 
 # Contributing
-Please check out our contributing guide before you start [here](https://github.com/Webtrekk/webtrekk-android-sdk-BETA/blob/fc910d5dc6da3d3e289a1cc57bc281be0e34b5da/CONTRIBUTING.md).
+Please check out our contributing guide before you start [here](https://github.com/Webtrekk/webtrekk-android-sdk-v5/blob/fc910d5dc6da3d3e289a1cc57bc281be0e34b5da/CONTRIBUTING.md).
 
 # License
 MIT License
@@ -321,3 +321,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
