@@ -42,6 +42,11 @@ internal val trackingParams = mapOf(
     "cs" to "val 1",
     "cd" to "val 2"
 )
+
+internal val trackingPadrams = mapOf(
+    "cs" to "val 1",
+    "cd" to "val 2"
+)
 internal val customParams = trackingParams.toCustomParams(trackRequestId = trackRequest.id)
 internal val dataTrack = DataTrack(
     trackRequest = trackRequest,
