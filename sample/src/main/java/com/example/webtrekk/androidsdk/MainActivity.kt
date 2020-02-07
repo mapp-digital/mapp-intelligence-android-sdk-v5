@@ -61,6 +61,11 @@ class MainActivity : AppCompatActivity() {
         form.confirmButton=false
         form.formName="test123"
 
+        val listadadasda= emptyList<Int>().toMutableList()
+
+        listadadasda.add(R.id.editText3)
+        listadadasda.add(R.id.editText2)
+        form.fieldsOrder=listadadasda
 
         Webtrekk.getInstance().formTracking(this,formTrackingSettings=form)
     }

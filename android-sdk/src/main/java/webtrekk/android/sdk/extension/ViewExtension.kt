@@ -37,6 +37,7 @@ import android.widget.CheckBox
 import android.widget.RatingBar
 
 import webtrekk.android.sdk.data.model.FormField
+import java.util.concurrent.CopyOnWriteArrayList
 
 internal fun List<View>.notTrackedView(trackingIds: List<Int>): List<View> {
     if (trackingIds.isNotEmpty()) {
@@ -165,19 +166,22 @@ internal fun EditText.getInputTypeString(): String {
 
 internal fun MutableList<FormField>.orderList(newOrder: List<Int>): MutableList<FormField> {
     val listFormField = mutableListOf<FormField>()
+    val listFormField2 = CopyOnWriteArrayList(this)
+
     forEach { formField ->
         if (formField.fieldValue == "empty" || formField.fieldValue.isEmpty()) {
             listFormField.add(formField)
-            this.remove(formField)
+            listFormField2.remove(formField)
         }
     }
-    forEach { formField ->
+    val listFormField3 = CopyOnWriteArrayList(listFormField2)
+    listFormField3.forEach { formField ->
         if (newOrder.contains(formField.id)) {
             listFormField.add(formField)
-            this.remove(formField)
+            listFormField3.remove(formField)
         }
     }
 
-    listFormField.addAll(this)
+    listFormField.addAll(listFormField3)
     return listFormField
 }
