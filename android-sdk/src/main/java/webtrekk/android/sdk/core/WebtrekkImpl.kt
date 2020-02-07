@@ -197,7 +197,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
                     renameFields = formTrackingSettings.renameFields,
                     confirmButton = formTrackingSettings.confirmButton,
                     anonymous = formTrackingSettings.anonymous,
-                    changeFieldsValue = formTrackingSettings.changeFieldsValue
+                    changeFieldsValue = formTrackingSettings.changeFieldsValue,
+                    fieldsOrder = formTrackingSettings.fieldsOrder
 
                 ), coroutineDispatchers
             )
