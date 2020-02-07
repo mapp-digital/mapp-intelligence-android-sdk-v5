@@ -18,5 +18,6 @@ data class FormTrackingSettings(
     var renameFields: Map<Int, String> = emptyMap(),
     var changeFieldsValue: Map<Int, String> = emptyMap(),
     var confirmButton: Boolean = true,
-    var anonymous: Boolean = false
+    var anonymous: Boolean = false,
+    var fieldsOrder: List<Int> = emptyList()
 )
