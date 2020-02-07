@@ -162,3 +162,22 @@ internal fun EditText.getInputTypeString(): String {
         }
     }
 }
+
+internal fun MutableList<FormField>.orderList(newOrder: List<Int>): MutableList<FormField> {
+    val listFormField = mutableListOf<FormField>()
+    forEach { formField ->
+        if (formField.fieldValue == "empty" || formField.fieldValue.isEmpty()) {
+            listFormField.add(formField)
+            this.remove(formField)
+        }
+    }
+    forEach { formField ->
+        if (newOrder.contains(formField.id)) {
+            listFormField.add(formField)
+            this.remove(formField)
+        }
+    }
+
+    listFormField.addAll(this)
+    return listFormField
+}

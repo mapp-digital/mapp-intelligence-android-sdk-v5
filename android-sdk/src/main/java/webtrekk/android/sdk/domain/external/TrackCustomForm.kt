@@ -41,12 +41,14 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.model.FormField
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.extension.toInt
+import webtrekk.android.sdk.extension.orderList
 import webtrekk.android.sdk.extension.isTrackable
 import webtrekk.android.sdk.extension.notTrackedView
 import webtrekk.android.sdk.extension.parseView
 import webtrekk.android.sdk.extension.toFormField
-import webtrekk.android.sdk.extension.toInt
 import webtrekk.android.sdk.extension.toRequest
+
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -83,7 +85,8 @@ internal class TrackCustomForm(
                 invokeParams.trackingIds,
                 invokeParams.renameFields,
                 invokeParams.changeFieldsValue,
-                invokeParams.anonymous
+                invokeParams.anonymous,
+                invokeParams.fieldsOrder
             )
             // Cache the track request with its custom parafms.
             cacheTrackRequestWithCustomParams(
@@ -102,13 +105,14 @@ internal class TrackCustomForm(
         trackingIds: List<Int>,
         renameFields: Map<Int, String>,
         changeFieldsValue: Map<Int, String>,
-        anonymous: Boolean
+        anonymous: Boolean,
+        fieldsOrder: List<Int>
     ): String {
 
         val array: MutableList<View> = mutableListOf()
         viewGroup.parseView(array)
         array.notTrackedView(trackingIds)
-        val listFormField = mutableListOf<FormField>()
+        var listFormField = mutableListOf<FormField>()
         array.forEach { view: View ->
             if (view.isTrackable()) {
                 val name: String? = renameFields[view.id]
@@ -116,6 +120,8 @@ internal class TrackCustomForm(
                 listFormField.add(view.toFormField(name, anonymous, value))
             }
         }
+        listFormField = listFormField.orderList(fieldsOrder)
+
         return listFormField.toRequest()
     }
 
@@ -141,6 +147,7 @@ internal class TrackCustomForm(
         val renameFields: Map<Int, String>,
         val confirmButton: Boolean,
         val anonymous: Boolean,
-        val changeFieldsValue: Map<Int, String>
+        val changeFieldsValue: Map<Int, String>,
+        val fieldsOrder: List<Int>
     )
 }
