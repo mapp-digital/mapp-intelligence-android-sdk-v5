@@ -18,6 +18,7 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
         - [Manual Track](#manual-track)
         - [Track Custom Page](#track-custom-page)
         - [Track Custom Event](#track-custom-event)
+        - [Form Track](#form-track)
     - [Custom Params](#custom-params)
     - [Opt Out](#opt-out)
     - [User Ever Id](#user-ever-id)
@@ -194,6 +195,21 @@ The main difference between `trackCustomPage()` and `trackPage()` is, the latter
 
 ### Track Custom Event
 Tracks a specific custom event, with custom tracking params. It works separately from other trackers.
+
+```kotlin
+val trackingParams = TrackingParams()
+trackingParams.putAll(
+            mapOf(
+                Param.EVENT_CLICK to "true"
+            )
+        )
+
+Webtrekk.getInstance().trackCustomEvent(eventName = "Event campaign clicks", trackingParams = trackingParams)
+``` 
+### Form track
+As of version 5.0.1, changes to the screen can be tracked (Form Tracking).
+Form tracking allows you to keep track of how much form is filled 
+ It works separately from other trackers.
 
 ```kotlin
 val trackingParams = TrackingParams()
