@@ -209,11 +209,12 @@ Webtrekk.getInstance().trackCustomEvent(eventName = "Event campaign clicks", tra
 ### Form track
 As of version 5.0.1, changes to the screen can be tracked (Form Tracking).
 Form tracking allows you to keep track of how much form is filled. All fields except context are optional.
-For the fragments view must be passed in the request. Otherwise sdk will use view related to activity. 
-The view can be the ViewGroup for observe. 
+For the fragments, the view must be passed in the request. Otherwise, SDK will use a view related to the activity. 
+The view can be the ViewGroup to observe. 
 It is not necessary to observe the whole screen
-It works separately from other trackers. 
+Form tracking works separately from other trackers. 
 
+[FormTrackingSettings](https://github.com/Neno0o/webtrekk-new-android-sdk/blob/master/android-sdk/src/main/java/webtrekk/android/sdk/FormTrackingSettings.kt) is optional and can be used if is needed.
 
 ```kotlin
 val formSettings = formTrackingSettings()
