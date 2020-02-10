@@ -318,6 +318,7 @@ webView.loadUrl("https://your_website_url.com/?wt_eid=the ever id")
 
 # Read more
 Check out the [docs](https://docs.webtrekk.com/display/ASVN) on the site to learn more about tracking server and custom params. 
+We have implemented camera, push and form tracking in our [Test Application](https://github.com/Webtrekk/Android-advanced-test-application) 
 
 # Contributing
 Please check out our contributing guide before you start [here](https://github.com/Webtrekk/webtrekk-android-sdk-v5/blob/fc910d5dc6da3d3e289a1cc57bc281be0e34b5da/CONTRIBUTING.md).
