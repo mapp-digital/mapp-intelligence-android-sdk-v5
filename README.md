@@ -208,18 +208,24 @@ Webtrekk.getInstance().trackCustomEvent(eventName = "Event campaign clicks", tra
 ``` 
 ### Form track
 As of version 5.0.1, changes to the screen can be tracked (Form Tracking).
-Form tracking allows you to keep track of how much form is filled 
- It works separately from other trackers.
+Form tracking allows you to keep track of how much form is filled. All fields except context are optional.
+For the fragments view must be passed in the request. Otherwise sdk will use view related to activity. 
+The view can be the ViewGroup for observe. 
+It is not necessary to observe the whole screen
+It works separately from other trackers. 
+
 
 ```kotlin
-val trackingParams = TrackingParams()
-trackingParams.putAll(
-            mapOf(
-                Param.EVENT_CLICK to "true"
-            )
-        )
+val formSettings = formTrackingSettings()
+    formSettings.formName="Form Name" // You can rename form name by default is screen name 
+    formSettings.fieldIds=  List<Int> // allow you to the specific fields if is not set then sdk will track all fields
+    formSettings.renameFields= Map<Int,String> // allow you to change name of the specific fields
+    formSettings.changeFieldsValue= Map<Int,String> // allow you to change value of the specific fields
+    formSettings.confirmButton= true // if the form is canceled. This field should be set to false
+    formSettings.anonymous= false //  If you do not want to read the value from the field it should be set to true 
+    formSettings.fieldsOrder= List<Int>// Ordered list of the items 
 
-Webtrekk.getInstance().trackCustomEvent(eventName = "Event campaign clicks", trackingParams = trackingParams)
+Webtrekk.getInstance().formTracking(context,view = View, formTrackingSettings = trackingParams)
 ``` 
 
 ## Custom Params
