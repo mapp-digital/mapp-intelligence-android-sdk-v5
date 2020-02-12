@@ -48,6 +48,7 @@
         </activity>
         <activity android:name=".DetailsActivity"/>
         <activity android:name=".WebViewActivity"/>
+        <activity android:name=".FormActivity"/>
     </application>
 
 </manifest>
