@@ -25,38 +25,29 @@
 
 package com.example.webtrekk.androidsdk
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.form_main.*
 import webtrekk.android.sdk.*
 
-
-@TrackPageDetail(
-    contextName = "Main Page",
-    trackingParams = [TrackParams(paramKey = Param.INTERNAL_SEARCH, paramVal = "search")]
-)
-class MainActivity : AppCompatActivity() {
+class FormActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.form_main)
 
-        startDetailsActivity.setOnClickListener {
-            val intent = Intent(this, DetailsActivity::class.java)
-            startActivity(intent)
+        cancel.setOnClickListener {
+            val form = FormTrackingSettings()
+            form.confirmButton = false
+            form.formName = "test123"
+            Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
-        webViewActivity.setOnClickListener {
-            val intent = Intent(this, WebViewActivity::class.java)
-            startActivity(intent)
-        }
-
-        formActivity.setOnClickListener {
-            val intent = Intent(this, FormActivity::class.java)
-            startActivity(intent)
+        confirm.setOnClickListener {
+            val form = FormTrackingSettings()
+            form.confirmButton = true
+            form.formName = "test123"
+            Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
 
