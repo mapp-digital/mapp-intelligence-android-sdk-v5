@@ -35,7 +35,7 @@ import android.widget.ToggleButton
 import android.widget.Switch
 import android.widget.CheckBox
 import android.widget.RatingBar
-
+import android.widget.Spinner
 import webtrekk.android.sdk.data.model.FormField
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -115,6 +115,10 @@ internal fun View.toFormField(
             formField.fieldValue = rating.toString()
             formField.fieldType = "RatingBar"
         }
+        is Spinner -> {
+            formField.fieldValue = selectedItem.toString()
+            formField.fieldType = "Spinner"
+        }
     }
     if (value != null) {
         formField.fieldValue = value
@@ -131,6 +135,7 @@ internal fun View.isTrackable(): Boolean {
         is Switch -> true
         is CheckBox -> true
         is RatingBar -> true
+        is Spinner -> true
         else -> false
     }
 }
