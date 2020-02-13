@@ -27,4 +27,10 @@
     <string name="app_name">android sdk</string>
     <string name="web_view_activity">Web View Activity</string>
     <string name="details_activity">Details Activity</string>
+    <string-array name="spinnerItems">
+        <item>item1</item>
+        <item>item2</item>
+        <item>item3</item>
+        <item>item4</item>
+    </string-array>
 </resources>

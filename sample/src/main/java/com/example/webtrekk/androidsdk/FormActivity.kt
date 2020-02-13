@@ -28,10 +28,12 @@ package com.example.webtrekk.androidsdk
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.form_main.*
-import webtrekk.android.sdk.*
+import webtrekk.android.sdk.FormTrackingSettings
+import webtrekk.android.sdk.Webtrekk
+
 
 class FormActivity : AppCompatActivity() {
-
+    var annoimus = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.form_main)
@@ -40,6 +42,7 @@ class FormActivity : AppCompatActivity() {
             val form = FormTrackingSettings()
             form.confirmButton = false
             form.formName = "test123"
+            form.anonymous = annoimus
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
@@ -47,8 +50,23 @@ class FormActivity : AppCompatActivity() {
             val form = FormTrackingSettings()
             form.confirmButton = true
             form.formName = "test123"
+            form.anonymous = annoimus
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
+
+        anonymous.setOnCheckedChangeListener { buttonView, isChecked ->
+            annoimus = isChecked
+        }
+
+
+
+
+
+
+
+
+
+
 
 
     }
