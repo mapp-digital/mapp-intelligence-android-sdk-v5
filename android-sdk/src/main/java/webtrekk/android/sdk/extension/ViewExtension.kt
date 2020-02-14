@@ -28,14 +28,15 @@ package webtrekk.android.sdk.extension
 import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
+import android.widget.LinearLayout
 import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.SearchView
+import android.widget.RadioButton
 import android.widget.ToggleButton
 import android.widget.Switch
 import android.widget.CheckBox
 import android.widget.RatingBar
-import android.widget.Spinner
 import webtrekk.android.sdk.data.model.FormField
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -55,10 +56,18 @@ internal fun ViewGroup.parseView(array: MutableList<View>): MutableList<View> {
     val count: Int = this.childCount
     for (i in 0 until count) {
         val view: View = this.getChildAt(i)
-        if (view is ViewGroup) view.parseView(array) else {
-            array.add(view)
+        when (view) {
+            is Spinner -> array.add(view)
+            is ViewGroup -> view.parseView(array)
+            is LinearLayout -> {
+                view.parseView(array)
+            }
+            else -> {
+                array.add(view)
+            }
         }
     }
+
     return array
 }
 
@@ -141,7 +150,7 @@ internal fun View.isTrackable(): Boolean {
 }
 
 internal fun EditText.getInputTypeString(): String {
-    return when (this.inputType) {
+    return when ((this.inputType and InputType.TYPE_MASK_CLASS)) {
         InputType.TYPE_TEXT_VARIATION_PERSON_NAME or InputType.TYPE_TEXT_FLAG_CAP_WORDS -> {
             "Name"
         }

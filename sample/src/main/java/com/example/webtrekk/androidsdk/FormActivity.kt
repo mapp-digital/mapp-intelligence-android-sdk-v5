@@ -26,13 +26,15 @@
 package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.form_main.*
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.Webtrekk
 
 
-class FormActivity : AppCompatActivity() {
+class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var annoimus = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,15 +61,16 @@ class FormActivity : AppCompatActivity() {
         }
 
 
+        spinner.onItemSelectedListener = this
 
 
+    }
 
+    override fun onNothingSelected(p0: AdapterView<*>?) {
 
+    }
 
-
-
-
-
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
     }
 }
