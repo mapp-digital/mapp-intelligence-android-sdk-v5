@@ -150,23 +150,23 @@ internal fun View.isTrackable(): Boolean {
 }
 
 internal fun EditText.getInputTypeString(): String {
-    return when ((this.inputType and InputType.TYPE_MASK_CLASS)) {
-        InputType.TYPE_TEXT_VARIATION_PERSON_NAME or InputType.TYPE_TEXT_FLAG_CAP_WORDS -> {
+    return when ((this.inputType)) {
+        InputType.TYPE_TEXT_VARIATION_PERSON_NAME, InputType.TYPE_TEXT_FLAG_CAP_WORDS -> {
             "Name"
         }
-        InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_NUMBER_VARIATION_PASSWORD or InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD -> {
+        InputType.TYPE_TEXT_VARIATION_PASSWORD, InputType.TYPE_NUMBER_VARIATION_PASSWORD, InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD, InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD -> {
             "Password"
         }
-        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS or InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT -> {
+        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT -> {
             "Email"
         }
         InputType.TYPE_CLASS_PHONE -> {
             "PhoneNumber"
         }
-        InputType.TYPE_CLASS_DATETIME or InputType.TYPE_DATETIME_VARIATION_DATE or InputType.TYPE_DATETIME_VARIATION_NORMAL or InputType.TYPE_DATETIME_VARIATION_TIME -> {
+        InputType.TYPE_CLASS_DATETIME, InputType.TYPE_DATETIME_VARIATION_NORMAL -> {
             "Data"
         }
-        InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL -> {
+        InputType.TYPE_CLASS_NUMBER -> {
             "Number"
         }
         InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS -> {
