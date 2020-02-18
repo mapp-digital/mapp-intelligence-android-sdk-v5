@@ -89,35 +89,31 @@ internal fun View.toFormField(
             if (formField.fieldValue.isEmpty()) {
                 formField.fieldValue = "empty"
             }
-            if (anonymous and (formField.fieldValue != "empty")) {
-                formField.fieldValue = "filled_out"
-            }
-            formField.fieldType = this.getInputTypeString()
+            formField.anonymous = anonymous
+            formField.fieldType = getInputTypeString()
         }
         is SearchView -> {
             formField.fieldValue = if (this.query != null) this.query.toString() else "empty"
             if (formField.fieldValue.isEmpty()) {
                 formField.fieldValue = "empty"
             }
-            if (anonymous and (formField.fieldValue != "empty")) {
-                formField.fieldValue = "filled_out"
-            }
+            formField.anonymous = anonymous
             formField.fieldType = "SearchView"
         }
         is RadioButton -> {
-            formField.fieldValue = isChecked.toInt().toString()
+            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
             formField.fieldType = "RadioButton"
         }
         is ToggleButton -> {
-            formField.fieldValue = isChecked.toInt().toString()
+            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
             formField.fieldType = "ToggleButton"
         }
         is Switch -> {
-            formField.fieldValue = isChecked.toInt().toString()
+            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
             formField.fieldType = "Switch"
         }
         is CheckBox -> {
-            formField.fieldValue = isChecked.toInt().toString()
+            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
             formField.fieldType = "CheckBox"
         }
         is RatingBar -> {

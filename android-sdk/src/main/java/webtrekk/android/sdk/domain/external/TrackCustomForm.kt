@@ -86,7 +86,9 @@ internal class TrackCustomForm(
                 invokeParams.renameFields,
                 invokeParams.changeFieldsValue,
                 invokeParams.anonymous,
-                invokeParams.fieldsOrder
+                invokeParams.fieldsOrder,
+                invokeParams.anonymousSpecificFields,
+                invokeParams.fullContentSpecificFields
             )
             // Cache the track request with its custom parafms.
             cacheTrackRequestWithCustomParams(
@@ -106,7 +108,9 @@ internal class TrackCustomForm(
         renameFields: Map<Int, String>,
         changeFieldsValue: Map<Int, String>,
         anonymous: Boolean,
-        fieldsOrder: List<Int>
+        fieldsOrder: List<Int>,
+        anonymousSpecificFields: List<Int>,
+        fullContentSpecificFields: List<Int>
     ): String {
 
         val array: MutableList<View> = mutableListOf()
@@ -117,7 +121,13 @@ internal class TrackCustomForm(
             if (view.isTrackable()) {
                 val name: String? = renameFields[view.id]
                 val value: String? = changeFieldsValue[view.id]
-                listFormField.add(view.toFormField(name, anonymous, value))
+                val formView = view.toFormField(name, anonymous, value)
+                if (anonymousSpecificFields.contains(view.id)) {
+                    formView.anonymous = true
+                } else if (fullContentSpecificFields.contains(view.id)) {
+                    formView.anonymous = false
+                }
+                listFormField.add(formView)
             }
         }
         listFormField = listFormField.orderList(fieldsOrder)
@@ -148,6 +158,8 @@ internal class TrackCustomForm(
         val confirmButton: Boolean,
         val anonymous: Boolean,
         val changeFieldsValue: Map<Int, String>,
-        val fieldsOrder: List<Int>
+        val fieldsOrder: List<Int>,
+        val anonymousSpecificFields: List<Int>,
+        val fullContentSpecificFields: List<Int>
     )
 }

@@ -11,9 +11,13 @@ data class FormField(
     var name: String = "0",
     var fieldValue: String = "empty",
     var fieldType: String = "view",
+    var anonymous: Boolean = false,
     var lastFocus: Boolean = false
 ) {
     fun toRequest(): String {
+        if (anonymous and (this.fieldValue != "empty")) {
+            this.fieldValue = "filled_out"
+        }
         return "$name.$fieldType|$fieldValue|${lastFocus.toInt()}"
     }
 }
