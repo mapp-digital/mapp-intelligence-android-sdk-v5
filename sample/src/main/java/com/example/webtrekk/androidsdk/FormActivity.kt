@@ -45,6 +45,8 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             form.confirmButton = false
             form.formName = "test123"
             form.anonymous = annoimus
+            form.anonymousSpecificFields = listOf(R.id.editText, R.id.editText3, R.id.switch1)
+            form.fullContentSpecificFields = listOf(R.id.editText2)
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
@@ -53,6 +55,8 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             form.confirmButton = true
             form.formName = "test123"
             form.anonymous = annoimus
+            form.anonymousSpecificFields = listOf(R.id.editText2)
+            form.fullContentSpecificFields = listOf(R.id.editText, R.id.editText3, R.id.switch1)
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
