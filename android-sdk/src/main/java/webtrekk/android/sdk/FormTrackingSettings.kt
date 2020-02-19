@@ -20,6 +20,6 @@ data class FormTrackingSettings(
     var anonymousSpecificFields: List<Int> = emptyList(),
     var fullContentSpecificFields: List<Int> = emptyList(),
     var confirmButton: Boolean = true,
-    var anonymous: Boolean = false,
+    var anonymous: Boolean = true,
     var fieldsOrder: List<Int> = emptyList()
 )
