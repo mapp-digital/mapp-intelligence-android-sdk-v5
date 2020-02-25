@@ -113,9 +113,9 @@ internal class TrackCustomForm(
         fullContentSpecificFields: List<Int>
     ): String {
 
-        val array: MutableList<View> = mutableListOf()
+        var array: MutableList<View> = mutableListOf()
         viewGroup.parseView(array)
-        array.notTrackedView(trackingIds)
+        array = array.notTrackedView(trackingIds).toMutableList()
         var listFormField = mutableListOf<FormField>()
         array.forEach { view: View ->
             if (view.isTrackable()) {

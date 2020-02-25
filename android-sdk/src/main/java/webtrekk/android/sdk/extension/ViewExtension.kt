@@ -41,7 +41,7 @@ import webtrekk.android.sdk.data.model.FormField
 import java.util.concurrent.CopyOnWriteArrayList
 
 internal fun List<View>.notTrackedView(trackingIds: List<Int>): List<View> {
-    if (trackingIds.isNotEmpty()) {
+    if (trackingIds.isEmpty()) {
         return this
     }
     val listOfViews = mutableListOf<View>()
