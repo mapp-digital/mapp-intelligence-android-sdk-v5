@@ -35,7 +35,7 @@ import webtrekk.android.sdk.Webtrekk
 
 
 class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-    var annoimus = false
+    var anonymousField = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.form_main)
@@ -44,7 +44,7 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val form = FormTrackingSettings()
             form.confirmButton = false
             form.formName = "test123"
-            form.anonymous = annoimus
+            form.anonymous = anonymousField
             form.anonymousSpecificFields = listOf(R.id.editText, R.id.editText3, R.id.switch1)
             form.fullContentSpecificFields = listOf(R.id.editText2)
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
@@ -54,14 +54,14 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val form = FormTrackingSettings()
             form.confirmButton = true
             form.formName = "test123"
-            form.anonymous = annoimus
+            form.anonymous = anonymousField
             form.anonymousSpecificFields = listOf(R.id.editText2)
             form.fullContentSpecificFields = listOf(R.id.editText, R.id.editText3, R.id.switch1)
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
         anonymous.setOnCheckedChangeListener { buttonView, isChecked ->
-            annoimus = isChecked
+            anonymousField = isChecked
         }
 
 
