@@ -21,5 +21,5 @@ data class FormTrackingSettings(
     var fullContentSpecificFields: List<Int> = emptyList(),
     var confirmButton: Boolean = true,
     var anonymous: Boolean = true,
-    var fieldsOrder: List<Int> = emptyList()
+    var pathAnalysis: List<Int> = emptyList()
 )

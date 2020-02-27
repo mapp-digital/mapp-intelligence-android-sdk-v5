@@ -224,7 +224,7 @@ val formSettings = formTrackingSettings()
     formSettings.changeFieldsValue= Map<Int,String> // allow you to change value of the specific fields
     formSettings.confirmButton= true // if the form is canceled. This field should be set to false
     formSettings.anonymous= false //  If you do not want to read the value from the field it should be set to true 
-    formSettings.fieldsOrder= List<Int>// Ordered list of the items 
+    formSettings.pathAnalysis= List<Int>// Ordered list of the items 
 
 Webtrekk.getInstance().formTracking(context,view = View, formTrackingSettings = trackingParams)
 ``` 
