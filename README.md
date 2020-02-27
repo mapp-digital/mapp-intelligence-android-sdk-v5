@@ -222,8 +222,8 @@ val formSettings = formTrackingSettings()
     formSettings.fieldIds=  List<Int> // allow you to the specific fields if is not set then sdk will track all fields
     formSettings.renameFields= Map<Int,String> // allow you to change name of the specific fields
     formSettings.changeFieldsValue= Map<Int,String> // allow you to change value of the specific fields
-    formSettings.anonymousSpecificFields: List<Int>
-    formSettings.fullContentSpecificFields: List<Int>
+    formSettings.anonymousSpecificFields= List<Int>
+    formSettings.fullContentSpecificFields= List<Int>
     formSettings.confirmButton= true // if the form is canceled. This field should be set to false
     formSettings.anonymous= false //  If you do not want to read the value from the field it should be set to true 
     formSettings.pathAnalysis= List<Int>// Ordered list of the items 
