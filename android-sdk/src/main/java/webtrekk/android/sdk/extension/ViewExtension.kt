@@ -82,14 +82,13 @@ internal fun View.toFormField(
         formField.name = name ?: resources.getResourceEntryName(this.id)
     }
     formField.lastFocus = this.isFocused
-
+    formField.anonymous = anonymous
     when (this) {
         is EditText -> {
             formField.fieldValue = if (this.text != null) this.text.toString() else "empty"
             if (formField.fieldValue.isEmpty()) {
                 formField.fieldValue = "empty"
             }
-            formField.anonymous = anonymous
             formField.fieldType = getInputTypeString()
         }
         is SearchView -> {
@@ -97,7 +96,6 @@ internal fun View.toFormField(
             if (formField.fieldValue.isEmpty()) {
                 formField.fieldValue = "empty"
             }
-            formField.anonymous = anonymous
             formField.fieldType = "SearchView"
         }
         is RadioButton -> {
