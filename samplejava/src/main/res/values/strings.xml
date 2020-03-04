@@ -25,4 +25,11 @@
 
 <resources>
     <string name="app_name">Sample Java</string>
+    <string name="form_activity">Form Activity</string>
+    <string-array name="spinnerItems">
+        <item>item1</item>
+        <item>item2</item>
+        <item>item3</item>
+        <item>item4</item>
+    </string-array>
 </resources>
