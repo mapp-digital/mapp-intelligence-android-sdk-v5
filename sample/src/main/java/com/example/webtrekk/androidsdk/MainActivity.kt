@@ -27,12 +27,9 @@ package com.example.webtrekk.androidsdk
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.*
-
 
 @TrackPageDetail(
     contextName = "Main Page",
@@ -58,7 +55,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, FormActivity::class.java)
             startActivity(intent)
         }
-
 
     }
 }
