@@ -25,7 +25,10 @@
 
 package com.example.webtrekk.samplejava;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,9 +43,9 @@ import webtrekk.android.sdk.ParamType;
 import static webtrekk.android.sdk.ParamTypeKt.createCustomParam;
 
 @TrackPageDetail(
-        contextName= "Main Page",
-        trackingParams=  {@TrackParams(paramKey="is",paramVal= "search")}
-        )
+        contextName = "Main Page",
+        trackingParams = {@TrackParams(paramKey = "is", paramVal = "search")}
+)
 public class MainActivity extends AppCompatActivity {
 
     private final Webtrekk webtrekk = Webtrekk.getInstance();
@@ -52,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
+        Button formActivity = findViewById(R.id.formActivity);
+        formActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FormActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
