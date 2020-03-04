@@ -1,5 +1,7 @@
 # Change Log
 ## Version 5.0.1.-beta1 *(inProgress)*
+* Add form tracking. 
+* Minor bug fix.
 
 ## Version 5.0.0. *(2019-12-03)*
 * Add Annotation track configuration support.
