@@ -11,7 +11,6 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 
 import webtrekk.android.sdk.FormTrackingSettings;
 import webtrekk.android.sdk.Webtrekk;
