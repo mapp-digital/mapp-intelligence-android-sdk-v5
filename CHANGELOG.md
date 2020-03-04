@@ -1,5 +1,7 @@
 # Change Log
-## Version 5.0.1.-beta1 *(inProgress)*
+## Version 5.0.1.-beta1 *(in progress)*
+
+## Version 5.0.1.-beta1 *(2019-03-04)*
 * Add form tracking. 
 * Minor bug fix.
 
