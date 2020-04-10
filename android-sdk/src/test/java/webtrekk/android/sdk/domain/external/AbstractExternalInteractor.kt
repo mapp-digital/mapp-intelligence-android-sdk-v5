@@ -31,10 +31,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestCoroutineContext
-import org.koin.log.EmptyLogger
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.StandAloneContext.startKoin
-import org.koin.standalone.StandAloneContext.stopKoin
+import org.koin.core.KoinComponent
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.core.logger.EmptyLogger
+import webtrekk.android.sdk.util.coroutineDispatchers
 import webtrekk.android.sdk.util.loggerModule
 import kotlin.coroutines.CoroutineContext
 
@@ -46,11 +47,12 @@ internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineSco
         get() = job + testCoroutineContext
 
     override fun beforeSpec(spec: Spec) {
-        startKoin(
-            listOf(
-                loggerModule
-            ), logger = EmptyLogger()
-        )
+        startKoin {
+            modules(
+                    listOf(loggerModule
+                    ))
+            EmptyLogger()
+        }
     }
 
     override fun afterSpec(spec: Spec) {
