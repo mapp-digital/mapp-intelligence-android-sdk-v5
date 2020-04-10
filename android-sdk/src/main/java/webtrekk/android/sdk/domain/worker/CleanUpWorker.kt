@@ -29,8 +29,8 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.data.entity.TrackRequest

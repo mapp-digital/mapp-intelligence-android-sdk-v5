@@ -30,8 +30,8 @@ import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.api.UrlParams
