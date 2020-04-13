@@ -55,7 +55,7 @@ internal class WebtrekkTest : StringSpec() {
 
     override fun beforeSpec(spec: Spec) {
         stopKoin()
-        startKoin{
+        startKoin {
             modules(listOf(
                 loggerModule,
                 coroutineDispatchers,

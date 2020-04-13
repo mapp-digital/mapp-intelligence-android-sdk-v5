@@ -35,7 +35,6 @@ import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.logger.EmptyLogger
-import webtrekk.android.sdk.util.coroutineDispatchers
 import webtrekk.android.sdk.util.loggerModule
 import kotlin.coroutines.CoroutineContext
 
