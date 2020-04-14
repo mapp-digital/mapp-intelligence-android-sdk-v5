@@ -105,7 +105,6 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
     override fun init(context: Context, config: Config) {
         this.context = context.applicationContext
         this.config = config
-
         loadModules()
         internalInit()
     }
@@ -298,13 +297,14 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
             }
         }
         try {
-            koinApplication = koinApplication {
+            val koinApplication = koinApplication {
                 modules(listOf(
                         mainModule,
                         dataModule,
                         internalInteractorsModule,
                         externalInteractorsModule))
             }
+            MyKoinContext.koinApp = koinApplication
         } catch (e: Exception) {
             logger.error("Webtrekk is already in use: $e")
         }
@@ -396,9 +396,13 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
     }
 }
 
-lateinit var koinApplication: KoinApplication
+//lateinit var koinApplication: KoinApplication
+
+object MyKoinContext {
+    var koinApp : KoinApplication? = null
+}
 
 interface CustomKoinComponent : KoinComponent {
     // override the used Koin instance to use mylocalKoinInstance
-    override fun getKoin(): Koin = koinApplication.koin
+    override fun getKoin(): Koin = MyKoinContext.koinApp!!.koin
 }
