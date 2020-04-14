@@ -48,8 +48,8 @@ internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineSco
     override fun beforeSpec(spec: Spec) {
         startKoin {
             modules(
-                    listOf(loggerModule
-                    ))
+                listOf(loggerModule
+                ))
             EmptyLogger()
         }
     }

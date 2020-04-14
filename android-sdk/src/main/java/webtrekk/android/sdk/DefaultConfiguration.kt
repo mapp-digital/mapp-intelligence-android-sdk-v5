@@ -54,6 +54,7 @@ object DefaultConfiguration {
      */
 
     const val BATCH_SUPPORT_ENABLED = false
+
     /**
      * The request per batch in the configurations is 5000 by default.
      *

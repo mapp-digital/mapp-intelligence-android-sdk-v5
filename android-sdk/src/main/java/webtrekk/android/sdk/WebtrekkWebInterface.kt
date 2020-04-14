@@ -70,7 +70,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
             webtrekk.trackCustomPage(pageName, params.jsonToMap())
         } catch (e: Exception) {
             webtrekkLogger.info(e.message
-                    ?: "Unknown exception caught in WebView while tracking custom page")
+                ?: "Unknown exception caught in WebView while tracking custom page")
         }
     }
 
@@ -86,7 +86,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
             webtrekk.trackCustomEvent(eventName, params.jsonToMap())
         } catch (e: Exception) {
             webtrekkLogger.info(e.message
-                    ?: "Unknown exception caught in WebView while tracking custom event")
+                ?: "Unknown exception caught in WebView while tracking custom event")
         }
     }
 
