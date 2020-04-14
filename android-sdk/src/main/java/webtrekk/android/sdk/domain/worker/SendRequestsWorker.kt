@@ -70,6 +70,7 @@ internal class SendRequestsWorker(
      * [executeRequest] the injected internal interactor for executing the requests.
      */
     private val executeRequest: ExecuteRequest by inject()
+
     /**
      * [ExecutePostRequest] the injected internal interactor for executing the requests.
      */
