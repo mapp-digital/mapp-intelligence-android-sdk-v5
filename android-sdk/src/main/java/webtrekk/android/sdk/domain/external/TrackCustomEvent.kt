@@ -28,13 +28,13 @@ package webtrekk.android.sdk.domain.external
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.api.RequestType
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
@@ -45,7 +45,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackCustomEvent(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackCustomEvent.Params>, KoinComponent {
+) : ExternalInteractor<TrackCustomEvent.Params>, CustomKoinComponent {
 
     private val _job = Job()
     override val scope =

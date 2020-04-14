@@ -30,11 +30,11 @@ import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.api.UrlParams
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -57,7 +57,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackCustomForm(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackCustomForm.Params>, KoinComponent {
+) : ExternalInteractor<TrackCustomForm.Params>, CustomKoinComponent {
 
     private val _job = Job()
     override val scope =
