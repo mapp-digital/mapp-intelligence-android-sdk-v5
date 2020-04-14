@@ -35,9 +35,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import org.koin.core.Koin
+import org.koin.core.KoinApplication
 import org.koin.core.KoinComponent
-import org.koin.core.context.startKoin
 import org.koin.core.inject
+import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.FormTrackingSettings
@@ -72,7 +74,7 @@ import kotlin.properties.Delegates
  * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, CoroutineScope {
+class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, CoroutineScope {
 
     private val _job = SupervisorJob()
 
@@ -93,8 +95,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
 
     internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
     internal var config: Config by Delegates.initOrException(
-        errorMessage = "Webtrekk configurations must be set before invoking any method." +
-            " Use Webtrekk.getInstance().init(context, configuration)"
+            errorMessage = "Webtrekk configurations must be set before invoking any method." +
+                    " Use Webtrekk.getInstance().init(context, configuration)"
     )
 
     override val coroutineContext: CoroutineContext
@@ -116,59 +118,59 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         val contextName = customPageName ?: (context as Activity).localClassName
 
         manualTrack(
-            ManualTrack.Params(
-                trackRequest = TrackRequest(
-                    name = contextName,
-                    screenResolution = context.resolution(),
-                    forceNewSession = currentSession,
-                    appFirstOpen = appFirstOpen,
-                    appVersionName = context.appVersionName,
-                    appVersionCode = context.appVersionCode
-                ),
-                trackingParams = trackingParams,
-                autoTrack = autoTracking,
-                isOptOut = hasOptOut()
-            ), coroutineDispatchers
+                ManualTrack.Params(
+                        trackRequest = TrackRequest(
+                                name = contextName,
+                                screenResolution = context.resolution(),
+                                forceNewSession = currentSession,
+                                appFirstOpen = appFirstOpen,
+                                appVersionName = context.appVersionName,
+                                appVersionCode = context.appVersionCode
+                        ),
+                        trackingParams = trackingParams,
+                        autoTrack = autoTracking,
+                        isOptOut = hasOptOut()
+                ), coroutineDispatchers
         )
     }
 
     override fun trackCustomPage(pageName: String, trackingParams: Map<String, String>) =
-        config.run {
-            trackCustomPage(
-                TrackCustomPage.Params(
-                    trackRequest = TrackRequest(
-                        name = pageName,
-                        screenResolution = context.resolution(),
-                        forceNewSession = currentSession,
-                        appFirstOpen = appFirstOpen,
-                        appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
-                    ),
-                    trackingParams = trackingParams,
-                    isOptOut = hasOptOut()
-                ), coroutineDispatchers
-            )
-        }
+            config.run {
+                trackCustomPage(
+                        TrackCustomPage.Params(
+                                trackRequest = TrackRequest(
+                                        name = pageName,
+                                        screenResolution = context.resolution(),
+                                        forceNewSession = currentSession,
+                                        appFirstOpen = appFirstOpen,
+                                        appVersionName = context.appVersionName,
+                                        appVersionCode = context.appVersionCode
+                                ),
+                                trackingParams = trackingParams,
+                                isOptOut = hasOptOut()
+                        ), coroutineDispatchers
+                )
+            }
 
     override fun trackCustomEvent(eventName: String, trackingParams: Map<String, String>) =
-        config.run {
-            trackCustomEvent(
-                TrackCustomEvent.Params(
-                    trackRequest = TrackRequest(
-                        name = "0",
-                        screenResolution = context.resolution(),
-                        forceNewSession = currentSession,
-                        appFirstOpen = appFirstOpen,
-                        appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
-                    ),
-                    trackingParams = trackingParams,
-                    isOptOut = hasOptOut(),
-                    ctParams = eventName
+            config.run {
+                trackCustomEvent(
+                        TrackCustomEvent.Params(
+                                trackRequest = TrackRequest(
+                                        name = "0",
+                                        screenResolution = context.resolution(),
+                                        forceNewSession = currentSession,
+                                        appFirstOpen = appFirstOpen,
+                                        appVersionName = context.appVersionName,
+                                        appVersionCode = context.appVersionCode
+                                ),
+                                trackingParams = trackingParams,
+                                isOptOut = hasOptOut(),
+                                ctParams = eventName
 
-                ), coroutineDispatchers
-            )
-        }
+                        ), coroutineDispatchers
+                )
+            }
 
     override fun formTracking(
         context: Context,
@@ -176,44 +178,44 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         formTrackingSettings: FormTrackingSettings
     ) {
         val contextName =
-            if (formTrackingSettings.formName.isEmpty()) context.javaClass.name else formTrackingSettings.formName
+                if (formTrackingSettings.formName.isEmpty()) context.javaClass.name else formTrackingSettings.formName
         val viewGroup = if (view != null) view.rootView as ViewGroup
         else (context as Activity).findViewById<View>(android.R.id.content).rootView as ViewGroup
         config.run {
             trackCustomForm(
-                TrackCustomForm.Params(
-                    trackRequest = TrackRequest(
-                        name = contextName,
-                        screenResolution = context.resolution(),
-                        forceNewSession = currentSession,
-                        appFirstOpen = appFirstOpen,
-                        appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
-                    ),
-                    isOptOut = hasOptOut(),
-                    viewGroup = viewGroup,
-                    formName = contextName,
-                    trackingIds = formTrackingSettings.fieldIds,
-                    renameFields = formTrackingSettings.renameFields,
-                    confirmButton = formTrackingSettings.confirmButton,
-                    anonymous = formTrackingSettings.anonymous,
-                    changeFieldsValue = formTrackingSettings.changeFieldsValue,
-                    fieldsOrder = formTrackingSettings.pathAnalysis,
-                    anonymousSpecificFields = formTrackingSettings.anonymousSpecificFields,
-                    fullContentSpecificFields = formTrackingSettings.fullContentSpecificFields
+                    TrackCustomForm.Params(
+                            trackRequest = TrackRequest(
+                                    name = contextName,
+                                    screenResolution = context.resolution(),
+                                    forceNewSession = currentSession,
+                                    appFirstOpen = appFirstOpen,
+                                    appVersionName = context.appVersionName,
+                                    appVersionCode = context.appVersionCode
+                            ),
+                            isOptOut = hasOptOut(),
+                            viewGroup = viewGroup,
+                            formName = contextName,
+                            trackingIds = formTrackingSettings.fieldIds,
+                            renameFields = formTrackingSettings.renameFields,
+                            confirmButton = formTrackingSettings.confirmButton,
+                            anonymous = formTrackingSettings.anonymous,
+                            changeFieldsValue = formTrackingSettings.changeFieldsValue,
+                            fieldsOrder = formTrackingSettings.pathAnalysis,
+                            anonymousSpecificFields = formTrackingSettings.anonymousSpecificFields,
+                            fullContentSpecificFields = formTrackingSettings.fullContentSpecificFields
 
-                ), coroutineDispatchers
+                    ), coroutineDispatchers
             )
         }
     }
 
     override fun optOut(value: Boolean, sendCurrentData: Boolean) = context.run {
         optOutUser(
-            Optout.Params(
-                context = this,
-                optOutValue = value,
-                sendCurrentData = sendCurrentData
-            ), coroutineDispatchers
+                Optout.Params(
+                        context = this,
+                        optOutValue = value,
+                        sendCurrentData = sendCurrentData
+                ), coroutineDispatchers
         )
     }
 
@@ -243,9 +245,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             single { WebtrekkLogger(config.logLevel) as Logger }
             single {
                 CoroutineDispatchers(
-                    Dispatchers.Main,
-                    Dispatchers.Default,
-                    Dispatchers.IO
+                        Dispatchers.Main,
+                        Dispatchers.Default,
+                        Dispatchers.IO
                 )
             }
             if (config.fragmentsAutoTracking && config.activityAutoTracking)
@@ -259,44 +261,44 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         val externalInteractorsModule = module {
             single {
                 AutoTrack(
-                    coroutineContext,
-                    get(),
-                    get()
+                        coroutineContext,
+                        get(),
+                        get()
                 )
             }
             single {
                 ManualTrack(
-                    coroutineContext,
-                    get(),
-                    get()
+                        coroutineContext,
+                        get(),
+                        get()
                 )
             }
             single { TrackCustomPage(coroutineContext, get()) }
             single {
                 TrackCustomEvent(
-                    coroutineContext,
-                    get()
+                        coroutineContext,
+                        get()
                 )
             }
 
             single {
                 TrackCustomForm(
-                    coroutineContext,
-                    get()
+                        coroutineContext,
+                        get()
                 )
             }
             single {
                 Optout(
-                    coroutineContext,
-                    get(),
-                    get(),
-                    get(),
-                    get()
+                        coroutineContext,
+                        get(),
+                        get(),
+                        get(),
+                        get()
                 )
             }
         }
         try {
-            startKoin {
+            koinApplication = koinApplication {
                 modules(listOf(
                         mainModule,
                         dataModule,
@@ -328,17 +330,17 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
         scheduler.scheduleCleanUp()
         scheduler.scheduleSendRequests(
-            repeatInterval = config.requestsInterval,
-            constraints = config.workManagerConstraints
+                repeatInterval = config.requestsInterval,
+                constraints = config.workManagerConstraints
         )
 
         // If auto tracked is enabled, start [AutoTrack] use case.
         if (config.autoTracking) {
             autoTrack(
-                AutoTrack.Params(
-                    context = context,
-                    isOptOut = hasOptOut()
-                ), coroutineDispatchers
+                    AutoTrack.Params(
+                            context = context,
+                            isOptOut = hasOptOut()
+                    ), coroutineDispatchers
             ).also { logger.info("Webtrekk has started auto tracking") }
         } else {
             appState.disable(context)
@@ -360,9 +362,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
     internal fun sendAppUpdateEvent() {
         val trackingParams = TrackingParams()
         trackingParams.putAll(
-            mapOf(
-                UrlParams.APP_UPDATED to "1"
-            )
+                mapOf(
+                        UrlParams.APP_UPDATED to "1"
+                )
         )
 
         trackCustomEvent(APP_UPDATE_EVENT, trackingParams)
@@ -385,11 +387,18 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             synchronized(this) {
                 if (!Companion::INSTANCE.isInitialized) {
                     INSTANCE =
-                        WebtrekkImpl()
+                            WebtrekkImpl()
                 }
             }
 
             return INSTANCE
         }
     }
+}
+
+lateinit var koinApplication: KoinApplication
+
+interface CustomKoinComponent : KoinComponent {
+    // override the used Koin instance to use mylocalKoinInstance
+    override fun getKoin(): Koin = koinApplication.koin
 }

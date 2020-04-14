@@ -28,9 +28,9 @@ package webtrekk.android.sdk.domain.external
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -44,7 +44,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackCustomPage(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackCustomPage.Params>, KoinComponent {
+) : ExternalInteractor<TrackCustomPage.Params>, CustomKoinComponent {
 
     private val _job = Job()
     override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.

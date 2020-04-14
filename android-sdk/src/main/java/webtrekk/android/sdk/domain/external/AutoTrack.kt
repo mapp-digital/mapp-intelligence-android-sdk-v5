@@ -29,10 +29,10 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
 import org.koin.core.inject
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
@@ -48,7 +48,7 @@ internal class AutoTrack(
     coroutineContext: CoroutineContext,
     private val appState: AppState<DataAnnotationClass>,
     private val cacheTrackRequest: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<AutoTrack.Params>, KoinComponent {
+) : ExternalInteractor<AutoTrack.Params>, CustomKoinComponent {
 
     private val _job = Job()
     override val scope =
