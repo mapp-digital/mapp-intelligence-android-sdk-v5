@@ -396,8 +396,6 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
     }
 }
 
-//lateinit var koinApplication: KoinApplication
-
 object MyKoinContext {
     var koinApp: KoinApplication? = null
 }
