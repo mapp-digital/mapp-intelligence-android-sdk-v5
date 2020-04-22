@@ -25,12 +25,15 @@
 
 package webtrekk.android.sdk.util
 
+import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.extension.toCustomParams
+import java.util.concurrent.TimeUnit
 
 // Data objects
 internal val trackRequest = TrackRequest(
@@ -126,3 +129,9 @@ internal val cacheTrackRequestWithCustomParamsParams = CacheTrackRequestWithCust
     trackRequest = trackRequest,
     trackingParams = trackingParams
 )
+
+internal val configuration = WebtrekkConfiguration.Builder(listOf("238713152098253"), "https://tracker-int-01.webtrekk.net")
+    .logLevel(Logger.Level.BASIC)
+    .requestsInterval(TimeUnit.MINUTES, 15)
+    .setBatchSupport(true)
+    .build()
