@@ -31,11 +31,6 @@ import androidx.work.NetworkType
 //import com.facebook.stetho.Stetho
 //import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidFileProperties
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -66,17 +61,5 @@ class SampleApplication : Application() {
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
-//        startKoin {
-//            // use AndroidLogger as Koin Logger - default Level.INFO
-//            androidLogger()
-//
-//            // use the Android context given there
-//            androidContext(this@SampleApplication)
-//
-//            // load properties from assets/koin.properties file
-//            androidFileProperties()
-//
-//            // module list
-//        }
     }
 }
