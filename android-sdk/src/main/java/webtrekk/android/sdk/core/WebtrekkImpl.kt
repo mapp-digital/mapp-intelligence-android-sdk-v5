@@ -35,10 +35,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.koin.dsl.module.module
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.inject
+import org.koin.core.Koin
+import org.koin.core.KoinApplication
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.Logger
@@ -72,7 +74,7 @@ import kotlin.properties.Delegates
  * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, CoroutineScope {
+internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, CoroutineScope {
 
     private val _job = SupervisorJob()
 
@@ -297,12 +299,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
         }
 
         try {
-            loadKoinModules(
-                mainModule,
-                dataModule,
-                internalInteractorsModule,
-                externalInteractorsModule
-            )
+            val koinApplication = koinApplication {
+                modules(listOf(
+                    mainModule,
+                    dataModule,
+                    internalInteractorsModule,
+                    externalInteractorsModule))
+            }
+            MyKoinContext.koinApp = koinApplication
         } catch (e: Exception) {
             logger.error("Webtrekk is already in use: $e")
         }
@@ -392,4 +396,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), KoinComponent, C
             return INSTANCE
         }
     }
+}
+
+internal object MyKoinContext {
+    var koinApp: KoinApplication? = null
+}
+
+internal interface CustomKoinComponent : KoinComponent {
+    // override the used Koin instance to use mylocalKoinInstance
+    override fun getKoin(): Koin = MyKoinContext.koinApp!!.koin
 }

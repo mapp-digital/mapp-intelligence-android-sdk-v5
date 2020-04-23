@@ -25,7 +25,7 @@
 
 package webtrekk.android.sdk.module
 
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSourceImpl
 import webtrekk.android.sdk.core.Scheduler
