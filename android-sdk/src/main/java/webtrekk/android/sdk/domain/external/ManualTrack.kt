@@ -28,9 +28,9 @@ package webtrekk.android.sdk.domain.external
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -46,7 +46,7 @@ internal class ManualTrack(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequest: CacheTrackRequest,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<ManualTrack.Params>, KoinComponent {
+) : ExternalInteractor<ManualTrack.Params>, CustomKoinComponent {
 
     private val _job = Job()
     override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.

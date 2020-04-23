@@ -29,9 +29,9 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
@@ -54,7 +54,7 @@ internal class SendRequestsWorker(
     context: Context,
     workerParameters: WorkerParameters
 ) :
-    CoroutineWorker(context, workerParameters), KoinComponent {
+    CoroutineWorker(context, workerParameters), CustomKoinComponent {
 
     /**
      * [coroutineDispatchers] the injected coroutine dispatchers.
@@ -70,6 +70,7 @@ internal class SendRequestsWorker(
      * [executeRequest] the injected internal interactor for executing the requests.
      */
     private val executeRequest: ExecuteRequest by inject()
+
     /**
      * [ExecutePostRequest] the injected internal interactor for executing the requests.
      */

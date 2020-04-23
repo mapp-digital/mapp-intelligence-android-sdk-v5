@@ -30,10 +30,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.inject
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.util.CoroutineDispatchers
@@ -52,7 +52,7 @@ internal class Optout(
     private val scheduler: Scheduler,
     private val appState: AppState<TrackRequest>,
     private val clearTrackRequests: ClearTrackRequests
-) : ExternalInteractor<Optout.Params>, KoinComponent {
+) : ExternalInteractor<Optout.Params>, CustomKoinComponent {
 
     private val _job = Job()
     override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
