@@ -34,7 +34,6 @@ import org.junit.Before
 
 internal abstract class WorkManagerTest {
     val context = InstrumentationRegistry.getInstrumentation().targetContext
-
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext

@@ -64,5 +64,5 @@ dependencies {
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
     implementation(project(':android-sdk'))
-    implementation 'org.koin:koin-android:2.1.1'
+
 }
