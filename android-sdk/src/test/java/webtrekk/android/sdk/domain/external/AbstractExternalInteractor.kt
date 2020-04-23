@@ -37,9 +37,9 @@ import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.logger.EmptyLogger
+import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.core.MyKoinContext
-import webtrekk.android.sdk.util.configuration
 import webtrekk.android.sdk.util.loggerModule
 import kotlin.coroutines.CoroutineContext
 
@@ -50,9 +50,10 @@ internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineSco
     override val coroutineContext: CoroutineContext
         get() = job + testCoroutineContext
     private val appContext = mockkClass(Context::class, relaxed = true)
+    private val config = mockkClass(Config::class, relaxed = true)
 
     override fun beforeSpec(spec: Spec) {
-        Webtrekk.getInstance().init(appContext, configuration)
+        Webtrekk.getInstance().init(appContext, config)
         startKoin {
             modules(
                 listOf(loggerModule
