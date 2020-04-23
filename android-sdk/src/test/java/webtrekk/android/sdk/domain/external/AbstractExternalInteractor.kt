@@ -25,16 +25,21 @@
 
 package webtrekk.android.sdk.domain.external
 
+import android.content.Context
 import io.kotlintest.Spec
 import io.kotlintest.specs.FeatureSpec
+import io.mockk.mockkClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestCoroutineContext
-import org.koin.log.EmptyLogger
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.StandAloneContext.startKoin
-import org.koin.standalone.StandAloneContext.stopKoin
+import org.koin.core.KoinComponent
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.core.logger.EmptyLogger
+import webtrekk.android.sdk.Config
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.core.MyKoinContext
 import webtrekk.android.sdk.util.loggerModule
 import kotlin.coroutines.CoroutineContext
 
@@ -44,16 +49,21 @@ internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineSco
     private val testCoroutineContext = TestCoroutineContext()
     override val coroutineContext: CoroutineContext
         get() = job + testCoroutineContext
+    private val appContext = mockkClass(Context::class, relaxed = true)
+    private val config = mockkClass(Config::class, relaxed = true)
 
     override fun beforeSpec(spec: Spec) {
-        startKoin(
-            listOf(
-                loggerModule
-            ), logger = EmptyLogger()
-        )
+        Webtrekk.getInstance().init(appContext, config)
+        startKoin {
+            modules(
+                listOf(loggerModule
+                ))
+            EmptyLogger()
+        }
     }
 
     override fun afterSpec(spec: Spec) {
+        MyKoinContext.koinApp?.close()
         stopKoin()
         coroutineContext.cancel()
     }
