@@ -74,7 +74,7 @@ import kotlin.properties.Delegates
  * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, CoroutineScope {
+internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, CoroutineScope {
 
     private val _job = SupervisorJob()
 
@@ -105,6 +105,7 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
     override fun init(context: Context, config: Config) {
         this.context = context.applicationContext
         this.config = config
+
         loadModules()
         internalInit()
     }
@@ -296,6 +297,7 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
                 )
             }
         }
+
         try {
             val koinApplication = koinApplication {
                 modules(listOf(
@@ -396,11 +398,11 @@ class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, Coro
     }
 }
 
-object MyKoinContext {
+internal object MyKoinContext {
     var koinApp: KoinApplication? = null
 }
 
-interface CustomKoinComponent : KoinComponent {
+internal interface CustomKoinComponent : KoinComponent {
     // override the used Koin instance to use mylocalKoinInstance
     override fun getKoin(): Koin = MyKoinContext.koinApp!!.koin
 }
