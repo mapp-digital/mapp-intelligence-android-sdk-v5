@@ -1,5 +1,7 @@
 # Change Log
-## Version 5.0.1.-beta1 *(in progress)*
+## Version 5.0.1.-beta2 *(2019-05-04)*
+* Update Koin version.
+* Minor bug fix.
 
 ## Version 5.0.1.-beta1 *(2019-03-04)*
 * Add form tracking. 
