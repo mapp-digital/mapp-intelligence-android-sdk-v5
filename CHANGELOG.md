@@ -1,4 +1,6 @@
 # Change Log
+## Version 5.0.1.-beta3 *(in Progress)*
+
 ## Version 5.0.1.-beta2 *(2019-05-04)*
 * Update Koin version.
 * Minor bug fix.
