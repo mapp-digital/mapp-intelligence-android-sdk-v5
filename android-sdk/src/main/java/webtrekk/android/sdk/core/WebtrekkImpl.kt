@@ -61,6 +61,7 @@ import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
 import webtrekk.android.sdk.domain.external.TrackCustomPage
+import webtrekk.android.sdk.domain.external.TrackException
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.module.dataModule
@@ -88,6 +89,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackCustomPage by inject<TrackCustomPage>()
     private val trackCustomEvent by inject<TrackCustomEvent>()
     private val trackCustomForm by inject<TrackCustomForm>()
+    private val trackException by inject<TrackException>()
     private val optOutUser by inject<Optout>()
 
     internal val sessions by inject<Sessions>()
@@ -168,6 +170,24 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     isOptOut = hasOptOut(),
                     ctParams = eventName
 
+                ), coroutineDispatchers
+            )
+        }
+
+    override fun trackException(exception: Exception) =
+        config.run {
+            trackException(
+                TrackException.Params(
+                    trackRequest = TrackRequest(
+                        name = "webtrekk_ignore",
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    isOptOut = hasOptOut(),
+                    exception = exception
                 ), coroutineDispatchers
             )
         }
@@ -287,6 +307,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     get()
                 )
             }
+
+            single {
+                TrackException(
+                    coroutineContext,
+                    get()
+                )
+            }
+
             single {
                 Optout(
                     coroutineContext,

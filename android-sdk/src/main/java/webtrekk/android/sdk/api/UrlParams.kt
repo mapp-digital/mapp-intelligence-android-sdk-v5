@@ -79,6 +79,36 @@ internal object UrlParams {
         ParamType.SESSION_PARAM,
         815
     ) // we need to send this on new session and when is changed
+
+    val CRASH_TYPE = customParam(
+        ParamType.EVENT_PARAM,
+        910
+    )
+
+    val CRASH_NAME = customParam(
+        ParamType.EVENT_PARAM,
+        911
+    )
+
+    val CRASH_MESSAGE = customParam(
+        ParamType.EVENT_PARAM,
+        912
+    )
+
+    val CRASH_CAUSE_MESSAGE = customParam(
+        ParamType.EVENT_PARAM,
+        913
+    )
+
+    val CRASH_STACK = customParam(
+        ParamType.EVENT_PARAM,
+        914
+    )
+
+    val CRASH_CAUSE_STACK = customParam(
+        ParamType.EVENT_PARAM,
+        915
+    )
 }
 
 /**
