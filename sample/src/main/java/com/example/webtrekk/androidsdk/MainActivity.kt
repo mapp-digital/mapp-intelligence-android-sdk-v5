@@ -56,5 +56,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        crashActivity.setOnClickListener {
+            val intent = Intent(this, CrashActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

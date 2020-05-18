@@ -157,6 +157,11 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
+    //TODO: Add comments here
+    abstract fun trackException(
+        exception: Exception
+    )
+
     /**
      * Tracks a specific form events, in background we will take all import value from the view.
      * @param context context of the current activity.
