@@ -12,7 +12,6 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
-import java.lang.StringBuilder
 import kotlin.coroutines.CoroutineContext
 
 internal enum class ExceptionType {
@@ -34,7 +33,6 @@ internal class TrackException(
      * [logger] the injected logger from Webtrekk.
      */
     private val logger by inject<Logger>()
-
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
