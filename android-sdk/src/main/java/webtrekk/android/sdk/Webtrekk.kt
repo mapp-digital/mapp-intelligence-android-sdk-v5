@@ -157,7 +157,7 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
-    //TODO: Add comments here
+    // TODO: Add comments here
     abstract fun trackException(
         exception: Exception
     )
