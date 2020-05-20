@@ -20,6 +20,7 @@ internal enum class ExceptionType {
     CATCHED
 }
 
+// TODO: Add comments
 internal class TrackException(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
