@@ -11,13 +11,18 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
 
-internal enum class ExceptionType {
-    UNCAUGHT,
-    CUSTOM,
-    CATCHED
+enum class ExceptionType(val type: String) {
+    UNCAUGHT("1"),
+    CUSTOM("2"),
+    CAUGHT("3"),
+    ALL("4"),
+    UNCAUGHT_AND_CUSTOM("5"),
+    UNCAUGHT_AND_CAUGHT("6"),
+    CUSTOM_AND_CAUGHT("7")
 }
 
 // TODO: Add comments
@@ -43,7 +48,7 @@ internal class TrackException(
             logger
         )
         ) {
-            val params = createRequestFromException(invokeParams.exception)
+            val params = createParamsFromException(invokeParams.exception, invokeParams.exceptionType)
 
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
@@ -57,25 +62,33 @@ internal class TrackException(
         }
     }
 
-    private fun createRequestFromException(exception: Exception): MutableMap<String, String> {
+    private fun createParamsFromException(exception: Exception, exceptionType: ExceptionType): MutableMap<String, String> {
         val params = emptyMap<String, String>().toMutableMap()
-        params[UrlParams.CRASH_TYPE] = ExceptionType.CATCHED.name
-        params[UrlParams.CRASH_NAME] = exception.javaClass.name
-        if (exception.message != null) params[UrlParams.CRASH_MESSAGE] = exception.message!!
-        if (exception.cause != null) {
-            if (exception.cause!!.message != null) {
-                params[UrlParams.CRASH_CAUSE_MESSAGE] = exception.cause!!.message!!
+        if (exceptionType.type == "3") {
+            params[UrlParams.CRASH_TYPE] = exceptionType.type
+            params[UrlParams.CRASH_NAME] = exception.javaClass.name
+            if (exception.message != null)
+                params[UrlParams.CRASH_MESSAGE] = exception.message!!
+            if (exception.cause != null) {
+                if (exception.cause!!.message != null) {
+                    params[UrlParams.CRASH_CAUSE_MESSAGE] = exception.cause!!.message!!
+                }
             }
+            params[UrlParams.CRASH_STACK] = exception.stackTrace.createString()
+            if (exception.cause != null)
+                params[UrlParams.CRASH_CAUSE_STACK] = exception.cause!!.stackTrace.createString()
+        } else if (exceptionType.type == "2") {
+            params[UrlParams.CRASH_TYPE] = exceptionType.type
+            params[UrlParams.CRASH_NAME] = (exception as ExceptionWrapper).name
+            params[UrlParams.CRASH_MESSAGE] = (exception as ExceptionWrapper).customMessage
         }
-        params[UrlParams.CRASH_STACK] = exception.stackTrace.createString()
-        if (exception.cause != null) params[UrlParams.CRASH_CAUSE_STACK] = exception.cause!!.stackTrace.createString()
         return params
     }
 
     private fun Array<StackTraceElement>.createString(): String {
         var stackString = ""
         for (element in this) {
-            if (!stackString.isEmpty()) stackString += "|"
+            if (stackString.isNotEmpty()) stackString += "|"
             val lineNumber = if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
             var stackItem = element.className + "." +
                 element.methodName + "(" + element.fileName
@@ -95,6 +108,7 @@ internal class TrackException(
     data class Params(
         val trackRequest: TrackRequest,
         val isOptOut: Boolean,
-        val exception: Exception
+        val exception: Exception,
+        val exceptionType: ExceptionType
     )
 }
