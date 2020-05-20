@@ -28,6 +28,7 @@ package webtrekk.android.sdk
 import android.content.Context
 import android.view.View
 import webtrekk.android.sdk.core.WebtrekkImpl
+import webtrekk.android.sdk.domain.external.ExceptionType
 
 /**
  * Webtrekk is a library used to collect your app usage, how your customers interacting with your app,
@@ -157,9 +158,19 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
-    // TODO: Add comments here
+    // TODO: Add comments here for new methods
+    internal abstract fun trackException(
+        exception: Exception,
+        exceptionType: ExceptionType
+    )
+
     abstract fun trackException(
         exception: Exception
+    )
+
+    abstract fun trackException(
+        name: String,
+        message: String
     )
 
     /**
