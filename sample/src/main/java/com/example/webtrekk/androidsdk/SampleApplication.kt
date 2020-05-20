@@ -34,6 +34,7 @@ import okhttp3.OkHttpClient
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
+import webtrekk.android.sdk.domain.external.ExceptionType
 import java.util.concurrent.TimeUnit
 
 class SampleApplication : Application() {

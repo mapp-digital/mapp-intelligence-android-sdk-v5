@@ -56,6 +56,7 @@ import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
 import webtrekk.android.sdk.domain.external.AutoTrack
+import webtrekk.android.sdk.domain.external.ExceptionType
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
@@ -66,6 +67,7 @@ import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
+import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
 import kotlin.coroutines.CoroutineContext
@@ -174,7 +176,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         }
 
-    override fun trackException(exception: Exception) =
+    override fun trackException(exception: Exception, exceptionType: ExceptionType) =
         config.run {
             trackException(
                 TrackException.Params(
@@ -187,10 +189,27 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                         appVersionCode = context.appVersionCode
                     ),
                     isOptOut = hasOptOut(),
-                    exception = exception
+                    exception = exception,
+                    exceptionType = exceptionType
                 ), coroutineDispatchers
             )
         }
+
+    override fun trackException(exception: Exception) {
+        if (config.crashTracking) {
+            when (config.exceptionLogLevel.type) {
+                "3", "4", "6", "7" -> trackException(exception, ExceptionType.CAUGHT)
+            }
+        }
+    }
+
+    override fun trackException(name: String, message: String) {
+        if (config.crashTracking) {
+            when (config.exceptionLogLevel.type) {
+                "2", "4", "5", "7" -> trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM)
+            }
+        }
+    }
 
     override fun formTracking(
         context: Context,
