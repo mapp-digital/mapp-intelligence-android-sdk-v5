@@ -28,7 +28,7 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     ext.versions = [
             'webtrekkVersion'        : '5.0.1',
-            'gradleVersion'          : '3.6.3',
+            'gradleVersion'          : '3.5.3',
             'kotlinVersion'          : '1.3.60',
             'gradleVersionsPlugin'   : '0.21.0',
             'mavenPluginVersion'     : '2.1',
