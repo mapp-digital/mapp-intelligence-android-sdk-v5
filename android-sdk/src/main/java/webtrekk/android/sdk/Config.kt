@@ -27,7 +27,6 @@ package webtrekk.android.sdk
 
 import androidx.work.Constraints
 import okhttp3.OkHttpClient
-import webtrekk.android.sdk.domain.external.ExceptionType
 
 /**
  * A configuration interface for customizing [Webtrekk] configurations.
@@ -111,7 +110,6 @@ interface Config {
     val activityAutoTracking: Boolean
 
     // TODO: Add comments for this values
-    val crashTracking: Boolean
 
     val exceptionLogLevel: ExceptionType
 

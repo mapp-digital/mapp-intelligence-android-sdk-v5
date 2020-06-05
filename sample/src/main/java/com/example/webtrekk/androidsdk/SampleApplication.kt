@@ -31,10 +31,10 @@ import androidx.work.NetworkType
 //import com.facebook.stetho.Stetho
 //import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
-import webtrekk.android.sdk.domain.external.ExceptionType
 import java.util.concurrent.TimeUnit
 
 class SampleApplication : Application() {
@@ -56,6 +56,7 @@ class SampleApplication : Application() {
             WebtrekkConfiguration.Builder(listOf("238713152098253"), "https://tracker-int-01.webtrekk.net")
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
+                .enableCrashTracking(ExceptionType.ALL)
                 .workManagerConstraints(constraints = constraints)
 //                .okHttpClient(okHttpClient = okHttpClient)
                 .setBatchSupport(true)
