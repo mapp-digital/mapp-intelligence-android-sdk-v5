@@ -27,7 +27,6 @@ package webtrekk.android.sdk
 
 import androidx.work.Constraints
 import okhttp3.OkHttpClient
-import webtrekk.android.sdk.domain.external.ExceptionType
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
 import java.util.concurrent.TimeUnit
@@ -58,7 +57,6 @@ class WebtrekkConfiguration private constructor(
     override val requestPerBatch: Int,
     override val batchSupport: Boolean,
     override val activityAutoTracking: Boolean,
-    override val crashTracking: Boolean,
     override val exceptionLogLevel: ExceptionType
 ) : Config {
 
@@ -77,8 +75,7 @@ class WebtrekkConfiguration private constructor(
         private var requestPerBatch = DefaultConfiguration.REQUEST_PER_BATCH
         private var batchSupport = DefaultConfiguration.BATCH_SUPPORT_ENABLED
         private var activityAutoTracking = DefaultConfiguration.ACTIVITY_AUTO_TRACK_ENABLED
-        private var crashTracking = DefaultConfiguration.CRASH_TRACKING_ENABLED
-        private var exceptionLogLevel = ExceptionType.ALL
+        private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
 
         /**
          * Configure the log level of the lib.
@@ -121,7 +118,6 @@ class WebtrekkConfiguration private constructor(
 
         // TODO: Add comments for this method
         fun enableCrashTracking(exceptionLogLevel: ExceptionType) = apply {
-            crashTracking = true
             this.exceptionLogLevel = exceptionLogLevel
         }
 
@@ -207,7 +203,6 @@ class WebtrekkConfiguration private constructor(
             requestPerBatch,
             batchSupport,
             activityAutoTracking,
-            crashTracking,
             exceptionLogLevel
         )
     }

@@ -56,7 +56,7 @@ import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
 import webtrekk.android.sdk.domain.external.AutoTrack
-import webtrekk.android.sdk.domain.external.ExceptionType
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
@@ -196,18 +196,18 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         }
 
     override fun trackException(exception: Exception) {
-        if (config.crashTracking) {
-            when (config.exceptionLogLevel.type) {
-                "3", "4", "6", "7" -> trackException(exception, ExceptionType.CAUGHT)
-            }
+        when (config.exceptionLogLevel) {
+            ExceptionType.ALL, ExceptionType.CAUGHT, ExceptionType.UNCAUGHT_AND_CAUGHT, ExceptionType.CUSTOM_AND_CAUGHT
+            -> trackException(exception, ExceptionType.CAUGHT)
+            else -> return
         }
     }
 
     override fun trackException(name: String, message: String) {
-        if (config.crashTracking) {
-            when (config.exceptionLogLevel.type) {
-                "2", "4", "5", "7" -> trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM)
-            }
+        when (config.exceptionLogLevel) {
+            ExceptionType.ALL, ExceptionType.CUSTOM, ExceptionType.CUSTOM_AND_CAUGHT, ExceptionType.UNCAUGHT_AND_CUSTOM
+            -> trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM)
+            else -> return
         }
     }
 
