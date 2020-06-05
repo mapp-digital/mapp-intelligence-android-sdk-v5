@@ -28,7 +28,6 @@ package webtrekk.android.sdk
 import android.content.Context
 import android.view.View
 import webtrekk.android.sdk.core.WebtrekkImpl
-import webtrekk.android.sdk.domain.external.ExceptionType
 
 /**
  * Webtrekk is a library used to collect your app usage, how your customers interacting with your app,

@@ -112,4 +112,17 @@ internal fun List<FormField>.toRequest(): String {
     return request
 }
 
+internal fun Array<StackTraceElement>.createString(): String {
+    var stackString = ""
+    for (element in this) {
+        if (stackString.isNotEmpty()) stackString += "|"
+        val lineNumber = if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
+        var stackItem = element.className + "." +
+            element.methodName + "(" + element.fileName
+        stackItem += if (lineNumber < 0) ")" else ":" + element.lineNumber + ")"
+        stackString += if (stackString.length + stackItem.length <= 255) stackItem else break
+    }
+    return stackString
+}
+
 fun Boolean.toInt() = if (this) 1 else 0
