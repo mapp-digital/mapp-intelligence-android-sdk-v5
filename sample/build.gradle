@@ -27,6 +27,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion versions.compileSdkVersion
@@ -63,6 +65,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
+    implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
     implementation(project(':android-sdk'))
 
 }

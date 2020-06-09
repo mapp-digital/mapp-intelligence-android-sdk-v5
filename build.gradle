@@ -64,7 +64,10 @@ buildscript {
             'kotlinTestVersion'      : '3.4.2',
 
             'ktlintVersion'          : '0.31.0',
-            'dokkaVersion'           : '0.9.17'
+            'dokkaVersion'           : '0.9.17',
+            'googleServices'         : '4.3.3',
+            'firebaseCrashlyticsGradle'   : '2.1.1',
+            'firebaseCrashlytics'    : '17.0.1'
     ]
 
     ext.libs = [
@@ -109,6 +112,8 @@ buildscript {
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${versions.dokkaVersion}"
         classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.mavenPluginVersion}"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintrayPluginVersion}"
+        classpath "com.google.gms:google-services:${versions.googleServices}"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:${versions.firebaseCrashlyticsGradle}"
     }
 }
 
