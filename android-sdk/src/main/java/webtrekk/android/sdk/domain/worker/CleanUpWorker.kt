@@ -46,28 +46,28 @@ internal class CleanUpWorker(
 ) :
     CoroutineWorker(context, workerParameters), CustomKoinComponent {
 
-    /**
-     * [coroutineDispatchers] the injected coroutine dispatchers.
-     */
-    private val coroutineDispatchers: CoroutineDispatchers by inject()
-
-    /**
-     * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
-     */
-    private val getCachedDataTracks: GetCachedDataTracks by inject()
-
-    /**
-     * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
-     */
-    private val clearTrackRequests: ClearTrackRequests by inject()
-
-    /**
-     * [logger] the injected logger from Webtrekk.
-     */
-    private val logger: Logger by inject()
-
     // TODO add this::: delete if request is older then one hour (server limitation)
     override suspend fun doWork(): Result {
+        /**
+         * [coroutineDispatchers] the injected coroutine dispatchers.
+         */
+        val coroutineDispatchers: CoroutineDispatchers by inject()
+
+        /**
+         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+         */
+        val getCachedDataTracks: GetCachedDataTracks by inject()
+
+        /**
+         * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
+         */
+        val clearTrackRequests: ClearTrackRequests by inject()
+
+        /**
+         * [logger] the injected logger from Webtrekk.
+         */
+        val logger: Logger by inject()
+
         // get the data from the data base with state DONE only.
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {

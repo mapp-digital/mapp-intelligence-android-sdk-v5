@@ -56,32 +56,32 @@ internal class SendRequestsWorker(
 ) :
     CoroutineWorker(context, workerParameters), CustomKoinComponent {
 
-    /**
-     * [coroutineDispatchers] the injected coroutine dispatchers.
-     */
-    private val coroutineDispatchers: CoroutineDispatchers by inject()
-
-    /**
-     * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
-     */
-    private val getCachedDataTracks: GetCachedDataTracks by inject()
-
-    /**
-     * [executeRequest] the injected internal interactor for executing the requests.
-     */
-    private val executeRequest: ExecuteRequest by inject()
-
-    /**
-     * [ExecutePostRequest] the injected internal interactor for executing the requests.
-     */
-    private val executePostRequest: ExecutePostRequest by inject()
-
-    /**
-     * [logger] the injected logger from Webtrekk.
-     */
-    private val logger: Logger by inject()
-
     override suspend fun doWork(): Result {
+        /**
+         * [coroutineDispatchers] the injected coroutine dispatchers.
+         */
+        val coroutineDispatchers: CoroutineDispatchers by inject()
+
+        /**
+         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+         */
+        val getCachedDataTracks: GetCachedDataTracks by inject()
+
+        /**
+         * [executeRequest] the injected internal interactor for executing the requests.
+         */
+        val executeRequest: ExecuteRequest by inject()
+
+        /**
+         * [ExecutePostRequest] the injected internal interactor for executing the requests.
+         */
+        val executePostRequest: ExecutePostRequest by inject()
+
+        /**
+         * [logger] the injected logger from Webtrekk.
+         */
+        val logger: Logger by inject()
+
         // retrieves the data in the data base with state of NEW or FAILED only.
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
