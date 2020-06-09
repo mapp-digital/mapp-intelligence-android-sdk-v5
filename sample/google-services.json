@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "357810879619",
+    "firebase_url": "https://webtrekk-mobile.firebaseio.com",
+    "project_id": "webtrekk-mobile",
+    "storage_bucket": "webtrekk-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357810879619:android:472bc0eee7bfaf90d4afb6",
+        "android_client_info": {
+          "package_name": "com.example.webtrekk.androidsdk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357810879619-kvto1fdm1gct8n3s0m73qndlelvufpl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyuH5fywqzRI-oKl1GWDkO6v8aJJQuRCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357810879619-kvto1fdm1gct8n3s0m73qndlelvufpl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
