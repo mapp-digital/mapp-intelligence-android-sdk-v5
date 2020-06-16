@@ -48,7 +48,7 @@ buildscript {
 
             'okHttpVersion'          : '4.2.2',
 
-            'workManagerVersion'     : '2.3.4',
+            'workManagerVersion'     : '2.2.0',
             'roomVersion'            : '2.2.2',
 
             'testCoreVersion'        : '1.2.0',
