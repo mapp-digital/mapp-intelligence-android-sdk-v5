@@ -47,29 +47,35 @@ import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.initOrException
-import webtrekk.android.sdk.extension.resolution
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
-import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.ExceptionType
+import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
 import webtrekk.android.sdk.domain.external.TrackCustomPage
 import webtrekk.android.sdk.domain.external.TrackException
+import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
+import webtrekk.android.sdk.extension.initOrException
+import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
+import webtrekk.android.sdk.util.isCaughtAllowed
+import webtrekk.android.sdk.util.isUncaughtAllowed
+import webtrekk.android.sdk.util.isCustomAllowed
 import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.util.getFileName
+import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
@@ -93,7 +99,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackCustomForm by inject<TrackCustomForm>()
     private val trackException by inject<TrackException>()
     private val optOutUser by inject<Optout>()
-
+    private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
     internal val logger by inject<Logger>()
 
@@ -176,7 +182,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         }
 
-    override fun trackException(exception: Exception, exceptionType: ExceptionType) =
+    override fun trackException(exception: Exception?, exceptionType: ExceptionType, file: File?) =
         config.run {
             trackException(
                 TrackException.Params(
@@ -190,25 +196,24 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     ),
                     isOptOut = hasOptOut(),
                     exception = exception,
-                    exceptionType = exceptionType
+                    exceptionType = exceptionType,
+                    file = file
                 ), coroutineDispatchers
             )
         }
 
     override fun trackException(exception: Exception) {
-        when (config.exceptionLogLevel) {
-            ExceptionType.ALL, ExceptionType.CAUGHT, ExceptionType.UNCAUGHT_AND_CAUGHT, ExceptionType.CUSTOM_AND_CAUGHT
-            -> trackException(exception, ExceptionType.CAUGHT)
-            else -> return
-        }
+        if (isCaughtAllowed(config.exceptionLogLevel))
+            trackException(exception, ExceptionType.CAUGHT, null)
     }
 
     override fun trackException(name: String, message: String) {
-        when (config.exceptionLogLevel) {
-            ExceptionType.ALL, ExceptionType.CUSTOM, ExceptionType.CUSTOM_AND_CAUGHT, ExceptionType.UNCAUGHT_AND_CUSTOM
-            -> trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM)
-            else -> return
-        }
+        if (isCustomAllowed(config.exceptionLogLevel))
+            trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM, null)
+    }
+
+    override fun trackException(file: File?) {
+        trackException(null, ExceptionType.UNCAUGHT, file)
     }
 
     override fun formTracking(
@@ -394,6 +399,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         } else {
             appState.disable(context)
         }
+
+        if (isUncaughtAllowed(config.exceptionLogLevel)) {
+            initUncaughtExceptionTracking()
+        }
     }
 
     /**
@@ -422,6 +431,23 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     internal fun cancelParentJob() {
         _job.cancel()
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) // TODO: Should it have this annotation?
+    private fun initUncaughtExceptionTracking() {
+        if (isUncaughtAllowed(config.exceptionLogLevel)) {
+            uncaughtExceptionHandler = UncaughtExceptionHandler(defaultHandler = Thread.getDefaultUncaughtExceptionHandler(), context = context)
+            Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
+
+            val fileName = getFileName(false, context)
+            var loadFile: File? = null
+            if (fileName != null)
+                loadFile = File(fileName)
+
+            if (loadFile != null) {
+                trackException(loadFile)
+            }
+        }
     }
 
     companion object {
