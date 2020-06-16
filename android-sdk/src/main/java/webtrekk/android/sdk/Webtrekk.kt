@@ -28,6 +28,7 @@ package webtrekk.android.sdk
 import android.content.Context
 import android.view.View
 import webtrekk.android.sdk.core.WebtrekkImpl
+import java.io.File
 
 /**
  * Webtrekk is a library used to collect your app usage, how your customers interacting with your app,
@@ -159,8 +160,9 @@ abstract class Webtrekk protected constructor() {
 
     // TODO: Add comments here for new methods
     internal abstract fun trackException(
-        exception: Exception,
-        exceptionType: ExceptionType
+        exception: Exception? = null,
+        exceptionType: ExceptionType,
+        file: File? = null
     )
 
     abstract fun trackException(
@@ -170,6 +172,10 @@ abstract class Webtrekk protected constructor() {
     abstract fun trackException(
         name: String,
         message: String
+    )
+
+    abstract fun trackException(
+        file: File?
     )
 
     /**
