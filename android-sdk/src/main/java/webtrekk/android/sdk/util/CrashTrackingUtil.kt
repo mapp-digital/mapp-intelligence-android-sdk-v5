@@ -11,27 +11,27 @@ internal const val EX_LINE_SEPARATOR = "|"
 internal const val MAX_PARAMETER_NUMBER = 255
 internal const val FILE_NAME = "exception.txt"
 
-internal fun isUncaughtAllowed(exceptionType: ExceptionType): Boolean {
-    when (exceptionType) {
+internal fun ExceptionType.isUncaughtAllowed(): Boolean {
+    return when (this) {
         ExceptionType.ALL, ExceptionType.UNCAUGHT, ExceptionType.UNCAUGHT_AND_CAUGHT, ExceptionType.UNCAUGHT_AND_CUSTOM
-        -> return true
-        else -> return false
+        -> true
+        else -> false
     }
 }
 
-internal fun isCaughtAllowed(exceptionType: ExceptionType): Boolean {
-    when (exceptionType) {
+internal fun ExceptionType.isCaughtAllowed(): Boolean {
+    return when (this) {
         ExceptionType.ALL, ExceptionType.CAUGHT, ExceptionType.UNCAUGHT_AND_CAUGHT, ExceptionType.CUSTOM_AND_CAUGHT
-        -> return true
-        else -> return false
+        -> true
+        else -> false
     }
 }
 
-internal fun isCustomAllowed(exceptionType: ExceptionType): Boolean {
-    when (exceptionType) {
+internal fun ExceptionType.isCustomAllowed(): Boolean {
+    return when (this) {
         ExceptionType.ALL, ExceptionType.CUSTOM, ExceptionType.CUSTOM_AND_CAUGHT, ExceptionType.UNCAUGHT_AND_CUSTOM
-        -> return true
-        else -> return false
+        -> true
+        else -> false
     }
 }
 

@@ -203,12 +203,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         }
 
     override fun trackException(exception: Exception) {
-        if (isCaughtAllowed(config.exceptionLogLevel))
+        if (config.exceptionLogLevel.isCaughtAllowed())
             trackException(exception, ExceptionType.CAUGHT, null)
     }
 
     override fun trackException(name: String, message: String) {
-        if (isCustomAllowed(config.exceptionLogLevel))
+        if (config.exceptionLogLevel.isCustomAllowed())
             trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM, null)
     }
 
@@ -400,7 +400,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             appState.disable(context)
         }
 
-        if (isUncaughtAllowed(config.exceptionLogLevel)) {
+        if (config.exceptionLogLevel.isUncaughtAllowed()) {
             initUncaughtExceptionTracking()
         }
     }
@@ -435,7 +435,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) // TODO: Should it have this annotation?
     private fun initUncaughtExceptionTracking() {
-        if (isUncaughtAllowed(config.exceptionLogLevel)) {
+        if (config.exceptionLogLevel.isUncaughtAllowed()) {
             uncaughtExceptionHandler = UncaughtExceptionHandler(defaultHandler = Thread.getDefaultUncaughtExceptionHandler(), context = context)
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
