@@ -4,10 +4,11 @@ import android.content.Context
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.CustomKoinComponent
-import webtrekk.android.sdk.util.createString
 import webtrekk.android.sdk.util.END_EX_STRING
 import webtrekk.android.sdk.util.EX_ITEM_SEPARATE
+import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.START_EX_STRING
+import webtrekk.android.sdk.util.createString
 import webtrekk.android.sdk.util.getFileName
 import java.io.BufferedOutputStream
 import java.io.IOException
@@ -33,7 +34,8 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
             } else if (ex == null) {
                 logger.error("Could not handle uncaught exception; null throwable")
             } else {
-                writeFatal(ex)
+                writeUncaughtException(ExceptionWrapper("asd", "asdddas"))
+                writeUncaughtException(ex)
             }
         } catch (e: Exception) {
             logger.error("An error occurred in the uncaught exception handler" + e.message)
@@ -45,7 +47,7 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
         }
     }
 
-    internal fun writeFatal(ex: Throwable) {
+    private fun writeUncaughtException(ex: Throwable) {
         var outputStream: BufferedOutputStream? = null
         val arrayToSave = arrayOf<String?>(
             START_EX_STRING,
@@ -68,9 +70,9 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
                 outputStream.write("\n".toByteArray())
             }
             outputStream.flush()
-            logger.debug("Exception saved to file")
+            logger.debug("Uncaught exception saved to file")
         } catch (e: Exception) {
-            logger.error("can't save exception to file: $e")
+            logger.error("Can't save exception to file: $e")
         } finally {
             if (outputStream != null)
                 try {
