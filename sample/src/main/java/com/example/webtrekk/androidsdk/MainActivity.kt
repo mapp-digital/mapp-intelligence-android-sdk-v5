@@ -60,5 +60,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CrashActivity::class.java)
             startActivity(intent)
         }
+
+        videoActivity.setOnClickListener {
+            val intent = Intent(this, VideoActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
