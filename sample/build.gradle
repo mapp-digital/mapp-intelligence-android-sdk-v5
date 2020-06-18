@@ -41,6 +41,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -63,6 +67,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.5'
     implementation(project(':android-sdk'))
 
 }
