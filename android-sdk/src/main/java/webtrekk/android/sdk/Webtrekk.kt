@@ -165,9 +165,8 @@ abstract class Webtrekk protected constructor() {
 
     // TODO: Add comments here for new methods
     internal abstract fun trackException(
-        exception: Exception? = null,
-        exceptionType: ExceptionType,
-        file: File? = null
+        exception: Exception,
+        exceptionType: ExceptionType
     )
 
     abstract fun trackException(
@@ -179,8 +178,8 @@ abstract class Webtrekk protected constructor() {
         message: String
     )
 
-    abstract fun trackException(
-        file: File?
+    internal abstract fun trackException(
+        file: File
     )
 
     /**

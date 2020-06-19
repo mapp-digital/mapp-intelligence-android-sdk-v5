@@ -3,7 +3,8 @@ package com.example.webtrekk.androidsdk
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import webtrekk.android.sdk.Webtrekk
-import java.lang.NumberFormatException
+import kotlinx.android.synthetic.main.activity_crash.*
+
 
 class CrashActivity : AppCompatActivity() {
 
@@ -11,11 +12,24 @@ class CrashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crash)
 
-        try {
+        trackUncaught.setOnClickListener {
             Integer.parseInt("@!#")
-        } catch (numberFormatException: NumberFormatException) {
-            Webtrekk.getInstance().trackException(numberFormatException)
-            Webtrekk.getInstance().trackException("Ivan", "Momak")
+        }
+
+        trackCaught.setOnClickListener {
+            try {
+                Integer.parseInt("@!#")
+            } catch (e: Exception) {
+                Webtrekk.getInstance().trackException(e)
+            }
+        }
+
+        trackCustom.setOnClickListener {
+            try {
+                Integer.parseInt("@!#")
+            } catch (e: Exception) {
+                Webtrekk.getInstance().trackException("Hello", "I am custom exception :*")
+            }
         }
     }
 }
