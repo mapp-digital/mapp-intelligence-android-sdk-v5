@@ -28,7 +28,13 @@ package webtrekk.android.sdk.extension
 import okhttp3.Request
 import okio.Buffer
 import org.json.JSONObject
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.data.model.FormField
+import webtrekk.android.sdk.util.EX_LINE_SEPARATOR
+import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
+import webtrekk.android.sdk.util.MAX_PARAMETER_NUMBER
+import webtrekk.android.sdk.util.NULL_MESSAGE
+import java.io.BufferedReader
 import java.io.IOException
 import java.net.URLEncoder
 
@@ -113,3 +119,49 @@ internal fun List<FormField>.toRequest(): String {
 }
 
 fun Boolean.toInt() = if (this) 1 else 0
+internal fun BufferedReader.readParam(): String {
+    val line: String? = this.readLine()
+    if (line == null) throw IncorrectErrorFileFormatException(NULL_MESSAGE) else return line
+}
+
+internal fun BufferedReader.validateLine(validate: String, errorMessage: String) {
+    if (this.readLine() != validate)
+        throw IncorrectErrorFileFormatException(errorMessage)
+}
+
+internal fun Array<StackTraceElement>.createString(): String {
+    var stackString = ""
+    for (element in this) {
+        if (stackString.isNotEmpty()) stackString += EX_LINE_SEPARATOR
+        val lineNumber = if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
+        var stackItem = element.className + "." +
+            element.methodName + "(" + element.fileName
+        stackItem += if (lineNumber < 0) ")" else ":" + element.lineNumber + ")"
+        stackString += if (stackString.length + stackItem.length <= MAX_PARAMETER_NUMBER) stackItem else break
+    }
+    return stackString
+}
+
+internal fun ExceptionType.isUncaughtAllowed(): Boolean {
+    return when (this) {
+        ExceptionType.ALL, ExceptionType.UNCAUGHT, ExceptionType.UNCAUGHT_AND_CAUGHT, ExceptionType.UNCAUGHT_AND_CUSTOM
+        -> true
+        else -> false
+    }
+}
+
+internal fun ExceptionType.isCaughtAllowed(): Boolean {
+    return when (this) {
+        ExceptionType.ALL, ExceptionType.CAUGHT, ExceptionType.UNCAUGHT_AND_CAUGHT, ExceptionType.CUSTOM_AND_CAUGHT
+        -> true
+        else -> false
+    }
+}
+
+internal fun ExceptionType.isCustomAllowed(): Boolean {
+    return when (this) {
+        ExceptionType.ALL, ExceptionType.CUSTOM, ExceptionType.CUSTOM_AND_CAUGHT, ExceptionType.UNCAUGHT_AND_CUSTOM
+        -> true
+        else -> false
+    }
+}

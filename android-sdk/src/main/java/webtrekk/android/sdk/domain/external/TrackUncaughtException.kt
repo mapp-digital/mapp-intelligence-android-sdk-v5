@@ -20,8 +20,8 @@ import webtrekk.android.sdk.util.NO_MESSAGE_CAUSE_SEPARATOR
 import webtrekk.android.sdk.util.START_EX_STRING
 import webtrekk.android.sdk.util.NO_START_SEPARATOR
 import webtrekk.android.sdk.util.END_EX_STRING
-import webtrekk.android.sdk.util.validateLine
-import webtrekk.android.sdk.util.readParam
+import webtrekk.android.sdk.extension.validateLine
+import webtrekk.android.sdk.extension.readParam
 import java.io.File
 import java.io.FileReader
 import java.io.BufferedReader
