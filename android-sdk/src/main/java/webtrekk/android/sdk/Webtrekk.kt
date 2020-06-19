@@ -158,6 +158,11 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
+    abstract fun trackMedia(
+        mediaName: String,
+        trackingParams: Map<String, String> = emptyMap()
+    )
+
     // TODO: Add comments here for new methods
     internal abstract fun trackException(
         exception: Exception? = null,

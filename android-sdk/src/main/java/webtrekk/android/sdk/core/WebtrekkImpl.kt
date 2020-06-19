@@ -182,6 +182,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         }
 
+    override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
+       // TODO("Not yet implemented")
+    }
+
     override fun trackException(exception: Exception?, exceptionType: ExceptionType, file: File?) =
         config.run {
             trackException(
