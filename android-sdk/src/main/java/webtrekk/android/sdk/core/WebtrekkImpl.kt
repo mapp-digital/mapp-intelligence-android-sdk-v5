@@ -67,9 +67,9 @@ import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
-import webtrekk.android.sdk.util.isCaughtAllowed
-import webtrekk.android.sdk.util.isUncaughtAllowed
-import webtrekk.android.sdk.util.isCustomAllowed
+import webtrekk.android.sdk.extension.isCaughtAllowed
+import webtrekk.android.sdk.extension.isUncaughtAllowed
+import webtrekk.android.sdk.extension.isCustomAllowed
 import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession

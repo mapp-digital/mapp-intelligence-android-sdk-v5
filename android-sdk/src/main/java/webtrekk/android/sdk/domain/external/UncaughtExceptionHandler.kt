@@ -6,9 +6,8 @@ import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.util.END_EX_STRING
 import webtrekk.android.sdk.util.EX_ITEM_SEPARATE
-import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.START_EX_STRING
-import webtrekk.android.sdk.util.createString
+import webtrekk.android.sdk.extension.createString
 import webtrekk.android.sdk.util.getFileName
 import java.io.BufferedOutputStream
 import java.io.IOException
@@ -34,7 +33,6 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
             } else if (ex == null) {
                 logger.error("Could not handle uncaught exception; null throwable")
             } else {
-                writeUncaughtException(ExceptionWrapper("asd", "asdddas"))
                 writeUncaughtException(ex)
             }
         } catch (e: Exception) {
