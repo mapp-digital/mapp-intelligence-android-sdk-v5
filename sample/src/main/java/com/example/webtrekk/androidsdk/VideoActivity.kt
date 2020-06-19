@@ -102,7 +102,6 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
         trackSelectorParameters = builder.build()
         clearStartPosition()
 
-        initializePlayer();
 
     }
 
