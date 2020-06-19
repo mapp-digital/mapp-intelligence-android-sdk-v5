@@ -28,9 +28,8 @@ package com.example.webtrekk.androidsdk
 import android.app.Application
 import androidx.work.Constraints
 import androidx.work.NetworkType
-//import com.facebook.stetho.Stetho
-//import com.facebook.stetho.okhttp3.StethoInterceptor
-import okhttp3.OkHttpClient
+// import com.facebook.stetho.Stetho
+// import com.facebook.stetho.okhttp3.StethoInterceptor
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
@@ -41,7 +40,7 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-       // Stetho.initializeWithDefaults(this)
+        // Stetho.initializeWithDefaults(this)
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)

@@ -59,6 +59,7 @@ import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
 import webtrekk.android.sdk.domain.external.TrackCustomPage
 import webtrekk.android.sdk.domain.external.TrackException
+import webtrekk.android.sdk.domain.external.TrackUncaughtException
 import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
@@ -66,9 +67,9 @@ import webtrekk.android.sdk.extension.initOrException
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
-import webtrekk.android.sdk.util.isCaughtAllowed
-import webtrekk.android.sdk.util.isUncaughtAllowed
-import webtrekk.android.sdk.util.isCustomAllowed
+import webtrekk.android.sdk.extension.isCaughtAllowed
+import webtrekk.android.sdk.extension.isUncaughtAllowed
+import webtrekk.android.sdk.extension.isCustomAllowed
 import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
@@ -98,6 +99,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackCustomEvent by inject<TrackCustomEvent>()
     private val trackCustomForm by inject<TrackCustomForm>()
     private val trackException by inject<TrackException>()
+    private val trackUncaughtException by inject<TrackUncaughtException>()
     private val optOutUser by inject<Optout>()
     private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
@@ -182,11 +184,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         }
 
+
     override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
-       // TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 
-    override fun trackException(exception: Exception?, exceptionType: ExceptionType, file: File?) =
+    override fun trackException(exception: Exception, exceptionType: ExceptionType) =
         config.run {
             trackException(
                 TrackException.Params(
@@ -200,24 +203,38 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     ),
                     isOptOut = hasOptOut(),
                     exception = exception,
-                    exceptionType = exceptionType,
-                    file = file
+                    exceptionType = exceptionType
                 ), coroutineDispatchers
             )
         }
 
     override fun trackException(exception: Exception) {
         if (config.exceptionLogLevel.isCaughtAllowed())
-            trackException(exception, ExceptionType.CAUGHT, null)
+            trackException(exception, ExceptionType.CAUGHT)
     }
 
     override fun trackException(name: String, message: String) {
         if (config.exceptionLogLevel.isCustomAllowed())
-            trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM, null)
+            trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM)
     }
 
-    override fun trackException(file: File?) {
-        trackException(null, ExceptionType.UNCAUGHT, file)
+    override fun trackException(file: File) {
+        config.run {
+            trackUncaughtException(
+                TrackUncaughtException.Params(
+                    trackRequest = TrackRequest(
+                        name = "webtrekk_ignore",
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    isOptOut = hasOptOut(),
+                    file = file
+                ), coroutineDispatchers
+            )
+        }
     }
 
     override fun formTracking(
@@ -344,6 +361,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             }
 
             single {
+                TrackUncaughtException(
+                    coroutineContext,
+                    get()
+                )
+            }
+
+            single {
                 Optout(
                     coroutineContext,
                     get(),
@@ -444,13 +468,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
             val fileName = getFileName(false, context)
-            var loadFile: File? = null
-            if (fileName != null)
-                loadFile = File(fileName)
-
-            if (loadFile != null) {
+            val loadFile: File = File(fileName)
+            if (loadFile.exists())
                 trackException(loadFile)
-            }
         }
     }
 
