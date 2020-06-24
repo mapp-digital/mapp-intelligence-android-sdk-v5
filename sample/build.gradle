@@ -29,14 +29,30 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 def getTrackDomain() {
+    File localPropFile = project.rootProject.file('local.properties')
     Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (localPropFile.exists()) {
+        properties.load(localPropFile.newDataInputStream())
+        return properties.getProperty("trackDomain");
+    } else {
+        if (System.getenv('trackDomain') != null) {
+            properties.setProperty("trackDomain", System.getenv('trackDomain'))
+        }
+    }
     return properties.getProperty("trackDomain");
 }
 
 def getTrackIds() {
+    File localPropFile = project.rootProject.file('local.properties')
     Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (localPropFile.exists()) {
+        properties.load(localPropFile.newDataInputStream())
+        return properties.getProperty("trackIds");
+    } else {
+        if (System.getenv('trackIds') != null) {
+            properties.setProperty("trackIds", System.getenv('trackIds'))
+        }
+    }
     return properties.getProperty("trackIds");
 }
 
