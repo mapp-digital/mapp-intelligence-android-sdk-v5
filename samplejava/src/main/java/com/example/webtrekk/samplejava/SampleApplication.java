@@ -28,6 +28,7 @@ package com.example.webtrekk.samplejava;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.work.Constraints;
@@ -38,14 +39,17 @@ import webtrekk.android.sdk.WebtrekkConfiguration;
 
 public class SampleApplication extends Application {
     final static String WEBSITE_NAME = "Baeldung";
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         List<String> ids = new ArrayList<>();
         ids.add("1");
-
-        WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(ids, "https://www.webtrekk.com")
+        String stringIds = BuildConfig.TRACK_IDS;
+        String domain = BuildConfig.DOMEIN;
+        List<String> elements = Arrays.asList(stringIds.split(","));
+        WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(elements, domain)
                 .setWorkManagerConstraints(new Constraints.Builder()
                         .setRequiresBatteryNotLow(true).build())
                 .setLogLevel(Logger.Level.BASIC)
