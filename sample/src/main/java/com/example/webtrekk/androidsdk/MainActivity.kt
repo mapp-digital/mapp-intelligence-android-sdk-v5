@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         videoActivity.setOnClickListener {
-            val intent = Intent(this, VideoActivity::class.java)
+            val intent = Intent(this, MediaExample::class.java)
             startActivity(intent)
         }
     }
