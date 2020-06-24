@@ -28,6 +28,18 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+def getTrackDomain() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("trackDomain");
+}
+
+def getTrackIds() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("trackIds");
+}
+
 android {
     compileSdkVersion versions.compileSdkVersion
     buildToolsVersion versions.buildTools
@@ -39,6 +51,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "DOMEIN", "\""+getTrackDomain()+"\""
+        buildConfigField "String", "TRACK_IDS", "\""+getTrackIds()+"\""
+
     }
 
     compileOptions {
@@ -51,7 +66,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 
 }
 

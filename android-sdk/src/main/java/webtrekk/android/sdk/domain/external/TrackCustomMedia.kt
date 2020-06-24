@@ -72,7 +72,7 @@ internal class TrackCustomMedia(
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
-                    invokeParams.trackingParams
+                    params
                 )
             )
                 .onSuccess { logger.debug("Cached custom media request: $it") }
