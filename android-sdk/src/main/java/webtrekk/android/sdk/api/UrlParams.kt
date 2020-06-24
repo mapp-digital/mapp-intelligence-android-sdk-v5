@@ -28,6 +28,7 @@ package webtrekk.android.sdk.api
 import webtrekk.android.sdk.ParamType
 import webtrekk.android.sdk.api.UrlParams.EVENT_NAME
 import webtrekk.android.sdk.api.UrlParams.FORM_NAME
+import webtrekk.android.sdk.api.UrlParams.MEDIA_NAME
 import webtrekk.android.sdk.customParam
 
 /**
@@ -55,6 +56,8 @@ internal object UrlParams {
     const val LANGUAGE = "la" // we need this
 
     const val EVENT_NAME = "ct"
+
+    const val MEDIA_NAME = "mi"
 
     const val FORM_NAME = "fn"
 
@@ -119,5 +122,6 @@ internal enum class RequestType(val value: String) {
 
     PAGE(""),
     EVENT(EVENT_NAME),
-    FORM(FORM_NAME)
+    FORM(FORM_NAME),
+    MEDIA(MEDIA_NAME)
 }

@@ -92,6 +92,19 @@ object Param {
     const val ORDER_VALUE = "ov"
 }
 
+object MediaParam {
+    const val MEDIA_CATEGORY = "mg"
+    const val MEDIA_ACTION = "mk"
+    const val MEDIA_POSITION = "mt1"
+    const val MEDIA_DURATION = "mt2"
+    const val TITLE = "mg890"
+    const val VIDEO_URL = "mg891"
+    const val VIDEO_THUMBNAIL = "mg892"
+    const val BANDWIDTH = "bw"
+    const val VOLUME = "vol"
+    const val MUTE = "mut"
+}
+
 /**
  * This enum class contains predefined custom params names/keys that you must append some names/numbers to their keys
  * depend on what are their actual names in the analytics.

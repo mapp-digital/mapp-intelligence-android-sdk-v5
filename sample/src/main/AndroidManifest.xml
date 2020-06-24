@@ -15,7 +15,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".VideoActivity"></activity>
+        <activity android:name=".MediaExample" />
+        <activity android:name=".StandardVideoActivity" />
+        <activity android:name=".MediaActivityExample" />
+        <activity android:name=".VideoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -57,6 +57,7 @@ import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
+import webtrekk.android.sdk.domain.external.TrackCustomMedia
 import webtrekk.android.sdk.domain.external.TrackCustomPage
 import webtrekk.android.sdk.domain.external.TrackException
 import webtrekk.android.sdk.domain.external.TrackUncaughtException
@@ -98,6 +99,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackCustomPage by inject<TrackCustomPage>()
     private val trackCustomEvent by inject<TrackCustomEvent>()
     private val trackCustomForm by inject<TrackCustomForm>()
+    private val trackCustomMedia by inject<TrackCustomMedia>()
     private val trackException by inject<TrackException>()
     private val trackUncaughtException by inject<TrackUncaughtException>()
     private val optOutUser by inject<Optout>()
@@ -184,9 +186,23 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         }
 
-
     override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
-        // TODO("Not yet implemented")
+        config.run {
+            trackCustomMedia(
+                TrackCustomMedia.Params(
+                    trackRequest = TrackRequest(
+                        name = mediaName,
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    trackingParams = trackingParams,
+                    isOptOut = hasOptOut()
+                ), coroutineDispatchers
+            )
+        }
     }
 
     override fun trackException(exception: Exception, exceptionType: ExceptionType) =
@@ -348,6 +364,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
             single {
                 TrackCustomForm(
+                    coroutineContext,
+                    get()
+                )
+            }
+
+            single {
+                TrackCustomMedia(
                     coroutineContext,
                     get()
                 )
