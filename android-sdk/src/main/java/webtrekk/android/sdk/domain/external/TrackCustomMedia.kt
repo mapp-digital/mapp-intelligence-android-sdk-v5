@@ -30,6 +30,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
@@ -47,7 +48,8 @@ internal class TrackCustomMedia(
 ) : ExternalInteractor<TrackCustomMedia.Params>, CustomKoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
+    override val scope =
+        CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     /**
      * [logger] the injected logger from Webtrekk.
@@ -58,10 +60,14 @@ internal class TrackCustomMedia(
         // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-            logger
-        )
+        scope.launch(
+            coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                logger
+            )
         ) {
+            val params = invokeParams.trackingParams.toMutableMap()
+            params[RequestType.MEDIA.value] = invokeParams.trackRequest.name
+            params.remove(RequestType.EVENT.value)
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
@@ -69,8 +75,8 @@ internal class TrackCustomMedia(
                     invokeParams.trackingParams
                 )
             )
-                .onSuccess { logger.debug("Cached custom page request: $it") }
-                .onFailure { logger.error("Error while caching custom page request: $it") }
+                .onSuccess { logger.debug("Cached custom media request: $it") }
+                .onFailure { logger.error("Error while caching custom media request: $it") }
         }
     }
 
