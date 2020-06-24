@@ -50,9 +50,14 @@ class SampleApplication : Application() {
 //            .readTimeout(10, TimeUnit.SECONDS)
 //            .addNetworkInterceptor(StethoInterceptor())
 //            .build()
-
+        val stringIds = BuildConfig.TRACK_IDS
+        val domain = BuildConfig.DOMEIN
+        val elements: List<String> = stringIds.split(",")
         val webtrekkConfigurations =
-            WebtrekkConfiguration.Builder(listOf("238713152098253"), "https://tracker-int-01.webtrekk.net")
+            WebtrekkConfiguration.Builder(
+                elements,
+                domain
+            )
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .enableCrashTracking(ExceptionType.ALL)
@@ -60,6 +65,7 @@ class SampleApplication : Application() {
 //                .okHttpClient(okHttpClient = okHttpClient)
                 .setBatchSupport(true)
                 .build()
+
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
     }
