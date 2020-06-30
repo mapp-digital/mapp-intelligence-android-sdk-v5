@@ -27,7 +27,7 @@ class MediaActivityExample : AppCompatActivity() {
     val currentPlayProgress: Int
         get() = (MEDIA_LENGTH * (playProgressBar!!.progress / 100.0)).toInt()
 
-    fun initMediaTracking() {
+    private fun initMediaTracking() {
         // Tracker initialisieren
         val progress: Int = currentPlayProgress
         trackingParams.putAll(
@@ -73,6 +73,8 @@ class MediaActivityExample : AppCompatActivity() {
             Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
             timerService?.shutdown()
         }
+
+
         playProgressBar!!.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 val progress: Int = currentPlayProgress
@@ -105,17 +107,27 @@ class MediaActivityExample : AppCompatActivity() {
         })
     }
 
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timerService?.shutdown()
+    }
+
     fun startTimerService() {
         // start the timer service
-        timerService = Executors.newSingleThreadScheduledExecutor()
-        timerService?.scheduleWithFixedDelay(
-            Runnable { onPlayIntervalOver() },
-            30,
-            30,
-            TimeUnit.SECONDS
-        )
+        if(timerService==null){
+            timerService = Executors.newSingleThreadScheduledExecutor()
+            timerService?.scheduleWithFixedDelay(
+                Runnable { onPlayIntervalOver() },
+                30,
+                30,
+                TimeUnit.SECONDS
+            )
+        }
+
     }
-    fun onPlayIntervalOver() {
+    private fun  onPlayIntervalOver() {
         if (currentState == "play") {
             val progress: Int = currentPlayProgress
             trackingParams[MediaParam.MEDIA_ACTION] = "pos"
