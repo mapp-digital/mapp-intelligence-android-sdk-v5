@@ -7,6 +7,8 @@ import android.util.Log
 import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_standard_video.videoView
+import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.Webtrekk
 
 
 class StandardVideoActivity : AppCompatActivity() {
@@ -18,7 +20,7 @@ class StandardVideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_standard_video)
-        myVideoView=videoView
+        myVideoView = videoView
         mediaControls = MediaController(this)
         try {
             myVideoView!!.setMediaController(mediaControls)
@@ -51,5 +53,16 @@ class StandardVideoActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         position = savedInstanceState.getInt("Position")
         myVideoView!!.seekTo(position)
+    }
+
+    override fun onStop() {
+        myVideoView?.trackingParams?.putAll(
+            mapOf(
+                MediaParam.MEDIA_POSITION to (myVideoView!!.trackingParams[MediaParam.MEDIA_DURATION]!!.toInt() / 1000).toString(),
+                MediaParam.MEDIA_ACTION to "eof"
+            )
+        )
+        Webtrekk.getInstance().trackMedia("video name",  myVideoView?.trackingParams!!)
+        super.onStop()
     }
 }
