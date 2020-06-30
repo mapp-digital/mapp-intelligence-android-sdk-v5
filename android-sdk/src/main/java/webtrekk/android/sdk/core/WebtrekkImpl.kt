@@ -41,8 +41,14 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
-import webtrekk.android.sdk.*
+import webtrekk.android.sdk.Config
+import webtrekk.android.sdk.FormTrackingSettings
+import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.api.UrlParams
+import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -467,7 +473,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             }
             lastTimeMedia = System.currentTimeMillis()
         }
-//TODO maybe add later
+//  TODO maybe add later
 //        if (trackingParams[MediaParam.MEDIA_DURATION] == null || trackingParams[MediaParam.MEDIA_POSITION] == null) {
 //            logger.info("Duration and Position is required")
 //            return false
