@@ -244,6 +244,13 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
 
     override fun onPause() {
         super.onPause()
+        trackingParams.putAll(
+            mapOf(
+                MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                MediaParam.MEDIA_ACTION to "stop"
+            )
+        )
+        Webtrekk.getInstance().trackMedia("video name", trackingParams)
         if (Util.SDK_INT <= 23) {
             if (playerView != null) {
                 playerView.onPause()
@@ -266,7 +273,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
-                MediaParam.MEDIA_ACTION to "stop"
+                MediaParam.MEDIA_ACTION to "eof"
             )
         )
         Webtrekk.getInstance().trackMedia("video name", trackingParams)

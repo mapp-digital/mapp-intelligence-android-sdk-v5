@@ -41,17 +41,12 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
-import webtrekk.android.sdk.Config
-import webtrekk.android.sdk.FormTrackingSettings
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.TrackingParams
+import webtrekk.android.sdk.*
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
-import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
@@ -85,7 +80,8 @@ import kotlin.properties.Delegates
  * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, CoroutineScope {
+internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent,
+    CoroutineScope {
 
     private val _job = SupervisorJob()
 
@@ -106,7 +102,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
     internal val logger by inject<Logger>()
-
+    private var lastEqual = false
+    private var lastTimeMedia = 0L
     internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
     internal var config: Config by Delegates.initOrException(
         errorMessage = "Webtrekk configurations must be set before invoking any method." +
@@ -187,6 +184,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         }
 
     override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
+        if (!mediaParamValidation(trackingParams)) {
+            return
+        }
         config.run {
             trackCustomMedia(
                 TrackCustomMedia.Params(
@@ -403,11 +403,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
         try {
             val koinApplication = koinApplication {
-                modules(listOf(
-                    mainModule,
-                    dataModule,
-                    internalInteractorsModule,
-                    externalInteractorsModule))
+                modules(
+                    listOf(
+                        mainModule,
+                        dataModule,
+                        internalInteractorsModule,
+                        externalInteractorsModule
+                    )
+                )
             }
             MyKoinContext.koinApp = koinApplication
         } catch (e: Exception) {
@@ -456,6 +459,34 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         }
     }
 
+    private fun mediaParamValidation(trackingParams: Map<String, String>): Boolean {
+        if ("pos".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
+            if ((lastTimeMedia + 3000) > System.currentTimeMillis()) {
+                logger.info("The limit for the position parameter is one request every 3 seconds")
+                return false
+            }
+            lastTimeMedia = System.currentTimeMillis()
+        }
+//TODO maybe add later
+//        if (trackingParams[MediaParam.MEDIA_DURATION] == null || trackingParams[MediaParam.MEDIA_POSITION] == null) {
+//            logger.info("Duration and Position is required")
+//            return false
+//        }
+
+        lastEqual =
+            if (trackingParams[MediaParam.MEDIA_DURATION] == trackingParams[MediaParam.MEDIA_POSITION]) {
+                if (lastEqual) {
+                    logger.info("Duration and Position is the same")
+                    return false
+                } else {
+                    true
+                }
+            } else {
+                false
+            }
+        return true
+    }
+
     /**
      * Returns true if the app has a new update, false otherwise.
      */
@@ -487,7 +518,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) // TODO: Should it have this annotation?
     private fun initUncaughtExceptionTracking() {
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
-            uncaughtExceptionHandler = UncaughtExceptionHandler(defaultHandler = Thread.getDefaultUncaughtExceptionHandler(), context = context)
+            uncaughtExceptionHandler = UncaughtExceptionHandler(
+                defaultHandler = Thread.getDefaultUncaughtExceptionHandler(),
+                context = context
+            )
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
             val fileName = getFileName(false, context)

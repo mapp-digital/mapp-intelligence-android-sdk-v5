@@ -87,4 +87,6 @@ class TrackedVideoView : VideoView {
         )
         Webtrekk.getInstance().trackMedia("video name", trackingParams)
     }
+
+
 }
