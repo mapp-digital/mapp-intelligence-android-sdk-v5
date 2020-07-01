@@ -11,17 +11,21 @@ import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.util.coroutineExceptionHandler
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
-import webtrekk.android.sdk.util.EX_ITEM_SEPARATE
-import webtrekk.android.sdk.util.NO_NAME_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_MESSAGE_CAUSE_SEPARATOR
-import webtrekk.android.sdk.util.START_EX_STRING
-import webtrekk.android.sdk.util.NO_START_SEPARATOR
-import webtrekk.android.sdk.util.END_EX_STRING
 import webtrekk.android.sdk.extension.validateLine
 import webtrekk.android.sdk.extension.readParam
+import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.END_EX_STRING
+import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
+import webtrekk.android.sdk.util.NO_END_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_CAUSE_STACK_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_CAUSE_MESSAGE_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_NAME_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_START_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_MESSAGE_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_STACK_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.START_EX_STRING
 import java.io.File
 import java.io.FileReader
 import java.io.BufferedReader
@@ -74,34 +78,34 @@ internal class TrackUncaughtException(
             var line: String? = null
             var value: String
             while (br.readLine().also { line = it } != null) {
-                if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(NO_START_SEPARATOR)
+                if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(NO_START_ITEM_SEPARATOR)
 
                 val params = emptyMap<String, String>().toMutableMap()
                 params[UrlParams.CRASH_TYPE] = ExceptionType.UNCAUGHT.type
 
                 value = br.readParam()
                 if (value != "") params[UrlParams.CRASH_NAME] = value
-                br.validateLine(EX_ITEM_SEPARATE, NO_NAME_ITEM_SEPARATOR)
+                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_NAME_ITEM_SEPARATOR)
 
                 value = br.readParam()
                 if (value != "") params[UrlParams.CRASH_MESSAGE] = value
-                br.validateLine(EX_ITEM_SEPARATE, NO_NAME_ITEM_SEPARATOR)
+                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_MESSAGE_ITEM_SEPARATOR)
 
                 value = br.readParam()
                 if (value != "") params[UrlParams.CRASH_CAUSE_MESSAGE] = value
-                br.validateLine(EX_ITEM_SEPARATE, NO_MESSAGE_CAUSE_SEPARATOR)
+                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_CAUSE_MESSAGE_ITEM_SEPARATOR)
 
                 value = br.readParam()
                 if (value != "") params[UrlParams.CRASH_STACK] = value
-                br.validateLine(EX_ITEM_SEPARATE, NO_MESSAGE_CAUSE_SEPARATOR)
+                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_STACK_ITEM_SEPARATOR)
 
                 value = br.readParam()
                 if (value != "") params[UrlParams.CRASH_CAUSE_STACK] = value
-                br.validateLine(EX_ITEM_SEPARATE, NO_MESSAGE_CAUSE_SEPARATOR)
-                br.validateLine(END_EX_STRING, NO_MESSAGE_CAUSE_SEPARATOR)
+                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_CAUSE_STACK_ITEM_SEPARATOR)
+                br.validateLine(END_EX_STRING, NO_END_ITEM_SEPARATOR)
                 paramsList.add(params)
             }
-        } catch (e: Exception) {
+        } catch (e: IncorrectErrorFileFormatException) {
             logger.error("Incorrect File Exception Format:$e")
         } catch (e: FileNotFoundException) {
             logger.error("Can't read exception file:$e")
