@@ -109,6 +109,9 @@ class MediaActivityExample : AppCompatActivity() {
 
 
     override fun onDestroy() {
+        trackingParams[MediaParam.MEDIA_ACTION] = "eof"
+        trackingParams[MediaParam.MEDIA_POSITION] = currentPlayProgress.toString()
+        Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
         super.onDestroy()
         timerService?.shutdown()
     }
