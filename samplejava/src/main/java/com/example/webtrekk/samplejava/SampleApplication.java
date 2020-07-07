@@ -33,6 +33,7 @@ import java.util.List;
 
 import androidx.work.Constraints;
 
+import webtrekk.android.sdk.ExceptionType;
 import webtrekk.android.sdk.Logger;
 import webtrekk.android.sdk.Webtrekk;
 import webtrekk.android.sdk.WebtrekkConfiguration;
@@ -51,8 +52,9 @@ public class SampleApplication extends Application {
         List<String> elements = Arrays.asList(stringIds.split(","));
         WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(elements, domain)
                 .setWorkManagerConstraints(new Constraints.Builder()
-                        .setRequiresBatteryNotLow(true).build())
+                .setRequiresBatteryNotLow(true).build())
                 .setLogLevel(Logger.Level.BASIC)
+                .enableCrashTracking(ExceptionType.ALL)
                 .build();
 
         Webtrekk.getInstance().init(this, webtrekkConfiguration);
