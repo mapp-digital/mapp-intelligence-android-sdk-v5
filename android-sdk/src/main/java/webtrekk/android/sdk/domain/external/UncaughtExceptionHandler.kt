@@ -5,7 +5,7 @@ import org.koin.core.inject
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.util.END_EX_STRING
-import webtrekk.android.sdk.util.EX_ITEM_SEPARATE
+import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
 import webtrekk.android.sdk.util.START_EX_STRING
 import webtrekk.android.sdk.extension.createString
 import webtrekk.android.sdk.util.getFileName
@@ -50,15 +50,15 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
         val arrayToSave = arrayOf<String?>(
             START_EX_STRING,
             ex.javaClass.name,
-            EX_ITEM_SEPARATE,
+            EX_ITEM_SEPARATOR,
             ex.message,
-            EX_ITEM_SEPARATE,
+            EX_ITEM_SEPARATOR,
             ex.cause?.message,
-            EX_ITEM_SEPARATE,
+            EX_ITEM_SEPARATOR,
             ex.stackTrace.createString(),
-            EX_ITEM_SEPARATE,
+            EX_ITEM_SEPARATOR,
             ex.cause?.stackTrace?.createString(),
-            EX_ITEM_SEPARATE,
+            EX_ITEM_SEPARATOR,
             END_EX_STRING)
         try {
             outputStream = BufferedOutputStream(context.openFileOutput(getFileName(true, context), Context.MODE_APPEND))

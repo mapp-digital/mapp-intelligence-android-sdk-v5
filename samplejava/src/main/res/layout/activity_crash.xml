@@ -6,40 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".CrashActivity">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:labelFor="@id/chooseExceptionType"
-        app:layout_constraintBottom_toTopOf="@+id/chooseExceptionType"
-        app:layout_constraintEnd_toEndOf="@+id/chooseExceptionType"
-        app:layout_constraintStart_toStartOf="@+id/chooseExceptionType"
-        android:contentDescription="Choose ExceptionType"
-        android:text="Choose ExceptionType"/>
-
-    <Spinner
-        android:id="@+id/chooseExceptionType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintBottom_toTopOf="@+id/trackUncaught"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/trackUncaught"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Track Uncaught Exception"
         app:layout_constraintBottom_toTopOf="@+id/trackCaught"
-        app:layout_constraintEnd_toEndOf="@+id/chooseExceptionType"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/chooseExceptionType"
-        app:layout_constraintTop_toBottomOf="@+id/chooseExceptionType" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/trackCaught"
