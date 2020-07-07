@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.*
@@ -48,6 +49,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
     private var startAutoPlay = false
     private var startWindow = 0
     private var startPosition: Long = 0
+    private var muted = false
     val trackingParams = TrackingParams()
     private val url =
         "https://firebasestorage.googleapis.com/v0/b/videostreaming-481cd.appspot.com/o/Mobile_Rich_Push.mp4?alt=media&token=3e9156fa-5af7-4344-9efb-7a8c882ab2dc";
@@ -104,7 +106,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 mapOf(
                     MediaParam.MEDIA_DURATION to (player!!.duration / 1000).toString(),
                     MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
-                    MediaParam.MEDIA_ACTION to if (isPlaying) "start" else "pause"
+                    MediaParam.MEDIA_ACTION to if (isPlaying) "play" else "pause"
                 )
             )
             Webtrekk.getInstance().trackMedia("video name", trackingParams)
@@ -213,9 +215,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
         player!!.prepare(mediaSource!!, false, false)
         trackingParams.putAll(
             mapOf(
-                MediaParam.VIDEO_URL to url,
-                MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
-                MediaParam.TITLE to "SomeTitle"
+                MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString()
             )
         )
 
@@ -293,6 +293,22 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
         updateTrackSelectorParameters()
         updateStartPosition()
 
+    }
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_MUTE || keyCode == KeyEvent.KEYCODE_VOLUME_MUTE) {
+            trackingParams.putAll(
+                mapOf(
+                    MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                    MediaParam.MUTE to (if (muted) "1" else "0")
+                )
+            )
+            muted = !muted
+            Webtrekk.getInstance().trackMedia("video name", trackingParams)
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     private fun setAnaytics() {

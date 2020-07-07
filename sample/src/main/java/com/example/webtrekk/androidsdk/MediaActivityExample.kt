@@ -33,7 +33,6 @@ class MediaActivityExample : AppCompatActivity() {
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_DURATION to  MEDIA_LENGTH.toString(),
-                MediaParam.VIDEO_URL to resources.getResourceEntryName(R.raw.wt),
                 MediaParam.MEDIA_POSITION to progress.toString(),
                 MediaParam.MEDIA_ACTION to "init"
             )
