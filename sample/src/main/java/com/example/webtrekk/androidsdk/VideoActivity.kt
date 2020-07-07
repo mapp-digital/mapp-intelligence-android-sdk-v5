@@ -82,6 +82,14 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 ExoPlayer.STATE_ENDED -> {
                     Log.i(TAG, "Playback ended!")
                     //Stop playback and return to start position
+
+                    trackingParams.putAll(
+                        mapOf(
+                            MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                            MediaParam.MEDIA_ACTION to "eof"
+                        )
+                    )
+                    Webtrekk.getInstance().trackMedia("video name", trackingParams)
                     clearStartPosition()
                 }
                 ExoPlayer.STATE_READY -> {
