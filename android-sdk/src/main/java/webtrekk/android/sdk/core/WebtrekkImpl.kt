@@ -47,10 +47,8 @@ import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.extension.initOrException
-import webtrekk.android.sdk.extension.resolution
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -60,13 +58,27 @@ import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
+import webtrekk.android.sdk.domain.external.TrackCustomMedia
 import webtrekk.android.sdk.domain.external.TrackCustomPage
+import webtrekk.android.sdk.domain.external.TrackException
+import webtrekk.android.sdk.domain.external.TrackUncaughtException
+import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
+import webtrekk.android.sdk.extension.initOrException
+import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.module.dataModule
 import webtrekk.android.sdk.module.internalInteractorsModule
+import webtrekk.android.sdk.extension.isCaughtAllowed
+import webtrekk.android.sdk.extension.isUncaughtAllowed
+import webtrekk.android.sdk.extension.isCustomAllowed
+import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.util.getFileName
+import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
@@ -74,7 +86,8 @@ import kotlin.properties.Delegates
  * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent, CoroutineScope {
+internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent,
+    CoroutineScope {
 
     private val _job = SupervisorJob()
 
@@ -88,11 +101,16 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackCustomPage by inject<TrackCustomPage>()
     private val trackCustomEvent by inject<TrackCustomEvent>()
     private val trackCustomForm by inject<TrackCustomForm>()
+    private val trackCustomMedia by inject<TrackCustomMedia>()
+    private val trackException by inject<TrackException>()
+    private val trackUncaughtException by inject<TrackUncaughtException>()
     private val optOutUser by inject<Optout>()
-
+    private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
     internal val logger by inject<Logger>()
-
+    private var lastEqual = false
+    private var lastTimeMedia = 0L
+    private var lastAction = "play"
     internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
     internal var config: Config by Delegates.initOrException(
         errorMessage = "Webtrekk configurations must be set before invoking any method." +
@@ -171,6 +189,82 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 ), coroutineDispatchers
             )
         }
+
+    override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
+        if (!mediaParamValidation(trackingParams)) {
+            return
+        }
+        config.run {
+            trackCustomMedia(
+                TrackCustomMedia.Params(
+                    trackRequest = TrackRequest(
+                        name = mediaName,
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    trackingParams = trackingParams,
+                    isOptOut = hasOptOut()
+                ), coroutineDispatchers
+            )
+        }
+
+        if ("seek".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
+            val map = trackingParams.toMutableMap()
+            map[MediaParam.MEDIA_ACTION] = lastAction
+            this.trackMedia(mediaName, map)
+        }
+    }
+
+    override fun trackException(exception: Exception, exceptionType: ExceptionType) =
+        config.run {
+            trackException(
+                TrackException.Params(
+                    trackRequest = TrackRequest(
+                        name = "webtrekk_ignore",
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    isOptOut = hasOptOut(),
+                    exception = exception,
+                    exceptionType = exceptionType
+                ), coroutineDispatchers
+            )
+        }
+
+    override fun trackException(exception: Exception) {
+        if (config.exceptionLogLevel.isCaughtAllowed())
+            trackException(exception, ExceptionType.CAUGHT)
+    }
+
+    override fun trackException(name: String, message: String) {
+        if (config.exceptionLogLevel.isCustomAllowed())
+            trackException(ExceptionWrapper(name, message), ExceptionType.CUSTOM)
+    }
+
+    override fun trackException(file: File) {
+        config.run {
+            trackUncaughtException(
+                TrackUncaughtException.Params(
+                    trackRequest = TrackRequest(
+                        name = "webtrekk_ignore",
+                        screenResolution = context.resolution(),
+                        forceNewSession = currentSession,
+                        appFirstOpen = appFirstOpen,
+                        appVersionName = context.appVersionName,
+                        appVersionCode = context.appVersionCode
+                    ),
+                    isOptOut = hasOptOut(),
+                    file = file
+                ), coroutineDispatchers
+            )
+        }
+    }
 
     override fun formTracking(
         context: Context,
@@ -287,6 +381,28 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     get()
                 )
             }
+
+            single {
+                TrackCustomMedia(
+                    coroutineContext,
+                    get()
+                )
+            }
+
+            single {
+                TrackException(
+                    coroutineContext,
+                    get()
+                )
+            }
+
+            single {
+                TrackUncaughtException(
+                    coroutineContext,
+                    get()
+                )
+            }
+
             single {
                 Optout(
                     coroutineContext,
@@ -300,11 +416,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
         try {
             val koinApplication = koinApplication {
-                modules(listOf(
-                    mainModule,
-                    dataModule,
-                    internalInteractorsModule,
-                    externalInteractorsModule))
+                modules(
+                    listOf(
+                        mainModule,
+                        dataModule,
+                        internalInteractorsModule,
+                        externalInteractorsModule
+                    )
+                )
             }
             MyKoinContext.koinApp = koinApplication
         } catch (e: Exception) {
@@ -347,6 +466,46 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         } else {
             appState.disable(context)
         }
+
+        if (config.exceptionLogLevel.isUncaughtAllowed()) {
+            initUncaughtExceptionTracking()
+        }
+    }
+
+    private fun mediaParamValidation(trackingParams: Map<String, String>): Boolean {
+        if ("pos".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
+            if ((lastTimeMedia + 3000) > System.currentTimeMillis()) {
+                logger.info("The limit for the position parameter is one request every 3 seconds")
+                return false
+            }
+            lastTimeMedia = System.currentTimeMillis()
+        }
+
+        if ("play".equals(trackingParams[MediaParam.MEDIA_ACTION], true) or "pause".equals(
+                trackingParams[MediaParam.MEDIA_ACTION],
+                true
+            )
+        ) {
+            lastAction = trackingParams[MediaParam.MEDIA_ACTION].toString()
+        }
+//  TODO maybe add later
+//        if (trackingParams[MediaParam.MEDIA_DURATION] == null || trackingParams[MediaParam.MEDIA_POSITION] == null) {
+//            logger.info("Duration and Position is required")
+//            return false
+//        }
+
+        lastEqual =
+            if (trackingParams[MediaParam.MEDIA_DURATION] == trackingParams[MediaParam.MEDIA_POSITION]) {
+                if (lastEqual) {
+                    logger.info("Duration and Position are the same")
+                    return false
+                } else {
+                    true
+                }
+            } else {
+                false
+            }
+        return true
     }
 
     /**
@@ -375,6 +534,22 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     internal fun cancelParentJob() {
         _job.cancel()
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) // TODO: Should it have this annotation?
+    private fun initUncaughtExceptionTracking() {
+        if (config.exceptionLogLevel.isUncaughtAllowed()) {
+            uncaughtExceptionHandler = UncaughtExceptionHandler(
+                defaultHandler = Thread.getDefaultUncaughtExceptionHandler(),
+                context = context
+            )
+            Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
+
+            val fileName = getFileName(false, context)
+            val loadFile: File = File(fileName)
+            if (loadFile.exists())
+                trackException(loadFile)
+        }
     }
 
     companion object {

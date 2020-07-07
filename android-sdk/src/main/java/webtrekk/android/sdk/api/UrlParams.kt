@@ -28,6 +28,7 @@ package webtrekk.android.sdk.api
 import webtrekk.android.sdk.ParamType
 import webtrekk.android.sdk.api.UrlParams.EVENT_NAME
 import webtrekk.android.sdk.api.UrlParams.FORM_NAME
+import webtrekk.android.sdk.api.UrlParams.MEDIA_NAME
 import webtrekk.android.sdk.customParam
 
 /**
@@ -56,6 +57,8 @@ internal object UrlParams {
 
     const val EVENT_NAME = "ct"
 
+    const val MEDIA_NAME = "mi"
+
     const val FORM_NAME = "fn"
 
     const val FORM_FIELD = "ft"
@@ -79,6 +82,37 @@ internal object UrlParams {
         ParamType.SESSION_PARAM,
         815
     ) // we need to send this on new session and when is changed
+
+    // TODO: Check if this should be here and possibly comment the purpose
+    val CRASH_TYPE = customParam(
+        ParamType.EVENT_PARAM,
+        910
+    )
+
+    val CRASH_NAME = customParam(
+        ParamType.EVENT_PARAM,
+        911
+    )
+
+    val CRASH_MESSAGE = customParam(
+        ParamType.EVENT_PARAM,
+        912
+    )
+
+    val CRASH_CAUSE_MESSAGE = customParam(
+        ParamType.EVENT_PARAM,
+        913
+    )
+
+    val CRASH_STACK = customParam(
+        ParamType.EVENT_PARAM,
+        914
+    )
+
+    val CRASH_CAUSE_STACK = customParam(
+        ParamType.EVENT_PARAM,
+        915
+    )
 }
 
 /**
@@ -88,5 +122,6 @@ internal enum class RequestType(val value: String) {
 
     PAGE(""),
     EVENT(EVENT_NAME),
-    FORM(FORM_NAME)
+    FORM(FORM_NAME),
+    MEDIA(MEDIA_NAME)
 }

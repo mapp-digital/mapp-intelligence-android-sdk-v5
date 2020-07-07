@@ -56,7 +56,8 @@ class WebtrekkConfiguration private constructor(
     override val okHttpClient: OkHttpClient,
     override val requestPerBatch: Int,
     override val batchSupport: Boolean,
-    override val activityAutoTracking: Boolean
+    override val activityAutoTracking: Boolean,
+    override val exceptionLogLevel: ExceptionType
 ) : Config {
 
     /**
@@ -74,6 +75,7 @@ class WebtrekkConfiguration private constructor(
         private var requestPerBatch = DefaultConfiguration.REQUEST_PER_BATCH
         private var batchSupport = DefaultConfiguration.BATCH_SUPPORT_ENABLED
         private var activityAutoTracking = DefaultConfiguration.ACTIVITY_AUTO_TRACK_ENABLED
+        private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
 
         /**
          * Configure the log level of the lib.
@@ -112,6 +114,11 @@ class WebtrekkConfiguration private constructor(
             this.autoTracking = false
             this.fragmentsAutoTracking = false
             this.activityAutoTracking = false
+        }
+
+        // TODO: Add comments for this method
+        fun enableCrashTracking(exceptionLogLevel: ExceptionType) = apply {
+            this.exceptionLogLevel = exceptionLogLevel
         }
 
         /**
@@ -195,7 +202,8 @@ class WebtrekkConfiguration private constructor(
             okHttpClientBuilder,
             requestPerBatch,
             batchSupport,
-            activityAutoTracking
+            activityAutoTracking,
+            exceptionLogLevel
         )
     }
 

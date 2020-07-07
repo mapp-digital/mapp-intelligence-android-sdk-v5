@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CrashActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:labelFor="@id/chooseExceptionType"
+        app:layout_constraintBottom_toTopOf="@+id/chooseExceptionType"
+        app:layout_constraintEnd_toEndOf="@+id/chooseExceptionType"
+        app:layout_constraintStart_toStartOf="@+id/chooseExceptionType"
+        android:contentDescription="Choose ExceptionType"
+        android:text="Choose ExceptionType"/>
+
+    <Spinner
+        android:id="@+id/chooseExceptionType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toTopOf="@+id/trackUncaught"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/trackUncaught"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track Uncaught Exception"
+        app:layout_constraintBottom_toTopOf="@+id/trackCaught"
+        app:layout_constraintEnd_toEndOf="@+id/chooseExceptionType"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/chooseExceptionType"
+        app:layout_constraintTop_toBottomOf="@+id/chooseExceptionType" />
+
+    <Button
+        android:id="@+id/trackCaught"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track Caught Exception"
+        app:layout_constraintBottom_toTopOf="@+id/trackCustom"
+        app:layout_constraintEnd_toEndOf="@+id/trackUncaught"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/trackUncaught"
+        app:layout_constraintTop_toBottomOf="@+id/trackUncaught" />
+
+    <Button
+        android:id="@+id/trackCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track Custom Exception"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/trackCaught"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/trackCaught"
+        app:layout_constraintTop_toBottomOf="@+id/trackCaught" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
