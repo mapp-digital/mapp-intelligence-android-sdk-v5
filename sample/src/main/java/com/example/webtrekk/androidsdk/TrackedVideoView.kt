@@ -36,9 +36,8 @@ class TrackedVideoView : VideoView {
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_DURATION to duration.toString(),
-                MediaParam.VIDEO_URL to resources.getResourceEntryName(R.raw.wt),
-                MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
-                MediaParam.TITLE to "SomeTitle"
+                MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString()
+
             )
         )
     }
@@ -59,7 +58,7 @@ class TrackedVideoView : VideoView {
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
-                MediaParam.MEDIA_ACTION to "start"
+                MediaParam.MEDIA_ACTION to "init"
             )
         )
         Webtrekk.getInstance().trackMedia("video name", trackingParams)

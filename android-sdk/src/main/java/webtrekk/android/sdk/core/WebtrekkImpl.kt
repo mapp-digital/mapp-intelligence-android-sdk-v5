@@ -110,6 +110,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     internal val logger by inject<Logger>()
     private var lastEqual = false
     private var lastTimeMedia = 0L
+    private var lastAction = "play"
     internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
     internal var config: Config by Delegates.initOrException(
         errorMessage = "Webtrekk configurations must be set before invoking any method." +
@@ -208,6 +209,12 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     isOptOut = hasOptOut()
                 ), coroutineDispatchers
             )
+        }
+
+        if ("seek".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
+            val map = trackingParams.toMutableMap()
+            map[MediaParam.MEDIA_ACTION] = lastAction
+            this.trackMedia(mediaName, map)
         }
     }
 
@@ -473,6 +480,14 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             }
             lastTimeMedia = System.currentTimeMillis()
         }
+
+        if ("play".equals(trackingParams[MediaParam.MEDIA_ACTION], true) or "pause".equals(
+                trackingParams[MediaParam.MEDIA_ACTION],
+                true
+            )
+        ) {
+            lastAction = trackingParams[MediaParam.MEDIA_ACTION].toString()
+        }
 //  TODO maybe add later
 //        if (trackingParams[MediaParam.MEDIA_DURATION] == null || trackingParams[MediaParam.MEDIA_POSITION] == null) {
 //            logger.info("Duration and Position is required")
@@ -482,7 +497,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         lastEqual =
             if (trackingParams[MediaParam.MEDIA_DURATION] == trackingParams[MediaParam.MEDIA_POSITION]) {
                 if (lastEqual) {
-                    logger.info("Duration and Position is the same")
+                    logger.info("Duration and Position are the same")
                     return false
                 } else {
                     true
