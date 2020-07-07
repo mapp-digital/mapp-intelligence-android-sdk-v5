@@ -26,11 +26,12 @@
 package com.example.webtrekk.androidsdk
 
 import android.app.Application
+import android.content.Context
 import androidx.work.Constraints
 import androidx.work.NetworkType
-//import com.facebook.stetho.Stetho
-//import com.facebook.stetho.okhttp3.StethoInterceptor
-import okhttp3.OkHttpClient
+// import com.facebook.stetho.Stetho
+// import com.facebook.stetho.okhttp3.StethoInterceptor
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -40,7 +41,7 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-       // Stetho.initializeWithDefaults(this)
+        // Stetho.initializeWithDefaults(this)
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
@@ -50,11 +51,19 @@ class SampleApplication : Application() {
 //            .readTimeout(10, TimeUnit.SECONDS)
 //            .addNetworkInterceptor(StethoInterceptor())
 //            .build()
-
+        val stringIds = BuildConfig.TRACK_IDS
+        val domain = BuildConfig.DOMEIN
+        val elements: List<String> = stringIds.split(",")
+        val sharedPref = this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE) ?: return
         val webtrekkConfigurations =
-            WebtrekkConfiguration.Builder(listOf("238713152098253"), "https://tracker-int-01.webtrekk.net")
+            WebtrekkConfiguration.Builder(
+                elements,
+                domain
+            )
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
+                .enableCrashTracking(ExceptionType.valueOf(sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())
+                    ?: ExceptionType.ALL.toString()))
                 .workManagerConstraints(constraints = constraints)
 //                .okHttpClient(okHttpClient = okHttpClient)
                 .setBatchSupport(true)

@@ -30,6 +30,39 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+def getTrackDomain() {
+    File localPropFile = project.rootProject.file('local.properties')
+    Properties properties = new Properties()
+    if (localPropFile.exists()) {
+        properties.load(localPropFile.newDataInputStream())
+        return properties.getProperty("trackDomain");
+    } else {
+        if (System.getenv('trackDomain') != null) {
+            properties.setProperty("trackDomain", System.getenv('trackDomain'))
+        } else {
+            return "www.webtrekk.com"
+        }
+
+    }
+    return properties.getProperty("trackDomain");
+}
+
+def getTrackIds() {
+    File localPropFile = project.rootProject.file('local.properties')
+    Properties properties = new Properties()
+    if (localPropFile.exists()) {
+        properties.load(localPropFile.newDataInputStream())
+        return properties.getProperty("trackIds");
+    } else {
+        if (System.getenv('trackIds') != null) {
+            properties.setProperty("trackIds", System.getenv('trackIds'))
+        } else {
+            return "12312"
+        }
+    }
+    return properties.getProperty("trackIds");
+}
+
 android {
     compileSdkVersion versions.compileSdkVersion
     buildToolsVersion versions.buildTools
@@ -41,6 +74,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
+        buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
+
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -49,7 +89,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 
 }
 
@@ -65,6 +104,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.5'
     implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
     implementation(project(':android-sdk'))
 

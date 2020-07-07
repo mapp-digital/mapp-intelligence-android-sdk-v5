@@ -6,3 +6,6 @@
 /build
 /captures
 .externalNativeBuild
+android-sdk/sampledata/
+sampledata/
+android-sdk/local.properties
