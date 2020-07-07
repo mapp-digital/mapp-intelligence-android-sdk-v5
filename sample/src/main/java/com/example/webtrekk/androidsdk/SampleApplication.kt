@@ -26,6 +26,7 @@
 package com.example.webtrekk.androidsdk
 
 import android.app.Application
+import android.content.Context
 import androidx.work.Constraints
 import androidx.work.NetworkType
 // import com.facebook.stetho.Stetho
@@ -53,6 +54,7 @@ class SampleApplication : Application() {
         val stringIds = BuildConfig.TRACK_IDS
         val domain = BuildConfig.DOMEIN
         val elements: List<String> = stringIds.split(",")
+        val sharedPref = this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE) ?: return
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(
                 elements,
@@ -60,12 +62,12 @@ class SampleApplication : Application() {
             )
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
-                .enableCrashTracking(ExceptionType.ALL)
+                .enableCrashTracking(ExceptionType.valueOf(sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())
+                    ?: ExceptionType.ALL.toString()))
                 .workManagerConstraints(constraints = constraints)
 //                .okHttpClient(okHttpClient = okHttpClient)
                 .setBatchSupport(true)
                 .build()
-
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
     }
