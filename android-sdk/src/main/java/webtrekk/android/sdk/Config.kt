@@ -109,6 +109,10 @@ interface Config {
      */
     val activityAutoTracking: Boolean
 
+    // TODO: Add comments for this values
+
+    val exceptionLogLevel: ExceptionType
+
     /**
      * [workManagerConstraints] the constraints that will be used by the work manager to send the requests.
      *

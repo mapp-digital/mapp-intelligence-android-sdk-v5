@@ -60,10 +60,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Form Activity"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/crashActivity"
         app:layout_constraintEnd_toEndOf="@+id/webViewActivity"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/webViewActivity"
         app:layout_constraintTop_toBottomOf="@+id/webViewActivity" />
+
+    <Button
+        android:id="@+id/crashActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Crash Activity"
+        app:layout_constraintBottom_toTopOf="@+id/videoActivity"
+        app:layout_constraintEnd_toEndOf="@+id/formActivity"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/formActivity"
+        app:layout_constraintTop_toBottomOf="@+id/formActivity" />
+
+    <Button
+        android:id="@+id/videoActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="76dp"
+        android:text="Media Tracking"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/formActivity"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/formActivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

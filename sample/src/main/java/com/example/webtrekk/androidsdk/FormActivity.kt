@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.form_main.*
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.Webtrekk
 
-
 class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var anonymousField = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,17 +63,12 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             anonymousField = isChecked
         }
 
-
         spinner.onItemSelectedListener = this
-
-
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
     }
 }

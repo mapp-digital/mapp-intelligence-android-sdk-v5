@@ -38,7 +38,19 @@
         android:text="@string/form_activity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/crashActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/crash_activity"
+        app:layout_constraintBottom_toTopOf="@+id/formActivity"
+        app:layout_constraintEnd_toEndOf="@+id/formActivity"
+        app:layout_constraintStart_toStartOf="@+id/formActivity"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
