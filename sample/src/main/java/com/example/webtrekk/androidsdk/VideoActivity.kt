@@ -50,6 +50,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
     private var startWindow = 0
     private var startPosition: Long = 0
     private var muted = false
+    private var isPlayingNow = true
     val trackingParams = TrackingParams()
     private val url =
         "https://firebasestorage.googleapis.com/v0/b/videostreaming-481cd.appspot.com/o/Mobile_Rich_Push.mp4?alt=media&token=3e9156fa-5af7-4344-9efb-7a8c882ab2dc";
@@ -109,7 +110,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
-
+            isPlayingNow = isPlaying
             trackingParams.putAll(
                 mapOf(
                     MediaParam.MEDIA_DURATION to (player!!.duration / 1000).toString(),
@@ -207,11 +208,24 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 override fun onSeekProcessed(eventTime: AnalyticsListener.EventTime) {
                     trackingParams.putAll(
                         mapOf(
+                            MediaParam.MEDIA_DURATION to (player!!.duration / 1000).toString(),
+                            MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
+                            MediaParam.MEDIA_ACTION to if (isPlayingNow) "play" else "pause"
+                        )
+                    )
+                    Webtrekk.getInstance().trackMedia("video name", trackingParams)
+                }
+
+                override fun onSeekStarted(eventTime: AnalyticsListener.EventTime) {
+                    trackingParams.putAll(
+                        mapOf(
                             MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
                             MediaParam.MEDIA_ACTION to "seek"
                         )
                     )
                     Webtrekk.getInstance().trackMedia("video name", trackingParams)
+
+
                 }
             })
             playerView.player = player
