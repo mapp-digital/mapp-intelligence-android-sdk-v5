@@ -1,12 +1,9 @@
-
 package com.example.webtrekk.androidsdk
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.VideoView
-import webtrekk.android.sdk.MediaParam
-import webtrekk.android.sdk.TrackingParams
-import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.*
 
 
 class TrackedVideoView : VideoView {
@@ -40,6 +37,17 @@ class TrackedVideoView : VideoView {
 
             )
         )
+
+        trackingParams.putAll(
+            mapOf(
+                MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
+                MediaParam.MEDIA_ACTION to "init",
+                ParamType.EVENT_PARAM.value to "EVENT_PARAM"
+
+
+            )
+        )
+        Webtrekk.getInstance().trackMedia("video name", trackingParams)
     }
 
     override fun pause() {
@@ -53,12 +61,13 @@ class TrackedVideoView : VideoView {
         Webtrekk.getInstance().trackMedia("video name", trackingParams)
     }
 
+
     override fun start() {
         super.start()
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
-                MediaParam.MEDIA_ACTION to "init"
+                MediaParam.MEDIA_ACTION to "play"
             )
         )
         Webtrekk.getInstance().trackMedia("video name", trackingParams)
@@ -76,12 +85,20 @@ class TrackedVideoView : VideoView {
         Webtrekk.getInstance().trackMedia("video name", trackingParams)
     }
 
+
     override fun seekTo(msec: Int) {
-        super.seekTo(msec)
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
                 MediaParam.MEDIA_ACTION to "seek"
+            )
+        )
+        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        super.seekTo(msec)
+        trackingParams.putAll(
+            mapOf(
+                MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
+                MediaParam.MEDIA_ACTION to "play"
             )
         )
         Webtrekk.getInstance().trackMedia("video name", trackingParams)

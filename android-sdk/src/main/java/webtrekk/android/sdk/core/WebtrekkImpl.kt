@@ -210,12 +210,6 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 ), coroutineDispatchers
             )
         }
-
-        if ("seek".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
-            val map = trackingParams.toMutableMap()
-            map[MediaParam.MEDIA_ACTION] = lastAction
-            this.trackMedia(mediaName, map)
-        }
     }
 
     override fun trackException(exception: Exception, exceptionType: ExceptionType) =
