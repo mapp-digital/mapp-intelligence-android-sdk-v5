@@ -206,14 +206,6 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
             player!!.addAnalyticsListener(EventLogger(trackSelector))
             player!!.addAnalyticsListener(object : AnalyticsListener {
                 override fun onSeekProcessed(eventTime: AnalyticsListener.EventTime) {
-                    trackingParams.putAll(
-                        mapOf(
-                            MediaParam.MEDIA_DURATION to (player!!.duration / 1000).toString(),
-                            MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
-                            MediaParam.MEDIA_ACTION to if (isPlayingNow) "play" else "pause"
-                        )
-                    )
-                    Webtrekk.getInstance().trackMedia("video name", trackingParams)
                 }
 
                 override fun onSeekStarted(eventTime: AnalyticsListener.EventTime) {
