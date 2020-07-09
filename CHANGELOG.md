@@ -1,5 +1,10 @@
 # Change Log
-## Version 5.0.2.-beta1 *(in Progress)*
+## Version 5.0.3.-beta1 *(in Progress)*
+
+## Version 5.0.2. *(in Progress)*
+* Add Crash Analytics
+* Add Media Tracking
+* Minor bug fix
 
 ## Version 5.0.1.-beta2 *(2019-05-04)*
 * Update Koin version.
