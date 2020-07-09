@@ -1,16 +1,16 @@
 # Change Log
 ## Version 5.0.3.-beta1 *(in Progress)*
 
-## Version 5.0.2. *(in Progress)*
+## Version 5.0.2. *(2020-07-09)*
 * Add Crash Analytics
 * Add Media Tracking
 * Minor bug fix
 
-## Version 5.0.1.-beta2 *(2019-05-04)*
+## Version 5.0.1.-beta2 *(2020-05-04)*
 * Update Koin version.
 * Minor bug fix.
 
-## Version 5.0.1.-beta1 *(2019-03-04)*
+## Version 5.0.1.-beta1 *(2020-03-04)*
 * Add form tracking. 
 * Minor bug fix.
 
