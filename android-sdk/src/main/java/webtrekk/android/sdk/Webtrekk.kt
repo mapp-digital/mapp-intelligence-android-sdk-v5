@@ -145,7 +145,6 @@ abstract class Webtrekk protected constructor() {
 
     /**
      * Tracks a specific custom event, with a custom tracking params.
-     * Could be used alongside the auto tracking.
      *
      * @param eventName the event name that will be used for tracking that specific event.
      * @param trackingParams the custom tracking params that are associated with this tracking event.
@@ -157,7 +156,14 @@ abstract class Webtrekk protected constructor() {
         eventName: String,
         trackingParams: Map<String, String> = emptyMap()
     )
-
+    /**
+     * Tracks a specific media event, witch custom media param and all other params.
+     * @param mediaName the media name is name of the media file.
+     * @param trackingParams the custom tracking params that are associated with media event and tracking event.
+     *  @see [MediaParam], [Param] and [TrackingParams] for setting up the custom params.
+     *
+     * @throws [IllegalStateException] if [Config] config is not initialized.
+     */
     abstract fun trackMedia(
         mediaName: String,
         trackingParams: Map<String, String> = emptyMap()
@@ -168,11 +174,20 @@ abstract class Webtrekk protected constructor() {
         exception: Exception,
         exceptionType: ExceptionType
     )
-
+    /**
+     * Tracks a specific exception event, can be used for all types of the exceptions.
+     * @param exception the is used for handled exception.
+     * @throws [IllegalStateException] if [Config] config is not initialized.
+     */
     abstract fun trackException(
         exception: Exception
     )
-
+    /**
+     * Tracks a custom exception can be used for testing or send some critical exception.
+     * @param name custom name of the exception.
+     * @param message custom message can be exception stacktrace or message.
+     * @throws [IllegalStateException] if [Config] config is not initialized.
+     */
     abstract fun trackException(
         name: String,
         message: String
