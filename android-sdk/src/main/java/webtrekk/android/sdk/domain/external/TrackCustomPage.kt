@@ -47,7 +47,8 @@ internal class TrackCustomPage(
 ) : ExternalInteractor<TrackCustomPage.Params>, CustomKoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
+    override val scope =
+        CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     /**
      * [logger] the injected logger from Webtrekk.
@@ -58,9 +59,10 @@ internal class TrackCustomPage(
         // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-            logger
-        )
+        scope.launch(
+            coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                logger
+            )
         ) {
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(

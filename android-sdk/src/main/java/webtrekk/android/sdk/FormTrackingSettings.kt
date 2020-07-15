@@ -8,8 +8,9 @@ package webtrekk.android.sdk
  * @param fieldIds only track specific elements of the view
  * @param renameFields rename specific fields
  * @param confirmButton clicked confirm or cancel button for the form
- * @param anonymous hide content
+ * @param anonymous hide content for some critical fields
  * @param changeFieldsValue in some case is good to change value of the specific fields
+ * @param pathAnalysis Can be used for path analysis, all filed will be processed in the given order
  */
 
 data class FormTrackingSettings(

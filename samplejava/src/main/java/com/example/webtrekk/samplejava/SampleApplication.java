@@ -52,7 +52,7 @@ public class SampleApplication extends Application {
         List<String> elements = Arrays.asList(stringIds.split(","));
         WebtrekkConfiguration webtrekkConfiguration = new WebtrekkConfiguration.Builder(elements, domain)
                 .setWorkManagerConstraints(new Constraints.Builder()
-                .setRequiresBatteryNotLow(true).build())
+                        .setRequiresBatteryNotLow(true).build())
                 .setLogLevel(Logger.Level.BASIC)
                 .enableCrashTracking(ExceptionType.ALL)
                 .build();

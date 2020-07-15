@@ -66,7 +66,8 @@ internal class TrackCustomEvent(
             )
         ) {
             val params = invokeParams.trackingParams.toMutableMap()
-            params[RequestType.EVENT.value] = invokeParams.ctParams // Appending the 'ct' param (event) to the custom params.
+            params[RequestType.EVENT.value] =
+                invokeParams.ctParams // Appending the 'ct' param (event) to the custom params.
 
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(

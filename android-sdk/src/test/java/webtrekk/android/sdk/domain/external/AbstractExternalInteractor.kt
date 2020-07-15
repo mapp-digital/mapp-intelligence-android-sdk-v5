@@ -56,8 +56,10 @@ internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineSco
         Webtrekk.getInstance().init(appContext, config)
         startKoin {
             modules(
-                listOf(loggerModule
-                ))
+                listOf(
+                    loggerModule
+                )
+            )
             EmptyLogger()
         }
     }

@@ -29,7 +29,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 /**
- * A class that manages all of Webtrekk internal SharedPreferences.
+ * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving
  */
 internal class WebtrekkSharedPrefs(context: Context) {
 

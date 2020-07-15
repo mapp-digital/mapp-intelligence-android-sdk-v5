@@ -33,6 +33,9 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Track uncaughtException. This interface is used for auto track exception when app i crashing.
+ */
 internal class TrackUncaughtException(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
@@ -47,13 +50,17 @@ internal class TrackUncaughtException(
      */
     private val logger by inject<Logger>()
 
-    override fun invoke(invokeParams: TrackUncaughtException.Params, coroutineDispatchers: CoroutineDispatchers) {
+    override fun invoke(
+        invokeParams: TrackUncaughtException.Params,
+        coroutineDispatchers: CoroutineDispatchers
+    ) {
         // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-            logger
-        )
+        scope.launch(
+            coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                logger
+            )
         ) {
             val paramsList = createListParamsFromFile(invokeParams.file)
             paramsList.forEach {
@@ -78,7 +85,9 @@ internal class TrackUncaughtException(
             var line: String? = null
             var value: String
             while (br.readLine().also { line = it } != null) {
-                if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(NO_START_ITEM_SEPARATOR)
+                if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(
+                    NO_START_ITEM_SEPARATOR
+                )
 
                 val params = emptyMap<String, String>().toMutableMap()
                 params[UrlParams.CRASH_TYPE] = ExceptionType.UNCAUGHT.type
@@ -121,6 +130,7 @@ internal class TrackUncaughtException(
         }
         return paramsList
     }
+
     /**
      * A data class encapsulating the specific params related to this use case.
      *

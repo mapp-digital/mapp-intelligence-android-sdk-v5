@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="@+id/chooseExceptionType"
         app:layout_constraintStart_toStartOf="@+id/chooseExceptionType"
         android:contentDescription="Choose ExceptionType"
-        android:text="Choose ExceptionType"/>
+        android:text="Choose ExceptionType" />
 
     <Spinner
         android:id="@+id/chooseExceptionType"
