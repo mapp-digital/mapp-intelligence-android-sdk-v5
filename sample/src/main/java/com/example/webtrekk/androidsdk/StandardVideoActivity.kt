@@ -62,7 +62,7 @@ class StandardVideoActivity : AppCompatActivity() {
                 MediaParam.MEDIA_ACTION to "eof"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name",  myVideoView?.trackingParams!!)
+        Webtrekk.getInstance().trackMedia("video name", myVideoView?.trackingParams!!)
         super.onStop()
     }
 }

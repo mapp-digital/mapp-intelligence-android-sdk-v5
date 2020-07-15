@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  MIT License
   ~
   ~  Copyright (c) 2019 Webtrekk GmbH
@@ -50,7 +49,6 @@
         app:layout_constraintBottom_toTopOf="@+id/formActivity"
         app:layout_constraintEnd_toEndOf="@+id/formActivity"
         app:layout_constraintStart_toStartOf="@+id/formActivity"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

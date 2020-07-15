@@ -17,7 +17,9 @@ import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
 
-// TODO: Add comments
+/**
+ * Track Exception. This interface is used for track all client exception and custom exception .
+ */
 internal class TrackException(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
@@ -36,11 +38,13 @@ internal class TrackException(
         // If opt out is active, then return
         if (invokeParams.isOptOut) return
 
-        scope.launch(coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-            logger
-        )
+        scope.launch(
+            coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                logger
+            )
         ) {
-            val params = createParamsFromException(invokeParams.exception, invokeParams.exceptionType)
+            val params =
+                createParamsFromException(invokeParams.exception, invokeParams.exceptionType)
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
@@ -53,7 +57,10 @@ internal class TrackException(
         }
     }
 
-    private fun createParamsFromException(exception: Exception, exceptionType: ExceptionType): MutableMap<String, String> {
+    private fun createParamsFromException(
+        exception: Exception,
+        exceptionType: ExceptionType
+    ): MutableMap<String, String> {
         val params = emptyMap<String, String>().toMutableMap()
         when (exceptionType) {
             ExceptionType.CAUGHT -> {
@@ -68,7 +75,8 @@ internal class TrackException(
                 }
                 params[UrlParams.CRASH_STACK] = exception.stackTrace.createString()
                 if (exception.cause != null)
-                    params[UrlParams.CRASH_CAUSE_STACK] = exception.cause?.stackTrace!!.createString()
+                    params[UrlParams.CRASH_CAUSE_STACK] =
+                        exception.cause?.stackTrace!!.createString()
             }
             ExceptionType.CUSTOM -> {
                 params[UrlParams.CRASH_TYPE] = exceptionType.type
@@ -78,6 +86,7 @@ internal class TrackException(
         }
         return params
     }
+
     /**
      * A data class encapsulating the specific params related to this use case.
      *

@@ -55,7 +55,8 @@ internal class Optout(
 ) : ExternalInteractor<Optout.Params>, CustomKoinComponent {
 
     private val _job = Job()
-    override val scope = CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
+    override val scope =
+        CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     /**
      * [logger] the injected logger from Webtrekk.

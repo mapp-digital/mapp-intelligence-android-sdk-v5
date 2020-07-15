@@ -13,7 +13,10 @@ import java.io.BufferedOutputStream
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 
-internal class UncaughtExceptionHandler constructor(private val defaultHandler: Thread.UncaughtExceptionHandler?, private val context: Context) :
+internal class UncaughtExceptionHandler constructor(
+    private val defaultHandler: Thread.UncaughtExceptionHandler?,
+    private val context: Context
+) :
     Thread.UncaughtExceptionHandler, CustomKoinComponent {
 
     private val logger by inject<Logger>()
@@ -38,8 +41,10 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
         } catch (e: Exception) {
             logger.error("An error occurred in the uncaught exception handler" + e.message)
         } finally {
-            logger.debug("Completed exception processing." +
-                    " Invoking default exception handler.")
+            logger.debug(
+                "Completed exception processing." +
+                    " Invoking default exception handler."
+            )
             defaultHandler?.uncaughtException(thread, ex)
             isHandlingException.set(false)
         }
@@ -59,9 +64,15 @@ internal class UncaughtExceptionHandler constructor(private val defaultHandler: 
             EX_ITEM_SEPARATOR,
             ex.cause?.stackTrace?.createString(),
             EX_ITEM_SEPARATOR,
-            END_EX_STRING)
+            END_EX_STRING
+        )
         try {
-            outputStream = BufferedOutputStream(context.openFileOutput(getFileName(true, context), Context.MODE_APPEND))
+            outputStream = BufferedOutputStream(
+                context.openFileOutput(
+                    getFileName(true, context),
+                    Context.MODE_APPEND
+                )
+            )
             for (string in arrayToSave) {
                 if (string != null)
                     outputStream.write(string.toByteArray())

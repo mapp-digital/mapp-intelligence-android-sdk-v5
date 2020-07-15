@@ -334,7 +334,8 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                         mapOf(
                             MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
                             MediaParam.VOLUME to volume.toInt().toString(),
-                            MediaParam.MUTE to if (volume.toInt() == 0) "1" else "0")
+                            MediaParam.MUTE to if (volume.toInt() == 0) "1" else "0"
+                        )
 
                     )
                     Webtrekk.getInstance().trackMedia("video name", trackingParams)

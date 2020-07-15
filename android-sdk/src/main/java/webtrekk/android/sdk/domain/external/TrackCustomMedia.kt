@@ -40,7 +40,7 @@ import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Track custom page use case. The main difference between [TrackCustomMedia] and [ManualTrack], that is manual track relies on [Context] and is used for tracking activity/fragments specifically, while track custom page is used to track any kind of pages without relying on [Context].
+ * Track media event. This  interface is used only for tracking media event .
  */
 internal class TrackCustomMedia(
     coroutineContext: CoroutineContext,

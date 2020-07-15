@@ -1,4 +1,3 @@
-
 package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
@@ -32,7 +31,7 @@ class MediaActivityExample : AppCompatActivity() {
         val progress: Int = currentPlayProgress
         trackingParams.putAll(
             mapOf(
-                MediaParam.MEDIA_DURATION to  MEDIA_LENGTH.toString(),
+                MediaParam.MEDIA_DURATION to MEDIA_LENGTH.toString(),
                 MediaParam.MEDIA_POSITION to progress.toString(),
                 MediaParam.MEDIA_ACTION to "init"
             )
@@ -107,7 +106,6 @@ class MediaActivityExample : AppCompatActivity() {
     }
 
 
-
     override fun onDestroy() {
         trackingParams[MediaParam.MEDIA_ACTION] = "eof"
         trackingParams[MediaParam.MEDIA_POSITION] = currentPlayProgress.toString()
@@ -118,7 +116,7 @@ class MediaActivityExample : AppCompatActivity() {
 
     fun startTimerService() {
         // start the timer service
-        if(timerService==null){
+        if (timerService == null) {
             timerService = Executors.newSingleThreadScheduledExecutor()
             timerService?.scheduleWithFixedDelay(
                 Runnable { onPlayIntervalOver() },
@@ -129,7 +127,8 @@ class MediaActivityExample : AppCompatActivity() {
         }
 
     }
-    private fun  onPlayIntervalOver() {
+
+    private fun onPlayIntervalOver() {
         if (currentState == "play") {
             val progress: Int = currentPlayProgress
             trackingParams[MediaParam.MEDIA_ACTION] = "pos"

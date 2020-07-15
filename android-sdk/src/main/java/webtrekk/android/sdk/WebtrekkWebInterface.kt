@@ -69,8 +69,10 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
         try {
             webtrekk.trackCustomPage(pageName, params.jsonToMap())
         } catch (e: Exception) {
-            webtrekkLogger.info(e.message
-                ?: "Unknown exception caught in WebView while tracking custom page")
+            webtrekkLogger.info(
+                e.message
+                    ?: "Unknown exception caught in WebView while tracking custom page"
+            )
         }
     }
 
@@ -85,8 +87,10 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
         try {
             webtrekk.trackCustomEvent(eventName, params.jsonToMap())
         } catch (e: Exception) {
-            webtrekkLogger.info(e.message
-                ?: "Unknown exception caught in WebView while tracking custom event")
+            webtrekkLogger.info(
+                e.message
+                    ?: "Unknown exception caught in WebView while tracking custom event"
+            )
         }
     }
 
@@ -100,7 +104,7 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
 
     companion object {
         /**
-         * The JavaScript interface name that Pixel Web SDK expects.
+         *  The JavaScript interface name that Pixel Web SDK expects.
          */
         const val TAG = "WebtrekkAndroidWebViewCallback"
     }

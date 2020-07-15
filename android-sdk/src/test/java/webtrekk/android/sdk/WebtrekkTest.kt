@@ -56,11 +56,13 @@ internal class WebtrekkTest : StringSpec() {
     override fun beforeSpec(spec: Spec) {
         stopKoin()
         startKoin {
-            modules(listOf(
-                loggerModule,
-                coroutineDispatchers,
-                optOutModule
-            ))
+            modules(
+                listOf(
+                    loggerModule,
+                    coroutineDispatchers,
+                    optOutModule
+                )
+            )
             EmptyLogger()
         }
     }

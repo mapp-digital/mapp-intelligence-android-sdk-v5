@@ -42,7 +42,10 @@ internal class SyncPostRequestsDataSourceImpl(private val okHttpClient: OkHttpCl
      * @param request the request url.
      * @param receiver an instance of [DataTrack] that will be encapsulated within a [Result].
      */
-    override suspend fun sendRequest(request: Request, receiver: List<DataTrack>): Result<List<DataTrack>> {
+    override suspend fun sendRequest(
+        request: Request,
+        receiver: List<DataTrack>
+    ): Result<List<DataTrack>> {
         return okHttpClient.newCall(request).executeRequestForResult {
             receiver
         }

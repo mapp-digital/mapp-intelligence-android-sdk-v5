@@ -60,7 +60,7 @@ inline fun <reified T : Any> T?.nullOrEmptyThrowError(propertyName: T): T {
 /**
  * Validates that a list is not empty.
  */
-fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
+internal fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
     this.nullOrEmptyThrowError(propertyName)
 
     this?.forEach {
@@ -70,9 +70,9 @@ fun <T : Any> List<T>?.validateEntireList(propertyName: Any): List<T> {
     return this as List<T>
 }
 
-fun String.encodeToUTF8(): String = URLEncoder.encode(this, "UTF-8")
+internal fun String.encodeToUTF8(): String = URLEncoder.encode(this, "UTF-8")
 
-fun String.jsonToMap(): Map<String, String> {
+internal fun String.jsonToMap(): Map<String, String> {
     val map = HashMap<String, String>()
     val obj = JSONObject(this)
     val keysItr = obj.keys()
@@ -84,7 +84,7 @@ fun String.jsonToMap(): Map<String, String> {
     return map
 }
 
-fun <T> Sequence<T>.batch(n: Int): Sequence<List<T>> {
+internal fun <T> Sequence<T>.batch(n: Int): Sequence<List<T>> {
     return BatchingSequence(this, n)
 }
 
@@ -98,7 +98,7 @@ private class BatchingSequence<T>(val source: Sequence<T>, val batchSize: Int) :
     }
 }
 
-fun Request.stringifyRequestBody(): String {
+internal fun Request.stringifyRequestBody(): String {
     return try {
         val copy: Request = newBuilder().build()
         val buffer = Buffer()
@@ -118,7 +118,7 @@ internal fun List<FormField>.toRequest(): String {
     return request
 }
 
-fun Boolean.toInt() = if (this) 1 else 0
+internal fun Boolean.toInt() = if (this) 1 else 0
 internal fun BufferedReader.readParam(): String {
     val line: String? = this.readLine()
     if (line == null) throw IncorrectErrorFileFormatException(NULL_MESSAGE) else return line
@@ -133,7 +133,8 @@ internal fun Array<StackTraceElement>.createString(): String {
     var stackString = ""
     for (element in this) {
         if (stackString.isNotEmpty()) stackString += EX_LINE_SEPARATOR
-        val lineNumber = if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
+        val lineNumber =
+            if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
         var stackItem = element.className + "." +
             element.methodName + "(" + element.fileName
         stackItem += if (lineNumber < 0) ")" else ":" + element.lineNumber + ")"

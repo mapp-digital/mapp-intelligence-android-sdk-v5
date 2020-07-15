@@ -37,5 +37,6 @@ internal class RequestStateConverter {
     fun requestStateToString(requestState: TrackRequest.RequestState): String = requestState.value
 
     @TypeConverter
-    fun stringToRequestState(value: String): TrackRequest.RequestState = TrackRequest.RequestState.valueOf(value)
+    fun stringToRequestState(value: String): TrackRequest.RequestState =
+        TrackRequest.RequestState.valueOf(value)
 }
