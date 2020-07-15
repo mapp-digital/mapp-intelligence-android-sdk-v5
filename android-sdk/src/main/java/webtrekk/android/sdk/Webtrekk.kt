@@ -156,6 +156,7 @@ abstract class Webtrekk protected constructor() {
         eventName: String,
         trackingParams: Map<String, String> = emptyMap()
     )
+
     /**
      * Tracks a specific media event, witch custom media param and all other params.
      * @param mediaName the media name is name of the media file.
@@ -174,6 +175,7 @@ abstract class Webtrekk protected constructor() {
         exception: Exception,
         exceptionType: ExceptionType
     )
+
     /**
      * Tracks a specific exception event, can be used for all types of the exceptions.
      * @param exception the is used for handled exception.
@@ -182,6 +184,7 @@ abstract class Webtrekk protected constructor() {
     abstract fun trackException(
         exception: Exception
     )
+
     /**
      * Tracks a custom exception can be used for testing or send some critical exception.
      * @param name custom name of the exception.

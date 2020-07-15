@@ -3,7 +3,11 @@ package webtrekk.android.sdk.util
 import android.content.Context
 import java.io.File
 
-internal class ExceptionWrapper constructor(val name: String, val customMessage: String) : Exception()
+/**
+ * Utils for CrashTracking
+ */
+internal class ExceptionWrapper constructor(val name: String, val customMessage: String) :
+    Exception()
 
 internal class IncorrectErrorFileFormatException(message: String) : java.lang.Exception(message)
 
