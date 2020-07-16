@@ -31,13 +31,7 @@ internal class UncaughtExceptionHandler constructor(
     override fun uncaughtException(thread: Thread, ex: Throwable) {
         isHandlingException.set(true)
         try {
-            if (thread == null) {
-                logger.error("Could not handle uncaught exception; null thread")
-            } else if (ex == null) {
-                logger.error("Could not handle uncaught exception; null throwable")
-            } else {
-                writeUncaughtException(ex)
-            }
+            writeUncaughtException(ex)
         } catch (e: Exception) {
             logger.error("An error occurred in the uncaught exception handler" + e.message)
         } finally {
