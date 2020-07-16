@@ -5,7 +5,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import webtrekk.android.sdk.ExceptionType
-import webtrekk.android.sdk.ExceptionType.*
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.core.CustomKoinComponent
@@ -64,7 +63,7 @@ internal class TrackException(
     ): MutableMap<String, String> {
         val params = emptyMap<String, String>().toMutableMap()
         when (exceptionType) {
-            CAUGHT -> {
+            ExceptionType.CAUGHT -> {
                 params[UrlParams.CRASH_TYPE] = exceptionType.type
                 params[UrlParams.CRASH_NAME] = exception.javaClass.name
                 if (exception.message != null)
@@ -79,7 +78,7 @@ internal class TrackException(
                     params[UrlParams.CRASH_CAUSE_STACK] =
                         exception.cause?.stackTrace!!.createString()
             }
-            CUSTOM -> {
+            ExceptionType.CUSTOM -> {
                 params[UrlParams.CRASH_TYPE] = exceptionType.type
                 params[UrlParams.CRASH_NAME] = (exception as ExceptionWrapper).name
                 params[UrlParams.CRASH_MESSAGE] = (exception).customMessage
