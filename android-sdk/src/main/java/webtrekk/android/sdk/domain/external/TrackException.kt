@@ -93,8 +93,9 @@ internal class TrackException(
      * A data class encapsulating the specific params related to this use case.
      *
      * @param trackRequest the track request that is created and will be cached in the data base.
-     * @param trackingParams the custom params associated with the [trackRequest].
-     * @param isOptOut the opt out value.
+     * @param exception the custom params associated with the [trackRequest].
+     * @param isOptOut the Exception.
+     * @param exceptionType the ExceptionType.
      */
     data class Params(
         val trackRequest: TrackRequest,

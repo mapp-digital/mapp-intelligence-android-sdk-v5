@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.util
 
+import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -41,6 +42,12 @@ internal val trackRequest = TrackRequest(
 internal val trackingParams = mapOf(
     "cs" to "val 1",
     "cd" to "val 2"
+)
+
+internal val trackingParamsMediaParam = mapOf(
+    MediaParam.MEDIA_POSITION to "232",
+    MediaParam.MEDIA_DURATION to "543",
+    MediaParam.MEDIA_ACTION to "init"
 )
 
 internal val trackingPadrams = mapOf(
