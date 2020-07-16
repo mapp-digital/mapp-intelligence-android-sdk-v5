@@ -80,7 +80,7 @@ internal class Optout(
                     context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
                         logger
                     ),
-                    start = CoroutineStart.ATOMIC
+                    start = CoroutineStart.DEFAULT
                 ) {
                     clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
                         .onSuccess { logger.debug("Cleared all track requests, opt out is active") }
