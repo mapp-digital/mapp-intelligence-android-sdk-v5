@@ -33,7 +33,7 @@ import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.domain.InternalInteractor
 
 /**
- * Execute the track requests URLs.
+ * Execute the track requests URLs for the batch.
  */
 internal class ExecutePostRequest(
     private val trackRequestRepository: TrackRequestRepository,
