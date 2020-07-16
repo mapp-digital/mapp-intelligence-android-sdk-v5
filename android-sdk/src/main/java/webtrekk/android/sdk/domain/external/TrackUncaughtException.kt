@@ -82,7 +82,7 @@ internal class TrackUncaughtException(
         var br: BufferedReader? = null
         try {
             br = BufferedReader(FileReader(file))
-            var line: String? = null
+            var line: String?
             var value: String
             while (br.readLine().also { line = it } != null) {
                 if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(
