@@ -9,6 +9,7 @@ Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your An
 Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/) and uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) for non-blocking executions, [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for enqueuing and sending the track requests to optimize the device battery and app performance.
 Webtrekk internally, collects and caches the data that you specify for tracking, and later, it sends those data to Webtrekk analytic servers in periodic times.
 
+
 # Installation
 Gradle
 ```groovy
