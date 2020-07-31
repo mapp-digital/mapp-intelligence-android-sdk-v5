@@ -24,4 +24,18 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="webtrekk.android.sdk" />
+    package="webtrekk.android.sdk">
+
+    <application>
+        <receiver
+            android:name=".integration.MappIntelligenceListener"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="mapp.to.webtrekk.event" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
