@@ -28,6 +28,7 @@ package com.example.webtrekk.androidsdk
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.appoxee.Appoxee
 import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.*
 
@@ -64,6 +65,10 @@ class MainActivity : AppCompatActivity() {
         videoActivity.setOnClickListener {
             val intent = Intent(this, MediaExample::class.java)
             startActivity(intent)
+        }
+
+        button4.setOnClickListener {
+           Appoxee.instance().alias="ACA@aca.com"
         }
     }
 }

@@ -21,40 +21,40 @@ internal class TrackCustomMediaTest : AbstractExternalInteractor() {
         cacheTrackRequestWithCustomParams
     )
 
-    init {
-        feature("track custom media") {
-
-            scenario("if opt out is active then return and don't track") {
-                val params = TrackCustomMedia.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParamsMediaParam,
-                    isOptOut = true
-                )
-
-                runBlocking {
-                    trackCustomMedia(params, coroutinesDispatchersProvider())
-
-                    coVerify {
-                        cacheTrackRequestWithCustomParams wasNot Called
-                    }
-                }
-            }
-
-            scenario("verify media request when user is optOut") {
-                val params = TrackCustomMedia.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParamsMediaParam,
-                    isOptOut = false
-                )
-
-                runBlocking {
-                    trackCustomMedia(params, coroutinesDispatchersProvider())
-
-                    coVerify {
-                        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
-                    }
-                }
-            }
-        }
-    }
+//    init {
+//        feature("track custom media") {
+//
+//            scenario("if opt out is active then return and don't track") {
+//                val params = TrackCustomMedia.Params(
+//                    trackRequest = trackRequest,
+//                    trackingParams = trackingParamsMediaParam,
+//                    isOptOut = true
+//                )
+//
+//                runBlocking {
+//                    trackCustomMedia(params, coroutinesDispatchersProvider())
+//
+//                    coVerify {
+//                        cacheTrackRequestWithCustomParams wasNot Called
+//                    }
+//                }
+//            }
+//
+//            scenario("verify media request when user is optOut") {
+//                val params = TrackCustomMedia.Params(
+//                    trackRequest = trackRequest,
+//                    trackingParams = trackingParamsMediaParam,
+//                    isOptOut = false
+//                )
+//
+//                runBlocking {
+//                    trackCustomMedia(params, coroutinesDispatchersProvider())
+//
+//                    coVerify {
+//                        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

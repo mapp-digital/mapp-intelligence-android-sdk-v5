@@ -29,6 +29,9 @@ import android.app.Application
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.NetworkType
+import com.appoxee.Appoxee
+import com.appoxee.AppoxeeOptions
+import com.appoxee.push.NotificationMode
 // import com.facebook.stetho.Stetho
 // import com.facebook.stetho.okhttp3.StethoInterceptor
 import webtrekk.android.sdk.ExceptionType
@@ -42,6 +45,15 @@ class SampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        val opt = AppoxeeOptions()
+        opt.sdkKey = "17394d8e8d05f1.84737482"
+        opt.googleProjectId = "1028993954364"
+        opt.cepURL = "https://jamie-test.shortest-route.com"
+        opt.appID = "1585031493267"
+        opt.tenantID = "33"
+        opt.notificationMode = NotificationMode.BACKGROUND_AND_FOREGROUND
+        opt.server = AppoxeeOptions.Server.TEST
+        Appoxee.engage(this, opt)
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
