@@ -58,6 +58,16 @@ internal interface Sessions {
     fun getCurrentSession(): String
 
     /**
+     * Returns "Alias if is set fine in mapp sdk-a in other case try to provide alias .
+     */
+    fun getAlias(): String
+
+    /**
+     * Can be used for set alias .
+     */
+    fun alias(alias: String)
+
+    /**
      * Set the opt out value in SharedPreferences, true means to opt out, false to stop opting out.
      *
      * @param value the opt out is true, false to stop opt out.
