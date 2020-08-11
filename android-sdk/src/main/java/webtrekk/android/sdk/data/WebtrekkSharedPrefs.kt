@@ -27,12 +27,14 @@ package webtrekk.android.sdk.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import webtrekk.android.sdk.integration.IntelligenceEvent
+import webtrekk.android.sdk.integration.MappIntelligenceListener
 
 /**
  * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving
  */
 internal class WebtrekkSharedPrefs(context: Context) {
-
+    val localContext = context
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -56,6 +58,15 @@ internal class WebtrekkSharedPrefs(context: Context) {
         inline get() = sharedPreferences.getString(APP_VERSION, "") ?: ""
         set(value) = sharedPreferences.edit().putString(APP_VERSION, value).apply()
 
+    var alias: String
+        inline get() = if (sharedPreferences.getString(ALIAS, "") == "") {
+            sharedPreferences.getString(ALIAS, "")!!
+        } else {
+            IntelligenceEvent.sendEvent(localContext, MappIntelligenceListener.GET_ALIAS, "")
+            ""
+        }
+        set(value) = sharedPreferences.edit().putString(ALIAS, value).apply()
+
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     companion object {
@@ -66,5 +77,6 @@ internal class WebtrekkSharedPrefs(context: Context) {
         const val NEW_SESSION_KEY = "forceNewSession"
         const val USER_OPT_OUT = "optOut"
         const val APP_VERSION = "appVersion"
+        const val ALIAS = "alias"
     }
 }

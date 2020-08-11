@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import webtrekk.android.sdk.util.alias
 
 /**
  * Created by Aleksandar Marinkovic on 30/07/2020.
@@ -11,12 +12,16 @@ import android.util.Log
  */
 internal class MappIntelligenceListener : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d("WebtrekkListener", intent.action)
+        if (intent.type == SET_ALIAS) {
+            alias = intent.getStringExtra(INTELLIGENCE_DATA) ?: ""
+        }
     }
 
     companion object {
         const val MappToWebtrekk = "mapp.to.webtrekk.event"
         const val WebtrekkToMapp = "webtrekk.to.mapp.event"
         const val INTELLIGENCE_DATA = "INTELLIGENCE_DATA"
+        const val GET_ALIAS = "GET_ALIAS"
+        const val SET_ALIAS = "SET_ALIAS"
     }
 }

@@ -59,6 +59,10 @@ internal val trackIds: List<String>
 internal val webtrekkLogger: Logger
     inline get() = WebtrekkImpl.getInstance().logger
 
+internal var alias: String
+    inline get() = WebtrekkImpl.getInstance().sessions.getAlias()
+    set(value) = WebtrekkImpl.getInstance().sessions.alias(value)
+
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random
