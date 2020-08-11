@@ -6,7 +6,7 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.trackingParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 import webtrekk.android.sdk.util.trackRequest
@@ -64,7 +64,6 @@ internal class TrackCustomMediaTest : AbstractExternalInteractor() {
                         cacheTrackRequestWithCustomParams(cacheTrackRequestWithCT)
                     }
                 }
-
             }
         }
     }
