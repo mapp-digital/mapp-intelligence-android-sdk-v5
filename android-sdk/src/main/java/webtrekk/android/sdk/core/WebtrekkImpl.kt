@@ -27,6 +27,7 @@ package webtrekk.android.sdk.core
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
@@ -317,6 +318,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
     override fun getUserAgent(): String = context.run {
         sessions.getUserAgent()
+    }
+
+    override fun getPreviousSharedPref(prefName: String): SharedPreferences {
+        return context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
     }
 
     /**

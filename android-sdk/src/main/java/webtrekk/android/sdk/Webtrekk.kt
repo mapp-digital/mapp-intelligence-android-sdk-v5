@@ -26,6 +26,7 @@
 package webtrekk.android.sdk
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.View
 import webtrekk.android.sdk.core.WebtrekkImpl
 import java.io.File
@@ -169,6 +170,10 @@ abstract class Webtrekk protected constructor() {
         mediaName: String,
         trackingParams: Map<String, String> = emptyMap()
     )
+
+    abstract fun getPreviousSharedPref(
+        prefName: String
+    ): SharedPreferences
 
     // TODO: Add comments here for new methods
     internal abstract fun trackException(
