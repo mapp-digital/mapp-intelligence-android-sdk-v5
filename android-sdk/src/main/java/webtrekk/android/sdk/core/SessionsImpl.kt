@@ -95,4 +95,17 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
             }
         }
     }
+
+    override fun migrate() {
+        if (!webtrekkSharedPrefs.isMigrated) {
+            if (webtrekkSharedPrefs.previousSharedPreferences.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
+                val everId = webtrekkSharedPrefs.previousEverId
+                if (everId != "") {
+                    webtrekkSharedPrefs.everId = everId
+                    webtrekkSharedPrefs.appFirstOpen = "0"
+                }
+            }
+            webtrekkSharedPrefs.isMigrated = true
+        }
+    }
 }
