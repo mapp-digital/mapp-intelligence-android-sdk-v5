@@ -109,8 +109,7 @@ interface Config {
      */
     val activityAutoTracking: Boolean
 
-    // TODO: Add comments for this values
-
+    // TODO: Add comments for this value
     val exceptionLogLevel: ExceptionType
 
     /**
@@ -143,6 +142,9 @@ interface Config {
      * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.BATCH_SUPPORT_ENABLED]
      */
     val batchSupport: Boolean
+
+    // TODO: Add comments for this value
+    val shouldMigrate: Boolean
 
     /**
      * [requestPerBatch] is the client that is used for networking.

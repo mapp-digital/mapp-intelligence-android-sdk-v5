@@ -78,8 +78,10 @@ object DefaultConfiguration {
      */
     const val ACTIVITY_AUTO_TRACK_ENABLED = true
 
-    // TODO: Add comments for this value
+    // TODO: Add comments for this values
     val CRASH_TRACKING_ENABLED = ExceptionType.NONE
+
+    const val SHOULD_MIGRATE_ENABLED = false
 
     /**
      * The default interval time that's used in [WebtrekkConfiguration.Builder.requestsInterval].

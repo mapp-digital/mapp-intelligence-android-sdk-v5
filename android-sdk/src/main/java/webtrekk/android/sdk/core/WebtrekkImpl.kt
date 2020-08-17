@@ -435,6 +435,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun internalInit() = launch(coroutineExceptionHandler(logger)) {
+        if (config.shouldMigrate) {
+            sessions.migrate()
+        }
+
         sessions.setEverId() // Setting up the ever id at first start of using the SDK.
 
         // Starting a new session at every freshly app open.
