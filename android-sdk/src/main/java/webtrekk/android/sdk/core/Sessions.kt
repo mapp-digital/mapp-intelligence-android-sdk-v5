@@ -75,4 +75,7 @@ internal interface Sessions {
      * @param currentAppVersion the current app version number.
      */
     fun isAppUpdated(currentAppVersion: String): Boolean
+
+    // TODO: Add comments for this method
+    fun migrate()
 }
