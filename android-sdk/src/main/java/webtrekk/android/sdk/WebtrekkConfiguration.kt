@@ -135,7 +135,7 @@ class WebtrekkConfiguration private constructor(
         }
 
         // TODO: Add comments for this method
-        fun migrate() = apply {
+        fun enableMigration() = apply {
             this.shouldMigrate = true
         }
 
