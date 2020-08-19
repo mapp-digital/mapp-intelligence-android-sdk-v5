@@ -118,7 +118,6 @@ class WebtrekkConfiguration private constructor(
             this.activityAutoTracking = false
         }
 
-        // TODO: Add comments for this method
         /**
          * The crash tracking is disabled by default. The crash tracking will track different exception types defined in [ExceptionType].
          * To enable it, call [enableCrashTracking] supplying different values of [ExceptionType] as arguments, except [ExceptionType.NONE]
@@ -138,7 +137,6 @@ class WebtrekkConfiguration private constructor(
             this.activityAutoTracking = false
         }
 
-        // TODO: Add comments for this method
         /**
          * Migration of ever id and one parameter values from sdk version 4 is disabled by default. To enable it, call [enableMigration].
          */
