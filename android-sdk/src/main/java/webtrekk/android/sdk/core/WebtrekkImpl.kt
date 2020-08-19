@@ -27,7 +27,6 @@ package webtrekk.android.sdk.core
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
@@ -320,10 +319,6 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         sessions.getUserAgent()
     }
 
-    override fun getPreviousSharedPref(prefName: String): SharedPreferences {
-        return context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
-    }
-
     /**
      * Loading and init the dependencies that will be injected.
      */
@@ -539,7 +534,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         _job.cancel()
     }
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) // TODO: Should it have this annotation?
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun initUncaughtExceptionTracking() {
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
             uncaughtExceptionHandler = UncaughtExceptionHandler(
