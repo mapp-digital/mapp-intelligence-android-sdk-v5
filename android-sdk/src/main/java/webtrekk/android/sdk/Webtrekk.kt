@@ -171,6 +171,12 @@ abstract class Webtrekk protected constructor() {
     )
 
     // TODO: Add comments here for new methods
+    /**
+     * Tracks specific exception event.
+     * @param exception the exception object that caused crash
+     * @param exceptionType to internally decide if exception is of type [ExceptionType.CAUGHT] or [ExceptionType.CUSTOM]
+     * @throws [IllegalStateException] if [Config] config is not initialized.
+     */
     internal abstract fun trackException(
         exception: Exception,
         exceptionType: ExceptionType
@@ -196,6 +202,11 @@ abstract class Webtrekk protected constructor() {
         message: String
     )
 
+    /**
+     * Tracks uncaught exception.
+     * @param file file where uncaught exception handler saved throwable that caused app to crash
+     * @throws [IllegalStateException] if [Config] config is not initialized.
+     */
     internal abstract fun trackException(
         file: File
     )
