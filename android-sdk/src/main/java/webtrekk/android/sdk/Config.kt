@@ -109,7 +109,6 @@ interface Config {
      */
     val activityAutoTracking: Boolean
 
-    // TODO: Add comments for this value
     /**
      * Choose [exceptionLogLevel] type to track different exceptions individually ([ExceptionType.UNCAUGHT], [ExceptionType.CAUGHT], [ExceptionType.CUSTOM]),
      * or different combinations of them. ([ExceptionType.ALL], [ExceptionType.UNCAUGHT_AND_CUSTOM], [ExceptionType.CUSTOM_AND_CAUGHT])
@@ -147,7 +146,6 @@ interface Config {
      */
     val batchSupport: Boolean
 
-    // TODO: Add comments for this value
     /**
      * [shouldMigrate] set to true to enable migration of ever id and one parameter values from sdk version 4.
      */

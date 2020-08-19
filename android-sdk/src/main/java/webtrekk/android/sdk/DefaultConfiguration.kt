@@ -78,7 +78,6 @@ object DefaultConfiguration {
      */
     const val ACTIVITY_AUTO_TRACK_ENABLED = true
 
-    // TODO: Add comments for this values
     /**
      * The crash tracking functionality is disabled by default. To enable it, call [WebtrekkConfiguration.Builder.enableCrashTracking] supplying one of the [ExceptionType] values as method argument,
      * other then [ExceptionType.NONE]
