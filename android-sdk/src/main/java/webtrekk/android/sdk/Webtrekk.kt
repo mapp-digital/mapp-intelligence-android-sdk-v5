@@ -170,7 +170,6 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
-    // TODO: Add comments here for new methods
     /**
      * Tracks specific exception event.
      * @param exception the exception object that caused crash
