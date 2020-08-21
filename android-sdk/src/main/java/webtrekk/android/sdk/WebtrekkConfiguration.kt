@@ -57,7 +57,8 @@ class WebtrekkConfiguration private constructor(
     override val requestPerBatch: Int,
     override val batchSupport: Boolean,
     override val activityAutoTracking: Boolean,
-    override val exceptionLogLevel: ExceptionType
+    override val exceptionLogLevel: ExceptionType,
+    override val shouldMigrate: Boolean
 ) : Config {
 
     /**
@@ -76,6 +77,7 @@ class WebtrekkConfiguration private constructor(
         private var batchSupport = DefaultConfiguration.BATCH_SUPPORT_ENABLED
         private var activityAutoTracking = DefaultConfiguration.ACTIVITY_AUTO_TRACK_ENABLED
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
+        private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
 
         /**
          * Configure the log level of the lib.
@@ -116,7 +118,10 @@ class WebtrekkConfiguration private constructor(
             this.activityAutoTracking = false
         }
 
-        // TODO: Add comments for this method
+        /**
+         * The crash tracking is disabled by default. The crash tracking will track different exception types defined in [ExceptionType].
+         * To enable it, call [enableCrashTracking] supplying different values of [ExceptionType] as arguments, except [ExceptionType.NONE]
+         */
         fun enableCrashTracking(exceptionLogLevel: ExceptionType) = apply {
             this.exceptionLogLevel = exceptionLogLevel
         }
@@ -130,6 +135,13 @@ class WebtrekkConfiguration private constructor(
          */
         fun disableActivityAutoTracking() = apply {
             this.activityAutoTracking = false
+        }
+
+        /**
+         * Migration of ever id and one parameter values from sdk version 4 is disabled by default. To enable it, call [enableMigration].
+         */
+        fun enableMigration() = apply {
+            this.shouldMigrate = true
         }
 
         @JvmOverloads
@@ -203,7 +215,8 @@ class WebtrekkConfiguration private constructor(
             requestPerBatch,
             batchSupport,
             activityAutoTracking,
-            exceptionLogLevel
+            exceptionLogLevel,
+            shouldMigrate
         )
     }
 
@@ -223,6 +236,9 @@ class WebtrekkConfiguration private constructor(
         if (okHttpClient != other.okHttpClient) return false
         if (requestPerBatch != other.requestPerBatch) return false
         if (batchSupport != other.batchSupport) return false
+        if (activityAutoTracking != other.activityAutoTracking) return false
+        if (exceptionLogLevel != other.exceptionLogLevel) return false
+        if (shouldMigrate != other.shouldMigrate) return false
 
         return true
     }
@@ -238,10 +254,16 @@ class WebtrekkConfiguration private constructor(
         result = 31 * result + okHttpClient.hashCode()
         result = 31 * result + requestPerBatch
         result = 31 * result + batchSupport.hashCode()
+        result = 31 * result + activityAutoTracking.hashCode()
+        result = 31 * result + exceptionLogLevel.hashCode()
+        result = 31 * result + shouldMigrate.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport)"
+        return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, " +
+            "autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, " +
+            "okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport, activityAutoTracking=$activityAutoTracking," +
+            "exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate)"
     }
 }
