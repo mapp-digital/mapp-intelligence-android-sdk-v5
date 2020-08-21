@@ -78,8 +78,16 @@ object DefaultConfiguration {
      */
     const val ACTIVITY_AUTO_TRACK_ENABLED = true
 
-    // TODO: Add comments for this value
+    /**
+     * The crash tracking functionality is disabled by default. To enable it, call [WebtrekkConfiguration.Builder.enableCrashTracking] supplying one of the [ExceptionType] values as method argument,
+     * other then [ExceptionType.NONE]
+     */
     val CRASH_TRACKING_ENABLED = ExceptionType.NONE
+
+    /**
+     * The migration of ever id and one parameter values from sdk version 4 is disabled by default. To enable migration, call [WebtrekkConfiguration.Builder.enableMigration].
+     */
+    const val SHOULD_MIGRATE_ENABLED = false
 
     /**
      * The default interval time that's used in [WebtrekkConfiguration.Builder.requestsInterval].

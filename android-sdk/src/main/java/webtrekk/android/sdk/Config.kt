@@ -109,8 +109,10 @@ interface Config {
      */
     val activityAutoTracking: Boolean
 
-    // TODO: Add comments for this values
-
+    /**
+     * Choose [exceptionLogLevel] type to track different exceptions individually ([ExceptionType.UNCAUGHT], [ExceptionType.CAUGHT], [ExceptionType.CUSTOM]),
+     * or different combinations of them. ([ExceptionType.ALL], [ExceptionType.UNCAUGHT_AND_CUSTOM], [ExceptionType.CUSTOM_AND_CAUGHT])
+     */
     val exceptionLogLevel: ExceptionType
 
     /**
@@ -143,6 +145,11 @@ interface Config {
      * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.BATCH_SUPPORT_ENABLED]
      */
     val batchSupport: Boolean
+
+    /**
+     * [shouldMigrate] set to true to enable migration of ever id and one parameter values from sdk version 4.
+     */
+    val shouldMigrate: Boolean
 
     /**
      * [requestPerBatch] is the client that is used for networking.
