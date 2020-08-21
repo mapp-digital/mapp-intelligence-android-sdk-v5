@@ -430,6 +430,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun internalInit() = launch(coroutineExceptionHandler(logger)) {
+        if (config.shouldMigrate) {
+            sessions.migrate()
+        }
+
         sessions.setEverId() // Setting up the ever id at first start of using the SDK.
 
         // Starting a new session at every freshly app open.
@@ -530,7 +534,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         _job.cancel()
     }
 
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP) // TODO: Should it have this annotation?
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun initUncaughtExceptionTracking() {
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
             uncaughtExceptionHandler = UncaughtExceptionHandler(
