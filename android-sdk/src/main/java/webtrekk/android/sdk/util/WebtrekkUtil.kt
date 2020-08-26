@@ -63,6 +63,10 @@ internal var alias: String
     inline get() = WebtrekkImpl.getInstance().sessions.getAlias()
     set(value) = WebtrekkImpl.getInstance().sessions.alias(value)
 
+internal var userId: String
+    inline get() = WebtrekkImpl.getInstance().sessions.userId()
+    set(value) = WebtrekkImpl.getInstance().sessions.userId(value)
+
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random
