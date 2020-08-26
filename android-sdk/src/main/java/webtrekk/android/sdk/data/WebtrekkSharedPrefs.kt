@@ -38,6 +38,9 @@ internal class WebtrekkSharedPrefs(context: Context) {
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
+    val previousSharedPreferences: SharedPreferences =
+        context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+
     var everId: String
         inline get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
@@ -67,16 +70,26 @@ internal class WebtrekkSharedPrefs(context: Context) {
         }
         set(value) = sharedPreferences.edit().putString(ALIAS, value).apply()
 
+    var isMigrated: Boolean
+        inline get() = sharedPreferences.getBoolean(MIGRATED, false)
+        set(value) = sharedPreferences.edit().putBoolean(MIGRATED, value).apply()
+
+    var previousEverId: String
+        inline get() = previousSharedPreferences.getString(EVER_ID_KEY, "") ?: ""
+        set(value) = previousSharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     companion object {
 
         const val SHARED_PREFS_NAME = "webtrekk_sharedPref"
+        const val PREVIOUS_SHARED_PREFS_NAME = "webtrekk-preferences"
         const val EVER_ID_KEY = "everId"
         const val APP_FIRST_OPEN = "appFirstOpen"
         const val NEW_SESSION_KEY = "forceNewSession"
         const val USER_OPT_OUT = "optOut"
         const val APP_VERSION = "appVersion"
         const val ALIAS = "alias"
+        const val MIGRATED = "isMigrated"
     }
 }
