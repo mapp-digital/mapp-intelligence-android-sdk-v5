@@ -85,4 +85,9 @@ internal interface Sessions {
      * @param currentAppVersion the current app version number.
      */
     fun isAppUpdated(currentAppVersion: String): Boolean
+
+    /**
+     * Set the ever id and one parameter values from sdk version 4 SharedPreferences, if the value exists. Whether the migration succeed or not, migration is only tried once and stored as boolean flag in SharedPreferences.
+     */
+    fun migrate()
 }
