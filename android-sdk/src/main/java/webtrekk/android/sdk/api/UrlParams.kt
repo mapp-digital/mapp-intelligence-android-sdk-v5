@@ -63,6 +63,8 @@ internal object UrlParams {
 
     const val FORM_FIELD = "ft"
 
+    const val USER_ID = "uc701"
+
     val ANDROID_API_LEVEL = customParam(
         ParamType.SESSION_PARAM,
         814
@@ -83,7 +85,6 @@ internal object UrlParams {
         815
     ) // we need to send this on new session and when is changed
 
-    // TODO: Check if this should be here and possibly comment the purpose
     val CRASH_TYPE = customParam(
         ParamType.EVENT_PARAM,
         910

@@ -3,7 +3,6 @@ package webtrekk.android.sdk.integration
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import webtrekk.android.sdk.util.alias
 
 /**

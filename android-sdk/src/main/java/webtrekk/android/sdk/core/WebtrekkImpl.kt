@@ -134,7 +134,6 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         trackingParams: Map<String, String>
     ) = config.run {
         val contextName = customPageName ?: (context as Activity).localClassName
-
         manualTrack(
             ManualTrack.Params(
                 trackRequest = TrackRequest(
