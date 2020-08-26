@@ -27,8 +27,6 @@ package webtrekk.android.sdk.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import webtrekk.android.sdk.integration.IntelligenceEvent
-import webtrekk.android.sdk.integration.MappIntelligenceListener
 
 /**
  * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving
@@ -40,6 +38,9 @@ internal class WebtrekkSharedPrefs(context: Context) {
 
     val previousSharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+
+    val mappSharedPreferences: SharedPreferences =
+        context.getSharedPreferences(MAPP_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
     var everId: String
         inline get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
@@ -63,12 +64,24 @@ internal class WebtrekkSharedPrefs(context: Context) {
 
     var alias: String
         inline get() = if (sharedPreferences.getString(ALIAS, "") == "") {
+            sharedPreferences.edit().putString(ALIAS, mappSharedPreferences.getString(ALIAS, ""))
+                .apply()
             sharedPreferences.getString(ALIAS, "")!!
         } else {
-            IntelligenceEvent.sendEvent(localContext, MappIntelligenceListener.GET_ALIAS, "")
-            ""
+            sharedPreferences.getString(ALIAS, "")!!
         }
         set(value) = sharedPreferences.edit().putString(ALIAS, value).apply()
+
+    var userId: String
+        inline get() = if (sharedPreferences.getString(DMC_USER_ID, "") == "") {
+            sharedPreferences.edit()
+                .putString(DMC_USER_ID, mappSharedPreferences.getString(DMC_USER_ID, ""))
+                .apply()
+            sharedPreferences.getString(DMC_USER_ID, "")!!
+        } else {
+            sharedPreferences.getString(DMC_USER_ID, "")!!
+        }
+        set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
 
     var isMigrated: Boolean
         inline get() = sharedPreferences.getBoolean(MIGRATED, false)
@@ -84,12 +97,14 @@ internal class WebtrekkSharedPrefs(context: Context) {
 
         const val SHARED_PREFS_NAME = "webtrekk_sharedPref"
         const val PREVIOUS_SHARED_PREFS_NAME = "webtrekk-preferences"
+        const val MAPP_SHARED_PREFS_NAME = "appoxee"
         const val EVER_ID_KEY = "everId"
         const val APP_FIRST_OPEN = "appFirstOpen"
         const val NEW_SESSION_KEY = "forceNewSession"
         const val USER_OPT_OUT = "optOut"
         const val APP_VERSION = "appVersion"
         const val ALIAS = "alias"
+        const val DMC_USER_ID = "dmc_user_id"
         const val MIGRATED = "isMigrated"
     }
 }

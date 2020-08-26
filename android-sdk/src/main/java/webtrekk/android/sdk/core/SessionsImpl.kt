@@ -81,6 +81,14 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         webtrekkSharedPrefs.alias = alias
     }
 
+    override fun userId(): String {
+        return webtrekkSharedPrefs.userId
+    }
+
+    override fun userId(userId: String) {
+        webtrekkSharedPrefs.userId = userId
+    }
+
     override fun optOut(value: Boolean) {
         webtrekkSharedPrefs.optOut = value
     }

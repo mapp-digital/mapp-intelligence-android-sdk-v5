@@ -68,6 +68,16 @@ internal interface Sessions {
     fun alias(alias: String)
 
     /**
+     * GetUserId
+     */
+    fun userId(): String
+
+    /**
+     * GetUserId
+     */
+    fun userId(userId: String)
+
+    /**
      * Set the opt out value in SharedPreferences, true means to opt out, false to stop opting out.
      *
      * @param value the opt out is true, false to stop opt out.

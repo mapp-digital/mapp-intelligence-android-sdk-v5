@@ -40,16 +40,19 @@ import webtrekk.android.sdk.util.currentDeviceManufacturer
 import webtrekk.android.sdk.util.currentDeviceModel
 import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentCountry
+import webtrekk.android.sdk.util.userId
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
  */
 internal val TrackRequest.webtrekkRequestParams
     // The webtrekk version number must be sent without '.'.
-    inline get() = "${webtrekkVersion.replace(
-        ".",
-        ""
-    )},${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
+    inline get() = "${
+        webtrekkVersion.replace(
+            ".",
+            ""
+        )
+    },${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
 
 internal val TrackRequest.userAgent
     inline get() = "Tracking Library $webtrekkVersion (Android $osVersion; $deviceManufacturer $deviceModel; ${language}_$country)"
@@ -131,8 +134,11 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
         stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
             "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}"
     }
-
+    if (this.trackRequest.forceNewSession == "1" && userId != "") {
+        stringBuffer += "&${UrlParams.USER_ID}=$userId"
+    }
     stringBuffer += customParams.buildCustomParams()
+
     return stringBuffer
 }
 
