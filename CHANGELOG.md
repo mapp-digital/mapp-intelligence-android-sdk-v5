@@ -1,5 +1,8 @@
 # Change Log
-## Version 5.0.3.-beta1 *(in Progress)*
+## Version 5.0.4. Beta-1 *(Progress)*
+
+## Version 5.0.3. *(2020-08-26)*
+* Added Migration from version v4 to version v5
 
 ## Version 5.0.2. *(2020-07-09)*
 * Add Crash Analytics

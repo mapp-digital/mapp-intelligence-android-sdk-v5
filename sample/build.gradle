@@ -29,6 +29,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.appdistribution'
 
 def getTrackDomain() {
     File localPropFile = project.rootProject.file('local.properties')
@@ -84,6 +85,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            firebaseAppDistribution {
+                releaseNotes="This is test build for testers to accept the invitation and get the app :)"
+                testersFile="testers_webtrekk.txt"
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
