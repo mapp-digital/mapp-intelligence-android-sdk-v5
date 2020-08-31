@@ -315,6 +315,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         sessions.getEverId()
     }
 
+    override fun setEverId(everId: String) = context.run {
+        sessions.setEverId(everId)
+    }
+
     override fun getUserAgent(): String = context.run {
         sessions.getUserAgent()
     }

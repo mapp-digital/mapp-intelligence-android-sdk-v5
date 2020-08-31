@@ -36,6 +36,11 @@ internal interface Sessions {
     fun setEverId()
 
     /**
+     * Set the ever id provided by the client.
+     */
+    fun setEverId(everId: String)
+
+    /**
      * Returns the ever id which is stored in the SharedPreferences.
      */
     fun getEverId(): String
