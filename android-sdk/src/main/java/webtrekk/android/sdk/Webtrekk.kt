@@ -255,6 +255,11 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun getEverId(): String
 
+    /**
+     * Set the ever id provided by the client.
+     */
+    abstract fun setEverId(everId: String)
+
     abstract fun getUserAgent(): String
 
     companion object {
