@@ -78,6 +78,8 @@ import webtrekk.android.sdk.util.currentSession
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.util.getFileName
+import webtrekk.android.sdk.extension.nullOrEmptyThrowError
+import webtrekk.android.sdk.extension.validateEntireList
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -317,6 +319,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
     override fun setEverId(everId: String) = context.run {
         sessions.setEverId(everId)
+    }
+
+    override fun changeTrackIdAndDomain(trackIds: List<String>, trackDomain: String) {
+        config.trackDomain = trackDomain.nullOrEmptyThrowError("trackIds")
+        config.trackIds = trackIds.validateEntireList("trackDomain")
     }
 
     override fun getUserAgent(): String = context.run {

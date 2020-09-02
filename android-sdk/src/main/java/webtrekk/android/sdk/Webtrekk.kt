@@ -260,6 +260,9 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun setEverId(everId: String)
 
+    // TODO: Consider changing function name
+    abstract fun changeTrackIdAndDomain(trackIds: List<String>, trackDomain: String)
+
     abstract fun getUserAgent(): String
 
     companion object {
