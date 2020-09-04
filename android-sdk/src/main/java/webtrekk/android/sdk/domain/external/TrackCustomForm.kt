@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.domain.external
 
+import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
@@ -48,6 +49,8 @@ import webtrekk.android.sdk.extension.notTrackedView
 import webtrekk.android.sdk.extension.parseView
 import webtrekk.android.sdk.extension.toFormField
 import webtrekk.android.sdk.extension.toRequest
+import webtrekk.android.sdk.integration.IntelligenceEvent
+import webtrekk.android.sdk.integration.MappIntelligenceListener
 
 import kotlin.coroutines.CoroutineContext
 
@@ -70,6 +73,8 @@ internal class TrackCustomForm(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
+        IntelligenceEvent.sendEvent(invokeParams.context,
+            MappIntelligenceListener.FORM, invokeParams.trackRequest.name)
         if (invokeParams.isOptOut) return
 
         scope.launch(
@@ -160,6 +165,7 @@ internal class TrackCustomForm(
         val changeFieldsValue: Map<Int, String>,
         val fieldsOrder: List<Int>,
         val anonymousSpecificFields: List<Int>,
-        val fullContentSpecificFields: List<Int>
+        val fullContentSpecificFields: List<Int>,
+        val context: Context? =null
     )
 }

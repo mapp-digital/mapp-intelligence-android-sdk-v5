@@ -9,10 +9,12 @@ import android.content.Intent
  */
 internal object IntelligenceEvent {
     fun sendEvent(
-        context: Context,
+        context: Context?,
         event: String?,
         data: String?
     ) {
+        if(context==null)
+            return
         val intent: Intent = Intent(MappIntelligenceListener.WebtrekkToMapp).setClassName(
             context,
             "webtrekk.android.sdk.integration.MappIntelligenceListener"

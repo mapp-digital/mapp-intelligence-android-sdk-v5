@@ -1,5 +1,6 @@
 package webtrekk.android.sdk.domain.external
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -13,6 +14,8 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.extension.createString
+import webtrekk.android.sdk.integration.IntelligenceEvent
+import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
@@ -36,8 +39,11 @@ internal class TrackException(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
+        IntelligenceEvent.sendEvent(
+            invokeParams.context,
+            MappIntelligenceListener.CRASH, invokeParams.trackRequest.name
+        )
         if (invokeParams.isOptOut) return
-
         scope.launch(
             coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
                 logger
@@ -101,6 +107,7 @@ internal class TrackException(
         val trackRequest: TrackRequest,
         val isOptOut: Boolean,
         val exception: Exception,
-        val exceptionType: ExceptionType
+        val exceptionType: ExceptionType,
+        val context: Context? =null
     )
 }
