@@ -22,5 +22,10 @@ internal class MappIntelligenceListener : BroadcastReceiver() {
         const val INTELLIGENCE_DATA = "INTELLIGENCE_DATA"
         const val GET_ALIAS = "GET_ALIAS"
         const val SET_ALIAS = "SET_ALIAS"
+        const val PAGE = "PAGE"
+        const val EVENT = "EVENT"
+        const val MEDIA = "MEDIA"
+        const val CRASH = "CRASH"
+        const val FORM = "FORM"
     }
 }
