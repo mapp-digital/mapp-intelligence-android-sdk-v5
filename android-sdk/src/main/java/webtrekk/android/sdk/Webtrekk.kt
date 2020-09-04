@@ -255,11 +255,6 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun getEverId(): String
 
-    /**
-     * Set the ever id provided by the client.
-     */
-    abstract fun setEverId(everId: String)
-
     // TODO: Consider changing function name
     abstract fun changeTrackIdAndDomain(trackIds: List<String>, trackDomain: String)
 
