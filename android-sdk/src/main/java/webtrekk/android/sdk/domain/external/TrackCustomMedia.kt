@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.domain.external
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -37,6 +38,8 @@ import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.integration.IntelligenceEvent
+import webtrekk.android.sdk.integration.MappIntelligenceListener
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -58,6 +61,8 @@ internal class TrackCustomMedia(
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
+        IntelligenceEvent.sendEvent(invokeParams.context,
+            MappIntelligenceListener.MEDIA, invokeParams.trackRequest.name)
         if (invokeParams.isOptOut) return
 
         scope.launch(
@@ -90,6 +95,7 @@ internal class TrackCustomMedia(
     data class Params(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
-        val isOptOut: Boolean
+        val isOptOut: Boolean,
+        val context: Context? =null
     )
 }

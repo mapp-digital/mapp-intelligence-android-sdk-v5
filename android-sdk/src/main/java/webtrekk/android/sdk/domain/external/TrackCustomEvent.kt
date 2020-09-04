@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.domain.external
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -37,6 +38,8 @@ import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.integration.IntelligenceEvent
+import webtrekk.android.sdk.integration.MappIntelligenceListener
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -58,6 +61,8 @@ internal class TrackCustomEvent(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
+        IntelligenceEvent.sendEvent(invokeParams.context,
+            MappIntelligenceListener.EVENT, invokeParams.trackRequest.name)
         if (invokeParams.isOptOut) return
 
         scope.launch(
@@ -92,6 +97,7 @@ internal class TrackCustomEvent(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
         val isOptOut: Boolean,
-        val ctParams: String
+        val ctParams: String,
+        val context: Context? =null
     )
 }
