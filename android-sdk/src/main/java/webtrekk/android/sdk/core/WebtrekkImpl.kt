@@ -56,6 +56,7 @@ import webtrekk.android.sdk.data.getWebtrekkDatabase
 import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
+import webtrekk.android.sdk.domain.external.SendAndClean
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
 import webtrekk.android.sdk.domain.external.TrackCustomMedia
@@ -107,6 +108,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackException by inject<TrackException>()
     private val trackUncaughtException by inject<TrackUncaughtException>()
     private val optOutUser by inject<Optout>()
+    private val sendAndClean by inject<SendAndClean>()
     private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
     internal val logger by inject<Logger>()
@@ -318,8 +320,18 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     }
 
     override fun changeTrackIdAndDomain(trackIds: List<String>, trackDomain: String) {
-        config.trackDomain = trackDomain.nullOrEmptyThrowError("trackIds")
-        config.trackIds = trackIds.validateEntireList("trackDomain")
+        trackDomain.nullOrEmptyThrowError("trackDomain")
+        trackIds.validateEntireList("trackIds")
+        context.run {
+            sendAndClean(
+                SendAndClean.Params(
+                    context = this,
+                    trackDomain = trackDomain,
+                    trackIds = trackIds,
+                    config = config
+                ), coroutineDispatchers
+            )
+        }
     }
 
     override fun getUserAgent(): String = context.run {
@@ -410,6 +422,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     get(),
                     get(),
                     get(),
+                    get()
+                )
+            }
+
+            single {
+                SendAndClean(
+                    coroutineContext,
                     get()
                 )
             }
