@@ -68,7 +68,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         button4.setOnClickListener {
-           Appoxee.instance().alias="ACA@aca.com"
+            val intent = Intent(this, SettingsExample::class.java)
+            startActivity(intent)
         }
     }
 }

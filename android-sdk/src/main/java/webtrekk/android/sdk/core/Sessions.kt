@@ -45,6 +45,9 @@ internal interface Sessions {
      */
     fun getEverId(): String
 
+    /**
+     * Returns user agent created for the mobile device.
+     */
     fun getUserAgent(): String
 
     /**
