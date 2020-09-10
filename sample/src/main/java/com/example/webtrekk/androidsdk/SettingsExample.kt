@@ -1,6 +1,5 @@
 package com.example.webtrekk.androidsdk
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -17,11 +16,11 @@ class SettingsExample : AppCompatActivity() {
             val stringIds = BuildConfig.TRACK_IDS
             val domain = BuildConfig.DOMEIN
             val elements: List<String> = stringIds.split(",")
-            Webtrekk.getInstance().changeTrackIdAndDomain(elements, domain)
+            Webtrekk.getInstance().setIdsAndDomain(elements, domain)
         }
 
         button2.setOnClickListener {
-            Webtrekk.getInstance().changeTrackIdAndDomain(
+            Webtrekk.getInstance().setIdsAndDomain(
                 listOf("826582930668809"),
                 "http://vdestellaaccount01.wt-eu02.net"
             )
@@ -33,7 +32,7 @@ class SettingsExample : AppCompatActivity() {
             val domain = BuildConfig.DOMEIN
             var elements: MutableList<String> = stringIds.split(",").toMutableList()
             elements.add("826582930668809")
-            Webtrekk.getInstance().changeTrackIdAndDomain(elements, domain)
+            Webtrekk.getInstance().setIdsAndDomain(elements, domain)
 
         }
     }

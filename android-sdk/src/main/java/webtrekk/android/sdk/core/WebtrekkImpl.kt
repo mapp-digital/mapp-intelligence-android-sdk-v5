@@ -319,7 +319,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         sessions.getEverId()
     }
 
-    override fun changeTrackIdAndDomain(trackIds: List<String>, trackDomain: String) {
+    override fun setIdsAndDomain(trackIds: List<String>, trackDomain: String) {
         trackDomain.nullOrEmptyThrowError("trackDomain")
         trackIds.validateEntireList("trackIds")
         context.run {
