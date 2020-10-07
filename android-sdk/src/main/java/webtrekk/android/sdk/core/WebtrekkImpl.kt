@@ -250,7 +250,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             trackUncaughtException(
                 TrackUncaughtException.Params(
                     trackRequest = TrackRequest(
-                        name = "webtrekk_ignore",
+                        name = WEBTREKK_IGNORE,
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -552,7 +552,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         )
 
-        trackCustomEvent(APP_UPDATE_EVENT, trackingParams)
+        trackCustomEvent(WEBTREKK_IGNORE, trackingParams)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -578,7 +578,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
     companion object {
 
-        const val APP_UPDATE_EVENT = "app_updated"
+        const val WEBTREKK_IGNORE = "webtrekk_ignore"
 
         @Volatile
         private lateinit var INSTANCE: WebtrekkImpl
