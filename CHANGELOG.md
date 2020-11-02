@@ -1,5 +1,9 @@
 # Change Log
-## Version 5.0.4. Beta-1 *(Progress)*
+## Version 5.0.5. Beta-1 *(Progress)*
+
+## Version 5.0.4. *(2020-11-02)*
+* Bug fix for device update
+* Added android 11 support
 
 ## Version 5.0.3. *(2020-08-26)*
 * Added Migration from version v4 to version v5
