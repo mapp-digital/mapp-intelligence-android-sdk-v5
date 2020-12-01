@@ -255,6 +255,17 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun getEverId(): String
 
+    /**
+     * This function can be used to change trackingId and Domain in one session
+     * If need to keep same settings engage function must be changed
+     *
+     * @param * The [trackIds] that you get in your Webtrekk's account. [trackIds] must be set in the configuration,
+     * otherwise webtrekk won't send any tracking data.
+     * @param [trackDomain] domain that all the analytics data will be sent to. Make sure it's a valid domain.
+     * @throws [IllegalStateException] if [Context] context is not initialized.
+     */
+    abstract fun setIdsAndDomain(trackIds: List<String>, trackDomain: String)
+
     abstract fun getUserAgent(): String
 
     companion object {

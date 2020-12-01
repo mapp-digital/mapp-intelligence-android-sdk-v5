@@ -56,6 +56,7 @@ import webtrekk.android.sdk.data.getWebtrekkDatabase
 import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
+import webtrekk.android.sdk.domain.external.SendAndClean
 import webtrekk.android.sdk.domain.external.TrackCustomEvent
 import webtrekk.android.sdk.domain.external.TrackCustomForm
 import webtrekk.android.sdk.domain.external.TrackCustomMedia
@@ -78,6 +79,8 @@ import webtrekk.android.sdk.util.currentSession
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.util.getFileName
+import webtrekk.android.sdk.extension.nullOrEmptyThrowError
+import webtrekk.android.sdk.extension.validateEntireList
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -105,6 +108,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private val trackException by inject<TrackException>()
     private val trackUncaughtException by inject<TrackUncaughtException>()
     private val optOutUser by inject<Optout>()
+    private val sendAndClean by inject<SendAndClean>()
     private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
     internal val logger by inject<Logger>()
@@ -249,7 +253,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             trackUncaughtException(
                 TrackUncaughtException.Params(
                     trackRequest = TrackRequest(
-                        name = "webtrekk_ignore",
+                        name = WEBTREKK_IGNORE,
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -317,6 +321,21 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
     override fun getEverId(): String = context.run {
         sessions.getEverId()
+    }
+
+    override fun setIdsAndDomain(trackIds: List<String>, trackDomain: String) {
+        trackDomain.nullOrEmptyThrowError("trackDomain")
+        trackIds.validateEntireList("trackIds")
+        context.run {
+            sendAndClean(
+                SendAndClean.Params(
+                    context = this,
+                    trackDomain = trackDomain,
+                    trackIds = trackIds,
+                    config = config
+                ), coroutineDispatchers
+            )
+        }
     }
 
     override fun getUserAgent(): String = context.run {
@@ -407,6 +426,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     get(),
                     get(),
                     get(),
+                    get()
+                )
+            }
+
+            single {
+                SendAndClean(
+                    coroutineContext,
                     get()
                 )
             }
@@ -530,7 +556,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             )
         )
 
-        trackCustomEvent(APP_UPDATE_EVENT, trackingParams)
+        trackCustomEvent(WEBTREKK_IGNORE, trackingParams)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -556,7 +582,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
 
     companion object {
 
-        const val APP_UPDATE_EVENT = "app_updated"
+        const val WEBTREKK_IGNORE = "webtrekk_ignore"
 
         @Volatile
         private lateinit var INSTANCE: WebtrekkImpl

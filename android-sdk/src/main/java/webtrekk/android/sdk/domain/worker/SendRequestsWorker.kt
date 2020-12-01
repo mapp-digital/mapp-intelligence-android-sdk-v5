@@ -82,6 +82,16 @@ internal class SendRequestsWorker(
          */
         val logger: Logger by inject()
 
+        val trackDomainLocal = if (inputData.getString("trackDomain") != null) {
+            inputData.getString("trackDomain")
+        } else {
+            trackDomain
+        }
+        val trackIdsLocal = if (inputData.getStringArray("trackIds") != null) {
+            inputData.getStringArray("trackIds")!!.toList()
+        } else {
+            trackIds
+        }
         // retrieves the data in the data base with state of NEW or FAILED only.
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
@@ -100,7 +110,10 @@ internal class SendRequestsWorker(
                         if (batchSupported) {
                             dataTracks.asSequence().batch(requestPerBatch).forEach { group ->
                                 val urlRequest =
-                                    group.buildPostRequest(trackDomain, trackIds, currentEverId)
+                                    group.buildPostRequest(
+                                        trackDomainLocal!!,
+                                        trackIdsLocal, currentEverId
+                                    )
                                 logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
                                 executePostRequest(
@@ -117,7 +130,11 @@ internal class SendRequestsWorker(
                             dataTracks.forEach { dataTrack ->
 
                                 val urlRequest =
-                                    dataTrack.buildUrlRequest(trackDomain, trackIds, currentEverId)
+                                    dataTrack.buildUrlRequest(
+                                        trackDomainLocal!!,
+                                        trackIdsLocal,
+                                        currentEverId
+                                    )
                                 logger.info("Sending request = $urlRequest")
 
                                 executeRequest(

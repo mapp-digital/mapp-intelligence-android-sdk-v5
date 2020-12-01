@@ -25,11 +25,12 @@
 
 package webtrekk.android.sdk.core
 
-import androidx.work.WorkManager
-import androidx.work.PeriodicWorkRequest
-import androidx.work.OneTimeWorkRequest
 import androidx.work.Constraints
+import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.Data
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import java.util.concurrent.TimeUnit
@@ -58,9 +59,16 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
         )
     }
 
-    override fun sendRequestsThenCleanUp() {
+    override fun sendRequestsThenCleanUp(trackDomain: String, trackIds: List<String>) {
+        val data = Data.Builder()
+        if (trackDomain != "")
+            data.putString("trackDomain", trackDomain)
+        if (trackIds.isNotEmpty()) {
+            data.putStringArray("trackIds", trackIds.toTypedArray())
+        }
         val sendRequestsWorker = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
             .addTag(SendRequestsWorker.TAG_ONE_TIME_WORKER)
+            .setInputData(data.build())
             .build()
 
         val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
