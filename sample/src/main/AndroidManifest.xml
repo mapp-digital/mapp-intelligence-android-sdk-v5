@@ -30,6 +30,7 @@
         <activity android:name=".WebViewActivity" />
         <activity android:name=".FormActivity" />
         <activity android:name=".CrashActivity" />
+        <activity android:name=".SettingsExample" />
     </application>
 
 </manifest>

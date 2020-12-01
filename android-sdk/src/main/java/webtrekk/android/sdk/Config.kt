@@ -48,14 +48,14 @@ interface Config {
      *
      * Could be just one track Id or list of track Ids, but there must be at least one track Id.
      */
-    val trackIds: List<String>
+    var trackIds: List<String>
 
     /**
      * The [trackDomain] domain that all the analytics data will be sent to. Make sure it's a valid domain.
      *
      * [trackDomain] must be set in the configuration, otherwise webtrekk won't send any tracking data.
      */
-    val trackDomain: String
+    var trackDomain: String
 
     /**
      * [logLevel], the log level that is used through the library.
