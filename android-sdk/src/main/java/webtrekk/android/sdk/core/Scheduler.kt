@@ -45,7 +45,7 @@ internal interface Scheduler {
     /**
      * A one time worker that will be used to send all available requests in the cache to the server, then cleaning up the cache. Used for Opt out.
      */
-    fun sendRequestsThenCleanUp()
+    fun sendRequestsThenCleanUp(trackDomain: String = "", trackIds: List<String> = emptyList())
 
     /**
      * A worker that is scheduled to clean up the requests in the cache that are already sent to the server.

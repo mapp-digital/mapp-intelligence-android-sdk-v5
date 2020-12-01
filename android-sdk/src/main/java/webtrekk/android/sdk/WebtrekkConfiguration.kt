@@ -46,8 +46,8 @@ import java.util.concurrent.TimeUnit
  *
  */
 class WebtrekkConfiguration private constructor(
-    override val trackIds: List<String>,
-    override val trackDomain: String,
+    override var trackIds: List<String>,
+    override var trackDomain: String,
     override val logLevel: Logger.Level,
     override val requestsInterval: Long,
     override val autoTracking: Boolean,
