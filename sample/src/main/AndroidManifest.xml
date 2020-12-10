@@ -31,6 +31,76 @@
         <activity android:name=".FormActivity" />
         <activity android:name=".CrashActivity" />
         <activity android:name=".SettingsExample" />
+
+
+        <activity
+            android:name=".mapp.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="com.mapp.RICH_PUSH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".mapp.SecondActivity">
+            <intent-filter>
+                <data android:scheme="apx" />
+                <data android:host="deeplink" />
+
+                <action android:name="com.appoxee.test" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
+        <!-- Deeplinking Start -->
+        <activity android:name=".mapp.DeepLinkActivity">
+            <intent-filter>
+                <data android:scheme="apx" />
+                <data android:host="deeplink" />
+
+                <action android:name="com.appoxee.VIEW_DEEPLINK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".mapp.CustomDeeplinkActivity">
+            <intent-filter>
+                <data android:scheme="apx" />
+                <data android:host="custom" />
+
+                <action android:name="com.appoxee.VIEW_CUSTOM_LINKS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".mapp.MyPushBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.appoxee.PUSH_OPENED" />
+                <action android:name="com.appoxee.PUSH_RECEIVED" />
+                <action android:name="com.appoxee.PUSH_DISMISSED" />
+                <action android:name="com.appoxee.BUTTON_CLICKED" />
+
+                <category android:name="${applicationId}" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
