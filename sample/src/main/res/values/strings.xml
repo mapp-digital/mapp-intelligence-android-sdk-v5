@@ -33,4 +33,81 @@
         <item>item3</item>
         <item>item4</item>
     </string-array>
+
+    <string name="screen_orientation_portrait">SCREEN_ORIENTATION_PORTRAIT</string>
+    <string name="screen_orientation_landscape">SCREEN_ORIENTATION_LANDSCAPE</string>
+    <string name="screen_orientation_reverse_landscape">SCREEN_ORIENTATION_REVERSE_LANDSCAPE</string>
+    <string name="screen_orientation_reverse_portrait">SCREEN_ORIENTATION_REVERSE_PORTRAIT</string>
+    <string name="info">is push enabled</string>
+    <string name="get_alias">Get alias</string>
+    <string name="set_alias">Set alias</string>
+    <string name="_2nd_activity">2nd activity</string>
+    <string name="start_geo">Start Geo</string>
+    <string name="stop_geo">Stop Geo</string>
+    <string name="push_enabled">Push enabled</string>
+    <string name="get_device_info">Get Device Info</string>
+    <string name="fullscreen_app_open">FullScreen: App Open</string>
+    <string name="modal_app_feedback">Modal: App Feedback</string>
+    <string name="banner_app_discount">Banner: App Discount</string>
+    <string name="promo_app_promo">PROMO: App Promo</string>
+    <string name="fetch_multiple_messages">Fetch Multiple Messages</string>
+    <string name="this_is_a_sample_app">This is a sample App</string>
+    <string name="fetch_inbox_messages">Fetch Inbox Messages</string>
+    <string name="get_tags">Get tags</string>
+    <string name="some_text">Text</string>
+    <string name="set_tag">Set tag</string>
+    <string name="remove_tag">Remove tag</string>
+    <string name="set_attribute">Set attribute</string>
+    <string name="get_attribute">Get attribute</string>
+    <string name="remove_attribute">Remove attribute</string>
+    <string name="remove_badge_number">Remove badge number</string>
+    <string name="select_screen_orientation">Lock screen orientation</string>
+    <string name="email">Email</string>
+    <string name="hint_sdk_key">5b56f2bae61a14.21530253</string>
+    <string name="hint_google_project_id">1028993954364</string>
+    <string name="hint_cep_url">https://jamie-test.shortest-route.com/</string>
+    <string name="hint_app_id">262750</string>
+    <string name="hint_tenant_id">55</string>
+    <string name="set_configuration">set configuration</string>
+    <string name="get_configuration">Get configuration</string>
+    <string name="sdk_key">SDK key</string>
+    <string name="app_id">App ID</string>
+    <string name="google_project_id">Google project ID</string>
+    <string name="cep_url">Cep URL</string>
+    <string name="tenant_id">Tenant ID</string>
+    <string name="configuration_mapp_options">Configuration Mapp Options</string>
+    <string name="alias_email">test@mapp.com</string>
+    <string name="backup_configuration">Backup configuration</string>
+    <string name="get_deviceId">Get Device Id</string>
+    <string name="choose_server">Choose Server Option</string>
+    <string name="key">Key</string>
+    <string name="value">Value</string>
+    <string name="keys">Keys</string>
+    <string name="get_custom_attributes_from_server">Get Custom Attributes from Server</string>
+    <string name="get_alias_from_server">Get Alias from Server</string>
+
+    <string-array name="screen_orientation">
+        <item>Screen orientation portrait</item>
+        <item>Screen orientation landscape</item>
+        <item>Screen orientation reverse portrait</item>
+        <item>Screen orientation reverse landscape</item>
+    </string-array>
+
+    <string-array name="event_array">
+        <item>app_open</item>
+        <item>app_feedback</item>
+        <item>app_discount</item>
+        <item>app_promo</item>
+        <item>app_welcome</item>
+        <item>add_to_cart</item>
+        <item>booked_a_table</item>
+        <item>favourite_dish_picked</item>
+        <item>favourite_dish_picked</item>
+        <item>opens_the_sound_bar_production</item>
+        <item>open_message_center</item>
+        <item>open_push_notifications_list</item>
+        <item>open_shoping_cart</item>
+        <item>paid_via_the_app</item>
+        <item>profile_updated</item>
+    </string-array>
 </resources>

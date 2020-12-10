@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/parentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Logout (only logout)" />
+
+                <Button
+                    android:id="@+id/btn_logout_with_optout"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Logout (with optout)" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonDeviceInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/get_device_info" />
+
+            <Button
+                android:id="@+id/device_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info" />
+
+            <Button
+                android:id="@+id/get_alias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/get_alias" />
+
+            <Button
+                android:id="@+id/get_deviceId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/get_deviceId" />
+
+            <EditText
+                android:id="@+id/etxt_set_alias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+            <Button
+                android:id="@+id/btn_set_alias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_alias" />
+
+
+            <Button
+                android:id="@+id/second_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/_2nd_activity" />
+
+            <Button
+                android:id="@+id/geo_fencing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/start_geo" />
+
+            <Button
+                android:id="@+id/stop_geo_fencing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stop_geo" />
+
+            <Switch
+                android:id="@+id/push_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/push_enabled" />
+
+            <Button
+                android:id="@+id/dmcCallInApp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fullscreen_app_open" />
+
+
+            <Button
+                android:id="@+id/inappModalType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modal_app_feedback" />
+
+            <Button
+                android:id="@+id/inappBannerType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/banner_app_discount" />
+
+            <Button
+                android:id="@+id/inappAppPromo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/promo_app_promo" />
+
+
+            <Button
+                android:id="@+id/multipleMessages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fetch_multiple_messages" />
+
+            <Button
+                android:id="@+id/btn_get_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/get_tags" />
+
+            <Button
+                android:id="@+id/fcm_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Get FCM Token" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_red_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FCM TOKEN" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:text="@string/this_is_a_sample_app"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/dummyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="@android:color/black" />
+
+
+            <EditText
+                android:id="@+id/etxt_set_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/some_text"
+                android:inputType="text" />
+
+
+            <Button
+                android:id="@+id/btn_set_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/set_tag" />
+
+            <EditText
+                android:id="@+id/etxt_remove_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/some_text"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btn_remove_tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/remove_tag" />
+
+
+            <EditText
+                android:id="@+id/etxt_set_attribute_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/key"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etxt_set_attribute_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/value"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btn_set_attribute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/set_attribute" />
+
+            <EditText
+                android:id="@+id/etxt_get_attribute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/keys"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btn_get_attribute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/get_attribute" />
+
+            <EditText
+                android:id="@+id/etxt_remove_attribute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/some_text"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btn_remove_attribute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/remove_attribute" />
+
+            <EditText
+                android:id="@+id/etxt_get_custom_attributes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/some_text"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/get_custom_attributes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/get_custom_attributes_from_server" />
+
+            <Button
+                android:id="@+id/get_alias_from_server"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/get_alias_from_server" />
+
+            <Button
+                android:id="@+id/btn_remove_badge_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/remove_badge_number" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

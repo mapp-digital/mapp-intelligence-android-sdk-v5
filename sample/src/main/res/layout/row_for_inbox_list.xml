@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_gravity="center"
+    android:paddingBottom="10dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/imageUrl"
+        android:layout_width="50dp"
+        android:layout_centerInParent="true"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageUrl"
+        android:layout_marginLeft="5dp"
+        android:padding="5dp"
+        android:textColor="@android:color/black"
+        android:text="Subject"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subject"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/imageUrl"
+        android:padding="5dp"
+        android:textColor="@android:color/black"
+        android:text="Smmary"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/summary"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/imageUrl"
+        android:padding="5dp"
+        android:textColor="@android:color/black"
+        android:text="Time"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+
+
+
+</RelativeLayout>

@@ -29,6 +29,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
+import com.example.webtrekk.androidsdk.mapp.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.*
 
@@ -69,6 +70,10 @@ class MainActivity : AppCompatActivity() {
 
         button4.setOnClickListener {
             val intent = Intent(this, SettingsExample::class.java)
+            startActivity(intent)
+        }
+        button5.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
