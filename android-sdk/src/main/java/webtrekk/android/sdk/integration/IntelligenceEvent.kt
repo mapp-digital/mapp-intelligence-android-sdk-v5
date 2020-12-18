@@ -13,7 +13,7 @@ internal object IntelligenceEvent {
         event: String?,
         data: String?
     ) {
-        if(context==null)
+        if (context == null)
             return
         val intent: Intent = Intent(MappIntelligenceListener.WebtrekkToMapp).setClassName(
             context,

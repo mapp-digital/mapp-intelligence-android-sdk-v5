@@ -39,8 +39,6 @@ import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.extension.toParam
-import webtrekk.android.sdk.integration.IntelligenceEvent
-import webtrekk.android.sdk.integration.MappIntelligenceListener.Companion.PAGE
 import kotlin.coroutines.CoroutineContext
 
 /**

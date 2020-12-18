@@ -61,8 +61,10 @@ internal class TrackCustomEvent(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(invokeParams.context,
-            MappIntelligenceListener.EVENT, invokeParams.trackRequest.name)
+        IntelligenceEvent.sendEvent(
+            invokeParams.context,
+            MappIntelligenceListener.EVENT, invokeParams.trackRequest.name
+        )
         if (invokeParams.isOptOut) return
 
         scope.launch(
@@ -98,6 +100,6 @@ internal class TrackCustomEvent(
         val trackingParams: Map<String, String>,
         val isOptOut: Boolean,
         val ctParams: String,
-        val context: Context? =null
+        val context: Context? = null
     )
 }

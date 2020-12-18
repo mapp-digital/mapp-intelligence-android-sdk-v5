@@ -108,6 +108,6 @@ internal class TrackException(
         val isOptOut: Boolean,
         val exception: Exception,
         val exceptionType: ExceptionType,
-        val context: Context? =null
+        val context: Context? = null
     )
 }

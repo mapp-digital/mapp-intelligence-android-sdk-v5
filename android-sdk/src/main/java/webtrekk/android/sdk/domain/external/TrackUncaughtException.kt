@@ -150,6 +150,6 @@ internal class TrackUncaughtException(
         val trackRequest: TrackRequest,
         val isOptOut: Boolean,
         val file: File,
-        val context: Context? =null
+        val context: Context? = null
     )
 }

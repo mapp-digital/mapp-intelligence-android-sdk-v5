@@ -151,7 +151,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 trackingParams = trackingParams,
                 autoTrack = autoTracking,
                 isOptOut = hasOptOut(),
-                context=context
+                context = context
             ), coroutineDispatchers
         )
     }
@@ -170,7 +170,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
-                    context=context
+                    context = context
                 ), coroutineDispatchers
             )
         }
@@ -190,7 +190,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
                     ctParams = eventName,
-                    context=context
+                    context = context
                 ), coroutineDispatchers
             )
         }
@@ -212,7 +212,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
-                    context=context
+                    context = context
                 ), coroutineDispatchers
             )
         }
@@ -233,7 +233,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     isOptOut = hasOptOut(),
                     exception = exception,
                     exceptionType = exceptionType,
-                    context=context
+                    context = context
                 ), coroutineDispatchers
             )
         }
@@ -262,7 +262,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     ),
                     isOptOut = hasOptOut(),
                     file = file,
-                    context=context
+                    context = context
                 ), coroutineDispatchers
             )
         }
@@ -299,7 +299,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     fieldsOrder = formTrackingSettings.pathAnalysis,
                     anonymousSpecificFields = formTrackingSettings.anonymousSpecificFields,
                     fullContentSpecificFields = formTrackingSettings.fullContentSpecificFields,
-                    context=context
+                    context = context
                 ), coroutineDispatchers
             )
         }
