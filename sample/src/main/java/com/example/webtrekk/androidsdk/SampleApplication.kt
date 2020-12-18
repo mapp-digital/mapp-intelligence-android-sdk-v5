@@ -46,10 +46,10 @@ class SampleApplication : Application() {
         super.onCreate()
 
         val opt = AppoxeeOptions()
-        opt.sdkKey = "17394d8e8d05f1.84737482"
-        opt.googleProjectId = "1028993954364"
+        opt.sdkKey = "5fd8bd99795b82.56019929"
+        opt.googleProjectId = "357810879619"
         opt.cepURL = "https://jamie-test.shortest-route.com"
-        opt.appID = "1585031493267"
+        opt.appID = "264118"
         opt.tenantID = "33"
         opt.notificationMode = NotificationMode.BACKGROUND_AND_FOREGROUND
         opt.server = AppoxeeOptions.Server.TEST
