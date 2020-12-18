@@ -61,8 +61,10 @@ internal class TrackCustomMedia(
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(invokeParams.context,
-            MappIntelligenceListener.MEDIA, invokeParams.trackRequest.name)
+        IntelligenceEvent.sendEvent(
+            invokeParams.context,
+            MappIntelligenceListener.MEDIA, invokeParams.trackRequest.name
+        )
         if (invokeParams.isOptOut) return
 
         scope.launch(
@@ -96,6 +98,6 @@ internal class TrackCustomMedia(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
         val isOptOut: Boolean,
-        val context: Context? =null
+        val context: Context? = null
     )
 }

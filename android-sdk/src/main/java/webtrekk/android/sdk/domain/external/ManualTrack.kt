@@ -62,8 +62,10 @@ internal class ManualTrack(
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(invokeParams.context,
-            MappIntelligenceListener.PAGE, invokeParams.trackRequest.name)
+        IntelligenceEvent.sendEvent(
+            invokeParams.context,
+            MappIntelligenceListener.PAGE, invokeParams.trackRequest.name
+        )
         if (invokeParams.isOptOut) return
 
         // If auto track is enabled, then return
@@ -109,6 +111,6 @@ internal class ManualTrack(
         val trackingParams: Map<String, String>,
         val autoTrack: Boolean,
         val isOptOut: Boolean,
-        val context: Context? =null
+        val context: Context? = null
     )
 }

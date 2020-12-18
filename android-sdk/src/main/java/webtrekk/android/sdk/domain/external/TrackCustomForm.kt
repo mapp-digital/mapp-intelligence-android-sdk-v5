@@ -73,8 +73,10 @@ internal class TrackCustomForm(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(invokeParams.context,
-            MappIntelligenceListener.FORM, invokeParams.trackRequest.name)
+        IntelligenceEvent.sendEvent(
+            invokeParams.context,
+            MappIntelligenceListener.FORM, invokeParams.trackRequest.name
+        )
         if (invokeParams.isOptOut) return
 
         scope.launch(
@@ -166,6 +168,6 @@ internal class TrackCustomForm(
         val fieldsOrder: List<Int>,
         val anonymousSpecificFields: List<Int>,
         val fullContentSpecificFields: List<Int>,
-        val context: Context? =null
+        val context: Context? = null
     )
 }
