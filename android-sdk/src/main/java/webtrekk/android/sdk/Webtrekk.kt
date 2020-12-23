@@ -26,6 +26,7 @@
 package webtrekk.android.sdk
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import webtrekk.android.sdk.core.WebtrekkImpl
 import java.io.File
@@ -221,6 +222,17 @@ abstract class Webtrekk protected constructor() {
         context: Context,
         view: View? = null,
         formTrackingSettings: FormTrackingSettings = FormTrackingSettings()
+    )
+
+    /**
+     * Method which will track campaign parameters from url
+     * @param url url object with campaign parameters
+     * @param mediaCode *optional* mediaCode - custom media code, if nil "wt_mc" is used as default
+     */
+
+    abstract fun trackUrl(
+        url: Uri,
+        mediaCode: String? = null
     )
 
     /**
