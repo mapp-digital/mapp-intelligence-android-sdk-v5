@@ -28,6 +28,7 @@ package webtrekk.android.sdk.extension
 import okhttp3.Request
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.api.UrlParams
@@ -78,8 +79,10 @@ internal fun List<CustomParam>.buildCustomParams(): String {
         val paramVal =
             // For media code param, it needs to be double encoded
             if (it.paramKey == Param.MEDIA_CODE) "wt_mc=".encodeToUTF8() + it.paramValue else it.paramValue
+        val paramKey =
+            if (it.paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER) Param.MEDIA_CODE else it.paramKey
 
-        string.append("&${it.paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
+        string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
     }
 
     return string.toString()

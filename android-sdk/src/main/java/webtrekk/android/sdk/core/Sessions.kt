@@ -25,6 +25,8 @@
 
 package webtrekk.android.sdk.core
 
+import android.net.Uri
+
 /**
  * An interface contains all the methods that are used by SharedPreferences in the SDK.
  */
@@ -108,4 +110,14 @@ internal interface Sessions {
      * Set the ever id and one parameter values from sdk version 4 SharedPreferences, if the value exists. Whether the migration succeed or not, migration is only tried once and stored as boolean flag in SharedPreferences.
      */
     fun migrate()
+
+    /**
+     * getUrl
+     */
+    fun getUrlKey(): Map<String, String>
+
+    /**
+     * setURl
+     */
+    fun setUrl(urlString: Uri, mediaCode: String?)
 }

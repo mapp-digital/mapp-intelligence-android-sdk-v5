@@ -27,6 +27,7 @@ package webtrekk.android.sdk.core
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
@@ -305,6 +306,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         }
     }
 
+    override fun trackUrl(url: Uri, mediaCode: String?) {
+        TODO("Not yet implemented")
+    }
+
     override fun optOut(value: Boolean, sendCurrentData: Boolean) = context.run {
         optOutUser(
             Optout.Params(
@@ -384,7 +389,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                     get()
                 )
             }
-            single { TrackCustomPage(coroutineContext, get()) }
+            single { TrackCustomPage(coroutineContext, get(), get()) }
             single {
                 TrackCustomEvent(
                     coroutineContext,
