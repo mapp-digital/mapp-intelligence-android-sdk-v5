@@ -25,6 +25,8 @@
 
 package webtrekk.android.sdk
 
+import androidx.annotation.RestrictTo
+
 /**
  * This file, contains all the predefined custom params. and helper function that helps you create your
  * own custom params depend on their names/keys in the analytics.
@@ -100,6 +102,14 @@ object MediaParam {
     const val BANDWIDTH = "bw"
     const val VOLUME = "vol"
     const val MUTE = "mut"
+}
+
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+object InternalParam {
+    /**
+     * Only for dev team, don't use
+     */
+    const val MEDIA_CODE_PARAM_EXCHANGER = "mc_param_changer"
 }
 
 /**

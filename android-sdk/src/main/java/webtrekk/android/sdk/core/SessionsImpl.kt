@@ -25,7 +25,10 @@
 
 package webtrekk.android.sdk.core
 
+import android.net.Uri
+import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.extension.encodeToUTF8
 import webtrekk.android.sdk.extension.generateUserAgent
 import webtrekk.android.sdk.util.generateEverId
 
@@ -48,7 +51,6 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
 
     override fun getEverId(): String = webtrekkSharedPrefs.let {
         setEverId()
-
         return webtrekkSharedPrefs.everId
     }
 
@@ -126,6 +128,45 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
                 }
             }
             webtrekkSharedPrefs.isMigrated = true
+        }
+    }
+
+    override fun getUrlKey(): Map<String, String> {
+        val urlString = webtrekkSharedPrefs.saveUrlData
+        val urlMap = mutableMapOf<String, String>()
+        if (urlString.isNotBlank()) {
+            val url = Uri.parse(urlString)
+            val args: MutableSet<String> = url.queryParameterNames
+            args.remove("webtrekk_type_param")
+            val type = url.getQueryParameter("webtrekk_type_param")
+            args.forEach { key ->
+                run {
+                    val value = url.getQueryParameter(key)
+                    if (!value.isNullOrBlank()) {
+                        if (type != null) {
+                            if (key == type)
+                                urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] =
+                                    type.encodeToUTF8() + value
+                        }
+                        if (key.contains("wt_cc")) {
+                            urlMap[value.replace("wt_", "", true)] = value
+                        }
+                    }
+                }
+            }
+            webtrekkSharedPrefs.saveUrlData = ""
+        }
+        return urlMap
+    }
+
+    override fun setUrl(urlString: Uri, mediaCode: String?) {
+        if (mediaCode != null) {
+            val builtUri = urlString
+                .buildUpon()
+                .appendQueryParameter("webtrekk_type_param", mediaCode)
+            webtrekkSharedPrefs.saveUrlData = builtUri.toString()
+        } else {
+            webtrekkSharedPrefs.saveUrlData = mediaCode.toString()
         }
     }
 }

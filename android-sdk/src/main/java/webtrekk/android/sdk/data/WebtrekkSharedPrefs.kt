@@ -91,6 +91,10 @@ internal class WebtrekkSharedPrefs(context: Context) {
         inline get() = previousSharedPreferences.getString(EVER_ID_KEY, "") ?: ""
         set(value) = previousSharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
 
+    var saveUrlData: String
+        inline get() = sharedPreferences.getString(urlData, "") ?: ""
+        set(value) = sharedPreferences.edit().putString(urlData, value).apply()
+
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     companion object {
@@ -106,5 +110,6 @@ internal class WebtrekkSharedPrefs(context: Context) {
         const val ALIAS = "alias"
         const val DMC_USER_ID = "dmc_user_id"
         const val MIGRATED = "isMigrated"
+        const val urlData = "urlData"
     }
 }

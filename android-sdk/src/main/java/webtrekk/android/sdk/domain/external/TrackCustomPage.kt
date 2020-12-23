@@ -31,7 +31,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.core.CustomKoinComponent
+import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -46,6 +48,7 @@ import kotlin.coroutines.CoroutineContext
  */
 internal class TrackCustomPage(
     coroutineContext: CoroutineContext,
+    private val sessions: Sessions,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<TrackCustomPage.Params>, CustomKoinComponent {
 
@@ -71,11 +74,15 @@ internal class TrackCustomPage(
                 logger
             )
         ) {
+
+            val params = invokeParams.trackingParams.toMutableMap()
+            if (!params.containsKey(Param.MEDIA_CODE))
+                params.putAll(sessions.getUrlKey())
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
-                    invokeParams.trackingParams
+                    params
                 )
             )
                 .onSuccess { logger.debug("Cached custom page request: $it") }
