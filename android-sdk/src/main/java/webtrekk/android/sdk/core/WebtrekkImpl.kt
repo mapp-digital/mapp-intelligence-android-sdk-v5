@@ -310,7 +310,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     override fun trackUrl(url: Uri, mediaCode: String?) {
         val media = mediaCode ?: InternalParam.WT_MC_DEFAULT
         if (!url.toString().contains(media, true)) {
-            logger.info("This media code don't exist in the request")
+            logger.warn("This media code does not exist in the request")
             return
         } else {
             sessions.setUrl(url, media)
