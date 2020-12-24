@@ -146,7 +146,7 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
                         if (type != null) {
                             if (key == type)
                                 urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] =
-                                    type.encodeToUTF8() + value
+                                    "$type=".encodeToUTF8() + value
                         }
                         if (key.contains("wt_cc")) {
                             urlMap[value.replace("wt_", "", true)] = value
@@ -160,13 +160,9 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
     }
 
     override fun setUrl(urlString: Uri, mediaCode: String?) {
-        if (mediaCode != null) {
-            val builtUri = urlString
-                .buildUpon()
-                .appendQueryParameter("webtrekk_type_param", mediaCode)
-            webtrekkSharedPrefs.saveUrlData = builtUri.toString()
-        } else {
-            webtrekkSharedPrefs.saveUrlData = mediaCode.toString()
-        }
+        val builtUri = urlString
+            .buildUpon()
+            .appendQueryParameter("webtrekk_type_param", mediaCode)
+        webtrekkSharedPrefs.saveUrlData = builtUri.toString()
     }
 }
