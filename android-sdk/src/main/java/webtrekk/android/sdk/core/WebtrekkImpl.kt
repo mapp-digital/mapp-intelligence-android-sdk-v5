@@ -48,6 +48,7 @@ import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.api.UrlParams
+import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
@@ -307,7 +308,13 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     }
 
     override fun trackUrl(url: Uri, mediaCode: String?) {
-        TODO("Not yet implemented")
+        val media = mediaCode ?: InternalParam.WT_MC_DEFAULT
+        if (!url.toString().contains(media, true)) {
+            logger.info("This media code don't exist in the request")
+            return
+        } else {
+            sessions.setUrl(url, media)
+        }
     }
 
     override fun optOut(value: Boolean, sendCurrentData: Boolean) = context.run {

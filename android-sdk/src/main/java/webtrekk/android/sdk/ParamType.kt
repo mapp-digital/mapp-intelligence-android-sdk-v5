@@ -110,6 +110,7 @@ object InternalParam {
      * Only for dev team, don't use
      */
     const val MEDIA_CODE_PARAM_EXCHANGER = "mc_param_changer"
+    const val WT_MC_DEFAULT = "wt_mc"
 }
 
 /**
