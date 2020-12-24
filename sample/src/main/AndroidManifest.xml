@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".UrlActivity"></activity>
         <activity android:name=".MediaExample" />
         <activity android:name=".StandardVideoActivity" />
         <activity android:name=".MediaActivityExample" />
@@ -31,8 +32,6 @@
         <activity android:name=".FormActivity" />
         <activity android:name=".CrashActivity" />
         <activity android:name=".SettingsExample" />
-
-
         <activity
             android:name=".mapp.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -56,9 +55,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
-        </activity>
-
-        <!-- Deeplinking Start -->
+        </activity> <!-- Deeplinking Start -->
         <activity android:name=".mapp.DeepLinkActivity">
             <intent-filter>
                 <data android:scheme="apx" />
