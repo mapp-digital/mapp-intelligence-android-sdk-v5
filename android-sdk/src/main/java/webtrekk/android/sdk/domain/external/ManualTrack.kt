@@ -31,7 +31,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.core.CustomKoinComponent
+import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -47,6 +49,7 @@ import kotlin.coroutines.CoroutineContext
  */
 internal class ManualTrack(
     coroutineContext: CoroutineContext,
+    private val sessions: Sessions,
     private val cacheTrackRequest: CacheTrackRequest,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 ) : ExternalInteractor<ManualTrack.Params>, CustomKoinComponent {
@@ -80,8 +83,12 @@ internal class ManualTrack(
                 logger
             )
         ) {
+
+            val params = invokeParams.trackingParams.toMutableMap()
+            if (!params.containsKey(Param.MEDIA_CODE))
+                params.putAll(sessions.getUrlKey())
             // If there are no custom param, then cache as a single track request.
-            if (invokeParams.trackingParams.isEmpty()) {
+            if (params.isEmpty()) {
                 cacheTrackRequest(CacheTrackRequest.Params(invokeParams.trackRequest))
                     .onSuccess { logger.debug("Cached the track request: $it") }
                     .onFailure { logger.warn("Error while caching the request: $it") }
@@ -89,7 +96,7 @@ internal class ManualTrack(
                 cacheTrackRequestWithCustomParams(
                     CacheTrackRequestWithCustomParams.Params(
                         invokeParams.trackRequest,
-                        invokeParams.trackingParams
+                        params
                     )
                 )
                     .onSuccess { logger.debug("Cached the data track request: $it") }

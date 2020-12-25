@@ -393,6 +393,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 ManualTrack(
                     coroutineContext,
                     get(),
+                    get(),
                     get()
                 )
             }
