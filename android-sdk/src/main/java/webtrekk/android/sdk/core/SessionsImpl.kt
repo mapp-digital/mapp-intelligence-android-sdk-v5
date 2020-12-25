@@ -137,7 +137,6 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         if (urlString.isNotBlank()) {
             val url = Uri.parse(urlString)
             val args: MutableSet<String> = url.queryParameterNames
-            args.remove("webtrekk_type_param")
             val type = url.getQueryParameter("webtrekk_type_param")
             args.forEach { key ->
                 run {
@@ -149,7 +148,7 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
                                     "$type=".encodeToUTF8() + value
                         }
                         if (key.contains("wt_cc")) {
-                            urlMap[value.replace("wt_", "", true)] = value
+                            urlMap[key.replace("wt_", "", true)] = value
                         }
                     }
                 }
