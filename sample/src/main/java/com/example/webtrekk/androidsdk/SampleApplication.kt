@@ -53,6 +53,7 @@ class SampleApplication : Application() {
         opt.tenantID = "33"
         opt.notificationMode = NotificationMode.BACKGROUND_AND_FOREGROUND
         opt.server = AppoxeeOptions.Server.TEST
+        opt.logLevel=AppoxeeOptions.LogLevel.RELEASE
         Appoxee.engage(this, opt)
 
         val constraints = Constraints.Builder()
