@@ -42,6 +42,7 @@ import webtrekk.android.sdk.util.currentDeviceModel
 import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentCountry
 import webtrekk.android.sdk.util.userId
+import webtrekk.android.sdk.util.userUpdate
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -137,8 +138,9 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
         stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
             "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}"
     }
-    if (this.trackRequest.forceNewSession == "1" && userId != "") {
-        stringBuffer += "&${UrlParams.USER_ID}=$userId"
+    if ((this.trackRequest.forceNewSession == "1" || userUpdate) && userId != "") {
+        stringBuffer += "&${UrlParams.USER_ID}=$userId" +
+            "&${UrlParams.USER_OVERWRITE}=1"
     }
     stringBuffer += customParams.buildCustomParams()
 

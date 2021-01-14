@@ -120,4 +120,13 @@ internal interface Sessions {
      * setURl
      */
     fun setUrl(urlString: Uri, mediaCode: String?)
+
+    /**
+     */
+    fun updateUser(value: Boolean)
+
+    /**
+     * Returns true if opt out is active, false otherwise.
+     */
+    fun isUserUpdated(): Boolean
 }
