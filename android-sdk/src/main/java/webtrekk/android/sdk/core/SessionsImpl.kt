@@ -164,4 +164,16 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
             .appendQueryParameter("webtrekk_type_param", mediaCode)
         webtrekkSharedPrefs.saveUrlData = builtUri.toString()
     }
+
+    override fun updateUser(value: Boolean) {
+        webtrekkSharedPrefs.isUserUpdated = value
+    }
+
+    override fun isUserUpdated(): Boolean {
+        val updatedUser = webtrekkSharedPrefs.isUserUpdated
+        if (updatedUser) {
+            webtrekkSharedPrefs.isUserUpdated = false
+        }
+        return updatedUser
+    }
 }

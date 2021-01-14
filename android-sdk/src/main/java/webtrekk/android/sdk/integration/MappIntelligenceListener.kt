@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import webtrekk.android.sdk.util.alias
+import webtrekk.android.sdk.util.userUpdate
 
 /**
  * Created by Aleksandar Marinkovic on 30/07/2020.
@@ -12,6 +13,7 @@ import webtrekk.android.sdk.util.alias
 internal class MappIntelligenceListener : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.type == SET_ALIAS) {
+            userUpdate = true
             alias = intent.getStringExtra(INTELLIGENCE_DATA) ?: ""
         }
     }
