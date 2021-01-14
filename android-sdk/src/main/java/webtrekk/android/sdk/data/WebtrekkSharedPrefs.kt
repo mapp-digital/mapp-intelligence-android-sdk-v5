@@ -63,23 +63,20 @@ internal class WebtrekkSharedPrefs(context: Context) {
         set(value) = sharedPreferences.edit().putString(APP_VERSION, value).apply()
 
     var alias: String
-        inline get() = if (sharedPreferences.getString(ALIAS, "") == "") {
-            sharedPreferences.edit().putString(ALIAS, mappSharedPreferences.getString(ALIAS, ""))
+        inline get() {
+            sharedPreferences.edit()
+                .putString(ALIAS, mappSharedPreferences.getString(ALIAS, ""))
                 .apply()
-            sharedPreferences.getString(ALIAS, "")!!
-        } else {
-            sharedPreferences.getString(ALIAS, "")!!
+            return sharedPreferences.getString(ALIAS, "")!!
         }
         set(value) = sharedPreferences.edit().putString(ALIAS, value).apply()
 
     var userId: String
-        inline get() = if (sharedPreferences.getString(DMC_USER_ID, "") == "") {
+        get() {
             sharedPreferences.edit()
                 .putString(DMC_USER_ID, mappSharedPreferences.getString(DMC_USER_ID, ""))
                 .apply()
-            sharedPreferences.getString(DMC_USER_ID, "")!!
-        } else {
-            sharedPreferences.getString(DMC_USER_ID, "")!!
+            return sharedPreferences.getString(DMC_USER_ID, "")!!
         }
         set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
 
@@ -94,6 +91,10 @@ internal class WebtrekkSharedPrefs(context: Context) {
     var saveUrlData: String
         inline get() = sharedPreferences.getString(urlData, "") ?: ""
         set(value) = sharedPreferences.edit().putString(urlData, value).apply()
+
+    var isUserUpdated: Boolean
+        inline get() = sharedPreferences.getBoolean(IS_USER_UPDATED, false)
+        set(value) = sharedPreferences.edit().putBoolean(IS_USER_UPDATED, value).apply()
 
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
@@ -111,5 +112,6 @@ internal class WebtrekkSharedPrefs(context: Context) {
         const val DMC_USER_ID = "dmc_user_id"
         const val MIGRATED = "isMigrated"
         const val urlData = "urlData"
+        const val IS_USER_UPDATED = "isUserUpdated"
     }
 }

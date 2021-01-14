@@ -21,6 +21,6 @@ internal object IntelligenceEvent {
         )
         intent.putExtra(MappIntelligenceListener.INTELLIGENCE_DATA, data)
         intent.type = event
-        // context.sendBroadcast(intent)
+        context.sendBroadcast(intent)
     }
 }
