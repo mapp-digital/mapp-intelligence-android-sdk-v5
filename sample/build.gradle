@@ -114,7 +114,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
     implementation 'com.google.android.exoplayer:exoplayer:2.11.5'
     implementation "com.google.firebase:firebase-messaging:20.2.3"
-    implementation 'com.mapp.sdk:mapp-android:6.0.13beta1'
+    implementation 'com.mapp.sdk:mapp-android:6.0.13beta-7'
     implementation "com.google.firebase:firebase-crashlytics:17.1.1"
     implementation(project(':android-sdk'))
 

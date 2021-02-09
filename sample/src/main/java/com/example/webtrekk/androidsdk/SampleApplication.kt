@@ -46,14 +46,14 @@ class SampleApplication : Application() {
         super.onCreate()
 
         val opt = AppoxeeOptions()
-        opt.sdkKey = "5fd8bd99795b82.56019929"
+        opt.sdkKey = "6017dd65b8d820.37698249"
         opt.googleProjectId = "357810879619"
         opt.cepURL = "https://jamie-test.shortest-route.com"
-        opt.appID = "264118"
+        opt.appID = "264157"
         opt.tenantID = "33"
         opt.notificationMode = NotificationMode.BACKGROUND_AND_FOREGROUND
         opt.server = AppoxeeOptions.Server.TEST
-        opt.logLevel=AppoxeeOptions.LogLevel.RELEASE
+        opt.logLevel=AppoxeeOptions.LogLevel.CLIENT_DEBUG
         Appoxee.engage(this, opt)
 
         val constraints = Constraints.Builder()

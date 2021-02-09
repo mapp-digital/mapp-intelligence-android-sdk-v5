@@ -2,6 +2,7 @@ package webtrekk.android.sdk.integration
 
 import android.content.Context
 import android.content.Intent
+import java.lang.Exception
 
 /**
  * Created by Aleksandar Marinkovic on 30/07/2020.
@@ -13,14 +14,21 @@ internal object IntelligenceEvent {
         event: String?,
         data: String?
     ) {
-        if (context == null)
-            return
-        val intent: Intent = Intent(MappIntelligenceListener.WebtrekkToMapp).setClassName(
-            context,
-            "webtrekk.android.sdk.integration.MappIntelligenceListener"
-        )
-        intent.putExtra(MappIntelligenceListener.INTELLIGENCE_DATA, data)
-        intent.type = event
-        context.sendBroadcast(intent)
+        try {
+            if (context == null)
+                return
+            val intent: Intent = Intent(MappIntelligenceListener.WebtrekkToMapp).setClassName(
+                context,
+                "com.appoxee.MappIntelligenceListener"
+            )
+            val packageName = context.applicationContext.packageName
+            intent.addCategory(packageName)
+            intent.putExtra(MappIntelligenceListener.INTELLIGENCE_DATA, data)
+            intent.type = event
+            context.sendBroadcast(intent)
+        } catch (ignored: Exception) {
+
+        }
+
     }
 }

@@ -39,6 +39,8 @@ import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.extension.toParam
+import webtrekk.android.sdk.integration.IntelligenceEvent
+import webtrekk.android.sdk.integration.MappIntelligenceListener
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -66,6 +68,10 @@ internal class AutoTrack(
 
         // Listen to the life cycle listeners, and cache the data
         appState.listenToLifeCycle(invokeParams.context) { trackRequest ->
+            IntelligenceEvent.sendEvent(
+                invokeParams.context,
+                MappIntelligenceListener.PAGE, trackRequest.trackRequest.name
+            )
             logger.info("Received a request from auto track: ${trackRequest.trackRequest}")
             scope.launch(
                 coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
