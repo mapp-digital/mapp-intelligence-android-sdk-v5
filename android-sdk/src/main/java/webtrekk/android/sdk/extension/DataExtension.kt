@@ -138,9 +138,11 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
         stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
             "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}"
     }
-    if ((this.trackRequest.forceNewSession == "1" || userUpdate) && userId != "") {
-        stringBuffer += "&${UrlParams.USER_ID}=$userId" +
-            "&${UrlParams.USER_OVERWRITE}=1"
+    val userUpdated = userUpdate
+    if ((this.trackRequest.forceNewSession == "1" || userUpdated) && userId != "") {
+        stringBuffer += "&${UrlParams.USER_ID}=$userId"
+        if (userUpdated)
+            stringBuffer += "&${UrlParams.USER_OVERWRITE}=1"
     }
     stringBuffer += customParams.buildCustomParams()
 
