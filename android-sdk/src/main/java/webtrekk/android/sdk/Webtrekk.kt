@@ -144,6 +144,10 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun trackCustomPage(pageName: String, trackingParams: Map<String, String> = emptyMap())
 
+    abstract fun trackPage(pageName: String, trackingParams: Map<String, String> = emptyMap())
+
+    abstract fun trackAction(pageName: String, trackingParams: Map<String, String> = emptyMap())
+
     /**
      * Tracks a specific custom event, with a custom tracking params.
      *
