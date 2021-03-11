@@ -27,8 +27,6 @@ internal object IntelligenceEvent {
             intent.type = event
             context.sendBroadcast(intent)
         } catch (ignored: Exception) {
-
         }
-
     }
 }
