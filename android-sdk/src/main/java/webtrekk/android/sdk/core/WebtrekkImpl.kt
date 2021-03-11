@@ -158,6 +158,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         )
     }
 
+    override fun trackPage(pageName: String, trackingParams: Map<String, String>) {
+    }
+
     override fun trackCustomPage(pageName: String, trackingParams: Map<String, String>) =
         config.run {
             trackCustomPage(
@@ -176,6 +179,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 ), coroutineDispatchers
             )
         }
+
+    override fun trackAction(pageName: String, trackingParams: Map<String, String>) {
+    }
 
     override fun trackCustomEvent(eventName: String, trackingParams: Map<String, String>) =
         config.run {
