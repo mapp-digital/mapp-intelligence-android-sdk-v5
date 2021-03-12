@@ -9,7 +9,7 @@ data class MediaParameters(
     var action: String = "",
     var position: Number = 0,
     val duration: Number = 0
-) {
+) : BaseEvent {
     var bandwith: Number? = null
     var soundIsMuted: Boolean? = null
     var soundVolume: Number? = null
@@ -25,5 +25,10 @@ data class MediaParameters(
 
     interface Code {
         fun code(): String
+    }
+
+    override suspend fun toHasMap(): MutableMap<String, String> {
+        val map = mutableMapOf<String, String>()
+        return map
     }
 }
