@@ -85,13 +85,13 @@ object Param {
      *
      * Mostly used for tracking e-commerce data.
      */
-    const val PRODUCT_NAME = "ba"
-    const val PRODUCT_COST = "co"
-    const val PRODUCT_CURRENCY = "cr"
-    const val PRODUCT_QUANTITY = "qn"
-    const val STATUS_OF_SHOPPING_CARD = "st"
-    const val ORDER_ID = "oi"
-    const val ORDER_VALUE = "ov"
+//    const val PRODUCT_NAME = "ba"
+//    const val PRODUCT_COST = "co"
+//    const val PRODUCT_CURRENCY = "cr"
+//    const val PRODUCT_QUANTITY = "qn"
+//    const val STATUS_OF_SHOPPING_CARD = "st"
+//    const val ORDER_ID = "oi"
+//    const val ORDER_VALUE = "ov"
 }
 
 object MediaParam {
@@ -102,6 +102,49 @@ object MediaParam {
     const val BANDWIDTH = "bw"
     const val VOLUME = "vol"
     const val MUTE = "mut"
+}
+
+object UserCategoriesParam {
+    const val URM_CATEGORY = "uc"
+    const val BIRTHDAY = URM_CATEGORY + 707
+    const val CITY = URM_CATEGORY + 709
+    const val COUNTRY = URM_CATEGORY + 708
+    const val EMAIL_ADDRESS = URM_CATEGORY + 700
+    const val EMAIL_RECEIVER_ID = URM_CATEGORY + 701
+    const val FIRST_NAME = URM_CATEGORY + 703
+    const val GANDER = URM_CATEGORY + 706
+    const val CUSTOMER_ID = Param.CUSTOMER_ID
+    const val LAST_NAME = URM_CATEGORY + 704
+    const val NEW_SELLER_SUBSCRIBED = URM_CATEGORY + 702
+    const val PHONE_NUMBER = URM_CATEGORY + 705
+    const val STREET = URM_CATEGORY + 711
+    const val STREET_NUMBER = URM_CATEGORY + 712
+    const val ZIP_CODE = URM_CATEGORY + 710
+}
+
+object ECommerceParam {
+    const val COMMERCE_PARAM = "cb"
+    const val RETURNING_OR_NEW_CUSTOMER = COMMERCE_PARAM + 560
+    const val RETURN_VALUE = COMMERCE_PARAM + 561
+    const val CANCELLATION_VALUE = COMMERCE_PARAM + 562
+    const val COUPON_VALUE = COMMERCE_PARAM + 563
+    const val PRODUCT_ADVERTISE_ID = COMMERCE_PARAM + 675
+    const val PRODUCT_SOLD_OUT = COMMERCE_PARAM + 760
+    const val PAYMENT_METHOD = COMMERCE_PARAM + 761
+    const val SHIPPING_SERVICE_PROVIDER = COMMERCE_PARAM + 762
+    const val SHIPPING_SPEED = COMMERCE_PARAM + 763
+    const val SHIPPING_COST = COMMERCE_PARAM + 764
+    const val MARK_UP = COMMERCE_PARAM + 765
+    const val ORDER_STATUS = COMMERCE_PARAM + 766
+    const val PRODUCT_VARIANT = COMMERCE_PARAM + 767
+    const val PRODUCT_CURRENCY = "cr"
+    const val STATUS_OF_SHOPPING_CARD = "st"
+    const val ORDER_ID = "oi"
+    const val ORDER_VALUE = "ov"
+    const val PRODUCT_CATEGORY = "ca"
+    const val PRODUCT_NAME = "ba"
+    const val PRODUCT_COST = "co"
+    const val PRODUCT_QUANTITY = "qn"
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)

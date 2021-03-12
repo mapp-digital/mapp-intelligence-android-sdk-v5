@@ -371,7 +371,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             single { WorkManager.getInstance(context) }
             single { getWebtrekkDatabase(context).trackRequestDao() }
             single { getWebtrekkDatabase(context).customParamDataDao() }
-            single { WebtrekkLogger(config.logLevel) as Logger }
+            single { WebtrekkLogger(config.logLevel) }
             single {
                 CoroutineDispatchers(
                     Dispatchers.Main,
@@ -380,11 +380,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 )
             }
             if (config.fragmentsAutoTracking && config.activityAutoTracking)
-                single { AppStateImpl() as AppState<DataAnnotationClass> }
+                single { AppStateImpl() }
             else if (config.fragmentsAutoTracking)
-                single { FragmentStateImpl() as AppState<DataAnnotationClass> }
+                single { FragmentStateImpl() }
             else
-                single { ActivityAppStateImpl() as AppState<DataAnnotationClass> }
+                single { ActivityAppStateImpl() }
         }
 
         val externalInteractorsModule = module {
