@@ -6,4 +6,9 @@ package webtrekk.android.sdk.events.eventParams
  */
 data class SessionParameters(
     var parameters: Map<Int, String> = emptyMap()
-)
+) : BaseEvent {
+    override suspend fun toHasMap(): MutableMap<String, String> {
+        val map = mutableMapOf<String, String>()
+        return map
+    }
+}

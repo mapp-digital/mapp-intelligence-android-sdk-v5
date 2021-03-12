@@ -23,6 +23,8 @@
  *
  */
 
+@file:Suppress("DEPRECATION")
+
 package webtrekk.android.sdk.extension
 
 import android.content.Context

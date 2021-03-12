@@ -84,6 +84,11 @@ internal fun String.jsonToMap(): Map<String, String> {
     return map
 }
 
+internal fun MutableMap<String, String>.addNotNull(key: String, value: String? = "") {
+    if (value != null && value.isNotBlank())
+        this[key] = value
+}
+
 internal fun <T> Sequence<T>.batch(n: Int): Sequence<List<T>> {
     return BatchingSequence(this, n)
 }
