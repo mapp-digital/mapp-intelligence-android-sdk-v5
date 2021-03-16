@@ -43,7 +43,7 @@ data class UserCategories(
     var zipCode: String? = null
     var newsletterSubscribed: Boolean = false
 
-    override suspend fun toHasMap(): MutableMap<String, String> {
+    override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
 
         if (!customCategories.isNullOrEmpty()) {

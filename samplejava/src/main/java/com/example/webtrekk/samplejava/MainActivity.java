@@ -39,6 +39,7 @@ import webtrekk.android.sdk.TrackParams;
 
 import webtrekk.android.sdk.Webtrekk;
 import webtrekk.android.sdk.ParamType;
+import webtrekk.android.sdk.events.eventParams.MediaParameters;
 
 import static webtrekk.android.sdk.ParamTypeKt.createCustomParam;
 
@@ -72,5 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        MediaParameters md= new MediaParameters("sds","sdsa",2.2,3.455123);
     }
 }

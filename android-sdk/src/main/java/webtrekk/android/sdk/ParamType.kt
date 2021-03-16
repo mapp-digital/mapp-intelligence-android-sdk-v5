@@ -55,6 +55,7 @@ import androidx.annotation.RestrictTo
  *
  * [Param] class contains predefined custom params names/keys, which you don't need to append any more names to it.
  */
+
 object Param {
 
     /**
@@ -102,6 +103,7 @@ object MediaParam {
     const val BANDWIDTH = "bw"
     const val VOLUME = "vol"
     const val MUTE = "mut"
+    const val NAME = "mi"
 }
 
 object UserCategoriesParam {
@@ -145,6 +147,25 @@ object ECommerceParam {
     const val PRODUCT_NAME = "ba"
     const val PRODUCT_COST = "co"
     const val PRODUCT_QUANTITY = "qn"
+}
+
+object PageParam {
+    const val PAGE_PARAM = "cp"
+    const val PAGE_CATEGORY = "cg"
+    const val INTERNAL_SEARCH = "is"
+}
+
+object EventParam {
+    const val EVENT_PARAM = "ck"
+}
+
+object SessionParam {
+    const val SESSION_PARAM = "cs"
+}
+
+object CampaignParam {
+    const val CAMPAIGN_PARAM = "cc"
+    const val CAMPAIGN_ACTION_PARAM = "mca"
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)

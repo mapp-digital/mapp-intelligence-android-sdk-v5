@@ -25,7 +25,7 @@ internal object IntelligenceEvent {
             intent.addCategory(packageName)
             intent.putExtra(MappIntelligenceListener.INTELLIGENCE_DATA, data)
             intent.type = event
-            context.sendBroadcast(intent)
+            // context.sendBroadcast(intent)
         } catch (ignored: Exception) {
         }
     }

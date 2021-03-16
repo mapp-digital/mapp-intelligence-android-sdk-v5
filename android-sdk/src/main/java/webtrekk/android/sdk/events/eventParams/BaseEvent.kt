@@ -5,5 +5,5 @@ package webtrekk.android.sdk.events.eventParams
  * Copyright (c) 2021 MAPP.
  */
 interface BaseEvent {
-    suspend fun toHasMap(): MutableMap<String, String>
+    fun toHasMap(): MutableMap<String, String>
 }
