@@ -29,6 +29,9 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import webtrekk.android.sdk.core.WebtrekkImpl
+import webtrekk.android.sdk.events.ActionEvent
+import webtrekk.android.sdk.events.MediaEvent
+import webtrekk.android.sdk.events.PageViewEvent
 import java.io.File
 
 /**
@@ -144,10 +147,6 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun trackCustomPage(pageName: String, trackingParams: Map<String, String> = emptyMap())
 
-    abstract fun trackPage(pageName: String, trackingParams: Map<String, String> = emptyMap())
-
-    abstract fun trackAction(pageName: String, trackingParams: Map<String, String> = emptyMap())
-
     /**
      * Tracks a specific custom event, with a custom tracking params.
      *
@@ -237,6 +236,18 @@ abstract class Webtrekk protected constructor() {
     abstract fun trackUrl(
         url: Uri,
         mediaCode: String? = null
+    )
+
+    abstract fun trackPage(
+        page: PageViewEvent
+    )
+
+    abstract fun trackAction(
+        action: ActionEvent
+    )
+
+    abstract fun trackMedia(
+        media: MediaEvent
     )
 
     /**

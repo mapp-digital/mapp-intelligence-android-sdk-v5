@@ -52,6 +52,7 @@ import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.data.entity.Cash
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.getWebtrekkDatabase
@@ -66,6 +67,10 @@ import webtrekk.android.sdk.domain.external.TrackCustomPage
 import webtrekk.android.sdk.domain.external.TrackException
 import webtrekk.android.sdk.domain.external.TrackUncaughtException
 import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
+import webtrekk.android.sdk.events.ActionEvent
+import webtrekk.android.sdk.events.MediaEvent
+import webtrekk.android.sdk.events.PageViewEvent
+import webtrekk.android.sdk.events.eventParams.CampaignParameters
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.extension.initOrException
@@ -114,6 +119,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
     internal val sessions by inject<Sessions>()
     internal val logger by inject<Logger>()
+    private val cash by inject<Cash>()
     private var lastEqual = false
     private var lastTimeMedia = 0L
     private var lastAction = "play"
@@ -158,7 +164,22 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         )
     }
 
-    override fun trackPage(pageName: String, trackingParams: Map<String, String>) {
+    override fun trackPage(page: PageViewEvent) {
+        if (cash.canContinue(page.campaignParameters)) {
+            page.campaignParameters = CampaignParameters()
+        }
+        trackCustomPage(page.name, page.toHasMap())
+    }
+
+    override fun trackMedia(media: MediaEvent) {
+        trackMedia(media.name, media.toHasMap())
+    }
+
+    override fun trackAction(action: ActionEvent) {
+        if (cash.canContinue(action.campaignParameters)) {
+            action.campaignParameters = CampaignParameters()
+        }
+        trackCustomEvent(action.name, action.toHasMap())
     }
 
     override fun trackCustomPage(pageName: String, trackingParams: Map<String, String>) =
@@ -179,9 +200,6 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 ), coroutineDispatchers
             )
         }
-
-    override fun trackAction(pageName: String, trackingParams: Map<String, String>) {
-    }
 
     override fun trackCustomEvent(eventName: String, trackingParams: Map<String, String>) =
         config.run {
@@ -369,9 +387,10 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
             single { WebtrekkSharedPrefs(context) }
             single { config.okHttpClient }
             single { WorkManager.getInstance(context) }
+            single { Cash() }
             single { getWebtrekkDatabase(context).trackRequestDao() }
             single { getWebtrekkDatabase(context).customParamDataDao() }
-            single { WebtrekkLogger(config.logLevel) }
+            single<Logger> { WebtrekkLogger(config.logLevel) }
             single {
                 CoroutineDispatchers(
                     Dispatchers.Main,
@@ -380,11 +399,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
                 )
             }
             if (config.fragmentsAutoTracking && config.activityAutoTracking)
-                single { AppStateImpl() }
+                single<AppState<DataAnnotationClass>> { AppStateImpl() }
             else if (config.fragmentsAutoTracking)
-                single { FragmentStateImpl() }
+                single<AppState<DataAnnotationClass>> { FragmentStateImpl() }
             else
-                single { ActivityAppStateImpl() }
+                single<AppState<DataAnnotationClass>> { ActivityAppStateImpl() }
         }
 
         val externalInteractorsModule = module {

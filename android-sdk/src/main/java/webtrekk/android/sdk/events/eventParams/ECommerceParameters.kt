@@ -26,7 +26,6 @@ data class ECommerceParameters(
         }
     }
 
-    // TODO Implement Later
     var products = listOf<ProductParameters>()
     var status: Status = Status.NONE_STATUS
     var currency: String? = null
@@ -45,7 +44,7 @@ data class ECommerceParameters(
     var markUp: String? = null
     var orderStatus: String? = null
     var productVariant: String? = null
-    override suspend fun toHasMap(): MutableMap<String, String> {
+    override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
         if (!customParameters.isNullOrEmpty()) {
             customParameters.forEach { (key, value) ->
@@ -69,7 +68,40 @@ data class ECommerceParameters(
         map.addNotNull(ECommerceParam.MARK_UP, markUp)
         map.addNotNull(ECommerceParam.ORDER_STATUS, orderStatus)
         map.addNotNull(ECommerceParam.PRODUCT_VARIANT, productVariant)
+        var productNames = mutableListOf<String>()
+        var categoriesKeys = mutableListOf<Int>()
+        var productCosts = mutableListOf<String>()
+        var productQuantities = mutableListOf<String>()
+        if (products.isNotEmpty()) {
+            products.forEach { product ->
+                productNames.add(product.name)
+                productCosts.add(if (product.cost != null) product.cost.toString() else "")
+                productQuantities.add(if (product.quantity != null) product.quantity.toString() else "")
+                customParameters.forEach { (key, _) ->
+                    if (!categoriesKeys.contains(key))
+                        categoriesKeys.add(key)
+                }
+            }
+            categoriesKeys.forEach { maine ->
+                val tempCategory = mutableListOf<String>()
+                products.forEach { product ->
+                    if (product.categories.containsKey(maine)) product.categories[maine] else "".let {
+                        tempCategory.add(
+                            it
+                        )
+                    }
+                }
+                map.addNotNull(
+                    "${ECommerceParam.PRODUCT_CATEGORY}$maine",
+                    tempCategory.joinToString(";")
+                )
+            }
 
+            map.addNotNull(ECommerceParam.PRODUCT_NAME, productNames.joinToString(";"))
+            map.addNotNull(ECommerceParam.PRODUCT_COST, productCosts.joinToString(";"))
+            if (status != Status.VIEWED)
+                map.addNotNull(ECommerceParam.PRODUCT_QUANTITY, productQuantities.joinToString(";"))
+        }
         return map
     }
 }
