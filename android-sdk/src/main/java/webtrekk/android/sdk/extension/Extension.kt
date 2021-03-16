@@ -85,7 +85,7 @@ internal fun String.jsonToMap(): Map<String, String> {
 }
 
 internal fun MutableMap<String, String>.addNotNull(key: String, value: String? = "") {
-    if (value != null && value.isNotBlank())
+    if (value != null && value.isNotBlank() && key.isNotBlank())
         this[key] = value
 }
 
