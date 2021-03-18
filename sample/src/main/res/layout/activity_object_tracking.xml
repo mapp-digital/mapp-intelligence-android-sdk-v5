@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".MediaExample">
+
+    <Button
+        android:id="@+id/firstExample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track Action"
+        app:layout_constraintBottom_toTopOf="@+id/secondExample"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/secondExample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track Custom Action"
+        app:layout_constraintBottom_toTopOf="@+id/example3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstExample" />
+
+    <Button
+        android:id="@+id/example3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E commerce trackGoal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondExample" />
+
+    <Button
+        android:id="@+id/example4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="trackEcommerceViewProduct"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example3" />
+
+    <Button
+        android:id="@+id/example5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="trackEcommerceAddedToBasket"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example4" />
+
+    <Button
+        android:id="@+id/example6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="trackEcommerceConfirmation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example5" />
+
+    <Button
+        android:id="@+id/example7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="trackCustomPage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example6" />
+
+    <Button
+        android:id="@+id/example8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="trackMedia1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example7" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

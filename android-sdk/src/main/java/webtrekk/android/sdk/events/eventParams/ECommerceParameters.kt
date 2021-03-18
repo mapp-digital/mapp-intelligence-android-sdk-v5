@@ -7,7 +7,10 @@ import webtrekk.android.sdk.extension.addNotNull
  * Created by Aleksandar Marinkovic on 3/11/21.
  * Copyright (c) 2021 MAPP.
  */
-data class ECommerceParameters(
+
+data class ECommerceParameters
+@JvmOverloads
+constructor(
     var customParameters: Map<Int, String> = emptyMap()
 ) : BaseEvent {
     enum class Status {
@@ -30,18 +33,18 @@ data class ECommerceParameters(
     var status: Status = Status.NONE_STATUS
     var currency: String? = null
     var orderID: String? = null
-    var orderValue: String? = null
+    var orderValue: Number? = null
     var returningOrNewCustomer: String? = null
-    var returnValue: String? = null
-    var cancellationValue: String? = null
-    var couponValue: String? = null
-    var productAdvertiseID: String? = null
-    var productSoldOut: String? = null
+    var returnValue: Number? = null
+    var cancellationValue: Number? = null
+    var couponValue: Number? = null
+    var productAdvertiseID: Number? = null
+    var productSoldOut: Number? = null
     var paymentMethod: String? = null
     var shippingServiceProvider: String? = null
     var shippingSpeed: String? = null
-    var shippingCost: String? = null
-    var markUp: String? = null
+    var shippingCost: Number? = null
+    var markUp: Number? = null
     var orderStatus: String? = null
     var productVariant: String? = null
     override fun toHasMap(): MutableMap<String, String> {
