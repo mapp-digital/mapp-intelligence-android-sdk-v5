@@ -6,12 +6,13 @@ import webtrekk.android.sdk.ECommerceParam
  * Created by Aleksandar Marinkovic on 3/11/21.
  * Copyright (c) 2021 MAPP.
  */
-data class ProductParameters(
+data class ProductParameters @JvmOverloads
+constructor(
     var name: String = ""
 ) : BaseEvent {
     var categories: Map<Int, String> = emptyMap()
     var cost: Number? = null
-    var quantity: String? = null
+    var quantity: Number? = null
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
         categories.forEach { (key, value) ->

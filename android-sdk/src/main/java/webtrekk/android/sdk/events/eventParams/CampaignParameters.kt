@@ -10,7 +10,9 @@ import webtrekk.android.sdk.extension.encodeToUTF8
  * Created by Aleksandar Marinkovic on 3/11/21.
  * Copyright (c) 2021 MAPP.
  */
-data class CampaignParameters(var campaignId: String = "") : BaseEvent {
+data class CampaignParameters
+@JvmOverloads
+constructor(var campaignId: String = "") : BaseEvent {
     var customParameters: Map<Int, String> = emptyMap()
     var oncePerSession: Boolean = false
     var mediaCode: String = "wt_mc"

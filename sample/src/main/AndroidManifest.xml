@@ -32,6 +32,7 @@
         <activity android:name=".FormActivity" />
         <activity android:name=".CrashActivity" />
         <activity android:name=".SettingsExample" />
+        <activity android:name=".ObjectTrackingActivityExample" />
         <activity
             android:name=".mapp.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

@@ -7,23 +7,33 @@ import webtrekk.android.sdk.extension.addNotNull
  * Created by Aleksandar Marinkovic on 3/11/21.
  * Copyright (c) 2021 MAPP.
  */
-data class PageParameters(var details: Map<Int, String> = emptyMap()) : BaseEvent {
-    var internalSearch: String = ""
-    var category: Map<Int, String> = emptyMap()
+data class PageParameters @JvmOverloads
+constructor(var parameters: Map<Int, String> = emptyMap()) : BaseEvent {
+    constructor(
+        parameters: Map<Int, String> = emptyMap(),
+        search: String = "",
+        pageCategory: Map<Int, String> = emptyMap()
+    ) : this(parameters) {
+        this.search = search
+        this.pageCategory = pageCategory
+    }
+
+    var search: String = ""
+    var pageCategory: Map<Int, String> = emptyMap()
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
-        if (!details.isNullOrEmpty()) {
-            details.forEach { (key, value) ->
+        if (!parameters.isNullOrEmpty()) {
+            parameters.forEach { (key, value) ->
                 map.addNotNull("${PageParam.PAGE_PARAM}$key", value)
             }
         }
 
-        if (!category.isNullOrEmpty()) {
-            category.forEach { (key, value) ->
+        if (!pageCategory.isNullOrEmpty()) {
+            pageCategory.forEach { (key, value) ->
                 map.addNotNull("${PageParam.PAGE_CATEGORY}$key", value)
             }
         }
-        map.addNotNull(PageParam.INTERNAL_SEARCH, internalSearch)
+        map.addNotNull(PageParam.INTERNAL_SEARCH, search)
         return map
     }
 }
