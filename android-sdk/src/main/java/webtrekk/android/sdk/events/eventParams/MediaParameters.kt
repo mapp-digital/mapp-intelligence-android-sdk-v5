@@ -16,7 +16,7 @@ data class MediaParameters(
     var bandwith: Number? = null
     var soundIsMuted: Boolean? = null
     var soundVolume: Int? = null
-    var customParameters: Map<Int, String> = emptyMap()
+    var customCategories: Map<Int, String> = emptyMap()
 
     enum class Action(private val code: String) : Code {
         INIT("init"),
@@ -38,8 +38,8 @@ data class MediaParameters(
 
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
-        if (!customParameters.isNullOrEmpty()) {
-            customParameters.forEach { (key, value) ->
+        if (!customCategories.isNullOrEmpty()) {
+            customCategories.forEach { (key, value) ->
                 map.addNotNull("${MediaParam.MEDIA_CATEGORY}$key", value)
             }
         }

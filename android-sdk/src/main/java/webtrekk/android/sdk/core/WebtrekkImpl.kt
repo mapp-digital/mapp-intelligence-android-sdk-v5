@@ -172,7 +172,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     }
 
     override fun trackMedia(media: MediaEvent) {
-        trackMedia(media.name, media.toHasMap())
+        trackMedia(media.pageName, media.toHasMap())
     }
 
     override fun trackAction(action: ActionEvent) {

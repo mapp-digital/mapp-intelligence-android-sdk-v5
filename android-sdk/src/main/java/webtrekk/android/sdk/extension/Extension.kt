@@ -89,6 +89,11 @@ internal fun MutableMap<String, String>.addNotNull(key: String, value: String? =
         this[key] = value
 }
 
+internal fun MutableMap<String, String>.addNotNull(key: String, value: Number?) {
+    if (value != null && key.isNotBlank())
+        this[key] = value.toString()
+}
+
 internal fun <T> Sequence<T>.batch(n: Int): Sequence<List<T>> {
     return BatchingSequence(this, n)
 }

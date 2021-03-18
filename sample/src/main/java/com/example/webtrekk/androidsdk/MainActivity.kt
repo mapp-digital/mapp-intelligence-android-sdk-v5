@@ -81,5 +81,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, UrlActivity::class.java)
             startActivity(intent)
         }
+
+        button10.setOnClickListener {
+            val intent = Intent(this, ObjectTrackingActivityExample::class.java)
+            startActivity(intent)
+        }
     }
 }

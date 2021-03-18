@@ -7,7 +7,7 @@ import webtrekk.android.sdk.extension.addNotNull
  * Created by Aleksandar Marinkovic on 3/11/21.
  * Copyright (c) 2021 MAPP.
  */
-data class UserCategories(
+data class UserCategories @JvmOverloads constructor(
     var customCategories: Map<Int, String> = emptyMap()
 ) : BaseEvent {
     data class Birthday(var day: Int, var month: Int, var year: Int) {
