@@ -12,17 +12,17 @@ import webtrekk.android.sdk.events.eventParams.ECommerceParameters
  */
 
 data class MediaEvent(val pageName: String, var parameters: MediaParameters) : BaseEvent {
-    var eventParameters: EventParameters = EventParameters()
-    var sessionParameters: SessionParameters = SessionParameters()
-    var eCommerceParameters: ECommerceParameters = ECommerceParameters()
+    var eventParameters: EventParameters? = null
+    var sessionParameters: SessionParameters? = null
+    var eCommerceParameters: ECommerceParameters? = null
     val customParameters = mutableMapOf<String, String>()
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
         map.putAll(customParameters)
         map.putAll(parameters.toHasMap())
-        map.putAll(sessionParameters.toHasMap())
-        map.putAll(eventParameters.toHasMap())
-        map.putAll(eCommerceParameters.toHasMap())
+        sessionParameters?.let { map.putAll(it.toHasMap()) }
+        eventParameters?.let { map.putAll(it.toHasMap()) }
+        eCommerceParameters?.let { map.putAll(it.toHasMap()) }
         return map
     }
 }

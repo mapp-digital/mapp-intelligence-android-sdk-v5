@@ -70,7 +70,6 @@ import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
-import webtrekk.android.sdk.events.eventParams.CampaignParameters
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.extension.initOrException
@@ -165,8 +164,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     }
 
     override fun trackPage(page: PageViewEvent) {
-        if (cash.canContinue(page.campaignParameters)) {
-            page.campaignParameters = CampaignParameters()
+        if (!cash.canContinue(page.campaignParameters)) {
+            page.campaignParameters = null
         }
         trackCustomPage(page.name, page.toHasMap())
     }
@@ -176,8 +175,8 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     }
 
     override fun trackAction(action: ActionEvent) {
-        if (cash.canContinue(action.campaignParameters)) {
-            action.campaignParameters = CampaignParameters()
+        if (!cash.canContinue(action.campaignParameters)) {
+            action.campaignParameters = null
         }
         trackCustomEvent(action.name, action.toHasMap())
     }
