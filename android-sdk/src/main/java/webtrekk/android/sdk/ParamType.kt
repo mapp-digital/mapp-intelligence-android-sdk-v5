@@ -86,13 +86,13 @@ object Param {
      *
      * Mostly used for tracking e-commerce data.
      */
-//    const val PRODUCT_NAME = "ba"
-//    const val PRODUCT_COST = "co"
-//    const val PRODUCT_CURRENCY = "cr"
-//    const val PRODUCT_QUANTITY = "qn"
-//    const val STATUS_OF_SHOPPING_CARD = "st"
-//    const val ORDER_ID = "oi"
-//    const val ORDER_VALUE = "ov"
+    val MEDIA_PARAM: MediaParam = MediaParam
+    val USER_CATEGORIES_PARAM = UserCategoriesParam
+    val E_COMMERCE_PARAM = ECommerceParam
+    val PAGE_PARAM = PageParam
+    val EVENT_PARAM = EventParam
+    val SESSION_PARAM = SessionParam
+    val CAMPAIGN_PARAM = CampaignParam
 }
 
 object MediaParam {
@@ -106,6 +106,7 @@ object MediaParam {
     const val NAME = "mi"
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 object UserCategoriesParam {
     const val URM_CATEGORY = "uc"
     const val BIRTHDAY = URM_CATEGORY + 707
@@ -124,6 +125,7 @@ object UserCategoriesParam {
     const val ZIP_CODE = URM_CATEGORY + 710
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 object ECommerceParam {
     const val COMMERCE_PARAM = "cb"
     const val RETURNING_OR_NEW_CUSTOMER = COMMERCE_PARAM + 560
@@ -149,20 +151,24 @@ object ECommerceParam {
     const val PRODUCT_QUANTITY = "qn"
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 object PageParam {
     const val PAGE_PARAM = "cp"
     const val PAGE_CATEGORY = "cg"
     const val INTERNAL_SEARCH = "is"
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 object EventParam {
     const val EVENT_PARAM = "ck"
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 object SessionParam {
     const val SESSION_PARAM = "cs"
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 object CampaignParam {
     const val CAMPAIGN_PARAM = "cc"
     const val CAMPAIGN_ACTION_PARAM = "mca"
