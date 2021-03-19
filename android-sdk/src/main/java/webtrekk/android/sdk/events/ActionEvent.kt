@@ -12,20 +12,20 @@ import webtrekk.android.sdk.events.eventParams.UserCategories
  * Copyright (c) 2021 MAPP.
  */
 data class ActionEvent(val name: String) : BaseEvent {
-    var eventParameters: EventParameters = EventParameters()
-    var sessionParameters: SessionParameters = SessionParameters()
-    var userCategories: UserCategories = UserCategories()
-    var eCommerceParameters: ECommerceParameters = ECommerceParameters()
-    var campaignParameters: CampaignParameters = CampaignParameters()
+    var eventParameters: EventParameters? = null
+    var sessionParameters: SessionParameters? = null
+    var userCategories: UserCategories? = null
+    var eCommerceParameters: ECommerceParameters? = null
+    var campaignParameters: CampaignParameters? = null
     val customParameters = mutableMapOf<String, String>()
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
         map.putAll(customParameters)
-        map.putAll(eventParameters.toHasMap())
-        map.putAll(sessionParameters.toHasMap())
-        map.putAll(userCategories.toHasMap())
-        map.putAll(eCommerceParameters.toHasMap())
-        map.putAll(campaignParameters.toHasMap())
+        eventParameters?.let { map.putAll(it.toHasMap()) }
+        sessionParameters?.let { map.putAll(it.toHasMap()) }
+        userCategories?.let { map.putAll(it.toHasMap()) }
+        eCommerceParameters?.let { map.putAll(it.toHasMap()) }
+        campaignParameters?.let { map.putAll(it.toHasMap()) }
         return map
     }
 }

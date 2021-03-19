@@ -15,14 +15,17 @@ internal data class Cash(val campaignParametersList: MutableList<CampaignParamet
         campaignParametersList.add(campaignParameters)
     }
 
-    fun canContinue(campaignParameters: CampaignParameters): Boolean {
-        if (!campaignParameters.oncePerSession) {
+    fun canContinue(campaignParameters: CampaignParameters?): Boolean {
+        campaignParameters?.let {
+            if (!campaignParameters.oncePerSession) {
+                return true
+            }
+            if (campaignParametersList.contains(campaignParameters)) {
+                return false
+            }
+            this.addInList(campaignParameters)
             return true
         }
-        if (campaignParametersList.contains(campaignParameters)) {
-            return false
-        }
-        this.addInList(campaignParameters)
         return true
     }
 }
