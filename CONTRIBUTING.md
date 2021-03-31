@@ -16,7 +16,7 @@ If you are adding a new file, it should have a copyright header like this:
 
 MIT License
 
-Copyright (c) 2019 Webtrekk GmbH
+Copyright (c) 2021 Webtrekk GmbH
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
