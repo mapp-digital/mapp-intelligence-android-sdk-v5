@@ -21,7 +21,7 @@ Maven
 <dependency>
 	<groupId>com.webtrekk.webtrekksdk</groupId>
 	<artifactId>webtrekksdk-android</artifactId>
-	<version>5.0.4</version>
+	<version>5.0.5</version>
 	<type>pom</type>
 </dependency>
 ```
