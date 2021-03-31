@@ -13,7 +13,6 @@ internal data class Cash(val campaignParametersList: MutableList<CampaignParamet
     private fun addInList(campaignParameters: CampaignParameters) {
         if (campaignParametersList.size > 99) {
             campaignParametersList.removeAt(0)
-
         }
         campaignParametersList.add(campaignParameters)
     }
