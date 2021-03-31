@@ -1,4 +1,6 @@
 # Change Log
+## Version 5.0.6-beta1 *(In Progress)*
+
 ## Version 5.0.5. *(2021-03-31)*
 * Added object tracking
 * Added Deep-linking tracking
