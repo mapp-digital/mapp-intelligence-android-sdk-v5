@@ -15,8 +15,13 @@ data class UserCategories @JvmOverloads constructor(
             return if (day > 31 || month > 12 || year < 1000 || day < 1 || month < 1) {
                 ""
             } else {
-                var string = year.toString() + { if (month < 10) "0$month" else month.toString() }
-                string += if (day < 10) "0$day" else day.toString()
+                var string = year.toString()
+                string += if (month < 10) "0" else {
+                    ""
+                } + month.toString()
+                string += if (day < 10) "0" else {
+                    ""
+                } + day.toString()
                 string
             }
         }
