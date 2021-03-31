@@ -30,6 +30,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkInfo
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -49,6 +50,9 @@ internal class CleanUpWorkerTest : WorkManagerTest() {
 
         val workInfo = workManager.getWorkInfoById(cleanUpWorker.id).get()
 
-        assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
+        assertThat(
+            workInfo.state,
+            anyOf(`is`(WorkInfo.State.RUNNING), `is`(WorkInfo.State.ENQUEUED))
+        )
     }
 }

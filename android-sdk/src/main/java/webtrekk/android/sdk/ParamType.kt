@@ -86,6 +86,13 @@ object Param {
      *
      * Mostly used for tracking e-commerce data.
      */
+    const val PRODUCT_NAME = "ba"
+    const val PRODUCT_COST = "co"
+    const val PRODUCT_CURRENCY = "cr"
+    const val PRODUCT_QUANTITY = "qn"
+    const val STATUS_OF_SHOPPING_CARD = "st"
+    const val ORDER_ID = "oi"
+    const val ORDER_VALUE = "ov"
     val MEDIA_PARAM: MediaParam = MediaParam
     val USER_CATEGORIES_PARAM = UserCategoriesParam
     val E_COMMERCE_PARAM = ECommerceParam
