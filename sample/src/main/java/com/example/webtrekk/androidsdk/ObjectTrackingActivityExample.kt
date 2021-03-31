@@ -50,7 +50,6 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
             trackMedia1()
         }
 
-
     }
 
 
