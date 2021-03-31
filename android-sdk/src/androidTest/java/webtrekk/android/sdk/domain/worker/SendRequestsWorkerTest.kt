@@ -29,6 +29,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.testing.WorkManagerTestInitHelper
+import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -55,6 +56,9 @@ internal class SendRequestsWorkerTest : WorkManagerTest() {
 
         val workInfo = workManager.getWorkInfoById(sendRequestWorker.id).get()
 
-        assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
+        assertThat(
+            workInfo.state,
+            CoreMatchers.anyOf(`is`(WorkInfo.State.RUNNING), `is`(WorkInfo.State.ENQUEUED))
+        )
     }
 }
