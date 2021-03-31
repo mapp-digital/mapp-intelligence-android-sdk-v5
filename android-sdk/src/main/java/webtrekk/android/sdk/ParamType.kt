@@ -63,6 +63,7 @@ object Param {
      *
      * Sending this custom param for event tracking, its value will be ignored in the analytics.
      */
+    @Deprecated(message = "It is part of PAGE_PARAMS")
     const val INTERNAL_SEARCH = "is"
 
     /**
@@ -70,6 +71,7 @@ object Param {
      *
      * Mostly used for tracking campaign data.
      */
+    @Deprecated(message = "It is part of CAMPAIGN_PARAMS")
     const val MEDIA_CODE = "mc"
 
     /**
@@ -77,6 +79,7 @@ object Param {
      *
      * Mostly used for tracking user data.
      */
+    @Deprecated(message = "It is part of USER_CATEGORIES_PARAMS")
     const val CUSTOMER_ID = "cd"
 
     /**
@@ -86,20 +89,27 @@ object Param {
      *
      * Mostly used for tracking e-commerce data.
      */
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_NAME = "ba"
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_COST = "co"
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_CURRENCY = "cr"
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_QUANTITY = "qn"
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val STATUS_OF_SHOPPING_CARD = "st"
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val ORDER_ID = "oi"
+    @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val ORDER_VALUE = "ov"
-    val MEDIA_PARAM: MediaParam = MediaParam
-    val USER_CATEGORIES_PARAM = UserCategoriesParam
-    val E_COMMERCE_PARAM = ECommerceParam
-    val PAGE_PARAM = PageParam
-    val EVENT_PARAM = EventParam
-    val SESSION_PARAM = SessionParam
-    val CAMPAIGN_PARAM = CampaignParam
+    val MEDIA_PARAMS: MediaParam = MediaParam
+    val USER_CATEGORIES_PARAMS = UserCategoriesParam
+    val E_COMMERCE_PARAMS = ECommerceParam
+    val PAGE_PARAMS = PageParam
+    val EVENT_PARAMS = EventParam
+    val SESSION_PARAMS = SessionParam
+    val CAMPAIGN_PARAMS = CampaignParam
 }
 
 object MediaParam {
@@ -179,6 +189,7 @@ object SessionParam {
 object CampaignParam {
     const val CAMPAIGN_PARAM = "cc"
     const val CAMPAIGN_ACTION_PARAM = "mca"
+    const val MEDIA_CODE = "mc"
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
