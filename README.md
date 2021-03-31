@@ -13,7 +13,7 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
 # Installation
 Gradle
 ```groovy
-implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.5'
+implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.6'
 ```
 
 Maven
@@ -21,7 +21,7 @@ Maven
 <dependency>
 	<groupId>com.webtrekk.webtrekksdk</groupId>
 	<artifactId>webtrekksdk-android</artifactId>
-	<version>5.0.5</version>
+	<version>5.0.6</version>
 	<type>pom</type>
 </dependency>
 ```
