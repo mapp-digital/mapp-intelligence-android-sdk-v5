@@ -1,5 +1,8 @@
 # Change Log
-## Version 5.0.5. Beta-1 *(Progress)*
+## Version 5.0.5. *(2021-03-31)*
+* Added object tracking
+* Added Deep-linking tracking
+* Added Campaign tracking
 
 ## Version 5.0.4. *(2020-11-02)*
 * Bug fix for device update
