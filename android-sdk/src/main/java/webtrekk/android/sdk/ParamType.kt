@@ -132,7 +132,7 @@ object UserCategoriesParam {
     const val EMAIL_ADDRESS = URM_CATEGORY + 700
     const val EMAIL_RECEIVER_ID = URM_CATEGORY + 701
     const val FIRST_NAME = URM_CATEGORY + 703
-    const val GANDER = URM_CATEGORY + 706
+    const val GENDER = URM_CATEGORY + 706
     const val CUSTOMER_ID = Param.CUSTOMER_ID
     const val LAST_NAME = URM_CATEGORY + 704
     const val NEW_SELLER_SUBSCRIBED = URM_CATEGORY + 702
