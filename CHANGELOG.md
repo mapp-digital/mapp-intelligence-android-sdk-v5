@@ -1,5 +1,8 @@
 # Change Log
-## Version 5.0.7-beta1 *(In Progress)*
+## Version 5.0.8 *(In progress)*
+
+## Version 5.0.7 *(2021-04-01)*
+* Code improve
 
 ## Version 5.0.6 *(2021-03-31)*
 * Improve Default Params logic
