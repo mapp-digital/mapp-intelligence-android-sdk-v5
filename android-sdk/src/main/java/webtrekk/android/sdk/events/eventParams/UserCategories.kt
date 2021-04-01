@@ -64,7 +64,7 @@ data class UserCategories @JvmOverloads constructor(
         map.addNotNull(UserCategoriesParam.EMAIL_RECEIVER_ID, emailReceiverId)
         map.addNotNull(UserCategoriesParam.FIRST_NAME, firstName)
         if (gender != null)
-            map.addNotNull(UserCategoriesParam.GANDER, gender?.ordinal.toString())
+            map.addNotNull(UserCategoriesParam.GENDER, gender?.ordinal.toString())
         map.addNotNull(UserCategoriesParam.CUSTOMER_ID, customerId)
         map.addNotNull(UserCategoriesParam.LAST_NAME, lastName)
         map.addNotNull(
