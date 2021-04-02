@@ -33,13 +33,19 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import webtrekk.android.sdk.TrackPageDetail;
 
 import webtrekk.android.sdk.TrackParams;
 
 import webtrekk.android.sdk.Webtrekk;
 import webtrekk.android.sdk.ParamType;
+import webtrekk.android.sdk.events.PageViewEvent;
 import webtrekk.android.sdk.events.eventParams.MediaParameters;
+import webtrekk.android.sdk.events.eventParams.PageParameters;
+import webtrekk.android.sdk.events.eventParams.UserCategories;
 
 import static webtrekk.android.sdk.ParamTypeKt.createCustomParam;
 
@@ -74,6 +80,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MediaParameters md= new MediaParameters("sds","sdsa",2.2,3.455123);
+
+        //page properties
+        Map<Integer, String> params = new HashMap<>();
+        params.put(20, "cp20Override");
+
+        Map<Integer, String> categories = new HashMap<>();
+        categories.put(10, "test");
+
+        String searchTerm = "testSearchTerm";
+        PageParameters pageParameters =
+                new PageParameters(params, searchTerm, categories);
+        UserCategories userCategories = new UserCategories();
+        userCategories.setCity("Paris");
+        userCategories.setCountry("Germany");
+        userCategories.setBirthday(new UserCategories.Birthday(22,12,2016));
+        userCategories.setGender(UserCategories.Gender.FEMALE);
+
+        PageViewEvent pageEvent = new PageViewEvent("the custom name of page");
+        pageEvent.setPageParameters(pageParameters);
+        pageEvent.setUserCategories(userCategories);
+      //  pageEvent.setSessionParameters(sessionParameters);
+
+        Webtrekk.getInstance().trackPage(pageEvent);
+        MediaParameters md = new MediaParameters("sds", "sdsa", 2.2, 3.455123);
     }
 }

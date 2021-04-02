@@ -27,7 +27,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     ext.versions = [
-            'webtrekkVersion'        : '5.0.8',
+            'webtrekkVersion'        : '5.0.7',
             'gradleVersion'          : '3.5.3',
             'kotlinVersion'          : '1.3.71',
             'gradleVersionsPlugin'   : '0.21.0',
@@ -100,6 +100,10 @@ buildscript {
 
     repositories {
         google()
+        maven {
+            url = 'https://dl.bintray.com/webtrekk/webtrekk-android-sdk'
+        }
+        mavenCentral()
         jcenter()
         maven {
             url 'https://dl.bintray.com/kotlin/kotlin-eap'
@@ -122,6 +126,10 @@ buildscript {
 allprojects {
     repositories {
         google()
+        maven {
+            url = 'https://dl.bintray.com/webtrekk/webtrekk-android-sdk'
+        }
+        mavenCentral()
         jcenter()
         maven {
             url 'https://dl.bintray.com/kotlin/kotlin-eap'

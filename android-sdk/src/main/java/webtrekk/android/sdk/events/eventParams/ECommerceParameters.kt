@@ -80,7 +80,7 @@ constructor(
                 productNames.add(product.name)
                 productCosts.add(if (product.cost != null) product.cost.toString() else "")
                 productQuantities.add(if (product.quantity != null) product.quantity.toString() else "")
-                customParameters.forEach { (key, _) ->
+                product.categories.forEach { (key, _) ->
                     if (!categoriesKeys.contains(key))
                         categoriesKeys.add(key)
                 }
@@ -88,10 +88,8 @@ constructor(
             categoriesKeys.forEach { maine ->
                 val tempCategory = mutableListOf<String>()
                 products.forEach { product ->
-                    if (product.categories.containsKey(maine)) product.categories[maine] else "".let {
-                        tempCategory.add(
-                            it
-                        )
+                    if (product.categories.containsKey(maine)) {
+                        tempCategory.add(product.categories[maine]!!)
                     }
                 }
                 map.addNotNull(

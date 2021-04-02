@@ -8,18 +8,12 @@ import webtrekk.android.sdk.extension.addNotNull
  * Copyright (c) 2021 MAPP.
  */
 data class PageParameters @JvmOverloads
-constructor(var parameters: Map<Int, String> = emptyMap()) : BaseEvent {
-    constructor(
-        parameters: Map<Int, String> = emptyMap(),
-        search: String = "",
-        pageCategory: Map<Int, String> = emptyMap()
-    ) : this(parameters) {
-        this.search = search
-        this.pageCategory = pageCategory
-    }
-
-    var search: String = ""
+constructor(
+    var parameters: Map<Int, String> = emptyMap(),
+    var search: String = "",
     var pageCategory: Map<Int, String> = emptyMap()
+) : BaseEvent {
+
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
         if (!parameters.isNullOrEmpty()) {
