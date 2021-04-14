@@ -96,4 +96,4 @@ dokka {
     outputDirectory = "$buildDir/javadoc"
 }
 
-apply from: 'bintray.gradle'
+apply from: 'maven.gradle'
