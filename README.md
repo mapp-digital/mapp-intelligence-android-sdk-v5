@@ -11,6 +11,7 @@ Webtrekk internally, collects and caches the data that you specify for tracking,
 
 # Installation
 For versions of 5.0.7+ we are use mavenCenter() because Jcenter is shutting down
+
 Gradle
 ```groovy
 implementation 'com.mapp.sdk:intelligence-android:5.0.7'
