@@ -101,10 +101,10 @@ buildscript {
 
     repositories {
         google()
+        mavenCentral()
         maven {
             url = 'https://dl.bintray.com/webtrekk/webtrekk-android-sdk'
         }
-        mavenCentral()
         jcenter()
         maven {
             url 'https://dl.bintray.com/kotlin/kotlin-eap'
@@ -121,7 +121,7 @@ buildscript {
         classpath "com.google.gms:google-services:${versions.googleServices}"
         classpath "com.google.firebase:firebase-crashlytics-gradle:${versions.firebaseCrashlyticsGradle}"
         classpath "com.google.firebase:firebase-appdistribution-gradle:${versions.firebaseAppDistribution}"
-        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0'
+        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0'
 
     }
 }
