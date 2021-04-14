@@ -26,7 +26,8 @@ Maven
 </dependency>
 ```
 Versions less then 5.0.4 are on Jcenter(), Access will be blocked on February 1, 2022.
-**Warning:** Please don't use versions 5.0.5 and 5.0.6 
+**Warning:** Please don't use versions 5.0.5 and 5.0.6
+
 
 Gradle
 ```groovy
