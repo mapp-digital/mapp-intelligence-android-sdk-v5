@@ -10,7 +10,7 @@ Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/)
 Webtrekk internally, collects and caches the data that you specify for tracking, and later, it sends those data to Webtrekk analytic servers in periodic times.
 
 # Installation
-For versions of 5.0.7+ we are use mavenCenter() because Jcenter is shutting down
+For versions of 5.0.7+ we are use mavenCentral() because Jcenter is shutting down
 
 Gradle
 ```groovy
