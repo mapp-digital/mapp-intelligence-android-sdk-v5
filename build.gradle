@@ -24,6 +24,7 @@
  */
 
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'io.codearte.nexus-staging'
 
 buildscript {
     ext.versions = [
@@ -120,16 +121,18 @@ buildscript {
         classpath "com.google.gms:google-services:${versions.googleServices}"
         classpath "com.google.firebase:firebase-crashlytics-gradle:${versions.firebaseCrashlyticsGradle}"
         classpath "com.google.firebase:firebase-appdistribution-gradle:${versions.firebaseAppDistribution}"
+        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0'
+
     }
 }
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         maven {
             url = 'https://dl.bintray.com/webtrekk/webtrekk-android-sdk'
         }
-        mavenCentral()
         jcenter()
         maven {
             url 'https://dl.bintray.com/kotlin/kotlin-eap'
