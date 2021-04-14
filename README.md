@@ -9,19 +9,30 @@ Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your An
 Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/) and uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) for non-blocking executions, [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for enqueuing and sending the track requests to optimize the device battery and app performance.
 Webtrekk internally, collects and caches the data that you specify for tracking, and later, it sends those data to Webtrekk analytic servers in periodic times.
 
-**Warning:** Since Jcenter is shut down, For sdk version biggest than 5.0.4 add in code line belove below, before jcenter()
-```groovy
- maven {
-            url = 'https://dl.bintray.com/webtrekk/webtrekk-android-sdk'
-        }
- jcenter()
-```
-**Warning:** Please don't use versions 5.0.5 and 5.0.6 
-
 # Installation
+For versions of 5.0.7+ we are use mavenCentral() because Jcenter is shutting down
+
 Gradle
 ```groovy
-implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.7'
+implementation 'com.mapp.sdk:intelligence-android:5.0.7'
+```
+
+Maven
+```xml
+<dependency>
+	<groupId>com.mapp.sdk</groupId>
+	<artifactId>intelligence-android</artifactId>
+	<version>5.0.7</version>
+	<type>pom</type>
+</dependency>
+```
+Versions less then 5.0.4 are on Jcenter(), Access will be blocked on February 1, 2022.
+**Warning:** Please don't use versions 5.0.5 and 5.0.6
+
+
+Gradle
+```groovy
+implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.4'
 ```
 
 Maven
@@ -29,7 +40,7 @@ Maven
 <dependency>
 	<groupId>com.webtrekk.webtrekksdk</groupId>
 	<artifactId>webtrekksdk-android</artifactId>
-	<version>5.0.7</version>
+	<version>5.0.4</version>
 	<type>pom</type>
 </dependency>
 ```
