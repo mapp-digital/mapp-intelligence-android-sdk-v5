@@ -38,6 +38,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionName versions.webtrekkVersion
+        setVersionName(versions.webtrekkVersion)
     }
 
     lintOptions {
