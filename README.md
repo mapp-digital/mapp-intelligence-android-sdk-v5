@@ -10,11 +10,11 @@ Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/)
 Webtrekk internally, collects and caches the data that you specify for tracking, and later, it sends those data to Webtrekk analytic servers in periodic times.
 
 # Installation
-For versions of 5.0.7+ we are use mavenCentral() because Jcenter is shutting down
+For versions of 5.0.8+ we are use mavenCentral() because Jcenter is shutting down
 
 Gradle
 ```groovy
-implementation 'com.mapp.sdk:intelligence-android:5.0.7'
+implementation 'com.mapp.sdk:intelligence-android:5.0.8'
 ```
 
 Maven
@@ -22,12 +22,12 @@ Maven
 <dependency>
 	<groupId>com.mapp.sdk</groupId>
 	<artifactId>intelligence-android</artifactId>
-	<version>5.0.7</version>
+	<version>5.0.8</version>
 	<type>pom</type>
 </dependency>
 ```
 Versions less then 5.0.4 are on Jcenter(), Access will be blocked on February 1, 2022.
-**Warning:** Please don't use versions 5.0.5 and 5.0.6
+**Warning:** Please don't use versions 5.0.5, 5.0.6 and 5.0.7
 
 
 Gradle
