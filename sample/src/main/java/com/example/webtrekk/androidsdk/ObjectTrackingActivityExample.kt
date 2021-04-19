@@ -125,7 +125,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
             )
         )
         ecommerceParameters1.products = listOf(product1)
-        ecommerceParameters1.status = ECommerceParameters.Status.PURCHASED
+        ecommerceParameters1.status = ECommerceParameters.Status.VIEWED
         ecommerceParameters1.cancellationValue = 2
         ecommerceParameters1.couponValue = 33
         ecommerceParameters1.currency = "EUR"
