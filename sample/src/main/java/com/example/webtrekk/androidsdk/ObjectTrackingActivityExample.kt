@@ -49,6 +49,9 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         example8.setOnClickListener {
             trackMedia1()
         }
+        example9.setOnClickListener {
+            ecommerceTracking()
+        }
 
     }
 
@@ -102,6 +105,30 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
     }
 
 
+    private val product3: ProductParameters = run {
+        val product = ProductParameters()
+        product.name = "ABC-123"
+        product.categories = mapOf(Pair(1, "tops"), Pair(2, "noname"))
+        product.ecommerceParameters = mapOf(Pair(1, "product1 param 1"))
+        product.cost = 99.90
+        product.quantity = 2
+        product.productSoldOut = 0
+        product.productVariant = "green"
+        return@run product
+    }
+
+    private val product4: ProductParameters = run {
+        val product = ProductParameters()
+        product.name = "ABC-456"
+        product.cost = 33.33
+        product.quantity = 2
+        product.productSoldOut = 0
+        product.productVariant = "blue"
+        product.categories = mapOf(Pair(1, "t-shirt"), Pair(2, "gucci"))
+        product.ecommerceParameters = mapOf(Pair(1, "product2 param 1"))
+        return@run product
+    }
+
     private val ecommerceParameters: ECommerceParameters = ECommerceParameters(
         mapOf(1 to "ProductParam1;ProductParam1", 2 to "ProductParam2")
     )
@@ -134,8 +161,6 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         ecommerceParameters1.orderID = "ud679adn"
         ecommerceParameters1.orderValue = 456
         ecommerceParameters1.paymentMethod = "credit card"
-        ecommerceParameters1.productAdvertiseID = 56291
-        ecommerceParameters1.productSoldOut = 1
         ecommerceParameters1.returnValue = 3
         ecommerceParameters1.returningOrNewCustomer = "new customer"
         ecommerceParameters1.shippingCost = 35
@@ -243,6 +268,24 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         mediaProperties.customCategories = mapOf(20 to "mediaCat")
         val mediaEvent = MediaEvent(pageName = "Test", parameters = mediaProperties)
         Webtrekk.getInstance().trackMedia(mediaEvent)
+    }
+
+
+    private fun ecommerceTracking() {
+        val ecommerceParameters1 = ECommerceParameters()
+        ecommerceParameters1.customParameters = mapOf(2 to "goal param 2")
+
+        val pageEvent1 = PageViewEvent("pageName")
+        pageEvent1.pageParameters = PageParameters(
+            parameters = mapOf(
+                5 to "parameter value 5",
+                777 to "this is my page type"
+            )
+        )
+        pageEvent1.eCommerceParameters = ecommerceParameters1
+        ecommerceParameters1.products = listOf(product3, product4)
+        ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_BASKET
+        Webtrekk.getInstance().trackPage(pageEvent1)
     }
 
 }
