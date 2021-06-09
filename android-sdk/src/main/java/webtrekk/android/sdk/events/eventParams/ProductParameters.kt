@@ -13,6 +13,10 @@ constructor(
     var categories: Map<Int, String> = emptyMap()
     var cost: Number? = null
     var quantity: Number? = null
+    var productAdvertiseID: Number? = null
+    var productSoldOut: Number? = null
+    var productVariant: String? = null
+    var ecommerceParameters: Map<Int, String> = emptyMap()
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
         categories.forEach { (key, value) ->
