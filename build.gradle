@@ -61,7 +61,7 @@ buildscript {
             'coreTestingVersion'     : '2.0.0',
             //Downgraded version from 1.9.3 to 1.9.2 while this issue is not resolved
             //https://github.com/mockk/mockk/issues/281
-            'mockkVersion'           : '1.11.0',
+            'mockkVersion'           : '1.10.0',
             'kotlinTestVersion'      : '3.4.2',
 
             'ktlintVersion'          : '0.31.0',
