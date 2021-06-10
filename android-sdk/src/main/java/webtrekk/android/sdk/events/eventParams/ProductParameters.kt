@@ -14,7 +14,7 @@ constructor(
     var cost: Number? = null
     var quantity: Number? = null
     var productAdvertiseID: Number? = null
-    var productSoldOut: Number? = null
+    var productSoldOut: Boolean? = null
     var productVariant: String? = null
     var ecommerceParameters: Map<Int, String> = emptyMap()
     override fun toHasMap(): MutableMap<String, String> {
