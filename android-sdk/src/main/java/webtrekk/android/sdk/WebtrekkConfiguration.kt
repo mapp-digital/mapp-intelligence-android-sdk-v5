@@ -68,7 +68,7 @@ class WebtrekkConfiguration private constructor(
     class Builder(private val trackIds: List<String>, private val trackDomain: String) {
         private var logLevel = DefaultConfiguration.LOG_LEVEL_VALUE
         private var requestsInterval =
-            DefaultConfiguration.TIME_UNIT_VALUE.toMillis(DefaultConfiguration.REQUESTS_INTERVAL)
+            DefaultConfiguration.TIME_UNIT_VALUE.toMinutes(DefaultConfiguration.REQUESTS_INTERVAL)
         private var autoTracking = DefaultConfiguration.AUTO_TRACK_ENABLED
         private var fragmentsAutoTracking = DefaultConfiguration.FRAGMENTS_AUTO_TRACK_ENABLED
         private var constraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
@@ -102,7 +102,7 @@ class WebtrekkConfiguration private constructor(
          */
         @JvmName("setRequestsInterval")
         fun requestsInterval(timeUnit: TimeUnit = TimeUnit.MINUTES, interval: Long) =
-            apply { this.requestsInterval = timeUnit.toMillis(interval) }
+            apply { this.requestsInterval = timeUnit.toMinutes(interval) }
 
         /**
          * The auto tracking is enabled by default. The auto tracking will track your activities

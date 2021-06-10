@@ -111,7 +111,7 @@ object DefaultConfiguration {
      */
     val WORK_MANAGER_CONSTRAINTS = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresBatteryNotLow(true)
+        .setRequiresBatteryNotLow(false)
         .build()
 
     /**
@@ -120,8 +120,8 @@ object DefaultConfiguration {
      * @see [WebtrekkConfiguration.Builder.okHttpClient]
      */
     val OKHTTP_CLIENT: OkHttpClient = OkHttpClient.Builder()
-        .callTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .connectTimeout(10, TimeUnit.SECONDS)
+        .callTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)
         .build()
 }

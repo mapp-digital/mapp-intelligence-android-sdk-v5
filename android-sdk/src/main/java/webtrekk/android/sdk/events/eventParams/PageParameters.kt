@@ -1,5 +1,6 @@
 package webtrekk.android.sdk.events.eventParams
 
+import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.PageParam
 import webtrekk.android.sdk.extension.addNotNull
 
@@ -18,13 +19,13 @@ constructor(
         val map = mutableMapOf<String, String>()
         if (!parameters.isNullOrEmpty()) {
             parameters.forEach { (key, value) ->
-                map.addNotNull("${PageParam.PAGE_PARAM}$key", value)
+                map.addNotNull("${BaseParam.PAGE_PARAM}$key", value)
             }
         }
 
         if (!pageCategory.isNullOrEmpty()) {
             pageCategory.forEach { (key, value) ->
-                map.addNotNull("${PageParam.PAGE_CATEGORY}$key", value)
+                map.addNotNull("${BaseParam.PAGE_CATEGORY}$key", value)
             }
         }
         map.addNotNull(PageParam.INTERNAL_SEARCH, search)

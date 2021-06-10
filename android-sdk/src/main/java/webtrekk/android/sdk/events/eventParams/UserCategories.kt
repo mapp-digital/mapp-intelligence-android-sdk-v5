@@ -1,5 +1,6 @@
 package webtrekk.android.sdk.events.eventParams
 
+import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.UserCategoriesParam
 import webtrekk.android.sdk.extension.addNotNull
 
@@ -53,7 +54,7 @@ data class UserCategories @JvmOverloads constructor(
 
         if (!customCategories.isNullOrEmpty()) {
             customCategories.forEach { (key, value) ->
-                map["${UserCategoriesParam.URM_CATEGORY}$key"] = value
+                map["${BaseParam.URM_CATEGORY}$key"] = value
             }
         }
         if (birthday != null)

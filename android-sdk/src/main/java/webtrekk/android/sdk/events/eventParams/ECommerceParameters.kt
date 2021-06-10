@@ -1,5 +1,6 @@
 package webtrekk.android.sdk.events.eventParams
 
+import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.ECommerceParam
 import webtrekk.android.sdk.extension.addNotNull
 
@@ -48,7 +49,7 @@ constructor(
         val map = mutableMapOf<String, String>()
         if (!customParameters.isNullOrEmpty()) {
             customParameters.forEach { (key, value) ->
-                map["${ECommerceParam.COMMERCE_PARAM}$key"] = value
+                map["${BaseParam.COMMERCE_PARAM}$key"] = value
             }
         }
         map.addNotNull(ECommerceParam.PRODUCT_CURRENCY, currency)
@@ -135,7 +136,7 @@ constructor(
                     }
                 }
                 map.addNotNull(
-                        "${ECommerceParam.COMMERCE_PARAM}$maine",
+                        "${BaseParam.COMMERCE_PARAM}$maine",
                         tempCategory.joinToString(";")
                 )
             }
