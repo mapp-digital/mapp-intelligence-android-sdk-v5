@@ -45,11 +45,10 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
         val sendRequestWorker = PeriodicWorkRequest.Builder(
             SendRequestsWorker::class.java,
             repeatInterval,
-            TimeUnit.MILLISECONDS
+            TimeUnit.MINUTES
         )
             .setConstraints(constraints)
             .addTag(SendRequestsWorker.TAG)
-            .setInitialDelay(repeatInterval, TimeUnit.MILLISECONDS)
             .build()
 
         workManager.enqueueUniquePeriodicWork(

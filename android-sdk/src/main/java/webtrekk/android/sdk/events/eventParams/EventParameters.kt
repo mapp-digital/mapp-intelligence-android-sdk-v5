@@ -1,6 +1,6 @@
 package webtrekk.android.sdk.events.eventParams
 
-import webtrekk.android.sdk.EventParam
+import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.extension.addNotNull
 
 /**
@@ -17,7 +17,7 @@ constructor(
         val map = mutableMapOf<String, String>()
         if (!customParameters.isNullOrEmpty()) {
             customParameters.forEach { (key, value) ->
-                map.addNotNull("${EventParam.EVENT_PARAM}$key", value)
+                map.addNotNull("${BaseParam.EVENT_PARAM}$key", value)
             }
         }
         return map

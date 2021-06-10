@@ -26,6 +26,8 @@
 package webtrekk.android.sdk
 
 import androidx.annotation.RestrictTo
+import webtrekk.android.sdk.BaseParam.COMMERCE_PARAM
+import webtrekk.android.sdk.BaseParam.URM_CATEGORY
 
 /**
  * This file, contains all the predefined custom params. and helper function that helps you create your
@@ -83,7 +85,7 @@ object Param {
     const val CUSTOMER_ID = "cd"
 
     /**
-     * A predefined custom params keys, used for PAGE tracking only.
+     * A predefined custom params keys, used for PAGE and EVENT tracking.
      *
      * Sending any of these custom params for event tracking, their values will be ignored in the analytics.
      *
@@ -123,9 +125,8 @@ object MediaParam {
     const val NAME = "mi"
 }
 
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 object UserCategoriesParam {
-    const val URM_CATEGORY = "uc"
     const val BIRTHDAY = URM_CATEGORY + 707
     const val CITY = URM_CATEGORY + 709
     const val COUNTRY = URM_CATEGORY + 708
@@ -133,7 +134,7 @@ object UserCategoriesParam {
     const val EMAIL_RECEIVER_ID = URM_CATEGORY + 701
     const val FIRST_NAME = URM_CATEGORY + 703
     const val GENDER = URM_CATEGORY + 706
-    const val CUSTOMER_ID = Param.CUSTOMER_ID
+    const val CUSTOMER_ID = "cd"
     const val LAST_NAME = URM_CATEGORY + 704
     const val NEW_SELLER_SUBSCRIBED = URM_CATEGORY + 702
     const val PHONE_NUMBER = URM_CATEGORY + 705
@@ -141,10 +142,18 @@ object UserCategoriesParam {
     const val STREET_NUMBER = URM_CATEGORY + 712
     const val ZIP_CODE = URM_CATEGORY + 710
 }
-
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-object ECommerceParam {
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+object BaseParam {
     const val COMMERCE_PARAM = "cb"
+    const val URM_CATEGORY = "uc"
+    const val SESSION_PARAM = "cs"
+    const val EVENT_PARAM = "ck"
+    const val PAGE_PARAM = "cp"
+    const val PAGE_CATEGORY = "cg"
+}
+
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+object ECommerceParam {
     const val RETURNING_OR_NEW_CUSTOMER = COMMERCE_PARAM + 560
     const val RETURN_VALUE = COMMERCE_PARAM + 561
     const val CANCELLATION_VALUE = COMMERCE_PARAM + 562
@@ -168,31 +177,25 @@ object ECommerceParam {
     const val PRODUCT_QUANTITY = "qn"
 }
 
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 object PageParam {
-    const val PAGE_PARAM = "cp"
-    const val PAGE_CATEGORY = "cg"
     const val INTERNAL_SEARCH = "is"
 }
 
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-object EventParam {
-    const val EVENT_PARAM = "ck"
-}
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+object EventParam
 
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-object SessionParam {
-    const val SESSION_PARAM = "cs"
-}
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+object SessionParam
 
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 object CampaignParam {
     const val CAMPAIGN_PARAM = "cc"
     const val CAMPAIGN_ACTION_PARAM = "mca"
     const val MEDIA_CODE = "mc"
 }
 
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 object InternalParam {
     /**
      * Only for dev team, don't use
