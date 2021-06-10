@@ -135,7 +135,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
             false
         )
         if (Util.SDK_INT >= 21 && tunneling) {
-            builder.setTunnelingAudioSessionId(C.generateAudioSessionIdV21( /* context= */this))
+//            builder.setTunnelingAudioSessionId(C.generateAudioSessionIdV21( /* context= */this))
         }
         trackSelectorParameters = builder.build()
         clearStartPosition()

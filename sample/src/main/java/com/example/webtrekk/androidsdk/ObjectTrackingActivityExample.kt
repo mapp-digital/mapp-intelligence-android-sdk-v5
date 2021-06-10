@@ -53,6 +53,11 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
             ecommerceTracking()
         }
 
+        example10.setOnClickListener {
+            ecommerceTrackingTest2()
+        }
+
+
     }
 
 
@@ -112,7 +117,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         product.ecommerceParameters = mapOf(Pair(1, "product1 param 1"))
         product.cost = 99.90
         product.quantity = 2
-        product.productSoldOut = 0
+        product.productSoldOut = false
         product.productVariant = "green"
         return@run product
     }
@@ -122,15 +127,28 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         product.name = "ABC-456"
         product.cost = 33.33
         product.quantity = 2
-        product.productSoldOut = 0
+        product.productSoldOut = false
         product.productVariant = "blue"
         product.categories = mapOf(Pair(1, "t-shirt"), Pair(2, "gucci"))
         product.ecommerceParameters = mapOf(Pair(1, "product2 param 1"))
         return@run product
     }
 
+    private val product5: ProductParameters = run {
+        val product = ProductParameters()
+        product.name = "TESTTEASASS"
+        product.cost = 553
+        product.quantity = 4333333
+        product.productSoldOut = true
+        product.productVariant = "sisarka"
+        product.productAdvertiseID = 23212312312
+        product.categories = mapOf(Pair(1, "t-shirtsss"), Pair(2, "gucciss"))
+        product.ecommerceParameters = mapOf(Pair(1, "product3 param 1"))
+        return@run product
+    }
+
     private val ecommerceParameters: ECommerceParameters = ECommerceParameters(
-        mapOf(1 to "ProductParam1;ProductParam1", 2 to "ProductParam2")
+            mapOf(1 to "ProductParam1;ProductParam1", 2 to "ProductParam2")
     )
 
 
@@ -146,10 +164,10 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
     private fun trackEcommerceViewProduct() {
 
         val ecommerceParameters1 = ECommerceParameters(
-            customParameters = mapOf(
-                1 to "ProductParam1",
-                2 to "ProductParam2"
-            )
+                customParameters = mapOf(
+                        1 to "ProductParam1",
+                        2 to "ProductParam2"
+                )
         )
         ecommerceParameters1.products = listOf(product1)
         ecommerceParameters1.status = ECommerceParameters.Status.VIEWED
@@ -179,10 +197,10 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
     private fun trackEcommerceAddedToBasket() {
 
         val ecommerceParameters1 = ECommerceParameters(
-            customParameters = mapOf(
-                1 to "ProductParam1",
-                2 to "ProductParam2"
-            )
+                customParameters = mapOf(
+                        1 to "ProductParam1",
+                        2 to "ProductParam2"
+                )
         )
         product1.quantity = 3
         product2.quantity = 2
@@ -239,7 +257,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         val categories = mapOf(10 to "test")
         val searchTerm = "testSearchTerm"
         val pageParameters =
-            PageParameters(parameters = params, pageCategory = categories, search = searchTerm)
+                PageParameters(parameters = params, pageCategory = categories, search = searchTerm)
 
         //user properties
         val userCategories = UserCategories()
@@ -264,7 +282,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
 
     private fun trackMedia1() {
         val mediaProperties =
-            MediaParameters("TestVideo", action = "view", position = 12, duration = 120)
+                MediaParameters("TestVideo", action = "view", position = 12, duration = 120)
         mediaProperties.customCategories = mapOf(20 to "mediaCat")
         val mediaEvent = MediaEvent(pageName = "Test", parameters = mediaProperties)
         Webtrekk.getInstance().trackMedia(mediaEvent)
@@ -277,14 +295,32 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
 
         val pageEvent1 = PageViewEvent("pageName")
         pageEvent1.pageParameters = PageParameters(
-            parameters = mapOf(
-                5 to "parameter value 5",
-                777 to "this is my page type"
-            )
+                parameters = mapOf(
+                        5 to "parameter value 5",
+                        777 to "this is my page type"
+                )
         )
         pageEvent1.eCommerceParameters = ecommerceParameters1
         ecommerceParameters1.products = listOf(product3, product4)
         ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_BASKET
+        Webtrekk.getInstance().trackPage(pageEvent1)
+    }
+
+
+    private fun ecommerceTrackingTest2() {
+        val ecommerceParameters1 = ECommerceParameters()
+        ecommerceParameters1.customParameters = mapOf(44 to "goal param 44")
+
+        val pageEvent1 = PageViewEvent("pageName")
+        pageEvent1.pageParameters = PageParameters(
+                parameters = mapOf(
+                        5 to "parameter value 123",
+                        777 to "this is my page fasda"
+                )
+        )
+        pageEvent1.eCommerceParameters = ecommerceParameters1
+        ecommerceParameters1.products = listOf(product3, product5)
+        ecommerceParameters1.status = ECommerceParameters.Status.PURCHASED
         Webtrekk.getInstance().trackPage(pageEvent1)
     }
 
