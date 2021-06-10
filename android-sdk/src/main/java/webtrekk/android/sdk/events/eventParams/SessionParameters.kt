@@ -1,6 +1,6 @@
 package webtrekk.android.sdk.events.eventParams
 
-import webtrekk.android.sdk.SessionParam
+import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.extension.addNotNull
 
 /**
@@ -14,7 +14,7 @@ data class SessionParameters @JvmOverloads constructor(
         val map = mutableMapOf<String, String>()
         if (!parameters.isNullOrEmpty()) {
             parameters.forEach { (key, value) ->
-                map.addNotNull("${SessionParam.SESSION_PARAM}$key", value)
+                map.addNotNull("${BaseParam.SESSION_PARAM}$key", value)
             }
         }
         return map
