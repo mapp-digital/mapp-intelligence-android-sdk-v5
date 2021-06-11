@@ -90,8 +90,15 @@ internal fun MutableMap<String, String>.addNotNull(key: String, value: String? =
 }
 
 internal fun MutableMap<String, String>.addNotNull(key: String, value: Number?) {
-    if (value != null && key.isNotBlank())
-        this[key] = value.toString()
+    if (value != null && key.isNotBlank()) {
+        val doubleValue = value.toDouble()
+        val result = doubleValue - doubleValue.toInt()
+        if (result != 0.0) {
+            this[key] = doubleValue.toString()
+        } else {
+            this[key] = value.toInt().toString()
+        }
+    }
 }
 
 internal fun <T> Sequence<T>.batch(n: Int): Sequence<List<T>> {
@@ -144,9 +151,9 @@ internal fun Array<StackTraceElement>.createString(): String {
     for (element in this) {
         if (stackString.isNotEmpty()) stackString += EX_LINE_SEPARATOR
         val lineNumber =
-            if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
+                if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
         var stackItem = element.className + "." +
-            element.methodName + "(" + element.fileName
+                element.methodName + "(" + element.fileName
         stackItem += if (lineNumber < 0) ")" else ":" + element.lineNumber + ")"
         stackString += if (stackString.length + stackItem.length <= MAX_PARAMETER_NUMBER) stackItem else break
     }
