@@ -224,9 +224,6 @@ enum class ParamType(val value: String) {
      */
     PAGE_PARAM("cp"),
     PAGE_CATEGORY("cg"),
-    ECOMMERCE_PARAM("cb"),
-    PRODUCT_CATEGORY("ca"),
-
     /**
      * This custom param is used for event tracking only.
      *
@@ -237,6 +234,8 @@ enum class ParamType(val value: String) {
     /**
      * Those custom params can be used for both page and event tracking.
      */
+    ECOMMERCE_PARAM("cb"),
+    PRODUCT_CATEGORY("ca"),
     CAMPAIGN_PARAM("cc"),
     SESSION_PARAM("cs"),
     URM_CATEGORY("uc")
