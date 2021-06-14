@@ -128,6 +128,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         product.cost = 33.33
         product.quantity = 2
         product.productSoldOut = false
+        product.productAdvertiseID = 562918888888888.2223;
         product.productVariant = "blue"
         product.categories = mapOf(Pair(1, "t-shirt"), Pair(2, "gucci"))
         product.ecommerceParameters = mapOf(Pair(1, "product2 param 1"))

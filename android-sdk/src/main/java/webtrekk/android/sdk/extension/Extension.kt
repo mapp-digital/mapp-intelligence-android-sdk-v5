@@ -37,6 +37,10 @@ import webtrekk.android.sdk.util.NULL_MESSAGE
 import java.io.BufferedReader
 import java.io.IOException
 import java.net.URLEncoder
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
+import kotlin.collections.HashMap
 
 /**
  * This file contains helper general extension functions.
@@ -91,14 +95,26 @@ internal fun MutableMap<String, String>.addNotNull(key: String, value: String? =
 
 internal fun MutableMap<String, String>.addNotNull(key: String, value: Number?) {
     if (value != null && key.isNotBlank()) {
-        val doubleValue = value.toDouble()
+        this[key] = value.formatNumber()
+    }
+}
+
+internal fun Number?.formatNumber(): String {
+    if (this != null) {
+        val doubleValue = toDouble()
         val result = doubleValue - doubleValue.toInt()
-        if (result != 0.0) {
-            this[key] = doubleValue.toString()
+        return if (result != 0.0) {
+            val df = DecimalFormat("#.############", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+            df.maximumFractionDigits = 8
+            df.format(doubleValue)
         } else {
-            this[key] = value.toInt().toString()
+            val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+            df.maximumFractionDigits = 0
+            df.isDecimalSeparatorAlwaysShown = false
+            df.format(toInt())
         }
     }
+    return ""
 }
 
 internal fun <T> Sequence<T>.batch(n: Int): Sequence<List<T>> {

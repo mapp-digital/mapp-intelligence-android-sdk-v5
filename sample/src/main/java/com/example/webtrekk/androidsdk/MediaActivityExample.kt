@@ -105,7 +105,6 @@ class MediaActivityExample : AppCompatActivity() {
         })
     }
 
-
     override fun onDestroy() {
         trackingParams[MediaParam.MEDIA_ACTION] = "eof"
         trackingParams[MediaParam.MEDIA_POSITION] = currentPlayProgress.toString()

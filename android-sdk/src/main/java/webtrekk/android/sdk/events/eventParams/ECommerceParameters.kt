@@ -3,6 +3,7 @@ package webtrekk.android.sdk.events.eventParams
 import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.ECommerceParam
 import webtrekk.android.sdk.extension.addNotNull
+import webtrekk.android.sdk.extension.formatNumber
 
 /**
  * Created by Aleksandar Marinkovic on 3/11/21.
@@ -87,13 +88,13 @@ constructor(
                 productCosts.add(
                         if (product.cost != null) {
                             productCostsEmpty = false
-                            product.cost.toString()
+                            product.cost.formatNumber()
                         } else ""
                 )
                 productQuantities.add(
                         if (product.quantity != null) {
                             productQuantitiesEmpty = false
-                            product.quantity.toString()
+                            product.quantity.formatNumber()
                         } else ""
                 )
                 product.categories.forEach { (key, _) ->
@@ -108,7 +109,7 @@ constructor(
                 productAdvertiseID.add(
                         if (product.productAdvertiseID != null) {
                             productAdvertiseIDEmpty = false
-                            product.productAdvertiseID.toString()
+                            product.productAdvertiseID.formatNumber()
                         } else ""
                 )
                 productSoldOut.add(
@@ -124,7 +125,7 @@ constructor(
                 productVariant.add(
                         if (product.productVariant != null) {
                             productVariantEmpty = false
-                            product.productVariant.toString()
+                            product.productVariant!!
                         } else ""
                 )
             }
