@@ -2,6 +2,7 @@ package webtrekk.android.sdk.events.eventParams
 
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.extension.addNotNull
+import webtrekk.android.sdk.extension.formatNumber
 
 /**
  * Created by Aleksandar Marinkovic on 3/11/21.
@@ -45,14 +46,14 @@ data class MediaParameters(
         }
         map.addNotNull(MediaParam.NAME, name)
         map.addNotNull(MediaParam.MEDIA_ACTION, action)
-        map.addNotNull(MediaParam.MEDIA_POSITION, position.toString())
-        map.addNotNull(MediaParam.MEDIA_DURATION, duration.toString())
+        map.addNotNull(MediaParam.MEDIA_POSITION, position.formatNumber())
+        map.addNotNull(MediaParam.MEDIA_DURATION, duration.formatNumber())
         if (soundIsMuted != null)
             map.addNotNull(MediaParam.MUTE, if (soundIsMuted == true) "1" else "0")
         if (soundVolume != null)
-            map.addNotNull(MediaParam.VOLUME, soundVolume.toString())
+            map.addNotNull(MediaParam.VOLUME, soundVolume.formatNumber())
         if (bandwith != null)
-            map.addNotNull(MediaParam.BANDWIDTH, bandwith.toString())
+            map.addNotNull(MediaParam.BANDWIDTH, bandwith.formatNumber())
 
         return map
     }
