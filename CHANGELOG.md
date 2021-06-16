@@ -1,5 +1,14 @@
 # Change Log
-## Version 5.0.8 *(In progress)*
+## Version 5.0.10 *(In-Progress)*
+
+## Version 5.0.9 *(2021-05-16)*
+* Removed JCenter 
+* Improve Object tracking 
+* Improve code stability
+* Improve code comments 
+
+## Version 5.0.8 *(2021-04-29)*
+* Move SDK to maven central
 
 ## Version 5.0.7 *(2021-04-01)*
 * Code improve
