@@ -1,7 +1,7 @@
 # [Webtrekk Android SDK v5](https://webtrekk.github.io/webtrekk-android-sdk-v5/) [![Build Status](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5.svg?branch=master)](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5)
 
 [Site](https://mapp.com/) |
-[Docs](https://docs.mapp.com/display/ASVN) |
+[Docs](https://documentation.mapp.com/latest/en/android-sdk-v5-17498610.html) |
 [Support](https://support.webtrekk.com/)
 
 Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your Android apps. Collect meaningful data about how your apps are used, track how your users interact with your app, how they view specific pages, and custom events. Based on the tracking data from apps different indicators can be measured, which are already known from the web analytics, such as page impressions, events, screen size, operating system, e-commerce tracking, etc.
