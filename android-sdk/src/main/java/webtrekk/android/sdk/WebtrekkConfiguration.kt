@@ -146,6 +146,11 @@ class WebtrekkConfiguration private constructor(
             this.shouldMigrate = true
         }
 
+        /**
+         * If disabled, it will only be send if the SDK detects a new session.
+         * It is recommended to enable when using the pre-defined app version parameter in order to be inline with the sessions as detected by the Mapp Intelligence backend.
+         */
+
         fun sendAppVersionToEveryRequest() = apply {
             this.versionInEachRequest = true
         }
