@@ -71,6 +71,9 @@ internal var userUpdate: Boolean
     inline get() = WebtrekkImpl.getInstance().sessions.isUserUpdated()
     set(value) = WebtrekkImpl.getInstance().sessions.updateUser(value)
 
+internal val appVersionInRequest: Boolean
+    inline get() = WebtrekkImpl.getInstance().config.versionInEachRequest
+
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random

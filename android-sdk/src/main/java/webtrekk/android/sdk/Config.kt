@@ -159,4 +159,10 @@ interface Config {
      * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.REQUEST_PER_BATCH]
      */
     val requestPerBatch: Int
+
+    /**
+     * [versionInEachRequest] if versionInEachRequest is true we will send apk version in each request
+     */
+    val versionInEachRequest: Boolean
+
 }
