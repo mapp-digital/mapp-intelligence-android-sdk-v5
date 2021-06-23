@@ -164,5 +164,4 @@ interface Config {
      * [versionInEachRequest] if versionInEachRequest is true we will send apk version in each request
      */
     val versionInEachRequest: Boolean
-
 }

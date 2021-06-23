@@ -35,12 +35,13 @@ import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.util.currentWebtrekkVersion
-import webtrekk.android.sdk.util.currentOsVersion
+import webtrekk.android.sdk.util.appVersionInRequest
+import webtrekk.android.sdk.util.currentCountry
 import webtrekk.android.sdk.util.currentDeviceManufacturer
 import webtrekk.android.sdk.util.currentDeviceModel
 import webtrekk.android.sdk.util.currentLanguage
-import webtrekk.android.sdk.util.currentCountry
+import webtrekk.android.sdk.util.currentOsVersion
+import webtrekk.android.sdk.util.currentWebtrekkVersion
 import webtrekk.android.sdk.util.userId
 import webtrekk.android.sdk.util.userUpdate
 
@@ -131,7 +132,12 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
             "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
             "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
     } else {
-        ""
+        var value = ""
+        if (appVersionInRequest) {
+            value = "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
+                "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
+        }
+        value
     }
 
     if (withOutBatching) {
