@@ -58,7 +58,8 @@ class WebtrekkConfiguration private constructor(
     override val batchSupport: Boolean,
     override val activityAutoTracking: Boolean,
     override val exceptionLogLevel: ExceptionType,
-    override val shouldMigrate: Boolean
+    override val shouldMigrate: Boolean,
+    override val versionInEachRequest: Boolean
 ) : Config {
 
     /**
@@ -78,6 +79,7 @@ class WebtrekkConfiguration private constructor(
         private var activityAutoTracking = DefaultConfiguration.ACTIVITY_AUTO_TRACK_ENABLED
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
+        private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
 
         /**
          * Configure the log level of the lib.
@@ -142,6 +144,10 @@ class WebtrekkConfiguration private constructor(
          */
         fun enableMigration() = apply {
             this.shouldMigrate = true
+        }
+
+        fun sendAppVersionToEveryRequest() = apply {
+            this.versionInEachRequest = true
         }
 
         @JvmOverloads
@@ -216,7 +222,8 @@ class WebtrekkConfiguration private constructor(
             batchSupport,
             activityAutoTracking,
             exceptionLogLevel,
-            shouldMigrate
+            shouldMigrate,
+            versionInEachRequest
         )
     }
 
@@ -239,6 +246,7 @@ class WebtrekkConfiguration private constructor(
         if (activityAutoTracking != other.activityAutoTracking) return false
         if (exceptionLogLevel != other.exceptionLogLevel) return false
         if (shouldMigrate != other.shouldMigrate) return false
+        if (versionInEachRequest != other.versionInEachRequest) return false
 
         return true
     }
@@ -257,6 +265,7 @@ class WebtrekkConfiguration private constructor(
         result = 31 * result + activityAutoTracking.hashCode()
         result = 31 * result + exceptionLogLevel.hashCode()
         result = 31 * result + shouldMigrate.hashCode()
+        result = 31 * result + versionInEachRequest.hashCode()
         return result
     }
 
@@ -264,6 +273,6 @@ class WebtrekkConfiguration private constructor(
         return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, " +
             "autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, " +
             "okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport, activityAutoTracking=$activityAutoTracking," +
-            "exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate)"
+            "exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate, versionInEachRequest=$versionInEachRequest)"
     }
 }

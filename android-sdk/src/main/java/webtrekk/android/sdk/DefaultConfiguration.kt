@@ -104,6 +104,12 @@ object DefaultConfiguration {
      */
     val LOG_LEVEL_VALUE = Logger.Level.NONE
 
+
+    /**
+     * The default is false, if change to true we will send app version in each request
+     */
+    const val VERSION_IN_EACH_REQUEST = false
+
     /**
      * The default work manager constraints that are used by the library when sending the requests to the server.
      *
