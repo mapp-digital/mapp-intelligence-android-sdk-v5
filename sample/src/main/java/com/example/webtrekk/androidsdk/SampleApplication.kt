@@ -71,7 +71,7 @@ class SampleApplication : Application() {
             )
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
-                .sendAppVersionToEveryRequest()
+                .sendAppVersionInEveryRequest()
                 .enableCrashTracking(
                     ExceptionType.valueOf(
                         sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())
