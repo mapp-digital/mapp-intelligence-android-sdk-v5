@@ -96,34 +96,34 @@ internal open class LifecycleWrapper :
     Application.ActivityLifecycleCallbacks,
     FragmentManager.FragmentLifecycleCallbacks() {
 
-    override fun onActivityPaused(activity: Activity?) {
-    }
-
-    override fun onActivityResumed(activity: Activity?) {
-    }
-
-    override fun onActivityStarted(activity: Activity?) {
-    }
-
-    override fun onActivityDestroyed(activity: Activity?) {
-        (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
-            this
-        )
-    }
-
-    override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
-    }
-
-    override fun onActivityStopped(activity: Activity?) {
-        (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
-            this
-        )
-    }
-
-    override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                (activity as? AppCompatActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
             this,
             true
+        )
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+                (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
+            this
+        )
+    }
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+                (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
+            this
         )
     }
 
