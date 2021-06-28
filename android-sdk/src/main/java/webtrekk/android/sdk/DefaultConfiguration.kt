@@ -104,7 +104,6 @@ object DefaultConfiguration {
      */
     val LOG_LEVEL_VALUE = Logger.Level.NONE
 
-
     /**
      * The default is false, if change to true we will send app version in each request
      */
