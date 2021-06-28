@@ -39,10 +39,10 @@ import webtrekk.android.sdk.extension.toTrackRequest
  */
 internal class AppStateImpl : AppState<DataAnnotationClass>() {
 
-    override fun onActivityStarted(activity: Activity?) {
+    override fun onActivityStarted(activity: Activity) {
         super.onActivityStarted(activity)
 
-        activity?.let {
+        activity.let {
             val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
                 DataAnnotationClass(
@@ -69,10 +69,10 @@ internal class AppStateImpl : AppState<DataAnnotationClass>() {
  */
 internal class ActivityAppStateImpl : AppState<DataAnnotationClass>() {
 
-    override fun onActivityStarted(activity: Activity?) {
+    override fun onActivityStarted(activity: Activity) {
         super.onActivityStarted(activity)
 
-        activity?.let {
+        activity.let {
             val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
                 DataAnnotationClass(
