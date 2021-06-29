@@ -295,6 +295,8 @@ abstract class Webtrekk protected constructor() {
 
     abstract fun getUserAgent(): String
 
+    abstract fun anonymousTracking(enabled: Boolean, suppressParams: List<String> = emptyList())
+
     companion object {
 
         /**
