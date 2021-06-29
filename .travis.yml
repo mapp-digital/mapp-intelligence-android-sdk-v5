@@ -1,25 +1,28 @@
 language: android
-
+dist: trusty
 sudo: false
 
 jdk:
   - oraclejdk8
 
-env:
-  global:
-    - ANDROID_API=30
-    - ANDROID_BUILD_TOOLS=30.0.3
-    - EMULATOR_API_LEVEL=24
-
 licenses:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
   - google-gdk-license-.+
-install:
-  - yes | sudo sdkmanager --licenses
+
+env:
+  global:
+    - ANDROID_API=30
+    - ANDROID_BUILD_TOOLS=30.0.2
+    - EMULATOR_API_LEVEL=24
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+before_install:
+  - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-30"
 
 cache:
   directories:
@@ -31,6 +34,7 @@ android:
   components:
     - android-$ANDROID_API
     - android-$EMULATOR_API_LEVEL
+    - android-22
     - build-tools-$ANDROID_BUILD_TOOLS
     - tools
     - platform-tools
@@ -40,10 +44,10 @@ android:
     - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL
 
 before_script:
-    - echo no | android create avd --force -n test --target android-$EMULATOR_API_LEVEL --abi armeabi-v7a
-    - emulator -avd test -noskin -no-boot-anim -no-window &
-    - android-wait-for-emulator
-    - adb shell input keyevent 82
+  - echo no | android create avd --force -n test --target android-$EMULATOR_API_LEVEL --abi armeabi-v7a
+  - emulator -avd test -noskin -no-boot-anim -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82
 
 script:
   - ./gradlew check connectedCheck --stacktrace
