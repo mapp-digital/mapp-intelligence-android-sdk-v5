@@ -129,4 +129,12 @@ internal interface Sessions {
      * Returns true if opt out is active, false otherwise.
      */
     fun isUserUpdated(): Boolean
+
+    fun isAnonymous(): Boolean
+
+    fun setAnonymous(enabled: Boolean)
+
+    fun isAnonymousParam(): Set<String>
+
+    fun setAnonymousParam(enabled: Set<String>)
 }
