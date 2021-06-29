@@ -79,6 +79,7 @@ class SampleApplication : Application() {
                 )
                 .workManagerConstraints(constraints = constraints)
                 .setBatchSupport(true)
+                .sendAppVersionToEveryRequest()
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
