@@ -96,6 +96,15 @@ internal class WebtrekkSharedPrefs(context: Context) {
         inline get() = sharedPreferences.getBoolean(IS_USER_UPDATED, false)
         set(value) = sharedPreferences.edit().putBoolean(IS_USER_UPDATED, value).apply()
 
+    var anonymousTracking: Boolean
+        inline get() = sharedPreferences.getBoolean(ANONYMOUS_TRACKING, false)
+        set(value) = sharedPreferences.edit().putBoolean(ANONYMOUS_TRACKING, value).apply()
+
+    var anonymousSuppress: Set<String>
+        inline get() = sharedPreferences.getStringSet(ANONYMOUS_SUPPRESS_PARAM, emptySet())
+            ?: emptySet()
+        set(value) = sharedPreferences.edit().putStringSet(ANONYMOUS_SUPPRESS_PARAM, value).apply()
+
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     companion object {
@@ -113,5 +122,7 @@ internal class WebtrekkSharedPrefs(context: Context) {
         const val MIGRATED = "isMigrated"
         const val urlData = "urlData"
         const val IS_USER_UPDATED = "isUserUpdated"
+        const val ANONYMOUS_TRACKING = "anonymousTracking"
+        const val ANONYMOUS_SUPPRESS_PARAM = "anonymousSuppressParams"
     }
 }

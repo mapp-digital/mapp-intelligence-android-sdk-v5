@@ -377,8 +377,9 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         sessions.getUserAgent()
     }
 
-    override fun anonymousTracking(enabled: Boolean, suppressParams: List<String>) {
-        TODO("Not yet implemented")
+    override fun anonymousTracking(enabled: Boolean, suppressParams: Set<String>) {
+        sessions.setAnonymous(enabled)
+        sessions.setAnonymousParam(suppressParams)
     }
 
     /**
