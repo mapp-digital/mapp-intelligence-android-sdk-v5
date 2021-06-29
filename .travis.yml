@@ -11,6 +11,12 @@ env:
     - ANDROID_BUILD_TOOLS=30.0.3
     - EMULATOR_API_LEVEL=24
 
+licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
+install:
+  - yes | sudo sdkmanager --licenses
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
