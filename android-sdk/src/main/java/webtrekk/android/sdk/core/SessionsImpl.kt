@@ -141,14 +141,14 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
             args.forEach { key ->
                 run {
                     val value = url.getQueryParameter(key)
-                            if (!value.isNullOrBlank()) {
-                                if (type != null) {
-                                    if (key == type)
-                                        urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] =
-                                            "$type=".encodeToUTF8() + value
-                                }
-                                if (key.contains("wt_cc")) {
-                                    urlMap[key.replace("wt_", "", true)] = value
+                    if (!value.isNullOrBlank()) {
+                        if (type != null) {
+                            if (key == type)
+                                urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] =
+                                    "$type=".encodeToUTF8() + value
+                        }
+                        if (key.contains("wt_cc")) {
+                            urlMap[key.replace("wt_", "", true)] = value
                         }
                     }
                 }
@@ -175,5 +175,21 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
             webtrekkSharedPrefs.isUserUpdated = false
         }
         return updatedUser
+    }
+
+    override fun isAnonymous(): Boolean {
+        return webtrekkSharedPrefs.anonymousTracking
+    }
+
+    override fun setAnonymous(enabled: Boolean) {
+        webtrekkSharedPrefs.anonymousTracking = enabled
+    }
+
+    override fun isAnonymousParam(): Set<String> {
+        return webtrekkSharedPrefs.anonymousSuppress
+    }
+
+    override fun setAnonymousParam(enabled: Set<String>) {
+        webtrekkSharedPrefs.anonymousSuppress = enabled
     }
 }
