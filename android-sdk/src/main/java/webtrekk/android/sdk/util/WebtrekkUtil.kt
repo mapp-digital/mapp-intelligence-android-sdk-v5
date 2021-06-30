@@ -74,6 +74,14 @@ internal var userUpdate: Boolean
 internal val appVersionInRequest: Boolean
     inline get() = WebtrekkImpl.getInstance().config.versionInEachRequest
 
+internal var anonymous: Boolean
+    inline get() = WebtrekkImpl.getInstance().sessions.isAnonymous()
+    set(value) = WebtrekkImpl.getInstance().sessions.setAnonymous(value)
+
+internal var anonymousParam: Set<String>
+    inline get() = WebtrekkImpl.getInstance().sessions.isAnonymousParam()
+    set(value) = WebtrekkImpl.getInstance().sessions.setAnonymousParam(value)
+
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random

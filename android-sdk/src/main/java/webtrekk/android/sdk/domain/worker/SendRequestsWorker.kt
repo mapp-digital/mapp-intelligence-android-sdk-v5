@@ -42,6 +42,8 @@ import webtrekk.android.sdk.extension.buildUrlRequest
 import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.anonymous
+import webtrekk.android.sdk.util.anonymousParam
 import webtrekk.android.sdk.util.currentEverId
 import webtrekk.android.sdk.util.trackDomain
 import webtrekk.android.sdk.util.trackIds
@@ -112,7 +114,8 @@ internal class SendRequestsWorker(
                                 val urlRequest =
                                     group.buildPostRequest(
                                         trackDomainLocal!!,
-                                        trackIdsLocal, currentEverId
+                                        trackIdsLocal, currentEverId, anonymous,
+                                        anonymousParam
                                     )
                                 logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
@@ -133,7 +136,9 @@ internal class SendRequestsWorker(
                                     dataTrack.buildUrlRequest(
                                         trackDomainLocal!!,
                                         trackIdsLocal,
-                                        currentEverId
+                                        currentEverId,
+                                        anonymous,
+                                        anonymousParam
                                     )
                                 logger.info("Sending request = $urlRequest")
 
