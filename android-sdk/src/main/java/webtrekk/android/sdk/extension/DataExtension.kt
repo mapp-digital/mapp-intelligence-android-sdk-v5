@@ -30,7 +30,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.InternalParam
-import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
@@ -74,9 +73,8 @@ internal fun Map<String, String>.toCustomParams(trackRequestId: Long): List<Cust
     }
 }
 
-internal fun List<CustomParam>.buildCustomParams(): String {
+internal fun List<CustomParam>.buildCustomParams(anonymous: Boolean = false, anonymousParam: Set<String> = emptySet()): String {
     if (this == emptyArray<CustomParam>()) return ""
-
     val string = StringBuilder()
     this.forEach {
         val paramVal =
@@ -84,10 +82,11 @@ internal fun List<CustomParam>.buildCustomParams(): String {
             if (it.paramKey == CampaignParam.MEDIA_CODE) ("$InternalParam.WT_MC_DEFAULT=").encodeToUTF8() + it.paramValue else it.paramValue
         val paramKey =
             if (it.paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER) CampaignParam.MEDIA_CODE else it.paramKey
-
-        string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
+        if (anonymousParam.contains(paramKey) && anonymous)
+        else {
+            string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
+        }
     }
-
     return string.toString()
 }
 
@@ -112,41 +111,43 @@ internal fun buildUrlOnly(
 internal fun List<DataTrack>.buildBatchUrl(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String
+    currentEverId: String,
+    anonymous: Boolean,
+    anonymousParam: Set<String>
 ): String {
     return buildUrlOnly(trackDomain, trackIds) + "/batch?" + "${UrlParams.EVER_ID}=$currentEverId" +
-        "&${UrlParams.USER_AGENT}=${this[0].trackRequest.userAgent.encodeToUTF8()}"
+        addParam(UrlParams.USER_AGENT, this[0].trackRequest.userAgent.encodeToUTF8(), anonymousParam, anonymous)
 }
 
-internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean = true, anonymous: Boolean = false,
-                                 anonymousParam: Set<String> = emptySet()): String {
+internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean = true, anonymous: Boolean = false, anonymousParam: Set<String> = emptySet()): String {
     var stringBuffer: String = if (withOutBatching)
         "/wt?"
     else {
         "wt?"
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        "&${UrlParams.LANGUAGE}=${this.trackRequest.language}"
+        addParam(UrlParams.LANGUAGE, this.trackRequest.language, anonymousParam, anonymous)
 
     stringBuffer += if (this.trackRequest.forceNewSession == "1") {
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
             "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
-            "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
-            "&${UrlParams.ANDROID_API_LEVEL}=${this.trackRequest.apiLevel}" +
-            "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
-            "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
+            addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appFirstOpen, anonymousParam, anonymous) +
+            addParam(UrlParams.ANDROID_API_LEVEL, this.trackRequest.apiLevel, anonymousParam, anonymous) +
+            addParam(UrlParams.APP_VERSION_NAME, this.trackRequest.appVersionName, anonymousParam, anonymous) +
+            addParam(UrlParams.APP_VERSION_CODE, this.trackRequest.appFirstOpen, anonymousParam, anonymous) +
+            addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appVersionCode, anonymousParam, anonymous)
     } else {
         var value = ""
         if (appVersionInRequest) {
-            value = "&${UrlParams.APP_VERSION_NAME}=${this.trackRequest.appVersionName}" +
-                "&${UrlParams.APP_VERSION_CODE}=${this.trackRequest.appVersionCode}"
+            value = addParam(UrlParams.APP_VERSION_NAME, this.trackRequest.appVersionName, anonymousParam, anonymous) +
+                addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appVersionCode, anonymousParam, anonymous)
         }
         value
     }
 
     if (withOutBatching) {
         stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
-            "&${UrlParams.USER_AGENT}=${this.trackRequest.userAgent.encodeToUTF8()}"
+            addParam(UrlParams.USER_AGENT, this.trackRequest.userAgent.encodeToUTF8(), anonymousParam, anonymous)
     }
     val userUpdated = userUpdate
     if ((this.trackRequest.forceNewSession == "1" || userUpdated) && userId != "") {
@@ -180,7 +181,7 @@ internal fun List<DataTrack>.buildPostRequest(
     anonymousParam: Set<String>
 ): Request {
     return Request.Builder()
-        .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
+        .url(buildBatchUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam))
         .post(
             this.buildUrlRequests(currentEverId, anonymous, anonymousParam)
                 .toRequestBody("text/plain".toMediaTypeOrNull())
@@ -188,8 +189,7 @@ internal fun List<DataTrack>.buildPostRequest(
         .build()
 }
 
-internal fun List<DataTrack>.buildUrlRequests(currentEverId: String, anonymous: Boolean,
-                                              anonymousParam: Set<String>): String {
+internal fun List<DataTrack>.buildUrlRequests(currentEverId: String, anonymous: Boolean, anonymousParam: Set<String>): String {
     var string = ""
     this.forEach { dataTrack ->
         string += dataTrack.buildBody(currentEverId, false, anonymous, anonymousParam) + "\n"
@@ -199,3 +199,11 @@ internal fun List<DataTrack>.buildUrlRequests(currentEverId: String, anonymous: 
 
 internal fun Array<TrackParams>.toParam(): Map<String, String> =
     map { it.paramKey to it.paramVal }.toMap()
+
+internal fun addParam(param: String, value: String?, anonymousParam: Set<String>, anonymous: Boolean, separator: String = "&"): String {
+    return if (anonymousParam.contains(param) && anonymous) {
+        ""
+    } else {
+        "$separator$param=$value"
+    }
+}
