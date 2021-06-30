@@ -28,6 +28,7 @@ package webtrekk.android.sdk.extension
 import okhttp3.Request
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackParams
@@ -80,9 +81,9 @@ internal fun List<CustomParam>.buildCustomParams(): String {
     this.forEach {
         val paramVal =
             // For media code param, it needs to be double encoded
-            if (it.paramKey == Param.MEDIA_CODE) ("$InternalParam.WT_MC_DEFAULT=").encodeToUTF8() + it.paramValue else it.paramValue
+            if (it.paramKey == CampaignParam.MEDIA_CODE) ("$InternalParam.WT_MC_DEFAULT=").encodeToUTF8() + it.paramValue else it.paramValue
         val paramKey =
-            if (it.paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER) Param.MEDIA_CODE else it.paramKey
+            if (it.paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER) CampaignParam.MEDIA_CODE else it.paramKey
 
         string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
     }
@@ -93,10 +94,12 @@ internal fun List<CustomParam>.buildCustomParams(): String {
 internal fun DataTrack.buildUrl(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String
+    currentEverId: String,
+    anonymous: Boolean,
+    anonymousParam: Set<String>
 ): String {
     return buildUrlOnly(trackDomain, trackIds) +
-        this.buildBody(currentEverId)
+        this.buildBody(currentEverId, anonymous = anonymous, anonymousParam = anonymousParam)
 }
 
 internal fun buildUrlOnly(
@@ -115,7 +118,8 @@ internal fun List<DataTrack>.buildBatchUrl(
         "&${UrlParams.USER_AGENT}=${this[0].trackRequest.userAgent.encodeToUTF8()}"
 }
 
-internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean = true): String {
+internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean = true, anonymous: Boolean = false,
+                                 anonymousParam: Set<String> = emptySet()): String {
     var stringBuffer: String = if (withOutBatching)
         "/wt?"
     else {
@@ -158,32 +162,37 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
 internal fun DataTrack.buildUrlRequest(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String
+    currentEverId: String,
+    anonymous: Boolean,
+    anonymousParam: Set<String>
 ): Request {
 
     return Request.Builder()
-        .url(buildUrl(trackDomain, trackIds, currentEverId))
+        .url(buildUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam))
         .build()
 }
 
 internal fun List<DataTrack>.buildPostRequest(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String
+    currentEverId: String,
+    anonymous: Boolean,
+    anonymousParam: Set<String>
 ): Request {
     return Request.Builder()
         .url(buildBatchUrl(trackDomain, trackIds, currentEverId))
         .post(
-            this.buildUrlRequests(currentEverId)
+            this.buildUrlRequests(currentEverId, anonymous, anonymousParam)
                 .toRequestBody("text/plain".toMediaTypeOrNull())
         )
         .build()
 }
 
-internal fun List<DataTrack>.buildUrlRequests(currentEverId: String): String {
+internal fun List<DataTrack>.buildUrlRequests(currentEverId: String, anonymous: Boolean,
+                                              anonymousParam: Set<String>): String {
     var string = ""
     this.forEach { dataTrack ->
-        string += dataTrack.buildBody(currentEverId, false) + "\n"
+        string += dataTrack.buildBody(currentEverId, false, anonymous, anonymousParam) + "\n"
     }
     return string
 }
