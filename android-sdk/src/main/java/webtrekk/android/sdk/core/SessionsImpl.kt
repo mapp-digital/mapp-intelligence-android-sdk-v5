@@ -49,6 +49,10 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         webtrekkSharedPrefs.everId = everId
     }
 
+    override fun generateNewEverId() {
+        webtrekkSharedPrefs.everId = generateEverId()
+    }
+
     override fun getEverId(): String = webtrekkSharedPrefs.let {
         setEverId()
         return webtrekkSharedPrefs.everId

@@ -115,7 +115,7 @@ internal fun List<DataTrack>.buildBatchUrl(
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): String {
-    return buildUrlOnly(trackDomain, trackIds) + "/batch?" + "${UrlParams.EVER_ID}=$currentEverId" +
+    return buildUrlOnly(trackDomain, trackIds) + "/batch?" + anonymousEid(anonymous, currentEverId) +
         addParam(UrlParams.USER_AGENT, this[0].trackRequest.userAgent.encodeToUTF8(), anonymousParam, anonymous)
 }
 
@@ -146,7 +146,7 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
     }
 
     if (withOutBatching) {
-        stringBuffer += "&${UrlParams.EVER_ID}=$currentEverId" +
+        stringBuffer += "&${anonymousEid(anonymous, currentEverId)}" +
             addParam(UrlParams.USER_AGENT, this.trackRequest.userAgent.encodeToUTF8(), anonymousParam, anonymous)
     }
     val userUpdated = userUpdate
@@ -205,5 +205,13 @@ internal fun addParam(param: String, value: String?, anonymousParam: Set<String>
         ""
     } else {
         "$separator$param=$value"
+    }
+}
+
+private fun anonymousEid(anonymous: Boolean, currentEverId: String): String {
+    return if (anonymous) {
+        "${UrlParams.EVER_ID_ANONYMOUS}=1"
+    } else {
+        "${UrlParams.EVER_ID}=$currentEverId"
     }
 }
