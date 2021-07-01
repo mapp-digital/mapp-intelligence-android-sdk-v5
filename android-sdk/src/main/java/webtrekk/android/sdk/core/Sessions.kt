@@ -38,6 +38,11 @@ internal interface Sessions {
     fun setEverId()
 
     /**
+     * Generate and set the ever id that uniquely associated per user.
+     */
+    fun generateNewEverId()
+
+    /**
      * Set the ever id provided by the client.
      */
     fun setEverId(everId: String)

@@ -377,9 +377,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         sessions.getUserAgent()
     }
 
-    override fun anonymousTracking(enabled: Boolean, suppressParams: Set<String>) {
+    override fun anonymousTracking(enabled: Boolean, suppressParams: Set<String>, generateNewEverId: Boolean) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
+        if (generateNewEverId && !enabled)
+            sessions.generateNewEverId()
     }
 
     /**
