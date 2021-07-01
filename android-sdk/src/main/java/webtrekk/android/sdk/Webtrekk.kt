@@ -293,9 +293,24 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun setIdsAndDomain(trackIds: List<String>, trackDomain: String)
 
+    /**
+     * Returns [String] the user Agent which is associated per each unique device.
+     *
+     * @throws [IllegalStateException] if [Context] context is not initialized.
+     */
     abstract fun getUserAgent(): String
 
-    abstract fun anonymousTracking(enabled: Boolean, suppressParams: Set<String> = emptySet())
+    /**
+     * Due to GDPR and other privacy regulations, someone might want to track without user recognition.
+     * Limitations: Enabling this option will significantly decrease data quality! It is only recommended if no other option exists to comply to data privacy regulations
+     *
+     * @param enabled set it to true we will disable user recognition, and to false it will enable.
+     * @param suppressParams this can disable any other parameter alongside the everID.
+     * @param generateNewEverId true is by default. If you like to keep previous id then change it to false
+     *
+     * @throws [IllegalStateException] if [Context] context is not initialized.
+     */
+    abstract fun anonymousTracking(enabled: Boolean = true, suppressParams: Set<String> = emptySet(), generateNewEverId: Boolean = true)
 
     companion object {
 

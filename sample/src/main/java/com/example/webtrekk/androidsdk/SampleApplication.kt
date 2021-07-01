@@ -83,5 +83,6 @@ class SampleApplication : Application() {
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)
+        Webtrekk.getInstance().anonymousTracking(true,setOf("la", "cs804", "cs821"),generateNewEverId = true)
     }
 }

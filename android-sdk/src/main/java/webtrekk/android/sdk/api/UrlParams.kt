@@ -63,6 +63,8 @@ internal object UrlParams {
 
     const val FORM_FIELD = "ft"
 
+    const val EVER_ID_ANONYMOUS = "nc"
+
     const val USER_ID = "uc701"
 
     const val USER_OVERWRITE = "uc713"
