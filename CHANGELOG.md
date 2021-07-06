@@ -1,5 +1,10 @@
 # Change Log
-## Version 5.1.0 *(In-Progress)*
+## Version 5.1.0 *(In Progress)*
+ 
+## Version 5.1.0 *(2021-06-6)*
+* Improve Support for Android 11 
+* Added Anonymous Tracking
+* Added Option to Include App Version In Every Request 
 
 ## Version 5.0.9 *(2021-05-16)*
 * Removed JCenter 
