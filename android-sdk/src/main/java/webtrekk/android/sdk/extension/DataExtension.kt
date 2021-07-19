@@ -134,13 +134,12 @@ internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean
             addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appFirstOpen, anonymousParam, anonymous) +
             addParam(UrlParams.ANDROID_API_LEVEL, this.trackRequest.apiLevel, anonymousParam, anonymous) +
             addParam(UrlParams.APP_VERSION_NAME, this.trackRequest.appVersionName, anonymousParam, anonymous) +
-            addParam(UrlParams.APP_VERSION_CODE, this.trackRequest.appFirstOpen, anonymousParam, anonymous) +
-            addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appVersionCode, anonymousParam, anonymous)
+            addParam(UrlParams.APP_VERSION_CODE, this.trackRequest.appVersionCode, anonymousParam, anonymous)
     } else {
         var value = ""
         if (appVersionInRequest) {
             value = addParam(UrlParams.APP_VERSION_NAME, this.trackRequest.appVersionName, anonymousParam, anonymous) +
-                addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appVersionCode, anonymousParam, anonymous)
+                addParam(UrlParams.APP_VERSION_CODE, this.trackRequest.appVersionCode, anonymousParam, anonymous)
         }
         value
     }
