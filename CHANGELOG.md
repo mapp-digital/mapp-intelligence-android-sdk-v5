@@ -1,5 +1,10 @@
 # Change Log
 ## Version 5.1.1 *(In Progress)*
+
+## Version 5.1.0.1 *(2021-07-20)* 
+ *HotFix version
+ *Fixed app first open issue
+ *Downgrade AppCompat to 1.2
  
 ## Version 5.1.0 *(2021-06-6)*
 * Improve Support for Android 11 
