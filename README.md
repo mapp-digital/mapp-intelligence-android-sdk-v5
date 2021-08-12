@@ -14,7 +14,7 @@ For versions of 5.0.8+ we are use mavenCentral() because Jcenter is shutting dow
 
 Gradle
 ```groovy
-implementation 'com.mapp.sdk:intelligence-android:5.1.0.1'
+implementation 'com.mapp.sdk:intelligence-android:5.1.0.2'
 ```
 
 Maven
@@ -22,7 +22,7 @@ Maven
 <dependency>
 	<groupId>com.mapp.sdk</groupId>
 	<artifactId>intelligence-android</artifactId>
-	<version>5.1.0.1</version>
+	<version>5.1.0.2</version>
 	<type>pom</type>
 </dependency>
 ```
