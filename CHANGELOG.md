@@ -1,6 +1,10 @@
 # Change Log
 ## Version 5.1.1 *(In Progress)*
 
+## Version 5.1.0.2 *(2021-08-12)*
+*HotFix version
+*Fixed DeepLinking tracking 
+
 ## Version 5.1.0.1 *(2021-07-20)* 
  *HotFix version
  *Fixed app first open issue
