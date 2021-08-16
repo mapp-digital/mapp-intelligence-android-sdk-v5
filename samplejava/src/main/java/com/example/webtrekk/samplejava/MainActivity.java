@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         //page properties
         Map<Integer, String> params = new HashMap<>();
         params.put(20, "cp20Override");
