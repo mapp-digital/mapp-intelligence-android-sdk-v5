@@ -5,7 +5,6 @@ import androidx.work.Constraints
 import okhttp3.OkHttpClient
 import webtrekk.android.sdk.Config
 
-
 object NetworkModule {
 
     val okHttpClient: OkHttpClient by lazy {
@@ -24,12 +23,9 @@ object NetworkModule {
         config: Config
     ): Constraints = config.workManagerConstraints
 
-
     private fun provideOkHttpClient(
         config: Config
     ): OkHttpClient = config.okHttpClient
-
-
 }
 
 object TrackingModule {
@@ -37,11 +33,7 @@ object TrackingModule {
     val dashPathEffect = DataModule
 }
 
-
-object DataModule {
-
-
-}
+object DataModule
 
 object InternalInteractionModule {
 //    SessionsImpl(get())
@@ -53,10 +45,7 @@ object InternalInteractionModule {
 //    ExecuteRequest(get(), get())
 //    ExecutePostRequest(get(), get())
 //    ClearTrackRequests(get())
-
-
 }
-
 
 object LibraryModule {
 
@@ -66,16 +55,12 @@ object LibraryModule {
     @Volatile
     lateinit var configuration: Config
 
-
     fun initializeDI(app: Context, config: Config) {
         if (!::application.isInitialized) {
             synchronized(this) {
                 application = app
                 configuration = config
-
-
             }
         }
     }
-
 }
