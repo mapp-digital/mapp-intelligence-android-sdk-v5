@@ -31,111 +31,84 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
-import androidx.work.WorkManager
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.koin.core.Koin
-import org.koin.core.KoinApplication
-import org.koin.core.KoinComponent
-import org.koin.core.inject
-import org.koin.dsl.koinApplication
-import org.koin.dsl.module
-import webtrekk.android.sdk.Config
-import webtrekk.android.sdk.FormTrackingSettings
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.TrackingParams
+import webtrekk.android.sdk.*
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.InternalParam
-import webtrekk.android.sdk.MediaParam
-import webtrekk.android.sdk.ExceptionType
-import webtrekk.android.sdk.data.WebtrekkSharedPrefs
-import webtrekk.android.sdk.data.entity.Cash
-import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.data.getWebtrekkDatabase
-import webtrekk.android.sdk.domain.external.AutoTrack
-import webtrekk.android.sdk.domain.external.ManualTrack
-import webtrekk.android.sdk.domain.external.Optout
-import webtrekk.android.sdk.domain.external.SendAndClean
-import webtrekk.android.sdk.domain.external.TrackCustomEvent
-import webtrekk.android.sdk.domain.external.TrackCustomForm
-import webtrekk.android.sdk.domain.external.TrackCustomMedia
-import webtrekk.android.sdk.domain.external.TrackCustomPage
-import webtrekk.android.sdk.domain.external.TrackException
-import webtrekk.android.sdk.domain.external.TrackUncaughtException
-import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
+import webtrekk.android.sdk.domain.external.*
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
-import webtrekk.android.sdk.extension.appVersionCode
-import webtrekk.android.sdk.extension.appVersionName
-import webtrekk.android.sdk.extension.initOrException
-import webtrekk.android.sdk.extension.resolution
-import webtrekk.android.sdk.module.dataModule
-import webtrekk.android.sdk.module.internalInteractorsModule
-import webtrekk.android.sdk.extension.isCaughtAllowed
-import webtrekk.android.sdk.extension.isUncaughtAllowed
-import webtrekk.android.sdk.extension.isCustomAllowed
+import webtrekk.android.sdk.extension.*
+import webtrekk.android.sdk.module.*
 import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
-import webtrekk.android.sdk.util.currentSession
-import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.util.currentSession
 import webtrekk.android.sdk.util.getFileName
-import webtrekk.android.sdk.extension.nullOrEmptyThrowError
-import webtrekk.android.sdk.extension.validateEntireList
 import java.io.File
 import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 /**
  * The concrete implementation of [Webtrekk]. This class extends [KoinComponent] for getting the injected dependencies. Also extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinComponent,
+internal class WebtrekkImpl private
+constructor() : Webtrekk(),
     CoroutineScope {
 
-    private val _job = SupervisorJob()
+    private val _job by lazy { ExternalInteractorsModule.job }
 
-    private val coroutineDispatchers by inject<CoroutineDispatchers>()
-    private val appState by inject<AppState<TrackRequest>>()
+    private val coroutineDispatchers by lazy { AppModule.dispatchers }
+    private val appState by lazy { AppModule.appState }
 
-    private val scheduler by inject<Scheduler>()
+    private val scheduler by lazy { InternalInteractorsModule.scheduler }
 
-    private val autoTrack by inject<AutoTrack>()
-    private val manualTrack by inject<ManualTrack>()
-    private val trackCustomPage by inject<TrackCustomPage>()
-    private val trackCustomEvent by inject<TrackCustomEvent>()
-    private val trackCustomForm by inject<TrackCustomForm>()
-    private val trackCustomMedia by inject<TrackCustomMedia>()
-    private val trackException by inject<TrackException>()
-    private val trackUncaughtException by inject<TrackUncaughtException>()
-    private val optOutUser by inject<Optout>()
-    private val sendAndClean by inject<SendAndClean>()
-    private lateinit var uncaughtExceptionHandler: UncaughtExceptionHandler
-    internal val sessions by inject<Sessions>()
-    internal val logger by inject<Logger>()
-    private val cash by inject<Cash>()
+    private val autoTrack by lazy { ExternalInteractorsModule.autoTrack }
+    private val manualTrack by lazy { ExternalInteractorsModule.manualTrack }
+    private val trackCustomPage by lazy { ExternalInteractorsModule.trackCustomPage }
+    private val trackCustomEvent by lazy { ExternalInteractorsModule.trackCustomEvent }
+    private val trackCustomForm by lazy { ExternalInteractorsModule.trackCustomForm }
+    private val trackCustomMedia by lazy { ExternalInteractorsModule.trackCustomMedia }
+    private val trackException by lazy { ExternalInteractorsModule.trackException }
+    private val trackUncaughtException by lazy { ExternalInteractorsModule.trackUncaughtException }
+    private val optOutUser by lazy { ExternalInteractorsModule.optOut }
+    private val sendAndClean by lazy { ExternalInteractorsModule.sendAndClean }
+    internal val sessions by lazy { InternalInteractorsModule.sessions }
+    internal val logger by lazy { AppModule.logger }
+    private val cash by lazy { AppModule.cash }
+
+    private val uncaughtExceptionHandler by lazy { ExternalInteractorsModule.uncaughtExceptionHandler }
+
     private var lastEqual = false
     private var lastTimeMedia = 0L
     private var lastAction = "play"
-    internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
+
+/*    internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
     internal var config: Config by Delegates.initOrException(
         errorMessage = "Webtrekk configurations must be set before invoking any method." +
-            " Use Webtrekk.getInstance().init(context, configuration)"
-    )
+                " Use Webtrekk.getInstance().init(context, configuration)"
+    )*/
+
+    internal val context: Context
+        get() = LibraryModule.application
+            ?: throw IllegalStateException("Context must be initialized first")
+
+    internal val config: Config
+        get() = LibraryModule.configuration ?: throw IllegalStateException(
+            "Webtrekk configurations must be set before invoking any method." +
+                    " Use Webtrekk.getInstance().init(context, configuration)"
+        )
 
     override val coroutineContext: CoroutineContext
         get() = _job + coroutineDispatchers.defaultDispatcher
 
     override fun init(context: Context, config: Config) {
-        this.context = context.applicationContext
-        this.config = config
+        LibraryModule.initializeDI(context, config)
 
-        loadModules()
+        //loadModules()
         internalInit()
     }
 
@@ -377,7 +350,11 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         sessions.getUserAgent()
     }
 
-    override fun anonymousTracking(enabled: Boolean, suppressParams: Set<String>, generateNewEverId: Boolean) {
+    override fun anonymousTracking(
+        enabled: Boolean,
+        suppressParams: Set<String>,
+        generateNewEverId: Boolean
+    ) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
         if (generateNewEverId && !enabled)
@@ -387,7 +364,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     /**
      * Loading and init the dependencies that will be injected.
      */
-    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+    /*@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun loadModules() {
         val mainModule = module {
             single { WebtrekkSharedPrefs(context) }
@@ -497,7 +474,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
         } catch (e: Exception) {
             logger.error("Webtrekk is already in use: $e")
         }
-    }
+    }*/
 
     /**
      * The internal starting point of the SDK, where sessions, schedulers..etc are used.
@@ -611,10 +588,6 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun initUncaughtExceptionTracking() {
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
-            uncaughtExceptionHandler = UncaughtExceptionHandler(
-                defaultHandler = Thread.getDefaultUncaughtExceptionHandler(),
-                context = context
-            )
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
             val fileName = getFileName(false, context)
@@ -645,6 +618,7 @@ internal class WebtrekkImpl private constructor() : Webtrekk(), CustomKoinCompon
     }
 }
 
+/*
 internal object MyKoinContext {
     var koinApp: KoinApplication? = null
 }
@@ -652,4 +626,4 @@ internal object MyKoinContext {
 internal interface CustomKoinComponent : KoinComponent {
     // override the used Koin instance to use mylocalKoinInstance
     override fun getKoin(): Koin = MyKoinContext.koinApp!!.koin
-}
+}*/

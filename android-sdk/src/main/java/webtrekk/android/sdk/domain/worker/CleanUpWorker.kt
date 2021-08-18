@@ -29,13 +29,12 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
-import org.koin.core.inject
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.core.CustomKoinComponent
-import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
+import webtrekk.android.sdk.module.AppModule
+import webtrekk.android.sdk.module.InternalInteractorsModule
+import webtrekk.android.sdk.util.CoroutineDispatchers
 
 /**
  * [WorkManager] worker responsible about cleaning the successfully executed cached requests.
@@ -44,29 +43,29 @@ internal class CleanUpWorker(
     context: Context,
     workerParameters: WorkerParameters
 ) :
-    CoroutineWorker(context, workerParameters), CustomKoinComponent {
+    CoroutineWorker(context, workerParameters) {
 
     // TODO add this::: delete if request is older then one hour (server limitation)
     override suspend fun doWork(): Result {
         /**
          * [coroutineDispatchers] the injected coroutine dispatchers.
          */
-        val coroutineDispatchers: CoroutineDispatchers by inject()
+        val coroutineDispatchers: CoroutineDispatchers = AppModule.dispatchers
 
         /**
          * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
          */
-        val getCachedDataTracks: GetCachedDataTracks by inject()
+        val getCachedDataTracks: GetCachedDataTracks = InternalInteractorsModule.getCachedDataTracks()
 
         /**
          * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
          */
-        val clearTrackRequests: ClearTrackRequests by inject()
+        val clearTrackRequests: ClearTrackRequests = InternalInteractorsModule.clearTrackRequest()
 
         /**
          * [logger] the injected logger from Webtrekk.
          */
-        val logger: Logger by inject()
+        val logger by lazy { AppModule.logger }
 
         // get the data from the data base with state DONE only.
         // todo handle Result.failure()

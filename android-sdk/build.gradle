@@ -63,7 +63,7 @@ dependencies {
     implementation libs.coroutinesCore
     implementation libs.coroutinesAndroid
 
-    implementation libs.koinAndroid
+   // implementation libs.koinAndroid
 
     implementation libs.workmanager
 

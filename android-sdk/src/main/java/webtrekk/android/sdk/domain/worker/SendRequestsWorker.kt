@@ -29,9 +29,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
-import org.koin.core.inject
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
@@ -40,14 +37,9 @@ import webtrekk.android.sdk.extension.batch
 import webtrekk.android.sdk.extension.buildPostRequest
 import webtrekk.android.sdk.extension.buildUrlRequest
 import webtrekk.android.sdk.extension.stringifyRequestBody
-import webtrekk.android.sdk.util.batchSupported
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.anonymous
-import webtrekk.android.sdk.util.anonymousParam
-import webtrekk.android.sdk.util.currentEverId
-import webtrekk.android.sdk.util.trackDomain
-import webtrekk.android.sdk.util.trackIds
-import webtrekk.android.sdk.util.requestPerBatch
+import webtrekk.android.sdk.module.AppModule
+import webtrekk.android.sdk.module.InternalInteractorsModule
+import webtrekk.android.sdk.util.*
 
 /**
  * [WorkManager] worker that retrieves the data from the data base, builds the requests and send them to the server.
@@ -56,33 +48,34 @@ internal class SendRequestsWorker(
     context: Context,
     workerParameters: WorkerParameters
 ) :
-    CoroutineWorker(context, workerParameters), CustomKoinComponent {
+    CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
         /**
          * [coroutineDispatchers] the injected coroutine dispatchers.
          */
-        val coroutineDispatchers: CoroutineDispatchers by inject()
+        val coroutineDispatchers: CoroutineDispatchers = AppModule.dispatchers
 
         /**
          * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
          */
-        val getCachedDataTracks: GetCachedDataTracks by inject()
+        val getCachedDataTracks: GetCachedDataTracks =
+            InternalInteractorsModule.getCachedDataTracks()
 
         /**
          * [executeRequest] the injected internal interactor for executing the requests.
          */
-        val executeRequest: ExecuteRequest by inject()
+        val executeRequest: ExecuteRequest = InternalInteractorsModule.executeRequest()
 
         /**
          * [ExecutePostRequest] the injected internal interactor for executing the requests.
          */
-        val executePostRequest: ExecutePostRequest by inject()
+        val executePostRequest: ExecutePostRequest = InternalInteractorsModule.executePostRequest()
 
         /**
          * [logger] the injected logger from Webtrekk.
          */
-        val logger: Logger by inject()
+        val logger by lazy { AppModule.logger }
 
         val trackDomainLocal = if (inputData.getString("trackDomain") != null) {
             inputData.getString("trackDomain")
