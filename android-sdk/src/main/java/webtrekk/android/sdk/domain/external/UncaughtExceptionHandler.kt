@@ -1,13 +1,11 @@
 package webtrekk.android.sdk.domain.external
 
 import android.content.Context
-import org.koin.core.inject
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.core.CustomKoinComponent
+import webtrekk.android.sdk.extension.createString
+import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.END_EX_STRING
 import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
 import webtrekk.android.sdk.util.START_EX_STRING
-import webtrekk.android.sdk.extension.createString
 import webtrekk.android.sdk.util.getFileName
 import java.io.BufferedOutputStream
 import java.io.IOException
@@ -17,16 +15,12 @@ internal class UncaughtExceptionHandler constructor(
     private val defaultHandler: Thread.UncaughtExceptionHandler?,
     private val context: Context
 ) :
-    Thread.UncaughtExceptionHandler, CustomKoinComponent {
+    Thread.UncaughtExceptionHandler {
 
-    private val logger by inject<Logger>()
+    private val logger by lazy { AppModule.logger }
 
     // use AtomicBoolean because value is accessible from other threads.
-    private val isHandlingException: AtomicBoolean
-
-    init {
-        isHandlingException = AtomicBoolean(false)
-    }
+    private val isHandlingException: AtomicBoolean = AtomicBoolean(false)
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
         isHandlingException.set(true)

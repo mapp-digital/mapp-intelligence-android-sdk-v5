@@ -28,13 +28,10 @@ package webtrekk.android.sdk.domain.external
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import org.koin.core.inject
 import webtrekk.android.sdk.Config
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.core.Scheduler
-import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.domain.ExternalInteractor
+import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.trackDomain
 import webtrekk.android.sdk.util.trackIds
 import kotlin.coroutines.CoroutineContext
@@ -45,16 +42,11 @@ import kotlin.coroutines.CoroutineContext
 internal class SendAndClean(
     coroutineContext: CoroutineContext,
     private val scheduler: Scheduler
-) : ExternalInteractor<SendAndClean.Params>, CustomKoinComponent {
+) : ExternalInteractor<SendAndClean.Params> {
 
     private val _job = Job()
     override val scope =
         CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
-
-    /**
-     * [logger] the injected logger from Webtrekk.
-     */
-    private val logger by inject<Logger>()
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         scheduler.sendRequestsThenCleanUp(

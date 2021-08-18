@@ -31,27 +31,18 @@ import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.inject
-import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.core.CustomKoinComponent
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.model.FormField
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.extension.toInt
-import webtrekk.android.sdk.extension.orderList
-import webtrekk.android.sdk.extension.isTrackable
-import webtrekk.android.sdk.extension.notTrackedView
-import webtrekk.android.sdk.extension.parseView
-import webtrekk.android.sdk.extension.toFormField
-import webtrekk.android.sdk.extension.toRequest
+import webtrekk.android.sdk.extension.*
 import webtrekk.android.sdk.integration.IntelligenceEvent
 import webtrekk.android.sdk.integration.MappIntelligenceListener
-
+import webtrekk.android.sdk.module.AppModule
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -60,7 +51,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackCustomForm(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackCustomForm.Params>, CustomKoinComponent {
+) : ExternalInteractor<TrackCustomForm.Params> {
 
     private val _job = Job()
     override val scope =
@@ -69,7 +60,7 @@ internal class TrackCustomForm(
     /**
      * [logger] the injected logger from Webtrekk.
      */
-    private val logger by inject<Logger>()
+    private val logger by lazy { AppModule.logger }
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
