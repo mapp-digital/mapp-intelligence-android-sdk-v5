@@ -29,17 +29,15 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.inject
-import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.api.RequestType
-import webtrekk.android.sdk.core.CustomKoinComponent
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.integration.IntelligenceEvent
 import webtrekk.android.sdk.integration.MappIntelligenceListener
+import webtrekk.android.sdk.module.AppModule
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.coroutineExceptionHandler
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -48,7 +46,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackCustomMedia(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackCustomMedia.Params>, CustomKoinComponent {
+) : ExternalInteractor<TrackCustomMedia.Params> {
 
     private val _job = Job()
     override val scope =
@@ -57,7 +55,7 @@ internal class TrackCustomMedia(
     /**
      * [logger] the injected logger from Webtrekk.
      */
-    private val logger by inject<Logger>()
+    private val logger by lazy { AppModule.logger }
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return

@@ -4,36 +4,18 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.inject
 import webtrekk.android.sdk.ExceptionType
-import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.core.CustomKoinComponent
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.extension.validateLine
 import webtrekk.android.sdk.extension.readParam
+import webtrekk.android.sdk.extension.validateLine
 import webtrekk.android.sdk.integration.IntelligenceEvent
 import webtrekk.android.sdk.integration.MappIntelligenceListener
-import webtrekk.android.sdk.util.coroutineExceptionHandler
-import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.END_EX_STRING
-import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
-import webtrekk.android.sdk.util.NO_END_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_CRASH_CAUSE_STACK_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_CRASH_CAUSE_MESSAGE_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_CRASH_NAME_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_START_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_CRASH_MESSAGE_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.NO_CRASH_STACK_ITEM_SEPARATOR
-import webtrekk.android.sdk.util.START_EX_STRING
-import java.io.File
-import java.io.FileReader
-import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.IOException
+import webtrekk.android.sdk.module.AppModule
+import webtrekk.android.sdk.util.*
+import java.io.*
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -42,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 internal class TrackUncaughtException(
     coroutineContext: CoroutineContext,
     private val cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
-) : ExternalInteractor<TrackUncaughtException.Params>, CustomKoinComponent {
+) : ExternalInteractor<TrackUncaughtException.Params> {
 
     private val _job = Job()
     override val scope: CoroutineScope =
@@ -51,7 +33,7 @@ internal class TrackUncaughtException(
     /**
      * [logger] the injected logger from Webtrekk.
      */
-    private val logger by inject<Logger>()
+    private val logger by lazy { AppModule.logger }
 
     override fun invoke(
         invokeParams: TrackUncaughtException.Params,
