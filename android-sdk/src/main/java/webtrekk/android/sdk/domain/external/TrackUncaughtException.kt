@@ -14,8 +14,24 @@ import webtrekk.android.sdk.extension.validateLine
 import webtrekk.android.sdk.integration.IntelligenceEvent
 import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.module.AppModule
-import webtrekk.android.sdk.util.*
-import java.io.*
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.END_EX_STRING
+import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
+import webtrekk.android.sdk.util.NO_CRASH_CAUSE_MESSAGE_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_CAUSE_STACK_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_MESSAGE_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_NAME_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_CRASH_STACK_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_END_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.NO_START_ITEM_SEPARATOR
+import webtrekk.android.sdk.util.START_EX_STRING
+import webtrekk.android.sdk.util.coroutineExceptionHandler
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileReader
+import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 /**

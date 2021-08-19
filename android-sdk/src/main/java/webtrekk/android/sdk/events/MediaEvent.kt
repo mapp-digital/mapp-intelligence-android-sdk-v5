@@ -1,10 +1,10 @@
 package webtrekk.android.sdk.events
 
 import webtrekk.android.sdk.events.eventParams.BaseEvent
-import webtrekk.android.sdk.events.eventParams.MediaParameters
-import webtrekk.android.sdk.events.eventParams.EventParameters
-import webtrekk.android.sdk.events.eventParams.SessionParameters
 import webtrekk.android.sdk.events.eventParams.ECommerceParameters
+import webtrekk.android.sdk.events.eventParams.EventParameters
+import webtrekk.android.sdk.events.eventParams.MediaParameters
+import webtrekk.android.sdk.events.eventParams.SessionParameters
 
 /**
  * Created by Aleksandar Marinkovic on 3/11/21.

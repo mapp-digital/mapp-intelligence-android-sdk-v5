@@ -32,10 +32,10 @@ import webtrekk.android.sdk.util.currentApiLevel
 import webtrekk.android.sdk.util.currentCountry
 import webtrekk.android.sdk.util.currentDeviceManufacturer
 import webtrekk.android.sdk.util.currentDeviceModel
-import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentLanguage
-import webtrekk.android.sdk.util.currentTimeZone
+import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentTimeStamp
+import webtrekk.android.sdk.util.currentTimeZone
 import webtrekk.android.sdk.util.currentWebtrekkVersion
 
 /**

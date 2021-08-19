@@ -25,12 +25,12 @@
 
 package webtrekk.android.sdk.data.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
+import androidx.room.PrimaryKey
 
 /**
  * A table represents the custom params associated per tracking request [TrackRequest.id].

@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UrlActivity"></activity>
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="m">
+        <activity android:name=".UrlActivity"/>
         <activity android:name=".MediaExample" />
         <activity android:name=".StandardVideoActivity" />
         <activity android:name=".MediaActivityExample" />

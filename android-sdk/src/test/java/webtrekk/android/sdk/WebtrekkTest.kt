@@ -36,10 +36,9 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.logger.EmptyLogger
 import org.koin.dsl.module
+import webtrekk.android.sdk.domain.external.Optout
 import webtrekk.android.sdk.util.coroutineDispatchers
 import webtrekk.android.sdk.util.loggerModule
-import webtrekk.android.sdk.domain.external.Optout
-import java.lang.IllegalStateException
 
 internal class WebtrekkTest : StringSpec() {
 

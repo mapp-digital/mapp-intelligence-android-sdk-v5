@@ -25,8 +25,8 @@
 
 package webtrekk.android.sdk.extension
 
-import okhttp3.Request
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.InternalParam

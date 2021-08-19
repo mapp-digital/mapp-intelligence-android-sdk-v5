@@ -26,11 +26,10 @@
 package webtrekk.android.sdk
 
 import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.fail
-import org.junit.Assert.assertThat
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThat
+import org.junit.Assert.fail
 import org.junit.Test
-import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
 
 class WebtrekkConfigurationTest {
