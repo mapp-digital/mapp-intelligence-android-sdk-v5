@@ -28,15 +28,15 @@ package webtrekk.android.sdk.extension
 import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
-import android.widget.LinearLayout
-import android.widget.EditText
-import android.widget.SearchView
-import android.widget.RadioButton
-import android.widget.ToggleButton
-import android.widget.Switch
 import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.RatingBar
+import android.widget.SearchView
+import android.widget.Spinner
+import android.widget.Switch
+import android.widget.ToggleButton
 import webtrekk.android.sdk.data.model.FormField
 import java.util.concurrent.CopyOnWriteArrayList
 

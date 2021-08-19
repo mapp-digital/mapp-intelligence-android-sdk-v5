@@ -26,8 +26,8 @@
 package webtrekk.android.sdk.util
 
 import org.koin.dsl.module
-import webtrekk.android.sdk.core.WebtrekkLogger
 import webtrekk.android.sdk.Logger
+import webtrekk.android.sdk.core.WebtrekkLogger
 
 val loggerModule = module {
     single { WebtrekkLogger(Logger.Level.BASIC) as Logger }

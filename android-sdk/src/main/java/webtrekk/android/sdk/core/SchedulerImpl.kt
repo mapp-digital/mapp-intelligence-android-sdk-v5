@@ -26,13 +26,13 @@
 package webtrekk.android.sdk.core
 
 import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.Data
-import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
+import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import java.util.concurrent.TimeUnit
 
 /**

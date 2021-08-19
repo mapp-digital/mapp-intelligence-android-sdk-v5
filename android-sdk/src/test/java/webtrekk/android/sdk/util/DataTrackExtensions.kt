@@ -24,10 +24,10 @@
  */
 
 import okhttp3.Request
-import webtrekk.android.sdk.extension.encodeToUTF8
-import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.api.UrlParams
+import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.extension.buildCustomParams
+import webtrekk.android.sdk.extension.encodeToUTF8
 import webtrekk.android.sdk.extension.userAgent
 import webtrekk.android.sdk.extension.webtrekkRequestParams
 
