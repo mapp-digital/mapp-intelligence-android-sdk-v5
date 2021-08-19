@@ -27,8 +27,8 @@ package webtrekk.android.sdk.api.datasource
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import webtrekk.android.sdk.extension.executeRequestForResult
 import webtrekk.android.sdk.data.entity.DataTrack
+import webtrekk.android.sdk.extension.executeRequestForResult
 
 /**
  * The concrete implementation of [SyncRequestsDataSource], depending on [OkHttpClient].

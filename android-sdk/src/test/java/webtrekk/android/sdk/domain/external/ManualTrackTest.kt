@@ -34,12 +34,12 @@ import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.cacheTrackRequestParams
-import webtrekk.android.sdk.util.trackingParams
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 import webtrekk.android.sdk.util.dataTrack
 import webtrekk.android.sdk.util.trackRequest
+import webtrekk.android.sdk.util.trackingParams
 
 internal class ManualTrackTest : AbstractExternalInteractor() {
     private val sessions = mockk<Sessions>(relaxed = true)

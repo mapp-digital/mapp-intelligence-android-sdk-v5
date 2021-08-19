@@ -26,10 +26,10 @@
 package webtrekk.android.sdk.domain.internal
 
 import okhttp3.Request
+import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
-import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.domain.InternalInteractor
 
 /**

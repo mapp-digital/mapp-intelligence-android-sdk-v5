@@ -2,7 +2,6 @@ package webtrekk.android.sdk.integration
 
 import android.content.Context
 import android.content.Intent
-import java.lang.Exception
 
 /**
  * Created by Aleksandar Marinkovic on 30/07/2020.

@@ -37,7 +37,13 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.model.FormField
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.extension.*
+import webtrekk.android.sdk.extension.isTrackable
+import webtrekk.android.sdk.extension.notTrackedView
+import webtrekk.android.sdk.extension.orderList
+import webtrekk.android.sdk.extension.parseView
+import webtrekk.android.sdk.extension.toFormField
+import webtrekk.android.sdk.extension.toInt
+import webtrekk.android.sdk.extension.toRequest
 import webtrekk.android.sdk.integration.IntelligenceEvent
 import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.module.AppModule

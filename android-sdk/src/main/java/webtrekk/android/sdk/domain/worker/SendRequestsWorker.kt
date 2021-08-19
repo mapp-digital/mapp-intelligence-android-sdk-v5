@@ -39,7 +39,14 @@ import webtrekk.android.sdk.extension.buildUrlRequest
 import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InternalInteractorsModule
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.anonymous
+import webtrekk.android.sdk.util.anonymousParam
+import webtrekk.android.sdk.util.batchSupported
+import webtrekk.android.sdk.util.currentEverId
+import webtrekk.android.sdk.util.requestPerBatch
+import webtrekk.android.sdk.util.trackDomain
+import webtrekk.android.sdk.util.trackIds
 
 /**
  * [WorkManager] worker that retrieves the data from the data base, builds the requests and send them to the server.

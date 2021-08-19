@@ -27,8 +27,8 @@ package webtrekk.android.sdk.domain.worker
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.MatcherAssert.assertThat
