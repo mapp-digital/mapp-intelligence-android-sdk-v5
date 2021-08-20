@@ -54,4 +54,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/disable_anonymous" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_optout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enable_anonymous"
+        android:layout_marginTop="10dp"
+        android:text="OptOut"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

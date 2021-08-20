@@ -32,13 +32,7 @@ import io.kotlintest.specs.StringSpec
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkClass
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.core.logger.EmptyLogger
-import org.koin.dsl.module
 import webtrekk.android.sdk.domain.external.Optout
-import webtrekk.android.sdk.util.coroutineDispatchers
-import webtrekk.android.sdk.util.loggerModule
 
 internal class WebtrekkTest : StringSpec() {
 
@@ -48,26 +42,10 @@ internal class WebtrekkTest : StringSpec() {
 
     private val optOut = mockk<Optout>(relaxed = true)
 
-    val optOutModule = module {
-        single { optOut }
-    }
-
     override fun beforeSpec(spec: Spec) {
-        stopKoin()
-        startKoin {
-            modules(
-                listOf(
-                    loggerModule,
-                    coroutineDispatchers,
-                    optOutModule
-                )
-            )
-            EmptyLogger()
-        }
     }
 
     override fun afterSpec(spec: Spec) {
-        stopKoin()
     }
 
     init {
