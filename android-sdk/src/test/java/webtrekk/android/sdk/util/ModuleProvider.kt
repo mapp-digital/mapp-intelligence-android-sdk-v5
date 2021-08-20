@@ -25,14 +25,9 @@
 
 package webtrekk.android.sdk.util
 
-import org.koin.dsl.module
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.WebtrekkLogger
 
-val loggerModule = module {
-    single { WebtrekkLogger(Logger.Level.BASIC) as Logger }
-}
+val loggerModule by lazy { WebtrekkLogger(Logger.Level.BASIC) as Logger }
 
-val coroutineDispatchers = module {
-    single { coroutinesDispatchersProvider() }
-}
+val coroutineDispatchers by lazy { coroutinesDispatchersProvider() }

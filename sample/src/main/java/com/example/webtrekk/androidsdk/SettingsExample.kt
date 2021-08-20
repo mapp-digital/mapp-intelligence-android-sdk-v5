@@ -42,5 +42,10 @@ class SettingsExample : AppCompatActivity() {
         disable_anonymous.setOnClickListener {
             Webtrekk.getInstance().anonymousTracking(false, generateNewEverId = false)
         }
+
+        sw_optout.isChecked=Webtrekk.getInstance().hasOptOut()
+        sw_optout.setOnCheckedChangeListener { buttonView, isChecked ->
+            Webtrekk.getInstance().optOut(isChecked)
+        }
     }
 }
