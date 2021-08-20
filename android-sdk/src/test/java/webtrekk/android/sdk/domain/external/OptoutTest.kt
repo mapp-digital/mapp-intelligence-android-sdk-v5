@@ -35,7 +35,7 @@ import kotlinx.coroutines.runBlocking
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
-import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
@@ -43,7 +43,7 @@ internal class OptoutTest : AbstractExternalInteractor() {
 
     private val sessions = mockk<Sessions>(relaxed = true)
     private val scheduler = mockk<Scheduler>(relaxed = true)
-    private val appState = mockk<AppState<TrackRequest>>(relaxed = true)
+    private val appState = mockk<AppState<DataAnnotationClass>>(relaxed = true)
     private val clearTrackRequests = mockkClass(ClearTrackRequests::class)
     private val optOut = Optout(
         coroutineContext = coroutineContext,

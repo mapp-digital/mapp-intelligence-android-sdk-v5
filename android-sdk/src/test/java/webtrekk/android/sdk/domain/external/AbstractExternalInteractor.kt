@@ -33,17 +33,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestCoroutineContext
-import org.koin.core.KoinComponent
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.core.logger.EmptyLogger
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.core.MyKoinContext
-import webtrekk.android.sdk.util.loggerModule
 import kotlin.coroutines.CoroutineContext
 
-internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineScope, FeatureSpec() {
+internal abstract class AbstractExternalInteractor : CoroutineScope, FeatureSpec() {
 
     private val job = SupervisorJob()
     private val testCoroutineContext = TestCoroutineContext()
@@ -54,19 +48,9 @@ internal abstract class AbstractExternalInteractor : KoinComponent, CoroutineSco
 
     override fun beforeSpec(spec: Spec) {
         Webtrekk.getInstance().init(appContext, config)
-        startKoin {
-            modules(
-                listOf(
-                    loggerModule
-                )
-            )
-            EmptyLogger()
-        }
     }
 
     override fun afterSpec(spec: Spec) {
-        MyKoinContext.koinApp?.close()
-        stopKoin()
         coroutineContext.cancel()
     }
 }
