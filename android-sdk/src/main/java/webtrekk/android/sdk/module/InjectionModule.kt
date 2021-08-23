@@ -107,98 +107,11 @@ object NetworkModule {
     ): Constraints = config.workManagerConstraints
 }
 
-object ExternalInteractorsModule {
+object InteractorModule {
     internal val job: CompletableJob by lazy { SupervisorJob() }
 
     internal val coroutineContext: CoroutineContext
         get() = job + AppModule.dispatchers.defaultDispatcher
-
-    internal val autoTrack: AutoTrack by lazy {
-        AutoTrack(
-            coroutineContext,
-            AppModule.appState,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val manualTrack: ManualTrack by lazy {
-        ManualTrack(
-            coroutineContext,
-            InternalInteractorsModule.sessions,
-            InternalInteractorsModule.cacheTrackRequest(),
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val trackCustomPage: TrackCustomPage by lazy {
-        TrackCustomPage(
-            coroutineContext,
-            InternalInteractorsModule.sessions,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val trackCustomEvent: TrackCustomEvent by lazy {
-        TrackCustomEvent(
-            coroutineContext,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val trackCustomForm: TrackCustomForm by lazy {
-        TrackCustomForm(
-            coroutineContext,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val trackCustomMedia: TrackCustomMedia by lazy {
-        TrackCustomMedia(
-            coroutineContext,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val trackException: TrackException by lazy {
-        TrackException(
-            coroutineContext,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val trackUncaughtException: TrackUncaughtException by lazy {
-        TrackUncaughtException(
-            coroutineContext,
-            InternalInteractorsModule.cacheTrackRequestWithCustomParams()
-        )
-    }
-
-    internal val uncaughtExceptionHandler: UncaughtExceptionHandler by lazy {
-        UncaughtExceptionHandler(
-            Thread.getDefaultUncaughtExceptionHandler(),
-            LibraryModule.application
-        )
-    }
-
-    internal val optOut: Optout by lazy {
-        Optout(
-            coroutineContext,
-            InternalInteractorsModule.sessions,
-            InternalInteractorsModule.scheduler,
-            AppModule.appState,
-            InternalInteractorsModule.clearTrackRequest()
-        )
-    }
-
-    internal val sendAndClean: SendAndClean by lazy {
-        SendAndClean(
-            coroutineContext,
-            InternalInteractorsModule.scheduler
-        )
-    }
-}
-
-object InternalInteractorsModule {
 
     internal val sessions: Sessions by lazy { SessionsImpl(AppModule.webtrekkSharedPrefs) }
 
@@ -224,6 +137,90 @@ object InternalInteractorsModule {
 
     internal fun clearTrackRequest(): ClearTrackRequests =
         ClearTrackRequests(DataModule.trackRequestRepository)
+
+    internal val autoTrack: AutoTrack by lazy {
+        AutoTrack(
+            coroutineContext,
+            AppModule.appState,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val manualTrack: ManualTrack by lazy {
+        ManualTrack(
+            coroutineContext,
+            sessions,
+            cacheTrackRequest(),
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val trackCustomPage: TrackCustomPage by lazy {
+        TrackCustomPage(
+            coroutineContext,
+            sessions,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val trackCustomEvent: TrackCustomEvent by lazy {
+        TrackCustomEvent(
+            coroutineContext,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val trackCustomForm: TrackCustomForm by lazy {
+        TrackCustomForm(
+            coroutineContext,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val trackCustomMedia: TrackCustomMedia by lazy {
+        TrackCustomMedia(
+            coroutineContext,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val trackException: TrackException by lazy {
+        TrackException(
+            coroutineContext,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val trackUncaughtException: TrackUncaughtException by lazy {
+        TrackUncaughtException(
+            coroutineContext,
+            cacheTrackRequestWithCustomParams()
+        )
+    }
+
+    internal val uncaughtExceptionHandler: UncaughtExceptionHandler by lazy {
+        UncaughtExceptionHandler(
+            Thread.getDefaultUncaughtExceptionHandler(),
+            LibraryModule.application
+        )
+    }
+
+    internal val optOut: Optout by lazy {
+        Optout(
+            coroutineContext,
+            sessions,
+            scheduler,
+            AppModule.appState,
+            clearTrackRequest()
+        )
+    }
+
+    internal val sendAndClean: SendAndClean by lazy {
+        SendAndClean(
+            coroutineContext,
+            scheduler
+        )
+    }
 }
 
 object DataModule {

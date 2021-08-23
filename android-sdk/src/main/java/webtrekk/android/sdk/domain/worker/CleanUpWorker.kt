@@ -33,7 +33,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.module.AppModule
-import webtrekk.android.sdk.module.InternalInteractorsModule
+import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 
 /**
@@ -55,12 +55,12 @@ internal class CleanUpWorker(
         /**
          * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
          */
-        val getCachedDataTracks: GetCachedDataTracks = InternalInteractorsModule.getCachedDataTracks()
+        val getCachedDataTracks: GetCachedDataTracks = InteractorModule.getCachedDataTracks()
 
         /**
          * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
          */
-        val clearTrackRequests: ClearTrackRequests = InternalInteractorsModule.clearTrackRequest()
+        val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
 
         /**
          * [logger] the injected logger from Webtrekk.
