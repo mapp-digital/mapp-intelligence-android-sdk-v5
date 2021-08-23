@@ -38,7 +38,7 @@ import webtrekk.android.sdk.extension.buildPostRequest
 import webtrekk.android.sdk.extension.buildUrlRequest
 import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.module.AppModule
-import webtrekk.android.sdk.module.InternalInteractorsModule
+import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.anonymous
 import webtrekk.android.sdk.util.anonymousParam
@@ -67,17 +67,17 @@ internal class SendRequestsWorker(
          * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
          */
         val getCachedDataTracks: GetCachedDataTracks =
-            InternalInteractorsModule.getCachedDataTracks()
+            InteractorModule.getCachedDataTracks()
 
         /**
          * [executeRequest] the injected internal interactor for executing the requests.
          */
-        val executeRequest: ExecuteRequest = InternalInteractorsModule.executeRequest()
+        val executeRequest: ExecuteRequest = InteractorModule.executeRequest()
 
         /**
          * [ExecutePostRequest] the injected internal interactor for executing the requests.
          */
-        val executePostRequest: ExecutePostRequest = InternalInteractorsModule.executePostRequest()
+        val executePostRequest: ExecutePostRequest = InteractorModule.executePostRequest()
 
         /**
          * [logger] the injected logger from Webtrekk.
