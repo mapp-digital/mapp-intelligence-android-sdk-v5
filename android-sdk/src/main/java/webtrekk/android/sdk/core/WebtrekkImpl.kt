@@ -120,9 +120,12 @@ constructor() : Webtrekk(),
         get() = _job + coroutineDispatchers.defaultDispatcher
 
     override fun init(context: Context, config: Config) {
-        LibraryModule.initializeDI(context, config)
-
-        internalInit()
+        synchronized(WebtrekkImpl::class) {
+            if (!LibraryModule.isInitialized()) {
+                LibraryModule.initializeDI(context, config)
+                internalInit()
+            }
+        }
     }
 
     override fun trackPage(

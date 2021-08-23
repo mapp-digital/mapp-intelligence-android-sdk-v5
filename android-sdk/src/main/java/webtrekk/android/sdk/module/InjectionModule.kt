@@ -52,6 +52,7 @@ import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.util.CoroutineDispatchers
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 
 object AppModule {
@@ -250,18 +251,29 @@ object DataModule {
 
 object LibraryModule {
 
-    @Volatile
-    lateinit var application: Context
+    private val initializer = AtomicBoolean(false)
+    internal fun isInitialized(): Boolean = initializer.get()
 
-    @Volatile
-    lateinit var configuration: Config
+    private var appContext: Context? = null
+    internal val application: Context
+        get() {
+            return appContext
+                ?: throw UninitializedPropertyAccessException("Context must be initialized first")
+        }
 
-    fun initializeDI(context: Context, config: Config) {
-        if (!::application.isInitialized) {
-            synchronized(this) {
-                application = context.applicationContext
-                configuration = config
-            }
+    private var config: Config? = null
+    internal val configuration: Config
+        get() {
+            return config ?: throw UninitializedPropertyAccessException(
+                "Webtrekk configurations must be set before invoking any method." +
+                    " Use Webtrekk.getInstance().init(context, configuration)"
+            )
+        }
+
+    internal fun initializeDI(context: Context, configuration: Config) {
+        if (initializer.compareAndSet(false, true)) {
+            appContext = context.applicationContext
+            config = configuration
         }
     }
 }
