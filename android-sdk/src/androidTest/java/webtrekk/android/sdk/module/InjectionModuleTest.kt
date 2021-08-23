@@ -2,13 +2,15 @@ package webtrekk.android.sdk.module
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.mockkClass
-import io.mockk.mockkStatic
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertSame
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.mock
+import org.junit.rules.ExpectedException
+import org.junit.rules.ExpectedException.none
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -19,24 +21,41 @@ class InjectionModuleTest {
     private val trackIds = listOf("794940687426749")
     private val trackDomain = "http://tracker-int-01.webtrekk.net"
 
-    private lateinit var webtrekk: Webtrekk
-    private lateinit var config:Config
+    private lateinit var config: Config
     private lateinit var context: Context
 
+    @Rule
+    @JvmField
+    val expectedException: ExpectedException = none()
+
+    fun expectUninitializedPropertyAccessException() {
+        expectedException.expect(UninitializedPropertyAccessException::class.java)
+    }
+
+
     @Before
-    fun setUp(){
-        context= ApplicationProvider.getApplicationContext<Context>()
-        webtrekk= Webtrekk.getInstance()
-        config= WebtrekkConfiguration.Builder(trackIds, trackDomain).build()
-        webtrekk.init(context,config)
+    fun setUp() {
+        context = ApplicationProvider.getApplicationContext<Context>()
+        config = WebtrekkConfiguration.Builder(trackIds, trackDomain).build()
+        Webtrekk.getInstance().init(context, config)
+    }
+
+    @Test
+    fun initialized_library_test() {
+        val webtrekk = Webtrekk.getInstance()
+        webtrekk.init(context, config)
+        webtrekk.optOut(false)
+        val optOut = webtrekk.hasOptOut()
+        assertSame(optOut::class.java, Boolean::class.java)
     }
 
     @Test
     fun webtrekk_is_singleton_test() {
-        val webtrekk1 = Webtrekk.getInstance()
-        val webtrekk2 = Webtrekk.getInstance()
-
-        assertSame(webtrekk1, webtrekk2)
+        runBlocking {
+            val webtrekk1 = coroutineScope { Webtrekk.getInstance() }
+            val webtrekk2 = coroutineScope { Webtrekk.getInstance() }
+            assertSame(webtrekk1, webtrekk2)
+        }
     }
 
     @Test
