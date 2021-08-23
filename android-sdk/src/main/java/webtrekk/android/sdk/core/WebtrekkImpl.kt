@@ -41,7 +41,6 @@ import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
-
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.external.AutoTrack
@@ -66,8 +65,7 @@ import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.resolution
 import webtrekk.android.sdk.extension.validateEntireList
 import webtrekk.android.sdk.module.AppModule
-import webtrekk.android.sdk.module.ExternalInteractorsModule
-import webtrekk.android.sdk.module.InternalInteractorsModule
+import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.module.LibraryModule
 import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
@@ -85,38 +83,32 @@ internal class WebtrekkImpl private
 constructor() : Webtrekk(),
     CoroutineScope {
 
-    private val _job by lazy { ExternalInteractorsModule.job }
+    private val _job by lazy { InteractorModule.job }
 
     private val coroutineDispatchers by lazy { AppModule.dispatchers }
     private val appState by lazy { AppModule.appState }
 
-    private val scheduler by lazy { InternalInteractorsModule.scheduler }
+    private val scheduler by lazy { InteractorModule.scheduler }
 
-    private val autoTrack by lazy { ExternalInteractorsModule.autoTrack }
-    private val manualTrack by lazy { ExternalInteractorsModule.manualTrack }
-    private val trackCustomPage by lazy { ExternalInteractorsModule.trackCustomPage }
-    private val trackCustomEvent by lazy { ExternalInteractorsModule.trackCustomEvent }
-    private val trackCustomForm by lazy { ExternalInteractorsModule.trackCustomForm }
-    private val trackCustomMedia by lazy { ExternalInteractorsModule.trackCustomMedia }
-    private val trackException by lazy { ExternalInteractorsModule.trackException }
-    private val trackUncaughtException by lazy { ExternalInteractorsModule.trackUncaughtException }
-    private val optOutUser by lazy { ExternalInteractorsModule.optOut }
-    private val sendAndClean by lazy { ExternalInteractorsModule.sendAndClean }
-    internal val sessions by lazy { InternalInteractorsModule.sessions }
+    private val autoTrack by lazy { InteractorModule.autoTrack }
+    private val manualTrack by lazy { InteractorModule.manualTrack }
+    private val trackCustomPage by lazy { InteractorModule.trackCustomPage }
+    private val trackCustomEvent by lazy { InteractorModule.trackCustomEvent }
+    private val trackCustomForm by lazy { InteractorModule.trackCustomForm }
+    private val trackCustomMedia by lazy { InteractorModule.trackCustomMedia }
+    private val trackException by lazy { InteractorModule.trackException }
+    private val trackUncaughtException by lazy { InteractorModule.trackUncaughtException }
+    private val optOutUser by lazy { InteractorModule.optOut }
+    private val sendAndClean by lazy { InteractorModule.sendAndClean }
+    internal val sessions by lazy { InteractorModule.sessions }
     internal val logger by lazy { AppModule.logger }
     private val cash by lazy { AppModule.cash }
 
-    private val uncaughtExceptionHandler by lazy { ExternalInteractorsModule.uncaughtExceptionHandler }
+    private val uncaughtExceptionHandler by lazy { InteractorModule.uncaughtExceptionHandler }
 
     private var lastEqual = false
     private var lastTimeMedia = 0L
     private var lastAction = "play"
-
-/*    internal var context: Context by Delegates.initOrException(errorMessage = "Context must be initialized first")
-    internal var config: Config by Delegates.initOrException(
-        errorMessage = "Webtrekk configurations must be set before invoking any method." +
-                " Use Webtrekk.getInstance().init(context, configuration)"
-    )*/
 
     internal val context: Context
         get() = LibraryModule.application
