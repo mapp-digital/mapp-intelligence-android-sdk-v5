@@ -2,6 +2,8 @@ package webtrekk.android.sdk.module
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import androidx.work.Constraints
+import androidx.work.NetworkType
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotSame
@@ -29,14 +31,17 @@ class InjectionModuleTest {
     val expectedException: ExpectedException = none()
 
     fun expectUninitializedPropertyAccessException() {
-        expectedException.expect(UninitializedPropertyAccessException::class.java)
+        expectedException.expect(IllegalStateException::class.java)
     }
 
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext<Context>()
-        config = WebtrekkConfiguration.Builder(trackIds, trackDomain).build()
+
+        config = WebtrekkConfiguration.Builder(trackIds, trackDomain)
+            .build()
+
         Webtrekk.getInstance().init(context, config)
     }
 
