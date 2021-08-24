@@ -258,13 +258,13 @@ object LibraryModule {
     internal val application: Context
         get() {
             return appContext
-                ?: throw UninitializedPropertyAccessException("Context must be initialized first")
+                ?: throw IllegalStateException("Context must be initialized first")
         }
 
     private var config: Config? = null
     internal val configuration: Config
         get() {
-            return config ?: throw UninitializedPropertyAccessException(
+            return config ?: throw IllegalStateException(
                 "Webtrekk configurations must be set before invoking any method." +
                     " Use Webtrekk.getInstance().init(context, configuration)"
             )
