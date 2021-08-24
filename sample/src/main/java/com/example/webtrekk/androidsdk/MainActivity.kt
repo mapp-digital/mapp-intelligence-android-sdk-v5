@@ -43,6 +43,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+/*
+        val stringIds = BuildConfig.TRACK_IDS
+        val domain = BuildConfig.DOMEIN
+        val elements: List<String> = stringIds.split(",")
+        val webtrekkConfiguration=WebtrekkConfiguration.Builder(elements,domain).build()
+
+        Webtrekk.getInstance().init(this, webtrekkConfiguration)
+*/
+
         startDetailsActivity.setOnClickListener {
             val intent = Intent(this, DetailsActivity::class.java)
             startActivity(intent)

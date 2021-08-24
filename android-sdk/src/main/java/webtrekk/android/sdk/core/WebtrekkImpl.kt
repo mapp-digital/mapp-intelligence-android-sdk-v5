@@ -72,6 +72,7 @@ import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.util.currentSession
 import webtrekk.android.sdk.util.getFileName
+import webtrekk.android.sdk.util.webtrekkLogger
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
@@ -124,6 +125,8 @@ constructor() : Webtrekk(),
             if (!LibraryModule.isInitialized()) {
                 LibraryModule.initializeDI(context, config)
                 internalInit()
+            }else{
+                webtrekkLogger.warn("Webtrekk is already initialized!")
             }
         }
     }
