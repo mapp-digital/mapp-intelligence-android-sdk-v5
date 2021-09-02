@@ -1,14 +1,18 @@
 # Change Log
-## Version 5.1.1 *(In Progress)*
+
+## Version 5.1.1-beta2 *(InProgress)*
+
+## Version 5.1.1-beta1 *(2021-09-2)*
+* Improve: Koin is removed from the project
 
 ## Version 5.1.0.2 *(2021-08-12)*
-*HotFix version
-*Fixed DeepLinking tracking 
+* HotFix version
+* Fixed DeepLinking tracking 
 
 ## Version 5.1.0.1 *(2021-07-20)* 
- *HotFix version
- *Fixed app first open issue
- *Downgrade AppCompat to 1.2
+* HotFix version
+* Fixed app first open issue
+* Downgrade AppCompat to 1.2
  
 ## Version 5.1.0 *(2021-06-6)*
 * Improve Support for Android 11 
