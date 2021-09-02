@@ -26,16 +26,21 @@
 package com.example.webtrekk.androidsdk
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import webtrekk.android.sdk.*
+import java.lang.StringBuilder
 
 @TrackPageDetail(
     contextName = "Main Page",
-    trackingParams = [TrackParams(paramKey = Param.PAGE_PARAMS.INTERNAL_SEARCH, paramVal = "search")]
+    trackingParams = [TrackParams(
+        paramKey = Param.PAGE_PARAMS.INTERNAL_SEARCH,
+        paramVal = "search"
+    )]
 )
 class MainActivity : AppCompatActivity() {
 
@@ -95,5 +100,18 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ObjectTrackingActivityExample::class.java)
             startActivity(intent)
         }
+
+        val int = intent
+        val uri = int.data
+        if (uri != null) {
+            val result = int.dataString?.removePrefix("mapptest://test?link=")
+            val url = Uri.parse(result)
+            Webtrekk.getInstance().trackUrl(url)
+            Webtrekk.getInstance().trackPage(this)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 }

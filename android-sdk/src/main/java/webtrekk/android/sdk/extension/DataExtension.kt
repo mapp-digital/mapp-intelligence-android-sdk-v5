@@ -79,7 +79,7 @@ internal fun List<CustomParam>.buildCustomParams(anonymous: Boolean = false, ano
     this.forEach {
         val paramVal =
             // For media code param, it needs to be double encoded
-            if (it.paramKey == CampaignParam.MEDIA_CODE) ("$InternalParam.WT_MC_DEFAULT=").encodeToUTF8() + it.paramValue else it.paramValue
+            if (it.paramKey == CampaignParam.MEDIA_CODE) ("${InternalParam.WT_MC_DEFAULT}=").encodeToUTF8() + it.paramValue else it.paramValue
         val paramKey =
             if (it.paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER) CampaignParam.MEDIA_CODE else it.paramKey
         if (anonymousParam.contains(paramKey) && anonymous)
