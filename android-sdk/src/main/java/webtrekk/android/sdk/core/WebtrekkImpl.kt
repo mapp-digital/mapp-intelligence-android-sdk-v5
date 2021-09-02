@@ -125,7 +125,7 @@ constructor() : Webtrekk(),
             if (!LibraryModule.isInitialized()) {
                 LibraryModule.initializeDI(context, config)
                 internalInit()
-            }else{
+            } else {
                 webtrekkLogger.warn("Webtrekk is already initialized!")
             }
         }
