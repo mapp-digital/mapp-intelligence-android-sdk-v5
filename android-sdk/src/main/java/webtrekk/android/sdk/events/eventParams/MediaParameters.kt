@@ -44,7 +44,7 @@ data class MediaParameters(
                 map.addNotNull("${MediaParam.MEDIA_CATEGORY}$key", value)
             }
         }
-        map.addNotNull(MediaParam.NAME, name)
+        // map.addNotNull(MediaParam.NAME, name)
         map.addNotNull(MediaParam.MEDIA_ACTION, action)
         map.addNotNull(MediaParam.MEDIA_POSITION, position.formatNumber())
         map.addNotNull(MediaParam.MEDIA_DURATION, duration.formatNumber())

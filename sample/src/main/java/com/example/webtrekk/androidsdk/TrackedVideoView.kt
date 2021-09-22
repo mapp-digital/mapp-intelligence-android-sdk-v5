@@ -47,7 +47,7 @@ class TrackedVideoView : VideoView {
 
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)
     }
 
     override fun pause() {
@@ -58,7 +58,7 @@ class TrackedVideoView : VideoView {
                 MediaParam.MEDIA_ACTION to "pause"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)
     }
 
 
@@ -70,7 +70,7 @@ class TrackedVideoView : VideoView {
                 MediaParam.MEDIA_ACTION to "play"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)
 
     }
 
@@ -82,7 +82,7 @@ class TrackedVideoView : VideoView {
                 MediaParam.MEDIA_ACTION to "stop"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)
     }
 
 
@@ -93,7 +93,7 @@ class TrackedVideoView : VideoView {
                 MediaParam.MEDIA_ACTION to "seek"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)
         super.seekTo(msec)
         trackingParams.putAll(
             mapOf(
@@ -101,7 +101,7 @@ class TrackedVideoView : VideoView {
                 MediaParam.MEDIA_ACTION to "play"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)
     }
 
 

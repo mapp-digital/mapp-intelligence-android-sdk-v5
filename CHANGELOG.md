@@ -1,6 +1,8 @@
 # Change Log
+## Version 5.1.1-beta3 *(InProgress)*
 
-## Version 5.1.1-beta2 *(InProgress)*
+## Version 5.1.1-beta2 *(2021-09-22)*
+* Improve: Now the media can contain the name of the page 
 
 ## Version 5.1.1-beta1 *(2021-09-2)*
 * Improve: Koin is removed from the project
