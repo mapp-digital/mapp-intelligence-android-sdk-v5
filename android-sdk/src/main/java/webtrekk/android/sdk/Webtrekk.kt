@@ -174,6 +174,12 @@ abstract class Webtrekk protected constructor() {
         trackingParams: Map<String, String> = emptyMap()
     )
 
+    abstract fun trackMedia(
+        pageName: String,
+        mediaName: String,
+        trackingParams: Map<String, String> = emptyMap()
+    )
+
     /**
      * Tracks specific exception event.
      * @param exception the exception object that caused crash

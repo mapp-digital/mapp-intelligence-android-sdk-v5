@@ -163,7 +163,11 @@ constructor() : Webtrekk(),
     }
 
     override fun trackMedia(media: MediaEvent) {
-        trackMedia(media.pageName, media.toHasMap())
+        this.trackMedia(
+            pageName = media.pageName,
+            mediaName = media.parameters.name,
+            trackingParams = media.toHasMap()
+        )
     }
 
     override fun trackAction(action: ActionEvent) {
@@ -213,6 +217,14 @@ constructor() : Webtrekk(),
         }
 
     override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
+        this.trackMedia(mediaName, mediaName, trackingParams)
+    }
+
+    override fun trackMedia(
+        pageName: String,
+        mediaName: String,
+        trackingParams: Map<String, String>
+    ) {
         if (!mediaParamValidation(trackingParams)) {
             return
         }
@@ -220,7 +232,7 @@ constructor() : Webtrekk(),
             trackCustomMedia(
                 TrackCustomMedia.Params(
                     trackRequest = TrackRequest(
-                        name = mediaName,
+                        name = pageName,
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -229,7 +241,8 @@ constructor() : Webtrekk(),
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
-                    context = context
+                    context = context,
+                    mediaName = mediaName
                 ), coroutineDispatchers
             )
         }

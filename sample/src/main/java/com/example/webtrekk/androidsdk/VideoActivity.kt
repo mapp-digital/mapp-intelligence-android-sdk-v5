@@ -90,7 +90,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                             MediaParam.MEDIA_ACTION to "eof"
                         )
                     )
-                    Webtrekk.getInstance().trackMedia("video name", trackingParams)
+                    Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
                     clearStartPosition()
                 }
                 ExoPlayer.STATE_READY -> {
@@ -118,7 +118,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                     MediaParam.MEDIA_ACTION to if (isPlaying) "play" else "pause"
                 )
             )
-            Webtrekk.getInstance().trackMedia("video name", trackingParams)
+            Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
         }
 
     }
@@ -215,7 +215,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                             MediaParam.MEDIA_ACTION to "seek"
                         )
                     )
-                    Webtrekk.getInstance().trackMedia("video name", trackingParams)
+                    Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
 
 
                 }
@@ -264,7 +264,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 MediaParam.MEDIA_ACTION to "stop"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
         if (Util.SDK_INT <= 23) {
             if (playerView != null) {
                 playerView.onPause()
@@ -290,7 +290,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 MediaParam.MEDIA_ACTION to "eof"
             )
         )
-        Webtrekk.getInstance().trackMedia("video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
         if (player != null) {
             updateTrackSelectorParameters()
             updateStartPosition()
@@ -319,7 +319,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 )
             )
             muted = !muted
-            Webtrekk.getInstance().trackMedia("video name", trackingParams)
+            Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
             return true
         }
         return super.onKeyDown(keyCode, event)
@@ -338,7 +338,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                         )
 
                     )
-                    Webtrekk.getInstance().trackMedia("video name", trackingParams)
+                    Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
                 }
             })
         this.applicationContext.contentResolver.registerContentObserver(
