@@ -37,7 +37,7 @@ class MediaActivityExample : AppCompatActivity() {
             )
         )
 
-        Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+        Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
 
 
     }
@@ -52,7 +52,7 @@ class MediaActivityExample : AppCompatActivity() {
             currentState = "play"
             trackingParams[MediaParam.MEDIA_ACTION] = "play"
             trackingParams[MediaParam.MEDIA_POSITION] = progress.toString()
-            Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+            Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
             startTimerService()
         }
         pauseButton.setOnClickListener {
@@ -60,7 +60,7 @@ class MediaActivityExample : AppCompatActivity() {
             currentState = "pause"
             trackingParams[MediaParam.MEDIA_ACTION] = "pause"
             trackingParams[MediaParam.MEDIA_POSITION] = progress.toString()
-            Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+            Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
             timerService?.shutdown()
         }
         stopButton.setOnClickListener {
@@ -68,7 +68,7 @@ class MediaActivityExample : AppCompatActivity() {
             currentState = "stop"
             trackingParams[MediaParam.MEDIA_ACTION] = "stop"
             trackingParams[MediaParam.MEDIA_POSITION] = progress.toString()
-            Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+            Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
             timerService?.shutdown()
         }
 
@@ -85,14 +85,14 @@ class MediaActivityExample : AppCompatActivity() {
                     startTimerService()
                 }
                 trackingParams[MediaParam.MEDIA_POSITION] = progress.toString()
-                Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+                Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
                 val progress: Int = currentPlayProgress
                 trackingParams[MediaParam.MEDIA_ACTION] = "seek"
                 trackingParams[MediaParam.MEDIA_POSITION] = progress.toString()
-                Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+                Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
             }
 
             override fun onProgressChanged(
@@ -108,7 +108,7 @@ class MediaActivityExample : AppCompatActivity() {
     override fun onDestroy() {
         trackingParams[MediaParam.MEDIA_ACTION] = "eof"
         trackingParams[MediaParam.MEDIA_POSITION] = currentPlayProgress.toString()
-        Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+        Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
         super.onDestroy()
         timerService?.shutdown()
     }
@@ -132,7 +132,7 @@ class MediaActivityExample : AppCompatActivity() {
             val progress: Int = currentPlayProgress
             trackingParams[MediaParam.MEDIA_ACTION] = "pos"
             trackingParams[MediaParam.MEDIA_POSITION] = progress.toString()
-            Webtrekk.getInstance().trackMedia("android-demo-media", trackingParams)
+            Webtrekk.getInstance().trackMedia("MediaActivityExample","android-demo-media", trackingParams)
         }
     }
 

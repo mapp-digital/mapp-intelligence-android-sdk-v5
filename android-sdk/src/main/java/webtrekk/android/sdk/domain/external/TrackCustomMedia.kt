@@ -71,7 +71,8 @@ internal class TrackCustomMedia(
             )
         ) {
             val params = invokeParams.trackingParams.toMutableMap()
-            params[RequestType.MEDIA.value] = invokeParams.trackRequest.name
+            if (invokeParams.mediaName.isNotEmpty())
+                params[RequestType.MEDIA.value] = invokeParams.mediaName
             params.remove(RequestType.EVENT.value)
             // Cache the track request with its custom params.
             cacheTrackRequestWithCustomParams(
@@ -96,6 +97,7 @@ internal class TrackCustomMedia(
         val trackRequest: TrackRequest,
         val trackingParams: Map<String, String>,
         val isOptOut: Boolean,
-        val context: Context? = null
+        val context: Context? = null,
+        val mediaName: String = ""
     )
 }
