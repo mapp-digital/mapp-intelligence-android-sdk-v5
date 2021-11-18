@@ -29,11 +29,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import webtrekk.android.sdk.*
-import java.lang.StringBuilder
+import webtrekk.android.sdk.Param
+import webtrekk.android.sdk.TrackPageDetail
+import webtrekk.android.sdk.TrackParams
+import webtrekk.android.sdk.Webtrekk
 
 @TrackPageDetail(
     contextName = "Main Page",
