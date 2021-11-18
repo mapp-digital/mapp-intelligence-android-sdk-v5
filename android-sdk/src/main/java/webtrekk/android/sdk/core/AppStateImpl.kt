@@ -99,3 +99,25 @@ internal class FragmentStateImpl : AppState<DataAnnotationClass>() {
         )
     }
 }
+
+internal class DisabledStateImpl : AppState<DataAnnotationClass>() {
+
+    override fun onActivityStarted(activity: Activity) {
+        super.onActivityStarted(activity)
+        activity.let {
+            lifecycleReceiver.onLifecycleEventReceived(
+                DataAnnotationClass(
+                    it.toTrackRequest(false),
+                    it.getTrackerParams()
+                )
+            )
+        }
+    }
+
+    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+        super.onFragmentStarted(fm, f)
+        lifecycleReceiver.onLifecycleEventReceived(
+            DataAnnotationClass(f.toTrackRequest(), f.getTrackerParams()), false
+        )
+    }
+}
