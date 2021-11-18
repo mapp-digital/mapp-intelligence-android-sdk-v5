@@ -69,6 +69,7 @@ class SampleApplication : Application() {
                 elements,
                 domain
             )
+                .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)
                 .sendAppVersionInEveryRequest()
