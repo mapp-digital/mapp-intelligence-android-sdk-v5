@@ -16,6 +16,7 @@ import webtrekk.android.sdk.api.datasource.SyncRequestsDataSourceImpl
 import webtrekk.android.sdk.core.ActivityAppStateImpl
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.core.AppStateImpl
+import webtrekk.android.sdk.core.DisabledStateImpl
 import webtrekk.android.sdk.core.FragmentStateImpl
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.SchedulerImpl
@@ -84,8 +85,9 @@ object AppModule {
             AppStateImpl()
         else if (config.fragmentsAutoTracking)
             FragmentStateImpl()
-        else
+        else if(config.activityAutoTracking)
             ActivityAppStateImpl()
+        else DisabledStateImpl()
     }
 }
 

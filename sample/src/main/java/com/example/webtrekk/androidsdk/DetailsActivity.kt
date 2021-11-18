@@ -46,7 +46,7 @@ class DetailsActivity : AppCompatActivity() {
             )
         )
 
-        Webtrekk.getInstance().trackCustomEvent("Second page", trackingParams)
-        Webtrekk.getInstance().formTracking(this, formTrackingSettings = FormTrackingSettings())
+        //Webtrekk.getInstance().trackCustomEvent("Second page", trackingParams)
+        //Webtrekk.getInstance().formTracking(this, formTrackingSettings = FormTrackingSettings())
     }
 }
