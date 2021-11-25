@@ -107,9 +107,9 @@ internal class DisabledStateImpl : AppState<DataAnnotationClass>() {
         activity.let {
             lifecycleReceiver.onLifecycleEventReceived(
                 DataAnnotationClass(
-                    it.toTrackRequest(false),
-                    it.getTrackerParams()
-                )
+                    it.toTrackRequest(false), it.getTrackerParams()
+                ),
+                false
             )
         }
     }
