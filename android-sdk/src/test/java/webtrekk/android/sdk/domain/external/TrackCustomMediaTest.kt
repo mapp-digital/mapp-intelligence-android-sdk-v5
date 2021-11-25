@@ -54,7 +54,6 @@ internal class TrackCustomMediaTest : AbstractExternalInteractor() {
 
                     val trackingParamsWithCT =
                         cacheTrackRequestWithCustomParamsParams.trackingParams.toMutableMap()
-                    trackingParamsWithCT[RequestType.MEDIA.value] = params.trackRequest.name
 
                     val cacheTrackRequestWithCT = CacheTrackRequestWithCustomParams.Params(
                         trackRequest, trackingParamsWithCT
