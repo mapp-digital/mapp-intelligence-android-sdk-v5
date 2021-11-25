@@ -39,6 +39,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionName versions.webtrekkVersion
         setVersionName(versions.webtrekkVersion)
+        buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
     }
 
     lintOptions {
@@ -56,6 +57,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
