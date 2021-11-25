@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        title = "Webtrekk ${BuildConfig.VERSION_NAME}"
 /*
         val stringIds = BuildConfig.TRACK_IDS
         val domain = BuildConfig.DOMEIN

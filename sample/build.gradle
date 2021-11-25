@@ -73,14 +73,14 @@ android {
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
-
     }
 
     compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
@@ -114,8 +114,11 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
     implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
     implementation "com.google.firebase:firebase-messaging:20.2.3"
-    implementation 'com.mapp.sdk:mapp-android:6.0.16'
-    implementation "com.google.firebase:firebase-crashlytics:17.1.1"
+    implementation ('com.mapp.sdk:mapp-android:6.0.17-special14')
+    {
+        exclude group: 'androidx.work', module: 'androidx.work'
+    }
+    implementation"com.google.firebase:firebase-crashlytics:18.2.4"
     implementation(project(':android-sdk'))
 
 }
