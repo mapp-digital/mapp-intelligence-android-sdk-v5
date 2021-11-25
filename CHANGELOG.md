@@ -1,5 +1,9 @@
 # Change Log
-## Version 5.1.1-beta3 *(InProgress)*
+
+## Version 5.1.1-beta4 *(InProgress)*
+
+## Version 5.1.1-beta3 *(2021-11-25)*
+* BugFix: Fixed autoTracking disable
 
 ## Version 5.1.1-beta2 *(2021-09-22)*
 * Improve: Now the media can contain the name of the page 

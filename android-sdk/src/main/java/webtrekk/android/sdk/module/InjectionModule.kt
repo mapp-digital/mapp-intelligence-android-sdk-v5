@@ -85,7 +85,7 @@ object AppModule {
             AppStateImpl()
         else if (config.fragmentsAutoTracking)
             FragmentStateImpl()
-        else if(config.activityAutoTracking)
+        else if (config.activityAutoTracking)
             ActivityAppStateImpl()
         else DisabledStateImpl()
     }
