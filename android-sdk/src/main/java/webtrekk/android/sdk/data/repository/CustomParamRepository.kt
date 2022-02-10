@@ -48,4 +48,9 @@ internal interface CustomParamRepository {
      * @param trackId the [TrackRequest] Id.
      */
     suspend fun getCustomParamsByTrackId(trackId: Long): Result<List<CustomParam>>
+
+    /**
+     * Deletes all custom params from database
+     */
+    suspend fun deleteAllCustomParams():Result<Boolean>
 }

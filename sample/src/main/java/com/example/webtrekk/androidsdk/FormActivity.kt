@@ -56,6 +56,7 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             form.anonymous = anonymousField
             form.anonymousSpecificFields = listOf(R.id.editText2)
             form.fullContentSpecificFields = listOf(R.id.editText, R.id.editText3, R.id.switch1)
+            //form.pathAnalysis = listOf(R.id.editText, R.id.editText3, R.id.switch1,R.id.editText, R.id.editText3, R.id.switch1)
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 

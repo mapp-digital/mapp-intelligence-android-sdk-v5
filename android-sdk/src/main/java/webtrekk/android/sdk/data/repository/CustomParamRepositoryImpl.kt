@@ -45,4 +45,10 @@ internal class CustomParamRepositoryImpl(private val customParamDao: CustomParam
             customParamDao.getCustomParamsByTrackId(trackId)
         }
     }
+
+    override suspend fun deleteAllCustomParams() :Result<Boolean>{
+        return kotlin.runCatching {
+            customParamDao.deleteAllCustomParams().run { true }
+        }
+    }
 }

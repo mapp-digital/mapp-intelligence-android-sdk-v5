@@ -73,7 +73,7 @@ android {
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
@@ -82,6 +82,9 @@ android {
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     buildTypes {
@@ -113,9 +116,12 @@ dependencies {
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
     implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
-    implementation "com.google.firebase:firebase-messaging:20.2.3"
-    implementation 'com.mapp.sdk:mapp-android:6.0.16'
-    implementation "com.google.firebase:firebase-crashlytics:17.1.1"
+
+    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+    implementation('com.google.firebase:firebase-messaging')
+
+    implementation 'com.mapp.sdk:mapp-android:6.0.17'
+    implementation "com.google.firebase:firebase-crashlytics:18.2.7"
     implementation(project(':android-sdk'))
 
 }
