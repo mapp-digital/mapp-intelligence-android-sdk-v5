@@ -24,7 +24,7 @@
   -->
 
 <resources>
-    <string name="app_name">android sdk</string>
+    <string name="app_name">Webtrekk Intelligence</string>
     <string name="web_view_activity">Web View Activity</string>
     <string name="details_activity">Details Activity</string>
     <string-array name="spinnerItems">

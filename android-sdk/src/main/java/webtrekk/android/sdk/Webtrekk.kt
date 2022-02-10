@@ -318,6 +318,21 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun anonymousTracking(enabled: Boolean = true, suppressParams: Set<String> = emptySet(), generateNewEverId: Boolean = true)
 
+    /**
+     * Start immediate request sending and cleaning after requests are successfully sent
+     */
+    abstract fun sendRequestsNowAndClean()
+
+    /**
+     * Check if batch is enabled in the Webtrekk  configuration
+     */
+    abstract fun isBatchEnabled():Boolean
+
+    /**
+     * Reset SDK configuration, clean all saved settings
+     */
+    internal abstract fun resetSdkConfig()
+
     companion object {
 
         /**
@@ -328,6 +343,14 @@ abstract class Webtrekk protected constructor() {
         @JvmStatic
         fun getInstance(): Webtrekk {
             return WebtrekkImpl.getInstance()
+        }
+
+        /**
+         * Resets all configuration for SDK. After this call client must initialize SDK with new configuration.
+         */
+        @JvmStatic
+        fun reset(context: Context, config: Config?=null){
+            WebtrekkImpl.reset(context, config)
         }
     }
 }
