@@ -13,16 +13,7 @@ import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSourceImpl
 import webtrekk.android.sdk.api.datasource.SyncRequestsDataSource
 import webtrekk.android.sdk.api.datasource.SyncRequestsDataSourceImpl
-import webtrekk.android.sdk.core.ActivityAppStateImpl
-import webtrekk.android.sdk.core.AppState
-import webtrekk.android.sdk.core.AppStateImpl
-import webtrekk.android.sdk.core.DisabledStateImpl
-import webtrekk.android.sdk.core.FragmentStateImpl
-import webtrekk.android.sdk.core.Scheduler
-import webtrekk.android.sdk.core.SchedulerImpl
-import webtrekk.android.sdk.core.Sessions
-import webtrekk.android.sdk.core.SessionsImpl
-import webtrekk.android.sdk.core.WebtrekkLogger
+import webtrekk.android.sdk.core.*
 import webtrekk.android.sdk.data.WebtrekkDatabase
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.dao.CustomParamDao
@@ -35,23 +26,8 @@ import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.CustomParamRepositoryImpl
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepositoryImpl
-import webtrekk.android.sdk.domain.external.AutoTrack
-import webtrekk.android.sdk.domain.external.ManualTrack
-import webtrekk.android.sdk.domain.external.Optout
-import webtrekk.android.sdk.domain.external.SendAndClean
-import webtrekk.android.sdk.domain.external.TrackCustomEvent
-import webtrekk.android.sdk.domain.external.TrackCustomForm
-import webtrekk.android.sdk.domain.external.TrackCustomMedia
-import webtrekk.android.sdk.domain.external.TrackCustomPage
-import webtrekk.android.sdk.domain.external.TrackException
-import webtrekk.android.sdk.domain.external.TrackUncaughtException
-import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
-import webtrekk.android.sdk.domain.internal.CacheTrackRequest
-import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.internal.ClearTrackRequests
-import webtrekk.android.sdk.domain.internal.ExecutePostRequest
-import webtrekk.android.sdk.domain.internal.ExecuteRequest
-import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
+import webtrekk.android.sdk.domain.external.*
+import webtrekk.android.sdk.domain.internal.*
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
@@ -140,6 +116,9 @@ object InteractorModule {
 
     internal fun clearTrackRequest(): ClearTrackRequests =
         ClearTrackRequests(DataModule.trackRequestRepository)
+
+    internal fun clearCustomParamsRequest(): ClearCustomParamsRequest =
+        ClearCustomParamsRequest(DataModule.customParamsRepository)
 
     internal val autoTrack: AutoTrack by lazy {
         AutoTrack(
@@ -268,7 +247,7 @@ object LibraryModule {
         get() {
             return config ?: throw IllegalStateException(
                 "Webtrekk configurations must be set before invoking any method." +
-                    " Use Webtrekk.getInstance().init(context, configuration)"
+                        " Use Webtrekk.getInstance().init(context, configuration)"
             )
         }
 
@@ -277,5 +256,11 @@ object LibraryModule {
             appContext = context.applicationContext
             config = configuration
         }
+    }
+
+    fun release() {
+        initializer.set(false)
+        appContext=null
+        config=null
     }
 }

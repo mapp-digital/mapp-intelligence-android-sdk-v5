@@ -46,13 +46,13 @@ class SampleApplication : Application() {
         super.onCreate()
 
         val opt = AppoxeeOptions()
-        opt.sdkKey = "6017dd65b8d820.37698249"
-        opt.googleProjectId = "357810879619"
-        opt.cepURL = "https://jamie-test.shortest-route.com"
-        opt.appID = "264157"
-        opt.tenantID = "33"
+        opt.sdkKey = "17ed4c40fff620.10688629"
+        opt.googleProjectId = "785651527831"
+        opt.cepURL = "https://jamie.g.shortest-route.com"
+        opt.appID = "310437"
+        opt.tenantID = "60211"
         opt.notificationMode = NotificationMode.BACKGROUND_AND_FOREGROUND
-        opt.server = AppoxeeOptions.Server.TEST
+        opt.server = AppoxeeOptions.Server.EMC_US
         opt.logLevel=AppoxeeOptions.LogLevel.CLIENT_DEBUG
         Appoxee.engage(this, opt)
 
@@ -80,7 +80,7 @@ class SampleApplication : Application() {
                     )
                 )
                 .workManagerConstraints(constraints = constraints)
-                .setBatchSupport(true)
+                .setBatchSupport(Prefs(this).isBatchEnabled)
                 .build()
 
         Webtrekk.getInstance().init(this, webtrekkConfigurations)

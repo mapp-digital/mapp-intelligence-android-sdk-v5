@@ -30,6 +30,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.domain.internal.ClearCustomParamsRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.module.AppModule
@@ -62,6 +63,7 @@ internal class CleanUpWorker(
          */
         val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
 
+        val clearCustomParamsRequest:ClearCustomParamsRequest = InteractorModule.clearCustomParamsRequest()
         /**
          * [logger] the injected logger from Webtrekk.
          */
@@ -83,6 +85,8 @@ internal class CleanUpWorker(
                     }
                 }
                 .onFailure { logger.error("Error getting the cached completed requests: $it") }
+
+            clearCustomParamsRequest.invoke(null)
         }
 
         return Result.success()

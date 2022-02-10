@@ -6,16 +6,13 @@ import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.appoxee.Appoxee
@@ -28,8 +25,7 @@ import com.appoxee.internal.inapp.model.InAppInboxCallback
 import com.appoxee.internal.inapp.model.InAppInboxCallback.onInAppInboxMessagesReceived
 import com.appoxee.internal.inapp.model.InAppMessageDismissalCallback
 import com.example.webtrekk.androidsdk.R
-import com.example.webtrekk.androidsdk.mapp.Util.capitalize
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
 class MainActivity : Activity(), OnInitCompletedListener {
@@ -84,10 +80,12 @@ class MainActivity : Activity(), OnInitCompletedListener {
             ).show()
         }
         textView = findViewById<View>(R.id.textView2) as TextView
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
-            val deviceToken = instanceIdResult.token
-            textView!!.text = deviceToken
-            Log.d("token fcm", deviceToken)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (it.isSuccessful) {
+                val deviceToken = it.result
+                textView!!.text = deviceToken
+                Log.d("token fcm", deviceToken)
+            }
         }
 
         val inAppInboxCallback = InAppInboxCallback()
@@ -362,7 +360,7 @@ class MainActivity : Activity(), OnInitCompletedListener {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(
+                    && ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
             ) == PackageManager.PERMISSION_GRANTED)
@@ -383,13 +381,13 @@ class MainActivity : Activity(), OnInitCompletedListener {
     private fun askForGeoPermissionWithBackgroundLocation() {
         val permissionAccessFineLocationApproved =
             (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
+                    == PackageManager.PERMISSION_GRANTED)
         if (permissionAccessFineLocationApproved) {
             val backgroundLocationPermissionApproved = (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
-                == PackageManager.PERMISSION_GRANTED)
+                    == PackageManager.PERMISSION_GRANTED)
             if (backgroundLocationPermissionApproved) {
             } else {
                 ActivityCompat.requestPermissions(
