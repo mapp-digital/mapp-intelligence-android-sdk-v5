@@ -37,8 +37,8 @@ import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.ToggleButton
-import webtrekk.android.sdk.data.model.FormField
 import java.util.concurrent.CopyOnWriteArrayList
+import webtrekk.android.sdk.data.model.FormField
 
 internal fun List<View>.notTrackedView(trackingIds: List<Int>): List<View> {
     if (trackingIds.isEmpty()) {

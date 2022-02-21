@@ -86,16 +86,16 @@ constructor(
             products.forEach { product ->
                 productNames.add(product.name)
                 productCosts.add(
-                        if (product.cost != null) {
-                            productCostsEmpty = false
-                            product.cost.formatNumber()
-                        } else ""
+                    if (product.cost != null) {
+                        productCostsEmpty = false
+                        product.cost.formatNumber()
+                    } else ""
                 )
                 productQuantities.add(
-                        if (product.quantity != null) {
-                            productQuantitiesEmpty = false
-                            product.quantity.formatNumber()
-                        } else ""
+                    if (product.quantity != null) {
+                        productQuantitiesEmpty = false
+                        product.quantity.formatNumber()
+                    } else ""
                 )
                 product.categories.forEach { (key, _) ->
                     if (!categoriesKeys.contains(key))
@@ -107,26 +107,26 @@ constructor(
                         productEcommerceParametersKeys.add(key)
                 }
                 productAdvertiseID.add(
-                        if (product.productAdvertiseID != null) {
-                            productAdvertiseIDEmpty = false
-                            product.productAdvertiseID.formatNumber()
-                        } else ""
+                    if (product.productAdvertiseID != null) {
+                        productAdvertiseIDEmpty = false
+                        product.productAdvertiseID.formatNumber()
+                    } else ""
                 )
                 productSoldOut.add(
-                        if (product.productSoldOut != null) {
-                            productSoldOutEmpty = false
-                            if (product.productSoldOut == true) {
-                                "1"
-                            } else {
-                                "0"
-                            }
-                        } else ""
+                    if (product.productSoldOut != null) {
+                        productSoldOutEmpty = false
+                        if (product.productSoldOut == true) {
+                            "1"
+                        } else {
+                            "0"
+                        }
+                    } else ""
                 )
                 productVariant.add(
-                        if (product.productVariant != null) {
-                            productVariantEmpty = false
-                            product.productVariant!!
-                        } else ""
+                    if (product.productVariant != null) {
+                        productVariantEmpty = false
+                        product.productVariant!!
+                    } else ""
                 )
             }
             productEcommerceParametersKeys.forEach { maine ->
@@ -137,8 +137,8 @@ constructor(
                     }
                 }
                 map.addNotNull(
-                        "${BaseParam.COMMERCE_PARAM}$maine",
-                        tempCategory.joinToString(";")
+                    "${BaseParam.COMMERCE_PARAM}$maine",
+                    tempCategory.joinToString(";")
                 )
             }
 
@@ -150,14 +150,14 @@ constructor(
                     }
                 }
                 map.addNotNull(
-                        "${ECommerceParam.PRODUCT_CATEGORY}$maine",
-                        tempCategory.joinToString(";")
+                    "${ECommerceParam.PRODUCT_CATEGORY}$maine",
+                    tempCategory.joinToString(";")
                 )
             }
             if (!productAdvertiseIDEmpty)
                 map.addNotNull(
-                        ECommerceParam.PRODUCT_ADVERTISE_ID,
-                        productAdvertiseID.joinToString(";")
+                    ECommerceParam.PRODUCT_ADVERTISE_ID,
+                    productAdvertiseID.joinToString(";")
                 )
             if (!productSoldOutEmpty)
                 map.addNotNull(ECommerceParam.PRODUCT_SOLD_OUT, productSoldOut.joinToString(";"))
@@ -169,8 +169,8 @@ constructor(
             if (!productQuantitiesEmpty)
                 if (status != Status.VIEWED)
                     map.addNotNull(
-                            ECommerceParam.PRODUCT_QUANTITY,
-                            productQuantities.joinToString(";")
+                        ECommerceParam.PRODUCT_QUANTITY,
+                        productQuantities.joinToString(";")
                     )
         }
         return map

@@ -28,11 +28,11 @@ package webtrekk.android.sdk
 import android.content.Context
 import android.net.Uri
 import android.view.View
+import java.io.File
 import webtrekk.android.sdk.core.WebtrekkImpl
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
-import java.io.File
 
 /**
  * Webtrekk is a library used to collect your app usage, how your customers interacting with your app,
@@ -316,7 +316,11 @@ abstract class Webtrekk protected constructor() {
      *
      * @throws [IllegalStateException] if [Context] context is not initialized.
      */
-    abstract fun anonymousTracking(enabled: Boolean = true, suppressParams: Set<String> = emptySet(), generateNewEverId: Boolean = true)
+    abstract fun anonymousTracking(
+        enabled: Boolean = true,
+        suppressParams: Set<String> = emptySet(),
+        generateNewEverId: Boolean = true
+    )
 
     /**
      * Start immediate request sending and cleaning after requests are successfully sent
@@ -326,7 +330,7 @@ abstract class Webtrekk protected constructor() {
     /**
      * Check if batch is enabled in the Webtrekk  configuration
      */
-    abstract fun isBatchEnabled():Boolean
+    abstract fun isBatchEnabled(): Boolean
 
     /**
      * Reset SDK configuration, clean all saved settings
@@ -349,7 +353,7 @@ abstract class Webtrekk protected constructor() {
          * Resets all configuration for SDK. After this call client must initialize SDK with new configuration.
          */
         @JvmStatic
-        fun reset(context: Context, config: Config?=null){
+        fun reset(context: Context, config: Config? = null) {
             WebtrekkImpl.reset(context, config)
         }
     }
