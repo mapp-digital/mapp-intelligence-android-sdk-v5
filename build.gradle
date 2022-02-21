@@ -30,7 +30,7 @@ buildscript {
     ext.versions = [
             'webtrekkVersion'        : '5.1.1',
             'gradleVersion'          : '3.6.4',
-            'kotlinVersion'          : '1.4.32',
+            'kotlinVersion'          :  '1.3.71',//'1.4.32',
             'gradleVersionsPlugin'   : '0.21.0',
             'mavenPluginVersion'     : '2.1',
             'bintrayPluginVersion'   : '1.8.4',
@@ -48,8 +48,8 @@ buildscript {
 
             'okHttpVersion'          : '4.2.2',
 
-            'workManagerVersion'     : '2.6.0',
-            'roomVersion'            : '2.3.0',
+            'workManagerVersion'     : '2.2.0', //'2.7.1',
+            'roomVersion'            : '2.2.2', // '2.4.1;,
 
             'testCoreVersion'        : '1.2.0',
             'testCoreVersionJunit'   : '1.1.1',
