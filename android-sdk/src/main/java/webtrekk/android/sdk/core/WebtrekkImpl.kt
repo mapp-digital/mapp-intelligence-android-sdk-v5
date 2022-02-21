@@ -31,24 +31,52 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
+import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import webtrekk.android.sdk.*
+import webtrekk.android.sdk.Config
+import webtrekk.android.sdk.ExceptionType
+import webtrekk.android.sdk.FormTrackingSettings
+import webtrekk.android.sdk.InternalParam
+import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.TrackingParams
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.domain.external.*
+import webtrekk.android.sdk.domain.external.AutoTrack
+import webtrekk.android.sdk.domain.external.ManualTrack
+import webtrekk.android.sdk.domain.external.Optout
+import webtrekk.android.sdk.domain.external.SendAndClean
+import webtrekk.android.sdk.domain.external.TrackCustomEvent
+import webtrekk.android.sdk.domain.external.TrackCustomForm
+import webtrekk.android.sdk.domain.external.TrackCustomMedia
+import webtrekk.android.sdk.domain.external.TrackCustomPage
+import webtrekk.android.sdk.domain.external.TrackException
+import webtrekk.android.sdk.domain.external.TrackUncaughtException
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
-import webtrekk.android.sdk.extension.*
+import webtrekk.android.sdk.extension.appVersionCode
+import webtrekk.android.sdk.extension.appVersionName
+import webtrekk.android.sdk.extension.isCaughtAllowed
+import webtrekk.android.sdk.extension.isCustomAllowed
+import webtrekk.android.sdk.extension.isUncaughtAllowed
+import webtrekk.android.sdk.extension.nullOrEmptyThrowError
+import webtrekk.android.sdk.extension.resolution
+import webtrekk.android.sdk.extension.validateEntireList
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.module.LibraryModule
-import webtrekk.android.sdk.util.*
+import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
-import java.io.File
-import java.util.logging.Handler
+import webtrekk.android.sdk.util.coroutineExceptionHandler
+import webtrekk.android.sdk.util.currentSession
+import webtrekk.android.sdk.util.getFileName
+import webtrekk.android.sdk.util.trackDomain
+import webtrekk.android.sdk.util.trackIds
+import webtrekk.android.sdk.util.webtrekkLogger
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -105,7 +133,6 @@ constructor() : Webtrekk(),
             }
         }
     }
-
 
     override fun trackPage(
         context: Context,
@@ -370,9 +397,12 @@ constructor() : Webtrekk(),
     }
 
     override fun resetSdkConfig() {
-        AppModule.webtrekkSharedPrefs.sharedPreferences.edit().clear().apply()
-        AppModule.webtrekkSharedPrefs.previousSharedPreferences.edit().clear().apply()
-        AppModule.webtrekkSharedPrefs.mappSharedPreferences.edit().clear().apply()
+        AppModule.webtrekkSharedPrefs.apply {
+            sharedPreferences.edit().clear().apply()
+            previousSharedPreferences.edit().clear().apply()
+            mappSharedPreferences.edit().clear().apply()
+        }
+
         LibraryModule.release()
     }
 
@@ -385,7 +415,7 @@ constructor() : Webtrekk(),
             sessions.migrate()
         }
 
-        sessions.setEverId() // Setting up the ever id at first start of using the SDK.
+        sessions.setEverId(config.everId) // Setting up the ever id at first start of using the SDK.
 
         // Starting a new session at every freshly app open.
         sessions.startNewSession().also { logger.info("A new session has started") }
@@ -538,7 +568,7 @@ constructor() : Webtrekk(),
 
             val mConfig = config ?: WebtrekkConfiguration.Builder(trackIds, trackDomain).build()
             INSTANCE = WebtrekkImpl().also {
-                it.init(context.applicationContext,mConfig)
+                it.init(context.applicationContext, mConfig)
             }
         }
     }

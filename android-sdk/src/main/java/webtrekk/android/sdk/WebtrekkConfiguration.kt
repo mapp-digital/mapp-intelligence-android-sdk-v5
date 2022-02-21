@@ -29,6 +29,7 @@ import androidx.work.Constraints
 import okhttp3.OkHttpClient
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
+import webtrekk.android.sdk.util.generateEverId
 import java.util.concurrent.TimeUnit
 
 /**
@@ -59,7 +60,8 @@ class WebtrekkConfiguration private constructor(
     override val activityAutoTracking: Boolean,
     override val exceptionLogLevel: ExceptionType,
     override val shouldMigrate: Boolean,
-    override val versionInEachRequest: Boolean
+    override val versionInEachRequest: Boolean,
+    override val everId: String?
 ) : Config {
 
     /**
@@ -80,6 +82,7 @@ class WebtrekkConfiguration private constructor(
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
+        private var everId: String? = generateEverId()
 
         /**
          * Configure the log level of the lib.
@@ -228,8 +231,16 @@ class WebtrekkConfiguration private constructor(
             activityAutoTracking,
             exceptionLogLevel,
             shouldMigrate,
-            versionInEachRequest
+            versionInEachRequest,
+            everId
         )
+
+        /**
+         * Set custom ever id
+         */
+        fun setEverId(everId: String?) = apply {
+            this.everId = everId
+        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -276,8 +287,8 @@ class WebtrekkConfiguration private constructor(
 
     override fun toString(): String {
         return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, " +
-            "autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, " +
-            "okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport, activityAutoTracking=$activityAutoTracking," +
-            "exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate, versionInEachRequest=$versionInEachRequest)"
+                "autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, " +
+                "okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport, activityAutoTracking=$activityAutoTracking," +
+                "exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate, versionInEachRequest=$versionInEachRequest)"
     }
 }

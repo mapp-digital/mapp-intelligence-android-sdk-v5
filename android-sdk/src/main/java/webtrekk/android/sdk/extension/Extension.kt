@@ -25,6 +25,12 @@
 
 package webtrekk.android.sdk.extension
 
+import java.io.BufferedReader
+import java.io.IOException
+import java.net.URLEncoder
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 import okhttp3.Request
 import okio.Buffer
 import org.json.JSONObject
@@ -34,12 +40,6 @@ import webtrekk.android.sdk.util.EX_LINE_SEPARATOR
 import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
 import webtrekk.android.sdk.util.MAX_PARAMETER_NUMBER
 import webtrekk.android.sdk.util.NULL_MESSAGE
-import java.io.BufferedReader
-import java.io.IOException
-import java.net.URLEncoder
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 import kotlin.collections.HashMap
 
 /**
@@ -104,7 +104,8 @@ internal fun Number?.formatNumber(): String {
         val doubleValue = toDouble()
         val result = doubleValue - doubleValue.toInt()
         return if (result != 0.0) {
-            val df = DecimalFormat("#.############", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+            val df =
+                DecimalFormat("#.############", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
             df.maximumFractionDigits = 8
             df.format(doubleValue)
         } else {
@@ -167,7 +168,7 @@ internal fun Array<StackTraceElement>.createString(): String {
     for (element in this) {
         if (stackString.isNotEmpty()) stackString += EX_LINE_SEPARATOR
         val lineNumber =
-                if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
+            if (element.className.contains("android.app.") || element.className.contains("java.lang.")) -1 else element.lineNumber
         var stackItem = element.className + "." +
                 element.methodName + "(" + element.fileName
         stackItem += if (lineNumber < 0) ")" else ":" + element.lineNumber + ")"

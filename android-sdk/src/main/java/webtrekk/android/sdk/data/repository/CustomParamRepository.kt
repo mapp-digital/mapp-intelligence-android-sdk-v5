@@ -52,5 +52,5 @@ internal interface CustomParamRepository {
     /**
      * Deletes all custom params from database
      */
-    suspend fun deleteAllCustomParams():Result<Boolean>
+    suspend fun deleteAllCustomParams(): Result<Boolean>
 }

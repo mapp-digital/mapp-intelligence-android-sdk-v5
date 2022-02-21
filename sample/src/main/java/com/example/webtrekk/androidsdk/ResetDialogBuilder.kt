@@ -3,15 +3,19 @@ package com.example.webtrekk.androidsdk
 import android.annotation.SuppressLint
 import android.app.AlertDialog.Builder
 import android.content.Context
+import android.view.Gravity.CENTER
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import kotlin.random.Random
 
 @SuppressLint("SetTextI18n")
-class ResetDialogBuilder(context: Context, okClicked: (Boolean) -> Unit) : Builder(context) {
+class ResetDialogBuilder(context: Context, okClicked: (Boolean, String?) -> Unit) : Builder(context) {
 
     init {
         val prefs = Prefs(context)
-
+        val etEverViewId= Random(100000).nextInt()
         //dialog title
         setTitle("Reset SDK")
 
@@ -22,12 +26,23 @@ class ResetDialogBuilder(context: Context, okClicked: (Boolean) -> Unit) : Build
             setPadding(30, 10, 10, 10)
         }
 
-        //dialog root
-        val layout = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(10, 10, 10, 10)
-            addView(swBatch)
+        val tvTitleEverId=TextView(context).apply {
+            setText("Ever ID")
         }
+
+        val etEverId=EditText(context).apply {
+            id=etEverViewId
+            setText("")
+        }
+
+        //dialog root
+        val layout = LinearLayout(context).also {
+            it.orientation = LinearLayout.VERTICAL
+            it.setPadding(10, 10, 10, 10)
+            it.addView(swBatch)
+            it.addView(tvTitleEverId)
+            it.addView(etEverId)
+        }.apply { gravity = CENTER }
 
         //add root view to dialog
         setView(layout)
@@ -35,7 +50,7 @@ class ResetDialogBuilder(context: Context, okClicked: (Boolean) -> Unit) : Build
         // set positive button
         setPositiveButton("OK") { d, p ->
             prefs.isBatchEnabled = swBatch.isChecked
-            okClicked(swBatch.isChecked)
+            okClicked(swBatch.isChecked, etEverId.text.toString())
         }
 
         //set negative button

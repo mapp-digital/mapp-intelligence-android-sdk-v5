@@ -73,7 +73,10 @@ internal fun Map<String, String>.toCustomParams(trackRequestId: Long): List<Cust
     }
 }
 
-internal fun List<CustomParam>.buildCustomParams(anonymous: Boolean = false, anonymousParam: Set<String> = emptySet()): String {
+internal fun List<CustomParam>.buildCustomParams(
+    anonymous: Boolean = false,
+    anonymousParam: Set<String> = emptySet()
+): String {
     if (this == emptyArray<CustomParam>()) return ""
     val string = StringBuilder()
     this.forEach {
@@ -98,7 +101,7 @@ internal fun DataTrack.buildUrl(
     anonymousParam: Set<String>
 ): String {
     return buildUrlOnly(trackDomain, trackIds) +
-        this.buildBody(currentEverId, anonymous = anonymous, anonymousParam = anonymousParam)
+            this.buildBody(currentEverId, anonymous = anonymous, anonymousParam = anonymousParam)
 }
 
 internal fun buildUrlOnly(
@@ -115,38 +118,86 @@ internal fun List<DataTrack>.buildBatchUrl(
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): String {
-    return buildUrlOnly(trackDomain, trackIds) + "/batch?" + anonymousEid(anonymous, currentEverId) +
-        addParam(UrlParams.USER_AGENT, this[0].trackRequest.userAgent.encodeToUTF8(), anonymousParam, anonymous)
+    return buildUrlOnly(trackDomain, trackIds) + "/batch?" + anonymousEid(
+        anonymous,
+        currentEverId
+    ) +
+            addParam(
+                UrlParams.USER_AGENT,
+                this[0].trackRequest.userAgent.encodeToUTF8(),
+                anonymousParam,
+                anonymous
+            )
 }
 
-internal fun DataTrack.buildBody(currentEverId: String, withOutBatching: Boolean = true, anonymous: Boolean = false, anonymousParam: Set<String> = emptySet()): String {
+internal fun DataTrack.buildBody(
+    currentEverId: String,
+    withOutBatching: Boolean = true,
+    anonymous: Boolean = false,
+    anonymousParam: Set<String> = emptySet()
+): String {
     var stringBuffer: String = if (withOutBatching)
         "/wt?"
     else {
         "wt?"
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-        addParam(UrlParams.LANGUAGE, this.trackRequest.language, anonymousParam, anonymous)
+            addParam(UrlParams.LANGUAGE, this.trackRequest.language, anonymousParam, anonymous)
 
     stringBuffer += if (this.trackRequest.forceNewSession == "1") {
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
-            "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
-            addParam(UrlParams.APP_FIRST_OPEN, this.trackRequest.appFirstOpen, anonymousParam, anonymous) +
-            addParam(UrlParams.ANDROID_API_LEVEL, this.trackRequest.apiLevel, anonymousParam, anonymous) +
-            addParam(UrlParams.APP_VERSION_NAME, this.trackRequest.appVersionName, anonymousParam, anonymous) +
-            addParam(UrlParams.APP_VERSION_CODE, this.trackRequest.appVersionCode, anonymousParam, anonymous)
+                "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
+                addParam(
+                    UrlParams.APP_FIRST_OPEN,
+                    this.trackRequest.appFirstOpen,
+                    anonymousParam,
+                    anonymous
+                ) +
+                addParam(
+                    UrlParams.ANDROID_API_LEVEL,
+                    this.trackRequest.apiLevel,
+                    anonymousParam,
+                    anonymous
+                ) +
+                addParam(
+                    UrlParams.APP_VERSION_NAME,
+                    this.trackRequest.appVersionName,
+                    anonymousParam,
+                    anonymous
+                ) +
+                addParam(
+                    UrlParams.APP_VERSION_CODE,
+                    this.trackRequest.appVersionCode,
+                    anonymousParam,
+                    anonymous
+                )
     } else {
         var value = ""
         if (appVersionInRequest) {
-            value = addParam(UrlParams.APP_VERSION_NAME, this.trackRequest.appVersionName, anonymousParam, anonymous) +
-                addParam(UrlParams.APP_VERSION_CODE, this.trackRequest.appVersionCode, anonymousParam, anonymous)
+            value = addParam(
+                UrlParams.APP_VERSION_NAME,
+                this.trackRequest.appVersionName,
+                anonymousParam,
+                anonymous
+            ) +
+                    addParam(
+                        UrlParams.APP_VERSION_CODE,
+                        this.trackRequest.appVersionCode,
+                        anonymousParam,
+                        anonymous
+                    )
         }
         value
     }
 
     if (withOutBatching) {
         stringBuffer += "&${anonymousEid(anonymous, currentEverId)}" +
-            addParam(UrlParams.USER_AGENT, this.trackRequest.userAgent.encodeToUTF8(), anonymousParam, anonymous)
+                addParam(
+                    UrlParams.USER_AGENT,
+                    this.trackRequest.userAgent.encodeToUTF8(),
+                    anonymousParam,
+                    anonymous
+                )
     }
     val userUpdated = userUpdate
     if ((this.trackRequest.forceNewSession == "1" || userUpdated) && userId != "") {
@@ -188,7 +239,11 @@ internal fun List<DataTrack>.buildPostRequest(
         .build()
 }
 
-internal fun List<DataTrack>.buildUrlRequests(currentEverId: String, anonymous: Boolean, anonymousParam: Set<String>): String {
+internal fun List<DataTrack>.buildUrlRequests(
+    currentEverId: String,
+    anonymous: Boolean,
+    anonymousParam: Set<String>
+): String {
     var string = ""
     this.forEach { dataTrack ->
         string += dataTrack.buildBody(currentEverId, false, anonymous, anonymousParam) + "\n"
@@ -199,7 +254,13 @@ internal fun List<DataTrack>.buildUrlRequests(currentEverId: String, anonymous: 
 internal fun Array<TrackParams>.toParam(): Map<String, String> =
     map { it.paramKey to it.paramVal }.toMap()
 
-internal fun addParam(param: String, value: String?, anonymousParam: Set<String>, anonymous: Boolean, separator: String = "&"): String {
+internal fun addParam(
+    param: String,
+    value: String?,
+    anonymousParam: Set<String>,
+    anonymous: Boolean,
+    separator: String = "&"
+): String {
     return if (anonymousParam.contains(param) && anonymous) {
         ""
     } else {
