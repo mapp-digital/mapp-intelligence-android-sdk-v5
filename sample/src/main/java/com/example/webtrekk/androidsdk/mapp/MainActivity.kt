@@ -82,7 +82,7 @@ class MainActivity : Activity(), OnInitCompletedListener {
         textView = findViewById<View>(R.id.textView2) as TextView
         FirebaseMessaging.getInstance().token.addOnCompleteListener {
             if (it.isSuccessful) {
-                val deviceToken = it.result
+                val deviceToken = it.result ?: ""
                 textView!!.text = deviceToken
                 Log.d("token fcm", deviceToken)
             }

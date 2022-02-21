@@ -121,7 +121,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation('com.google.firebase:firebase-messaging')
 
-    implementation 'com.mapp.sdk:mapp-android:6.0.18-rc01'
+    implementation 'com.mapp.sdk:mapp-android:6.0.16'
     implementation "com.google.firebase:firebase-crashlytics:18.2.8"
 
     implementation(project(':android-sdk'))
