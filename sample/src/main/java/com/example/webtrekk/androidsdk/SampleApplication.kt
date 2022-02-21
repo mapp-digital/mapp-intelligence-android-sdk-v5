@@ -65,10 +65,8 @@ class SampleApplication : Application() {
         val sharedPref =
             this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE) ?: return
         val webtrekkConfigurations =
-            WebtrekkConfiguration.Builder(
-                elements,
-                domain
-            )
+            WebtrekkConfiguration.Builder(elements, domain)
+                //.setEverId("11111")
                 .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 15)

@@ -111,14 +111,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnResetSdk.setOnClickListener {
-            ResetDialogBuilder(this){
+            ResetDialogBuilder(this) { batchEnabled,everId->
                 val oldSdk=Webtrekk.getInstance().toString().split("@")[1]
                 val oldEverId=Webtrekk.getInstance().getEverId()
                 val oldBatchEnabled=Webtrekk.getInstance().isBatchEnabled()
 
                 val trackIds=BuildConfig.TRACK_IDS.split(",").toList()
                 val config=WebtrekkConfiguration.Builder(trackIds, BuildConfig.DOMEIN)
-                    .setBatchSupport(it)
+                    .setBatchSupport(batchEnabled)
+                    .setEverId(everId)
                     .build()
 
                 Webtrekk.reset(this,config)

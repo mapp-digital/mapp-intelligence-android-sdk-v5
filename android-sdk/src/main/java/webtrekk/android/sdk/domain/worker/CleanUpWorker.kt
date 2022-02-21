@@ -63,7 +63,9 @@ internal class CleanUpWorker(
          */
         val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
 
-        val clearCustomParamsRequest:ClearCustomParamsRequest = InteractorModule.clearCustomParamsRequest()
+        val clearCustomParamsRequest: ClearCustomParamsRequest =
+            InteractorModule.clearCustomParamsRequest()
+
         /**
          * [logger] the injected logger from Webtrekk.
          */

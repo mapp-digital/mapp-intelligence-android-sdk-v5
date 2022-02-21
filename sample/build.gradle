@@ -73,11 +73,15 @@ android {
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
 
+    }
+    
+    lintOptions {
+        abortOnError false
     }
 
     compileOptions {
@@ -108,9 +112,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
     implementation "androidx.appcompat:appcompat:$versions.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion"
-    testImplementation "junit:junit:$versions.junitVersion"
-    androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espressoCoreVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
@@ -120,8 +121,12 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation('com.google.firebase:firebase-messaging')
 
-    implementation 'com.mapp.sdk:mapp-android:6.0.17'
-    implementation "com.google.firebase:firebase-crashlytics:18.2.7"
+    implementation 'com.mapp.sdk:mapp-android:6.0.18-rc01'
+    implementation "com.google.firebase:firebase-crashlytics:18.2.8"
+
     implementation(project(':android-sdk'))
 
+    testImplementation "junit:junit:$versions.junitVersion"
+    androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espressoCoreVersion"
 }

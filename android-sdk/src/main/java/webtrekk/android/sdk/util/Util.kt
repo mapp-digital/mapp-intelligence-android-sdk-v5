@@ -26,11 +26,11 @@
 package webtrekk.android.sdk.util
 
 import android.os.Build
-import webtrekk.android.sdk.BuildConfig
-import java.util.TimeZone
 import java.util.Date
+import java.util.TimeZone
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import webtrekk.android.sdk.BuildConfig
 
 /**
  * Util properties for Android.

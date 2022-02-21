@@ -26,7 +26,6 @@
 package webtrekk.android.sdk.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import webtrekk.android.sdk.data.entity.CustomParam
@@ -47,5 +46,5 @@ internal interface CustomParamDao {
     suspend fun getCustomParamsByTrackId(trackId: Long): List<CustomParam>
 
     @Query("DELETE FROM custom_params")
-    suspend fun deleteAllCustomParams();
+    suspend fun deleteAllCustomParams()
 }

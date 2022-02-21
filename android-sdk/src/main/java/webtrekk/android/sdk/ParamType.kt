@@ -93,16 +93,22 @@ object Param {
      */
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_NAME = "ba"
+
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_COST = "co"
+
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_CURRENCY = "cr"
+
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val PRODUCT_QUANTITY = "qn"
+
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val STATUS_OF_SHOPPING_CARD = "st"
+
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val ORDER_ID = "oi"
+
     @Deprecated(message = "It is part of E_COMMERCE_PARAM")
     const val ORDER_VALUE = "ov"
     val MEDIA_PARAMS: MediaParam = MediaParam
@@ -142,6 +148,7 @@ object UserCategoriesParam {
     const val STREET_NUMBER = URM_CATEGORY + 712
     const val ZIP_CODE = URM_CATEGORY + 710
 }
+
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 object BaseParam {
     const val COMMERCE_PARAM = "cb"
@@ -224,6 +231,7 @@ enum class ParamType(val value: String) {
      */
     PAGE_PARAM("cp"),
     PAGE_CATEGORY("cg"),
+
     /**
      * This custom param is used for event tracking only.
      *

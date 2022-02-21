@@ -31,9 +31,9 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import java.util.concurrent.TimeUnit
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
-import java.util.concurrent.TimeUnit
 
 /**
  * The implementation of [Scheduler] using [WorkManager].

@@ -46,7 +46,7 @@ internal class CustomParamRepositoryImpl(private val customParamDao: CustomParam
         }
     }
 
-    override suspend fun deleteAllCustomParams() :Result<Boolean>{
+    override suspend fun deleteAllCustomParams(): Result<Boolean> {
         return kotlin.runCatching {
             customParamDao.deleteAllCustomParams().run { true }
         }

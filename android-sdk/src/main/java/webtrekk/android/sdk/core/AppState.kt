@@ -30,7 +30,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
 /**
@@ -97,7 +96,7 @@ internal open class LifecycleWrapper :
     FragmentManager.FragmentLifecycleCallbacks() {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                (activity as? AppCompatActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
+        (activity as? AppCompatActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
             this,
             true
         )
@@ -113,7 +112,7 @@ internal open class LifecycleWrapper :
     }
 
     override fun onActivityStopped(activity: Activity) {
-                (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
+        (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
             this
         )
     }
@@ -122,24 +121,8 @@ internal open class LifecycleWrapper :
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-                (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
+        (activity as? AppCompatActivity)?.supportFragmentManager?.unregisterFragmentLifecycleCallbacks(
             this
         )
-    }
-
-    override fun onFragmentCreated(
-        fm: FragmentManager,
-        f: Fragment,
-        savedInstanceState: Bundle?
-    ) {
-        super.onFragmentCreated(fm, f, savedInstanceState)
-    }
-
-    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
-        super.onFragmentStarted(fm, f)
-    }
-
-    override fun onFragmentStopped(fm: FragmentManager, f: Fragment) {
-        super.onFragmentStopped(fm, f)
     }
 }
