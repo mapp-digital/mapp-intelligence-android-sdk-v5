@@ -58,7 +58,9 @@ class SampleApplication : Application() {
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
-            .setRequiredNetworkType(NetworkType.CONNECTED).build()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
         val stringIds = BuildConfig.TRACK_IDS
         val domain = BuildConfig.DOMEIN
         val elements: List<String> = stringIds.split(",")
@@ -69,7 +71,7 @@ class SampleApplication : Application() {
                 //.setEverId("11111")
                 .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
-                .requestsInterval(TimeUnit.MINUTES, 15)
+                .requestsInterval(TimeUnit.MINUTES, 1)
                 .sendAppVersionInEveryRequest()
                 .enableCrashTracking(
                     ExceptionType.valueOf(
