@@ -24,7 +24,6 @@ class SettingsExample : AppCompatActivity() {
                 listOf("826582930668809"),
                 "http://vdestellaaccount01.wt-eu02.net"
             )
-
         }
 
         button3.setOnClickListener {

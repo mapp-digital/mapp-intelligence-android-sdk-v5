@@ -122,12 +122,6 @@ object InteractorModule {
             setEverId(AppModule.config.everId)
         }
 
-/*    internal val sessions: Sessions by lazy {
-        SessionsImpl(AppModule.webtrekkSharedPrefs).apply {
-            setEverId(AppModule.config.everId)
-        }
-    }*/
-
     internal val scheduler: Scheduler by lazy { SchedulerImpl(NetworkModule.workManager) }
 
     internal fun cacheTrackRequest(): CacheTrackRequest =

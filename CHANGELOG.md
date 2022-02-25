@@ -1,4 +1,8 @@
 # Change Log
+## Version 5.1.2 *(2022-02-25)*
+* New method for resetting SDK in runtime
+* New method for triggering immediate data sending and deleting sent data
+* Set custom everId through Config Builder
 
 ## Version 5.1.1 *(2021-12-14)*
 * Stability improvements
