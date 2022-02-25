@@ -525,10 +525,10 @@ constructor() : Webtrekk(),
     override fun sendRequestsNowAndClean() {
         sendAndClean(
             SendAndClean.Params(
-                context,
-                config.trackDomain,
-                config.trackIds,
-                config
+                context=context,
+                trackDomain = config.trackDomain,
+                trackIds = config.trackIds,
+                config = config
             ), coroutineDispatchers
         )
     }

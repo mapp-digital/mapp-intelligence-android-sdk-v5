@@ -39,7 +39,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionName versions.webtrekkVersion
         setVersionName(versions.webtrekkVersion)
-        buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
+        //buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
     }
 
     lintOptions {

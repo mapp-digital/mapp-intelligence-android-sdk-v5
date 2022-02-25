@@ -45,7 +45,7 @@ def getTrackDomain() {
         }
 
     }
-    return properties.getProperty("trackDomain");
+    return properties.getProperty("trackDomain")
 }
 
 def getTrackIds() {
@@ -53,7 +53,7 @@ def getTrackIds() {
     Properties properties = new Properties()
     if (localPropFile.exists()) {
         properties.load(localPropFile.newDataInputStream())
-        return properties.getProperty("trackIds");
+        return properties.getProperty("trackIds")
     } else {
         if (System.getenv('trackIds') != null) {
             properties.setProperty("trackIds", System.getenv('trackIds'))
@@ -61,7 +61,7 @@ def getTrackIds() {
             return "12312"
         }
     }
-    return properties.getProperty("trackIds");
+    return properties.getProperty("trackIds")
 }
 
 android {
@@ -125,6 +125,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics:18.2.8"
 
     implementation(project(':android-sdk'))
+    //implementation ("com.mapp.sdk:intelligence-android:5.1.2-rc02")
 
     testImplementation "junit:junit:$versions.junitVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
