@@ -1,10 +1,11 @@
 package com.example.webtrekk.androidsdk
 
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_url_trakcing.*
-
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_url_trakcing.button7
+import kotlinx.android.synthetic.main.activity_url_trakcing.button8
+import kotlinx.android.synthetic.main.activity_url_trakcing.button9
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.PageViewEvent
 import webtrekk.android.sdk.events.eventParams.CampaignParameters

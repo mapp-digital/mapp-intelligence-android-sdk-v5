@@ -32,8 +32,22 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webtrekk.androidsdk.mapp.MainActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import webtrekk.android.sdk.*
+import kotlinx.android.synthetic.main.activity_main.btnResetSdk
+import kotlinx.android.synthetic.main.activity_main.button10
+import kotlinx.android.synthetic.main.activity_main.button4
+import kotlinx.android.synthetic.main.activity_main.button5
+import kotlinx.android.synthetic.main.activity_main.button6
+import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
+import kotlinx.android.synthetic.main.activity_main.crashActivity
+import kotlinx.android.synthetic.main.activity_main.formActivity
+import kotlinx.android.synthetic.main.activity_main.startDetailsActivity
+import kotlinx.android.synthetic.main.activity_main.videoActivity
+import kotlinx.android.synthetic.main.activity_main.webViewActivity
+import webtrekk.android.sdk.Param
+import webtrekk.android.sdk.TrackPageDetail
+import webtrekk.android.sdk.TrackParams
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.WebtrekkConfiguration
 
 @TrackPageDetail(
     contextName = "Main Page",

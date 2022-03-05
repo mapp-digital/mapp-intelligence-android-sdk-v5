@@ -25,6 +25,8 @@
 
 package com.example.webtrekk.androidsdk
 
+// import com.facebook.stetho.Stetho
+// import com.facebook.stetho.okhttp3.StethoInterceptor
 import android.app.Application
 import android.content.Context
 import androidx.work.Constraints
@@ -32,13 +34,11 @@ import androidx.work.NetworkType
 import com.appoxee.Appoxee
 import com.appoxee.AppoxeeOptions
 import com.appoxee.push.NotificationMode
-// import com.facebook.stetho.Stetho
-// import com.facebook.stetho.okhttp3.StethoInterceptor
+import java.util.concurrent.TimeUnit
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
-import java.util.concurrent.TimeUnit
 
 class SampleApplication : Application() {
 

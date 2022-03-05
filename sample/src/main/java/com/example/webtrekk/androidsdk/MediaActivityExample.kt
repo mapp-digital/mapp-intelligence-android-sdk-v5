@@ -1,21 +1,19 @@
 package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
-
-import android.view.View
-import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import webtrekk.android.sdk.MediaParam
-import webtrekk.android.sdk.TrackingParams
-import webtrekk.android.sdk.Webtrekk
-
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
-import kotlinx.android.synthetic.main.activity_media2.*
+import kotlinx.android.synthetic.main.activity_media2.pauseButton
+import kotlinx.android.synthetic.main.activity_media2.playButton
+import kotlinx.android.synthetic.main.activity_media2.playProgressBar
+import kotlinx.android.synthetic.main.activity_media2.stopButton
+import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.TrackingParams
+import webtrekk.android.sdk.Webtrekk
 
 class MediaActivityExample : AppCompatActivity() {
     private var webtrekk: Webtrekk? = null

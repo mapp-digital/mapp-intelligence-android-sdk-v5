@@ -39,7 +39,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionName versions.webtrekkVersion
         setVersionName(versions.webtrekkVersion)
-        //buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
+        buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
     }
 
     lintOptions {
@@ -48,10 +48,12 @@ android {
     }
 
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
+
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     testOptions {
@@ -59,15 +61,6 @@ android {
         unitTests.all {
             useJUnitPlatform()
         }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
@@ -104,6 +97,7 @@ dependencies {
 
     androidTestImplementation libs.androidRoomTest
     androidTestImplementation libs.androidWorkmanagerTest
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     //testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     //api group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 }

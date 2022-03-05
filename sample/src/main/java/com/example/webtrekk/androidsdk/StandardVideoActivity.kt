@@ -3,7 +3,6 @@ package com.example.webtrekk.androidsdk
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_standard_video.videoView

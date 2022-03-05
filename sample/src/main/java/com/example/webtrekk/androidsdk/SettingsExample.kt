@@ -1,9 +1,13 @@
 package com.example.webtrekk.androidsdk
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
-import kotlinx.android.synthetic.main.settings_activity.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.settings_activity.button
+import kotlinx.android.synthetic.main.settings_activity.button2
+import kotlinx.android.synthetic.main.settings_activity.button3
+import kotlinx.android.synthetic.main.settings_activity.disable_anonymous
+import kotlinx.android.synthetic.main.settings_activity.enable_anonymous
+import kotlinx.android.synthetic.main.settings_activity.sw_optout
 import webtrekk.android.sdk.Webtrekk
 
 class SettingsExample : AppCompatActivity() {

@@ -85,10 +85,10 @@ android {
     }
 
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     buildTypes {
@@ -107,25 +107,25 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
     implementation "androidx.appcompat:appcompat:$versions.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
-    implementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    implementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
 
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation('com.google.firebase:firebase-messaging')
+    implementation("com.google.firebase:firebase-crashlytics")
 
-    implementation 'com.mapp.sdk:mapp-android:6.0.16'
-    implementation "com.google.firebase:firebase-crashlytics:18.2.8"
+    implementation 'com.mapp.sdk:mapp-android:6.0.17'
 
-    //implementation(project(':android-sdk'))
-    implementation ("com.mapp.sdk:intelligence-android:5.1.2")
+    implementation(project(':android-sdk'))
+    //implementation ("com.mapp.sdk:intelligence-android:5.1.2")
 
     testImplementation "junit:junit:$versions.junitVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"

@@ -3,7 +3,10 @@ package com.example.webtrekk.androidsdk
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.VideoView
-import webtrekk.android.sdk.*
+import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.ParamType
+import webtrekk.android.sdk.TrackingParams
+import webtrekk.android.sdk.Webtrekk
 
 
 class TrackedVideoView : VideoView {
