@@ -1,9 +1,17 @@
 package com.example.webtrekk.androidsdk
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
-import kotlinx.android.synthetic.main.activity_object_tracking.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_object_tracking.example10
+import kotlinx.android.synthetic.main.activity_object_tracking.example3
+import kotlinx.android.synthetic.main.activity_object_tracking.example4
+import kotlinx.android.synthetic.main.activity_object_tracking.example5
+import kotlinx.android.synthetic.main.activity_object_tracking.example6
+import kotlinx.android.synthetic.main.activity_object_tracking.example7
+import kotlinx.android.synthetic.main.activity_object_tracking.example8
+import kotlinx.android.synthetic.main.activity_object_tracking.example9
+import kotlinx.android.synthetic.main.activity_object_tracking.firstExample
+import kotlinx.android.synthetic.main.activity_object_tracking.secondExample
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent

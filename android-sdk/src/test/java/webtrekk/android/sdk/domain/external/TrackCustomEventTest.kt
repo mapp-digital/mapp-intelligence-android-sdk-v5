@@ -25,10 +25,13 @@
 
 package webtrekk.android.sdk.domain.external
 
-import io.mockk.Called
 import io.mockk.coVerify
-import io.mockk.mockkClass
-import kotlinx.coroutines.runBlocking
+import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
@@ -36,58 +39,62 @@ import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 import webtrekk.android.sdk.util.trackRequest
 import webtrekk.android.sdk.util.trackingParams
 
-internal class TrackCustomEventTest : AbstractExternalInteractor() {
+@ExperimentalCoroutinesApi
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+internal class TrackCustomEventTest : BaseExternalTest() {
 
-    val cacheTrackRequestWithCustomParams = mockkClass(CacheTrackRequestWithCustomParams::class)
-    val trackCustomEvent = TrackCustomEvent(
-        coroutineContext,
-        cacheTrackRequestWithCustomParams
-    )
+    @RelaxedMockK
+    lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
-    init {
-        feature("track custom event") {
+    lateinit var trackCustomEvent: TrackCustomEvent
 
-            scenario("if opt out is active then return and don't track") {
-                val params = TrackCustomEvent.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParams,
-                    isOptOut = true,
-                    ctParams = trackRequest.name
-                )
+    @BeforeAll
+    override fun setup() {
+        super.setup()
+        trackCustomEvent = TrackCustomEvent(
+            coroutineScope.coroutineContext,
+            cacheTrackRequestWithCustomParams
+        )
+    }
 
-                runBlocking {
-                    trackCustomEvent(params, coroutinesDispatchersProvider())
+    @Test
+    fun `if opt out is active then return and don't track`() = runTest {
+        val params = TrackCustomEvent.Params(
+            trackRequest = trackRequest,
+            trackingParams = trackingParams,
+            isOptOut = true,
+            ctParams = trackRequest.name
+        )
 
-                    coVerify {
-                        cacheTrackRequestWithCustomParams wasNot Called
-                    }
-                }
-            }
+        trackCustomEvent(params, coroutinesDispatchersProvider())
 
-            scenario("verify that cacheTrackRequestWithCustomParams is called with CT param appended to custom params") {
-                val params = TrackCustomEvent.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParams,
-                    isOptOut = false,
-                    ctParams = trackRequest.name
-                )
-
-                runBlocking {
-                    trackCustomEvent(params, coroutinesDispatchersProvider())
-
-                    val trackingParamsWithCT =
-                        cacheTrackRequestWithCustomParamsParams.trackingParams.toMutableMap()
-                    trackingParamsWithCT[RequestType.EVENT.value] = params.trackRequest.name
-
-                    val cacheTrackRequestWithCT = CacheTrackRequestWithCustomParams.Params(
-                        trackRequest, trackingParamsWithCT
-                    )
-
-                    coVerify {
-                        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCT)
-                    }
-                }
-            }
+        coVerify(exactly = 0) {
+            cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
         }
     }
+
+    @Test
+    fun `verify that cacheTrackRequestWithCustomParams is called with CT param appended to custom params`() =
+        runTest {
+            val params = TrackCustomEvent.Params(
+                trackRequest = trackRequest,
+                trackingParams = trackingParams,
+                isOptOut = false,
+                ctParams = trackRequest.name
+            )
+
+            trackCustomEvent(params, coroutinesDispatchersProvider())
+
+            val trackingParamsWithCT =
+                cacheTrackRequestWithCustomParamsParams.trackingParams.toMutableMap()
+            trackingParamsWithCT[RequestType.EVENT.value] = params.trackRequest.name
+
+            val cacheTrackRequestWithCT = CacheTrackRequestWithCustomParams.Params(
+                trackRequest, trackingParamsWithCT
+            )
+
+            coVerify(exactly = 1) {
+                cacheTrackRequestWithCustomParams(cacheTrackRequestWithCT)
+            }
+        }
 }

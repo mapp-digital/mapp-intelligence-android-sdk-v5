@@ -8,7 +8,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_crash.*
+import kotlinx.android.synthetic.main.activity_crash.chooseExceptionType
+import kotlinx.android.synthetic.main.activity_crash.trackCaught
+import kotlinx.android.synthetic.main.activity_crash.trackCustom
+import kotlinx.android.synthetic.main.activity_crash.trackUncaught
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Webtrekk
 

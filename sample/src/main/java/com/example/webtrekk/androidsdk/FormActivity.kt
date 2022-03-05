@@ -29,7 +29,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.form_main.*
+import kotlinx.android.synthetic.main.form_main.anonymous
+import kotlinx.android.synthetic.main.form_main.cancel
+import kotlinx.android.synthetic.main.form_main.confirm
+import kotlinx.android.synthetic.main.form_main.spinner
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.Webtrekk
 

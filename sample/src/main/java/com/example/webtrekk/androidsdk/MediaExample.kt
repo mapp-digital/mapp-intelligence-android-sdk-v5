@@ -1,10 +1,11 @@
 package com.example.webtrekk.androidsdk
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
-import kotlinx.android.synthetic.main.activity_media_example.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_media_example.button
+import kotlinx.android.synthetic.main.activity_media_example.button2
+import kotlinx.android.synthetic.main.activity_media_example.button3
 
 class MediaExample : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

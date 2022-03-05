@@ -25,13 +25,15 @@
 
 package webtrekk.android.sdk.domain.external
 
-import android.content.Context
-import io.kotlintest.IsolationMode
-import io.mockk.Called
-import io.mockk.coVerifyAll
-import io.mockk.mockk
-import io.mockk.mockkClass
-import kotlinx.coroutines.runBlocking
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
@@ -39,83 +41,86 @@ import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
-internal class OptoutTest : AbstractExternalInteractor() {
+@ExperimentalCoroutinesApi
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+internal class OptoutTest : BaseExternalTest() {
+    @RelaxedMockK
+    lateinit var sessions: Sessions
 
-    private val sessions = mockk<Sessions>(relaxed = true)
-    private val scheduler = mockk<Scheduler>(relaxed = true)
-    private val appState = mockk<AppState<DataAnnotationClass>>(relaxed = true)
-    private val clearTrackRequests = mockkClass(ClearTrackRequests::class)
-    private val optOut = Optout(
-        coroutineContext = coroutineContext,
-        sessions = sessions,
-        scheduler = scheduler,
-        appState = appState,
-        clearTrackRequests = clearTrackRequests
-    )
-    private val appContext = mockk<Context>(relaxed = true)
+    @RelaxedMockK
+    lateinit var scheduler: Scheduler
 
-    override fun isolationMode(): IsolationMode = IsolationMode.InstancePerTest
+    @RelaxedMockK
+    lateinit var appState: AppState<DataAnnotationClass>
 
-    init {
-        feature("set opt out value") {
+    @MockK
+    lateinit var clearTrackRequests: ClearTrackRequests
 
-            scenario("opt out and clear everything when setting optout to true") {
-                val params =
-                    Optout.Params(
-                        context = appContext,
-                        optOutValue = true,
-                        sendCurrentData = false
-                    )
+    lateinit var optOut: Optout
 
-                runBlocking {
-                    optOut(params, coroutinesDispatchersProvider())
+    @BeforeAll
+    override fun setup() {
+        super.setup()
+        optOut = Optout(
+            coroutineContext = coroutineScope.coroutineContext,
+            sessions = sessions,
+            scheduler = scheduler,
+            appState = appState,
+            clearTrackRequests = clearTrackRequests
+        )
+    }
 
-                    coVerifyAll {
-                        sessions.optOut(params.optOutValue)
-                        appState.disable(params.context)
-                        scheduler.cancelScheduleSendRequests()
-                        clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
-                    }
-                }
-            }
+    @Test
+    fun `opt out and clear everything when setting optout to true`() = runTest {
+        val params =
+            Optout.Params(
+                context = appContext,
+                optOutValue = true,
+                sendCurrentData = false
+            )
 
-            scenario("verify that if sendCurrentData is true while opting out then send all trackers before deleting") {
-                val params =
-                    Optout.Params(
-                        context = appContext,
-                        optOutValue = true,
-                        sendCurrentData = true
-                    )
+        optOut(params, coroutinesDispatchersProvider())
 
-                runBlocking {
-                    optOut(params, coroutinesDispatchersProvider())
+        coVerifyOrder {
+            sessions.optOut(params.optOutValue)
+            appState.disable(params.context)
+            scheduler.cancelScheduleSendRequests()
+            clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
+        }
+    }
 
-                    coVerifyAll {
-                        sessions.optOut(params.optOutValue)
-                        appState.disable(params.context)
-                        scheduler.cancelScheduleSendRequests()
-                        scheduler.sendRequestsThenCleanUp()
-                        clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList())) wasNot Called
-                    }
-                }
-            }
-
-            scenario("stop opting out when setting optout to false") {
-                val params = Optout.Params(
+    @Test
+    fun `verify that if sendCurrentData is true while opting out then send all trackers before deleting`() =
+        runTest {
+            val params =
+                Optout.Params(
                     context = appContext,
-                    optOutValue = false,
-                    sendCurrentData = false
+                    optOutValue = true,
+                    sendCurrentData = true
                 )
 
-                runBlocking {
-                    optOut(params, coroutinesDispatchersProvider())
+            optOut(params, coroutinesDispatchersProvider())
 
-                    coVerifyAll {
-                        sessions.optOut(params.optOutValue)
-                        clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList())) wasNot Called
-                    }
-                }
+            coVerify {
+                sessions.optOut(params.optOutValue)
+                appState.disable(params.context)
+                scheduler.cancelScheduleSendRequests()
+                scheduler.sendRequestsThenCleanUp()
             }
+        }
+
+    @Test
+    fun `stop opting out when setting optout to false`() = runTest {
+        val params = Optout.Params(
+            context = appContext,
+            optOutValue = false,
+            sendCurrentData = false
+        )
+
+        optOut(params, coroutinesDispatchersProvider())
+
+        coVerify(exactly = 1) {
+            sessions.optOut(params.optOutValue)
         }
     }
 }

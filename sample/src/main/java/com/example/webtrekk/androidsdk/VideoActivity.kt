@@ -1,20 +1,18 @@
 package com.example.webtrekk.androidsdk
 
-import android.content.Context
-import android.database.ContentObserver
-import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.provider.Settings
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Timeline
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.audio.AudioListener
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
@@ -28,19 +26,18 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.activity_video.playerView
-import okhttp3.internal.userAgent
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
 import kotlin.math.max
 
 
-class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPreparer,
+class VideoActivity : AppCompatActivity(), View.OnClickListener,
     PlayerControlView.VisibilityListener {
     val TUNNELING_EXTRA = "tunneling"
     private val TAG = "VideoActivity"
     private var dataSourceFactory: DataSource.Factory? = null
-    private var player: SimpleExoPlayer? = null
+    private var player: ExoPlayer? = null
     private var mediaSource: MediaSource? = null
     private var trackSelector: DefaultTrackSelector? = null
     private var trackSelectorParameters: DefaultTrackSelector.Parameters? = null
@@ -55,7 +52,8 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
     private val url =
         "https://firebasestorage.googleapis.com/v0/b/videostreaming-481cd.appspot.com/o/Mobile_Rich_Push.mp4?alt=media&token=3e9156fa-5af7-4344-9efb-7a8c882ab2dc";
 
-    private val eventListener: Player.EventListener = object : Player.EventListener {
+
+    private val eventListener: Player.Listener = object : Player.Listener {
         fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {
             Log.i(TAG, "onTimelineChanged")
         }
@@ -90,7 +88,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                             MediaParam.MEDIA_ACTION to "eof"
                         )
                     )
-                    Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
+                    Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
                     clearStartPosition()
                 }
                 ExoPlayer.STATE_READY -> {
@@ -99,14 +97,6 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 ExoPlayer.STATE_BUFFERING -> Log.i(TAG, "Playback buffering!")
                 ExoPlayer.STATE_IDLE -> Log.i(TAG, "ExoPlayer idle!")
             }
-        }
-
-        override fun onPlayerError(error: ExoPlaybackException) {
-            Log.i(TAG, "onPlaybackError: " + error.message)
-        }
-
-        fun onPositionDiscontinuity() {
-            Log.i(TAG, "onPositionDiscontinuity")
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
@@ -118,9 +108,21 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                     MediaParam.MEDIA_ACTION to if (isPlaying) "play" else "pause"
                 )
             )
-            Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
+            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
         }
 
+        override fun onVolumeChanged(volume: Float) {
+            super.onVolumeChanged(volume)
+            trackingParams.putAll(
+                mapOf(
+                    MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                    MediaParam.VOLUME to volume.toInt().toString(),
+                    MediaParam.MUTE to if (volume.toInt() == 0) "1" else "0"
+                )
+
+            )
+            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,21 +141,16 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
         }
         trackSelectorParameters = builder.build()
         clearStartPosition()
-
-
     }
 
     private fun buildMediaSource(): MediaSource {
-        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, userAgent)
+        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, null)
         val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
-        return mediaSourceFactory.createMediaSource(Uri.parse(url))
+        val mediaItem = MediaItem.fromUri(Uri.parse(url))
+        return mediaSourceFactory.createMediaSource(mediaItem)
     }
 
     override fun onClick(v: View?) {
-
-    }
-
-    override fun preparePlayback() {
 
     }
 
@@ -194,7 +191,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
             trackSelector = DefaultTrackSelector( /* context= */this, trackSelectionFactory)
             trackSelector!!.setParameters(trackSelectorParameters!!)
             lastSeenTrackGroupArray = null
-            player = SimpleExoPlayer.Builder( /* context= */this)
+            player = ExoPlayer.Builder( /* context= */this)
                 .setTrackSelector(trackSelector!!)
                 .build()
             player!!.addListener(eventListener)
@@ -215,25 +212,24 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                             MediaParam.MEDIA_ACTION to "seek"
                         )
                     )
-                    Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
+                    Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
 
 
                 }
             })
             playerView.player = player
-            playerView.setPlaybackPreparer(this)
-
-
         }
 
-        player!!.prepare(mediaSource!!, false, false)
+        player?.let {
+            it.setMediaSource(mediaSource!!)
+            it.prepare()
+        }
+
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString()
             )
         )
-
-        setAnaytics()
     }
 
     override fun onStart() {
@@ -264,7 +260,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 MediaParam.MEDIA_ACTION to "stop"
             )
         )
-        Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
         if (Util.SDK_INT <= 23) {
             if (playerView != null) {
                 playerView.onPause()
@@ -290,7 +286,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 MediaParam.MEDIA_ACTION to "eof"
             )
         )
-        Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
+        Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
         if (player != null) {
             updateTrackSelectorParameters()
             updateStartPosition()
@@ -319,53 +315,9 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener, PlaybackPrepare
                 )
             )
             muted = !muted
-            Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
+            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
             return true
         }
         return super.onKeyDown(keyCode, event)
     }
-
-    private fun setAnaytics() {
-
-        val mSettingsContentObserver =
-            SettingsContentObserver(this, Handler(), object : AudioListener {
-                override fun onVolumeChanged(volume: Float) {
-                    trackingParams.putAll(
-                        mapOf(
-                            MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
-                            MediaParam.VOLUME to volume.toInt().toString(),
-                            MediaParam.MUTE to if (volume.toInt() == 0) "1" else "0"
-                        )
-
-                    )
-                    Webtrekk.getInstance().trackMedia("VideoActivity","video name", trackingParams)
-                }
-            })
-        this.applicationContext.contentResolver.registerContentObserver(
-            Settings.System.CONTENT_URI, true,
-            mSettingsContentObserver
-        )
-
-    }
-
-    class SettingsContentObserver(context: Context, handler: Handler?, audio: AudioListener) :
-        ContentObserver(handler) {
-        private val audioManager: AudioManager
-        private val audioPlayerss: AudioListener
-        override fun deliverSelfNotifications(): Boolean {
-            return false
-        }
-
-        override fun onChange(selfChange: Boolean) {
-            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-            audioPlayerss.onVolumeChanged(currentVolume.toFloat() * 10.2f)
-        }
-
-        init {
-            audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-            audioPlayerss = audio
-        }
-    }
-
-
 }
