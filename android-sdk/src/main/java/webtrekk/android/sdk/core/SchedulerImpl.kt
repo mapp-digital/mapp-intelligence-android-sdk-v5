@@ -25,10 +25,12 @@
 
 package webtrekk.android.sdk.core
 
+import android.os.Build
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequest
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -42,19 +44,25 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
     Scheduler {
 
     override fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints) {
-        val sendRequestWorker = PeriodicWorkRequest.Builder(
+        val workBuilder = PeriodicWorkRequest.Builder(
             SendRequestsWorker::class.java,
             repeatInterval,
             TimeUnit.MINUTES
         )
             .setConstraints(constraints)
             .addTag(SendRequestsWorker.TAG)
-            .build()
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            workBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+        }
+
+        val sendRequestsWorker = workBuilder.build()
 
         workManager.enqueueUniquePeriodicWork(
             SEND_REQUESTS_WORKER,
             ExistingPeriodicWorkPolicy.KEEP,
-            sendRequestWorker
+            sendRequestsWorker
         )
     }
 
@@ -65,27 +73,33 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
         if (trackIds.isNotEmpty()) {
             data.putStringArray("trackIds", trackIds.toTypedArray())
         }
-        val sendRequestsWorker = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
+        val sendWorkBuilder = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
             .addTag(SendRequestsWorker.TAG_ONE_TIME_WORKER)
             .setInputData(data.build())
-            .build()
 
-        val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
+        val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .addTag(CleanUpWorker.TAG)
-            .build()
 
-        workManager.beginWith(sendRequestsWorker)
-            .then(cleanUpWorker)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            sendWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+        }
+
+        workManager.beginWith(sendWorkBuilder.build())
+            .then(cleanWorkBuilder.build())
             .enqueue()
     }
 
     // To be changed to clean up after executing the requests
     override fun scheduleCleanUp() {
-        val cleanUpWorker = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
+        val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .addTag(CleanUpWorker.TAG)
-            .build()
 
-        workManager.enqueue(cleanUpWorker)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+        }
+
+        workManager.enqueue(cleanWorkBuilder.build())
     }
 
     override fun cancelScheduleSendRequests() {

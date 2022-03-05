@@ -26,54 +26,89 @@
 package webtrekk.android.sdk.domain.external
 
 import android.content.Context
-import io.kotlintest.IsolationMode
+import io.mockk.MockKAnnotations
+import io.mockk.coVerify
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
-import io.mockk.mockkClass
+import io.mockk.spyk
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
+import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
-internal class AutoTrackTest : AbstractExternalInteractor() {
+@ExperimentalCoroutinesApi
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+internal class AutoTrackTest {
 
-    private val appState: AppState<DataAnnotationClass> = mockk(relaxed = true)
-    private val cacheTrackRequest = mockkClass(CacheTrackRequestWithCustomParams::class)
-    private val appContext = mockk<Context>(relaxed = true)
-    private val autoTrack =
-        AutoTrack(coroutineContext, appState, cacheTrackRequest)
+    @RelaxedMockK
+    lateinit var appState: AppState<DataAnnotationClass>
 
-    override fun isolationMode(): IsolationMode = IsolationMode.InstancePerTest
+    @RelaxedMockK
+    lateinit var appContext: Context
 
-    init {
-        feature("auto track is enabled") {
+    @RelaxedMockK
+    lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
-//            scenario("if opt out is active then return and don't track") {
-//                val params = AutoTrack.Params(context = appContext, isOptOut = true)
-//
-//                runBlocking {
-//                    autoTrack(params, coroutinesDispatchersProvider())
-//
-//                    coVerify {
-//                        cacheTrackRequest(cacheTrackRequestParams) wasNot Called
-//                    }
-//                }
-//            }
-//
-//            scenario("verify that auto track received a track request and cached it") {
-//                val params = AutoTrack.Params(context = appContext, isOptOut = false)
-//
-//                // todo will fail since it's not possible to mock inline functions
-//                every { appState.listenToLifeCycle(params.context, any()) } answers {
-//                    secondArg<(TrackRequest) -> Unit>().invoke(trackRequest)
-//                }
-//
-//                runBlocking {
-//                    autoTrack(params, coroutinesDispatchersProvider())
-//
-//                    coVerifyAll {
-//                        cacheTrackRequest(cacheTrackRequestParams)
-//                    }
-//                }
-//            }
+    lateinit var autoTrack: AutoTrack
+
+    private val dispatcher = Dispatchers.Unconfined
+
+    private val job = SupervisorJob()
+
+    private val coroutineScope = CoroutineScope(dispatcher + job)
+
+    @BeforeAll
+    fun setup() {
+        MockKAnnotations.init(this)
+        Dispatchers.setMain(dispatcher)
+        autoTrack =
+            AutoTrack(coroutineScope.coroutineContext, appState, cacheTrackRequestWithCustomParams)
+    }
+
+    @Test
+    fun `if opt out is active then return and don't track`() =  runTest {
+        val params = AutoTrack.Params(context = appContext, isOptOut = true)
+
+        autoTrack(params, coroutinesDispatchersProvider())
+
+        coVerify(exactly = 0) {
+            cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
         }
+    }
+
+//    @Test
+//    fun `verify that auto track received a track request and cached it`() = runTest {
+//        val params = AutoTrack.Params(context = appContext, isOptOut = false)
+//
+//        // todo will fail since it's not possible to mock inline functions
+//        every { appState.listenToLifeCycle(params.context, any()) } answers {
+//            secondArg<(TrackRequest) -> Unit>().invoke(trackRequest)
+//        }
+//
+//        autoTrack(params, coroutinesDispatchersProvider())
+//
+//        coVerifyAll {
+//            cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
+//        }
+//    }
+
+    @AfterAll
+    fun tearDown(){
+        Dispatchers.resetMain()
+        coroutineScope.cancel()
     }
 }

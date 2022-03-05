@@ -25,11 +25,13 @@
 
 package webtrekk.android.sdk.domain.external
 
-import io.mockk.Called
 import io.mockk.coVerify
-import io.mockk.mockk
-import io.mockk.mockkClass
-import kotlinx.coroutines.runBlocking
+import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
@@ -37,49 +39,56 @@ import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 import webtrekk.android.sdk.util.trackRequest
 import webtrekk.android.sdk.util.trackingParams
 
-internal class TrackCustomPageTest : AbstractExternalInteractor() {
-    private val sessions = mockk<Sessions>(relaxed = true)
-    val cacheTrackRequestWithCustomParams = mockkClass(CacheTrackRequestWithCustomParams::class)
-    val trackCustomPage = TrackCustomPage(
-        coroutineContext,
-        sessions,
-        cacheTrackRequestWithCustomParams
-    )
+@ExperimentalCoroutinesApi
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+internal class TrackCustomPageTest : BaseExternalTest() {
 
-    init {
-        feature("track custom page") {
+    @RelaxedMockK
+    lateinit var sessions: Sessions
 
-            scenario("if opt out is active then return and don't track") {
-                val params = TrackCustomPage.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParams,
-                    isOptOut = true
-                )
+    @RelaxedMockK
+    lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
-                runBlocking {
-                    trackCustomPage(params, coroutinesDispatchersProvider())
+    lateinit var trackCustomPage: TrackCustomPage
 
-                    coVerify {
-                        cacheTrackRequestWithCustomParams wasNot Called
-                    }
-                }
-            }
+    @BeforeAll
+    override fun setup() {
+        super.setup()
+        trackCustomPage = TrackCustomPage(
+            coroutineContext,
+            sessions,
+            cacheTrackRequestWithCustomParams
+        )
+    }
 
-            scenario("verify that cacheTrackRequestWithCustomParams is called for tracking custom page") {
-                val params = TrackCustomPage.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParams,
-                    isOptOut = false
-                )
+    @Test
+    fun `if opt out is active then return and don't track`() = runTest {
+        val params = TrackCustomPage.Params(
+            trackRequest = trackRequest,
+            trackingParams = trackingParams,
+            isOptOut = true
+        )
 
-                runBlocking {
-                    trackCustomPage(params, coroutinesDispatchersProvider())
+        trackCustomPage(params, coroutinesDispatchersProvider())
 
-                    coVerify {
-                        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
-                    }
-                }
-            }
+        coVerify(exactly = 0) {
+            cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
         }
     }
+
+    @Test
+    fun `verify that cacheTrackRequestWithCustomParams is called for tracking custom page`() =
+        runTest {
+            val params = TrackCustomPage.Params(
+                trackRequest = trackRequest,
+                trackingParams = trackingParams,
+                isOptOut = false
+            )
+
+            trackCustomPage(params, coroutinesDispatchersProvider())
+
+            coVerify(exactly = 1) {
+                cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
+            }
+        }
 }

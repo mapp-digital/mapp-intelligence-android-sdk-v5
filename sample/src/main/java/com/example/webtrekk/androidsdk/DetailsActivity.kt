@@ -27,8 +27,6 @@ package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import webtrekk.android.sdk.FormTrackingSettings
-import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackingParams
 

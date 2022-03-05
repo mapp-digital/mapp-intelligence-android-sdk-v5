@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.util
 
 import webtrekk.android.sdk.MediaParam
+import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -133,3 +134,6 @@ internal val cacheTrackRequestWithCustomParamsParams = CacheTrackRequestWithCust
     trackRequest = trackRequest,
     trackingParams = trackingParams
 )
+
+internal val configuration = WebtrekkConfiguration.Builder(listOf("11111111"), "www.google.com")
+    .build()

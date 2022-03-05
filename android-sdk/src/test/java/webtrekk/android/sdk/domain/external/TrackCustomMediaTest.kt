@@ -2,9 +2,12 @@ package webtrekk.android.sdk.domain.external
 
 import io.mockk.Called
 import io.mockk.coVerify
-import io.mockk.mockkClass
-import kotlinx.coroutines.runBlocking
-import webtrekk.android.sdk.api.RequestType
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
@@ -16,54 +19,56 @@ import webtrekk.android.sdk.util.trackingParamsMediaParam
  * Created by Aleksandar Marinkovic on 16/07/2020.
  * Copyright (c) 2020 MAPP.
  */
-internal class TrackCustomMediaTest : AbstractExternalInteractor() {
-    val cacheTrackRequestWithCustomParams = mockkClass(CacheTrackRequestWithCustomParams::class)
-    val trackCustomMedia = TrackCustomMedia(
-        coroutineContext,
-        cacheTrackRequestWithCustomParams
-    )
+@OptIn(ExperimentalCoroutinesApi::class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+internal class TrackCustomMediaTest : BaseExternalTest() {
+    @MockK
+    lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
-    init {
-        feature("track custom media") {
+    lateinit var trackCustomMedia: TrackCustomMedia
 
-            scenario("if opt out is active then return and don't track") {
-                val params = TrackCustomMedia.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParamsMediaParam,
-                    isOptOut = true
-                )
+    @BeforeAll
+    override fun setup() {
+        super.setup()
+        trackCustomMedia = TrackCustomMedia(
+            coroutineContext,
+            cacheTrackRequestWithCustomParams
+        )
+    }
 
-                runBlocking {
-                    trackCustomMedia(params, coroutinesDispatchersProvider())
+    @Test
+    fun `if opt out is active then return and don't track`() = runTest {
+        val params = TrackCustomMedia.Params(
+            trackRequest = trackRequest,
+            trackingParams = trackingParamsMediaParam,
+            isOptOut = true
+        )
 
-                    coVerify {
-                        cacheTrackRequestWithCustomParams wasNot Called
-                    }
-                }
-            }
+        trackCustomMedia(params, coroutinesDispatchersProvider())
 
-            scenario("verify media request when user is optOut") {
-                val params = TrackCustomMedia.Params(
-                    trackRequest = trackRequest,
-                    trackingParams = trackingParams,
-                    isOptOut = false
-                )
+        coVerify {
+            cacheTrackRequestWithCustomParams wasNot Called
+        }
+    }
 
-                runBlocking {
-                    trackCustomMedia(params, coroutinesDispatchersProvider())
+    @Test
+    fun `verify media request when user is optOut`() = runTest {
+        val params = TrackCustomMedia.Params(
+            trackRequest = trackRequest,
+            trackingParams = trackingParams,
+            isOptOut = false
+        )
+        trackCustomMedia(params, coroutinesDispatchersProvider())
 
-                    val trackingParamsWithCT =
-                        cacheTrackRequestWithCustomParamsParams.trackingParams.toMutableMap()
+        val trackingParamsWithCT =
+            cacheTrackRequestWithCustomParamsParams.trackingParams.toMutableMap()
 
-                    val cacheTrackRequestWithCT = CacheTrackRequestWithCustomParams.Params(
-                        trackRequest, trackingParamsWithCT
-                    )
+        val cacheTrackRequestWithCT = CacheTrackRequestWithCustomParams.Params(
+            trackRequest, trackingParamsWithCT
+        )
 
-                    coVerify {
-                        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCT)
-                    }
-                }
-            }
+        coVerify {
+            cacheTrackRequestWithCustomParams(cacheTrackRequestWithCT)
         }
     }
 }

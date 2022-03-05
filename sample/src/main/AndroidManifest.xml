@@ -15,20 +15,39 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UrlActivity"/>
-        <activity android:name=".MediaExample" />
-        <activity android:name=".StandardVideoActivity" />
-        <activity android:name=".MediaActivityExample" />
-        <activity android:name=".VideoActivity" />
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".UrlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MediaExample"
+            android:exported="false" />
+        <activity
+            android:name=".StandardVideoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MediaActivityExample"
+            android:exported="false" />
+        <activity
+            android:name=".VideoActivity"
+            android:exported="false" />
 
 
-            <intent-filter android:autoVerify="true">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
+
+            <intent-filter android:autoVerify="true"
+                tools:targetApi="m">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="mapptest" android:host="test" />
+                <data
+                    android:host="test"
+                    android:scheme="mapptest" />
                 <!-- note that the leading "/" is required for pathPrefix-->
             </intent-filter>
             <intent-filter>
@@ -37,17 +56,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".FormActivity" />
-        <activity android:name=".CrashActivity" />
-        <activity android:name=".SettingsExample" />
-        <activity android:name=".ObjectTrackingActivityExample" />
+        <activity
+            android:name=".DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CrashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsExample"
+            android:exported="false" />
+        <activity
+            android:name=".ObjectTrackingActivityExample"
+            android:exported="false" />
         <activity
             android:name=".mapp.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="com.mapp.RICH_PUSH" />
 
@@ -56,7 +89,9 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
-        <activity android:name=".mapp.SecondActivity">
+        <activity
+            android:name=".mapp.SecondActivity"
+            android:exported="false">
             <intent-filter>
                 <data android:scheme="apx" />
                 <data android:host="deeplink" />
@@ -67,7 +102,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity> <!-- Deeplinking Start -->
-        <activity android:name=".mapp.DeepLinkActivity">
+        <activity
+            android:name=".mapp.DeepLinkActivity"
+            android:exported="false">
             <intent-filter>
                 <data android:scheme="apx" />
                 <data android:host="deeplink" />
@@ -79,7 +116,9 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
-        <activity android:name=".mapp.CustomDeeplinkActivity">
+        <activity
+            android:name=".mapp.CustomDeeplinkActivity"
+            android:exported="false">
             <intent-filter>
                 <data android:scheme="apx" />
                 <data android:host="custom" />
