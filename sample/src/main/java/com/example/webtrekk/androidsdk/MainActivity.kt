@@ -31,12 +31,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
 import kotlinx.android.synthetic.main.activity_main.button5
 import kotlinx.android.synthetic.main.activity_main.button6
 import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
+import kotlinx.android.synthetic.main.activity_main.buttonTestPageRequest
 import kotlinx.android.synthetic.main.activity_main.crashActivity
 import kotlinx.android.synthetic.main.activity_main.formActivity
 import kotlinx.android.synthetic.main.activity_main.startDetailsActivity
@@ -164,6 +166,11 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                     .show()
             }
+        }
+
+        buttonTestPageRequest.setOnClickListener {
+            val intent = Intent(this, PageRequestsActivity::class.java)
+            startActivity(intent)
         }
 
         val int = intent
