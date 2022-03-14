@@ -1,10 +1,11 @@
 # Change Log
-## Version 5.1.3-beta01 *(2022-03-15)*
+## Version 5.1.3 *(2022-03-15)*
 * Updated compile to Java 11
 * Updated targetSdkVersion to 31 (Android 12); 
   This also means that application must adopt to the behavioral changes required for applications targeting Android 12.
   See more: <a href="https://developer.android.com/about/versions/12/behavior-changes-12"/>
 * Updated all dependencies on latest versions
+* Updated unit tests
 
 ## Version 5.1.2 *(2022-02-25)*
 * New method for resetting SDK in runtime

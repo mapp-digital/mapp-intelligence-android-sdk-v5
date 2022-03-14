@@ -31,9 +31,6 @@ import android.app.Application
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.NetworkType
-import com.appoxee.Appoxee
-import com.appoxee.AppoxeeOptions
-import com.appoxee.push.NotificationMode
 import java.util.concurrent.TimeUnit
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
@@ -44,17 +41,6 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        val opt = AppoxeeOptions()
-        opt.sdkKey = "17ed4c40fff620.10688629"
-        opt.googleProjectId = "785651527831"
-        opt.cepURL = "https://jamie.g.shortest-route.com"
-        opt.appID = "310437"
-        opt.tenantID = "60211"
-        opt.notificationMode = NotificationMode.BACKGROUND_AND_FOREGROUND
-        opt.server = AppoxeeOptions.Server.EMC_US
-        opt.logLevel=AppoxeeOptions.LogLevel.CLIENT_DEBUG
-        Appoxee.engage(this, opt)
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)

@@ -36,7 +36,7 @@ def getTrackDomain() {
     Properties properties = new Properties()
     if (localPropFile.exists()) {
         properties.load(localPropFile.newDataInputStream())
-        return properties.getProperty("trackDomain");
+        return properties.getProperty("trackDomain")
     } else {
         if (System.getenv('trackDomain') != null) {
             properties.setProperty("trackDomain", System.getenv('trackDomain'))
@@ -72,8 +72,8 @@ android {
         applicationId "com.example.webtrekk.androidsdk"
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
-        versionCode 1
-        versionName "1.0.3"
+        versionCode 2
+        versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
@@ -116,16 +116,16 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
-    implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
 
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation('com.google.firebase:firebase-messaging')
     implementation("com.google.firebase:firebase-crashlytics")
 
-    implementation 'com.mapp.sdk:mapp-android:6.0.17'
+    //implementation 'com.mapp.sdk:mapp-android:6.0.17'
 
     implementation(project(':android-sdk'))
-    //implementation ("com.mapp.sdk:intelligence-android:5.1.2")
+    //implementation ("com.mapp.sdk:intelligence-android:5.1.3")
 
     testImplementation "junit:junit:$versions.junitVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
