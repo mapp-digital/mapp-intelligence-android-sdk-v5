@@ -36,13 +36,11 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
     PlayerControlView.VisibilityListener {
     val TUNNELING_EXTRA = "tunneling"
     private val TAG = "VideoActivity"
-    private var dataSourceFactory: DataSource.Factory? = null
     private var player: ExoPlayer? = null
     private var mediaSource: MediaSource? = null
     private var trackSelector: DefaultTrackSelector? = null
     private var trackSelectorParameters: DefaultTrackSelector.Parameters? = null
     private var lastSeenTrackGroupArray: TrackGroupArray? = null
-    private val timeInScreen = 0L
     private var startAutoPlay = false
     private var startWindow = 0
     private var startPosition: Long = 0
@@ -159,16 +157,16 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun updateStartPosition() {
-        if (player != null) {
-            startAutoPlay = player!!.playWhenReady
-            startWindow = player!!.currentWindowIndex
-            startPosition = max(0, player!!.contentPosition)
+        player?.let {
+            startAutoPlay = it.playWhenReady
+            startWindow = it.currentMediaItemIndex
+            startPosition = max(0, it.currentPosition)
         }
     }
 
     private fun updateTrackSelectorParameters() {
-        if (trackSelector != null) {
-            trackSelectorParameters = trackSelector?.parameters
+        trackSelector.let {
+            trackSelectorParameters = it?.parameters
         }
     }
 
@@ -178,49 +176,55 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         startPosition = C.TIME_UNSET
     }
 
+    private val analyticsListener = object : AnalyticsListener {
+        override fun onSeekProcessed(eventTime: AnalyticsListener.EventTime) {
+        }
+
+        override fun onSeekStarted(eventTime: AnalyticsListener.EventTime) {
+            trackingParams.putAll(
+                mapOf(
+                    MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
+                    MediaParam.MEDIA_ACTION to "seek"
+                )
+            )
+            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+        }
+    }
+
+    private val eventLoggerAnalyticsListener = EventLogger(trackSelector)
 
     // Internal methods
     private fun initializePlayer() {
         if (player == null) {
-            val intent = intent
+            val trackSelectionFactory = AdaptiveTrackSelection.Factory()
+            trackSelector = DefaultTrackSelector( /* context= */this, trackSelectionFactory).apply {
+                parameters = trackSelectorParameters!!
+            }
+
             mediaSource = buildMediaSource()
             if (mediaSource == null) {
                 return
             }
-            val trackSelectionFactory = AdaptiveTrackSelection.Factory()
-            trackSelector = DefaultTrackSelector( /* context= */this, trackSelectionFactory)
-            trackSelector!!.setParameters(trackSelectorParameters!!)
-            lastSeenTrackGroupArray = null
+
             player = ExoPlayer.Builder( /* context= */this)
                 .setTrackSelector(trackSelector!!)
-                .build()
-            player!!.addListener(eventListener)
-            player!!.setAudioAttributes(
-                AudioAttributes.DEFAULT,  /* handleAudioFocus= */
-                true
-            )
-            player!!.playWhenReady = startAutoPlay
-            player!!.addAnalyticsListener(EventLogger(trackSelector))
-            player!!.addAnalyticsListener(object : AnalyticsListener {
-                override fun onSeekProcessed(eventTime: AnalyticsListener.EventTime) {
-                }
+                .build().apply {
+                    lastSeenTrackGroupArray = null
 
-                override fun onSeekStarted(eventTime: AnalyticsListener.EventTime) {
-                    trackingParams.putAll(
-                        mapOf(
-                            MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
-                            MediaParam.MEDIA_ACTION to "seek"
-                        )
+                    addListener(eventListener)
+                    setAudioAttributes(
+                        AudioAttributes.DEFAULT,  /* handleAudioFocus= */
+                        true
                     )
-                    Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
-
+                    playWhenReady = startAutoPlay
 
                 }
-            })
-            playerView.player = player
         }
 
         player?.let {
+            it.addAnalyticsListener(eventLoggerAnalyticsListener)
+            it.addAnalyticsListener(analyticsListener)
+            playerView.player = player
             it.setMediaSource(mediaSource!!)
             it.prepare()
         }
@@ -236,9 +240,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         super.onStart()
         if (Util.SDK_INT > 23) {
             initializePlayer()
-            if (playerView != null) {
-                playerView.onResume()
-            }
+            playerView?.onResume()
         }
     }
 
@@ -246,9 +248,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         super.onResume()
         if (Util.SDK_INT <= 23 || player == null) {
             initializePlayer()
-            if (playerView != null) {
-                playerView.onResume()
-            }
+            playerView?.onResume()
         }
     }
 
@@ -262,9 +262,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         )
         Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
         if (Util.SDK_INT <= 23) {
-            if (playerView != null) {
-                playerView.onPause()
-            }
+            playerView?.onPause()
             releasePlayer()
         }
     }
@@ -272,14 +270,13 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            if (playerView != null) {
-                playerView.onPause()
-            }
+            playerView?.onPause()
             releasePlayer()
         }
     }
 
     private fun releasePlayer() {
+        Log.d(TAG, "releasePlayer")
         trackingParams.putAll(
             mapOf(
                 MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
@@ -287,22 +284,26 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
             )
         )
         Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
-        if (player != null) {
-            updateTrackSelectorParameters()
-            updateStartPosition()
-            player!!.release()
+        updateTrackSelectorParameters()
+        updateStartPosition()
+        player?.let {
+            it.removeAnalyticsListener(eventLoggerAnalyticsListener)
+            it.removeAnalyticsListener(analyticsListener)
+            it.stop()
+            it.clearMediaItems()
+            it.clearVideoSurface()
+            it.release()
+            //mediaSource = null
+            //trackSelector = null
+        }.also {
             player = null
-            mediaSource = null
-            trackSelector = null
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         updateTrackSelectorParameters()
         updateStartPosition()
-
     }
 
 

@@ -31,7 +31,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.webtrekk.androidsdk.mapp.MainActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
@@ -164,7 +163,6 @@ class MainActivity : AppCompatActivity() {
                     .setMessage(msg)
                     .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                     .show()
-                Log.d(MainActivity.javaClass.name,msg);
             }
         }
 

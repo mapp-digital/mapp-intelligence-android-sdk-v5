@@ -1,12 +1,15 @@
+/*
 package com.example.webtrekk.androidsdk.mapp
 
 import android.util.Log
 import com.appoxee.push.PushData
 import com.appoxee.push.PushDataReceiver
 
+*/
 /**
  * Created by alexeykrichun on 11/07/16.
- */
+ *//*
+
 class MyPushBroadcastReceiver : PushDataReceiver() {
     override fun onPushReceived(pushData: PushData) {
         Log.d("Engage", "Push received $pushData")
@@ -30,4 +33,4 @@ class MyPushBroadcastReceiver : PushDataReceiver() {
     override fun onButtonClick(pushData: PushData, buttonAction: String, buttonPosition: Int) {
         Log.d("APX", "Button clicked: $pushData")
     }
-}
+}*/
