@@ -74,7 +74,7 @@
         <activity
             android:name=".ObjectTrackingActivityExample"
             android:exported="false" />
-        <activity
+<!--        <activity
             android:name=".mapp.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
@@ -88,7 +88,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="${applicationId}" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity
             android:name=".mapp.SecondActivity"
             android:exported="false">
@@ -129,8 +129,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        <activity android:name=".mapp.PageRequestsActivity"
+            android:exported="false"/>
 
-        <receiver
+<!--        <receiver
             android:name=".mapp.MyPushBroadcastReceiver"
             android:enabled="true"
             android:exported="false">
@@ -147,7 +149,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
     </application>
 
 </manifest>

@@ -23,83 +23,93 @@
   ~
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/buttonSendRequests"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:text="Send requests now and clean" />
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnResetSdk"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_red_dark"
-        android:textColor="@android:color/white"
-        android:text="Reset sdk config" />
+        <Button
+            android:id="@+id/buttonSendRequests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:text="Send requests now and clean"
+            android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Url Trackign" />
+        <Button
+            android:id="@+id/btnResetSdk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:text="Reset sdk config"
+            android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Settings" />
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Url Trackign" />
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Integration" />
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings" />
 
-    <Button
-        android:id="@+id/videoActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Media Tracking" />
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Integration" />
 
-    <Button
-        android:id="@+id/startDetailsActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/details_activity" />
+        <Button
+            android:id="@+id/videoActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Media Tracking" />
 
-    <Button
-        android:id="@+id/crashActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Crash Activity" />
+        <Button
+            android:id="@+id/startDetailsActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/details_activity" />
 
-    <Button
-        android:id="@+id/webViewActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/web_view_activity" />
+        <Button
+            android:id="@+id/crashActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crash Activity" />
 
-    <Button
-        android:id="@+id/formActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Form Activity" />
+        <Button
+            android:id="@+id/webViewActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/web_view_activity" />
 
-    <Button
-        android:id="@+id/button10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Object tracking" />
+        <Button
+            android:id="@+id/formActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Form Activity" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Object tracking" />
+
+        <Button
+            android:id="@+id/buttonTestPageRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test Page Request 10k" />
+    </LinearLayout>
+</ScrollView>
