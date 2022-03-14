@@ -1,3 +1,4 @@
+/*
 package com.example.webtrekk.androidsdk.mapp
 
 import android.Manifest
@@ -484,4 +485,4 @@ class MainActivity : Activity(), OnInitCompletedListener {
         private const val MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1 shl 3
         private const val MY_PERMISSIONS_ACCESS_FINE_AND_BACKGROUND_LOCATION = 1 shl 4
     }
-}
+}*/

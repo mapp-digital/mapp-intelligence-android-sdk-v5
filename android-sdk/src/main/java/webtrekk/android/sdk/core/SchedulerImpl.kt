@@ -52,11 +52,6 @@ internal class SchedulerImpl(private val workManager: WorkManager) :
             .setConstraints(constraints)
             .addTag(SendRequestsWorker.TAG)
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            workBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-        }
-
         val sendRequestsWorker = workBuilder.build()
 
         workManager.enqueueUniquePeriodicWork(
