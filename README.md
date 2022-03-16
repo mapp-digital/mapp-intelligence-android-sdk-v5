@@ -46,14 +46,6 @@ Maven
 	<type>pom</type>
 </dependency>
 ```
-Versions less then 5.0.4 are on Jcenter(), Access will be blocked on February 1, 2022.
-**Warning:** Please don't use versions 5.0.5, 5.0.6 and 5.0.7
-
-
-Gradle
-```groovy
-implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.1.3'
-```
 
 Maven
 ```xml
@@ -78,6 +70,11 @@ compileOptions {
         sourceCompatibility 1.8
 }
 ```
+
+Versions less then 5.0.4 are on Jcenter(), Access will be blocked on February 1, 2022.
+**Warning:** Please don't use versions 5.0.5, 5.0.6 and 5.0.7
+
+# Manifest permissions
 
 Allow the network permission in your app manifest.
 ```xml
