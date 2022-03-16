@@ -9,12 +9,32 @@ Webtrekk Android SDK is used to integrate Webtrekk tracking systems with your An
 Webtrekk Android SDK v5 is written entirely in [Kotlin](https://kotlinlang.org/) and uses [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) for non-blocking executions, [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for enqueuing and sending the track requests to optimize the device battery and app performance.
 Webtrekk internally, collects and caches the data that you specify for tracking, and later, it sends those data to Webtrekk analytic servers in periodic times.
 
-# Installation
+# JCenter note
+
 For versions of 5.0.8+ we are use mavenCentral() because Jcenter is shutting down
+
+
+# Installation (Java 11)
+
+From version 5.1.3. and higher, Java 11 is required. 
+
+To set Java 11, go to Android Studio, Preferences->Build, Execution, Deployment->Gradle->Gradle JDK and select JAVA 11.
+
+Also, add following into application build.gradle file:
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    
+If using kotlin add this also:
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
 
 Gradle
 ```groovy
-implementation 'com.mapp.sdk:intelligence-android:5.1.1'
+implementation 'com.mapp.sdk:intelligence-android:5.1.3'
 ```
 
 Maven
@@ -22,7 +42,7 @@ Maven
 <dependency>
 	<groupId>com.mapp.sdk</groupId>
 	<artifactId>intelligence-android</artifactId>
-	<version>5.1.1</version>
+	<version>5.1.3</version>
 	<type>pom</type>
 </dependency>
 ```
@@ -32,7 +52,7 @@ Versions less then 5.0.4 are on Jcenter(), Access will be blocked on February 1,
 
 Gradle
 ```groovy
-implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.0.4'
+implementation 'com.webtrekk.webtrekksdk:webtrekksdk-android:5.1.3'
 ```
 
 Maven
@@ -40,10 +60,16 @@ Maven
 <dependency>
 	<groupId>com.webtrekk.webtrekksdk</groupId>
 	<artifactId>webtrekksdk-android</artifactId>
-	<version>5.0.4</version>
+	<version>5.1.3</version>
 	<type>pom</type>
 </dependency>
 ```
+
+# Installation (Java 8)
+
+
+```implementation 'com.mapp.sdk:intelligence-android:5.1.2'``` `Last SDK version that supports JAVA 8`
+
 
 The SDK requires that you enable Java 8 in your builds.
 ```groovy
