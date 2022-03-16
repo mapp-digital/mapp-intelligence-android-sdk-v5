@@ -59,8 +59,10 @@ Maven
 
 # Installation (Java 8)
 
-
-```implementation 'com.mapp.sdk:intelligence-android:5.1.2'``` `Last SDK version that supports JAVA 8`
+```groovy
+implementation 'com.mapp.sdk:intelligence-android:5.1.2'
+```
+`Last SDK version that supports JAVA 8`
 
 
 The SDK requires that you enable Java 8 in your builds.
