@@ -48,11 +48,11 @@ internal interface TrackRequestDao {
     suspend fun setTrackRequests(trackRequests: List<TrackRequest>)
 
     @Transaction
-    @Query("SELECT * FROM tracking_data ORDER BY time_stamp")
+    @Query("SELECT * FROM tracking_data ORDER BY time_stamp, ever_id")
     suspend fun getTrackRequests(): List<DataTrack>
 
     @Transaction
-    @Query("SELECT * FROM tracking_data WHERE request_state IN (:requestStates) ORDER BY time_stamp")
+    @Query("SELECT * FROM tracking_data WHERE request_state IN (:requestStates) ORDER BY time_stamp, ever_id")
     suspend fun getTrackRequestsByState(requestStates: List<String>): List<DataTrack>
 
     @Update

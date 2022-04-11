@@ -58,7 +58,7 @@ class SampleApplication : Application() {
                 .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 1)
-                .sendAppVersionInEveryRequest()
+                .sendAppVersionInEveryRequest(true)
                 .enableCrashTracking(
                     ExceptionType.valueOf(
                         sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())

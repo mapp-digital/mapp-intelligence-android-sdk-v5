@@ -73,9 +73,8 @@ import webtrekk.android.sdk.util.ExceptionWrapper
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.coroutineExceptionHandler
 import webtrekk.android.sdk.util.currentSession
+import webtrekk.android.sdk.util.generateEverId
 import webtrekk.android.sdk.util.getFileName
-import webtrekk.android.sdk.util.trackDomain
-import webtrekk.android.sdk.util.trackIds
 import webtrekk.android.sdk.util.webtrekkLogger
 import kotlin.coroutines.CoroutineContext
 
@@ -118,7 +117,7 @@ constructor() : Webtrekk(),
         get() = LibraryModule.application
 
     internal val config: Config
-        get() = LibraryModule.configuration
+        get() = AppModule.config
 
     override val coroutineContext: CoroutineContext
         get() = _job + coroutineDispatchers.defaultDispatcher
@@ -128,6 +127,9 @@ constructor() : Webtrekk(),
             if (!LibraryModule.isInitialized()) {
                 LibraryModule.initializeDI(context, config)
                 internalInit()
+                val configJson = config.toJson()
+                AppModule.webtrekkSharedPrefs.configJson = configJson
+                webtrekkLogger.info("CONFIG: $configJson")
             } else {
                 webtrekkLogger.warn("Webtrekk is already initialized!")
             }
@@ -148,7 +150,8 @@ constructor() : Webtrekk(),
                     forceNewSession = currentSession,
                     appFirstOpen = appFirstOpen,
                     appVersionName = context.appVersionName,
-                    appVersionCode = context.appVersionCode
+                    appVersionCode = context.appVersionCode,
+                    everId = getEverId(),
                 ),
                 trackingParams = trackingParams,
                 autoTrack = autoTracking,
@@ -190,7 +193,8 @@ constructor() : Webtrekk(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
                         appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
+                        appVersionCode = context.appVersionCode,
+                        everId = getEverId()
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
@@ -209,7 +213,8 @@ constructor() : Webtrekk(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
                         appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
+                        appVersionCode = context.appVersionCode,
+                        everId = getEverId(),
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
@@ -240,7 +245,8 @@ constructor() : Webtrekk(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
                         appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
+                        appVersionCode = context.appVersionCode,
+                        everId = getEverId(),
                     ),
                     trackingParams = trackingParams,
                     isOptOut = hasOptOut(),
@@ -261,7 +267,8 @@ constructor() : Webtrekk(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
                         appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
+                        appVersionCode = context.appVersionCode,
+                        everId = getEverId(),
                     ),
                     isOptOut = hasOptOut(),
                     exception = exception,
@@ -291,7 +298,8 @@ constructor() : Webtrekk(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
                         appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
+                        appVersionCode = context.appVersionCode,
+                        everId = getEverId(),
                     ),
                     isOptOut = hasOptOut(),
                     file = file,
@@ -319,7 +327,8 @@ constructor() : Webtrekk(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
                         appVersionName = context.appVersionName,
-                        appVersionCode = context.appVersionCode
+                        appVersionCode = context.appVersionCode,
+                        everId = getEverId(),
                     ),
                     isOptOut = hasOptOut(),
                     viewGroup = viewGroup,
@@ -369,16 +378,19 @@ constructor() : Webtrekk(),
     override fun setIdsAndDomain(trackIds: List<String>, trackDomain: String) {
         trackDomain.nullOrEmptyThrowError("trackDomain")
         trackIds.validateEntireList("trackIds")
-        context.run {
-            sendAndClean(
-                SendAndClean.Params(
-                    context = this,
-                    trackDomain = trackDomain,
-                    trackIds = trackIds,
-                    config = config
-                ), coroutineDispatchers
-            )
+
+        config.apply {
+            this.trackDomain = trackDomain
+            this.trackIds = trackIds
         }
+    }
+
+    override fun getTrackIds(): List<String> {
+        return config.trackIds
+    }
+
+    override fun getTrackDomain(): String {
+        return config.trackDomain
     }
 
     override fun getUserAgent(): String = context.run {
@@ -393,16 +405,54 @@ constructor() : Webtrekk(),
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
         if (generateNewEverId && !enabled)
-            sessions.generateNewEverId()
+            generateEverId()
     }
 
-    override fun resetSdkConfig() {
+    /**
+     * Set custom everId
+     * If null or empty string provided, new everId will be generated and set
+     *
+     */
+    override fun setEverId(everId: String?) {
+        val newEverId = if(everId.isNullOrEmpty()) generateEverId() else everId
+
+        sessions.setEverId(newEverId, true)
+    }
+
+    override fun getVersionInEachRequest(): Boolean {
+        return config.versionInEachRequest
+    }
+
+    override fun setVersionInEachRequest(enabled: Boolean) {
+        config.versionInEachRequest = enabled
+    }
+
+    override fun setBatchEnabled(enabled: Boolean) {
+        config.batchSupport=enabled
+    }
+
+    override fun getRequestsPerBatch(): Int {
+       return config.requestPerBatch
+    }
+
+    override fun setRequestPerBatch(requestsCount: Int) {
+        config.requestPerBatch=requestsCount
+    }
+
+    override fun getExceptionLogLevel(): ExceptionType {
+        return config.exceptionLogLevel
+    }
+
+    override fun setExceptionLogLevel(exceptionLogLevel: ExceptionType) {
+        config.exceptionLogLevel=exceptionLogLevel
+    }
+
+    override fun clearSdkConfig() {
         AppModule.webtrekkSharedPrefs.apply {
             sharedPreferences.edit().clear().apply()
             previousSharedPreferences.edit().clear().apply()
             mappSharedPreferences.edit().clear().apply()
         }
-
         LibraryModule.release()
     }
 
@@ -415,7 +465,7 @@ constructor() : Webtrekk(),
             sessions.migrate()
         }
 
-        sessions.setEverId(config.everId) // Setting up the ever id at first start of using the SDK.
+        sessions.setEverId() // Setting up the ever id at first start of using the SDK.
 
         // Starting a new session at every freshly app open.
         sessions.startNewSession().also { logger.info("A new session has started") }
@@ -525,7 +575,7 @@ constructor() : Webtrekk(),
     override fun sendRequestsNowAndClean() {
         sendAndClean(
             SendAndClean.Params(
-                context=context,
+                context = context,
                 trackDomain = config.trackDomain,
                 trackIds = config.trackIds,
                 config = config
@@ -535,6 +585,10 @@ constructor() : Webtrekk(),
 
     override fun isBatchEnabled(): Boolean {
         return config.batchSupport
+    }
+
+    override fun isInitialized(): Boolean {
+        return LibraryModule.isInitialized()
     }
 
     companion object {
@@ -560,13 +614,20 @@ constructor() : Webtrekk(),
          *
          * Context is mandatory, config is optional. If not provided, SDK will be initialized with default values.
          */
-        fun reset(context: Context, config: Config?) {
+        fun reset(context: Context) {
+
+            var ids: List<String>? = emptyList()
+            var domain: String? = null
+            var configBackup:Config?=null
             INSTANCE?.let {
                 it.sendRequestsNowAndClean()
-                it.resetSdkConfig()
+                configBackup=it.config.copy()
+                ids = it.config.trackIds
+                domain = it.config.trackDomain
+                it.clearSdkConfig()
             }
 
-            val mConfig = config ?: WebtrekkConfiguration.Builder(trackIds, trackDomain).build()
+            val mConfig = configBackup ?: WebtrekkConfiguration.Builder(ids!!, domain!!).build()
             INSTANCE = WebtrekkImpl().also {
                 it.init(context.applicationContext, mConfig)
             }

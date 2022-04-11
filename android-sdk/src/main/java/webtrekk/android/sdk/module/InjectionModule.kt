@@ -83,11 +83,11 @@ object AppModule {
 
     private fun provideAppState(): AppState<DataAnnotationClass> {
         return if (config.fragmentsAutoTracking && config.activityAutoTracking)
-            AppStateImpl()
+            AppStateImpl(sessions = InteractorModule.sessions)
         else if (config.fragmentsAutoTracking)
             FragmentStateImpl()
         else if (config.activityAutoTracking)
-            ActivityAppStateImpl()
+            ActivityAppStateImpl(sessions = InteractorModule.sessions)
         else DisabledStateImpl()
     }
 }
@@ -119,10 +119,15 @@ object InteractorModule {
 
     internal val sessions: Sessions
         get() = SessionsImpl(AppModule.webtrekkSharedPrefs).apply {
-            setEverId(AppModule.config.everId)
+            setEverId()
         }
 
-    internal val scheduler: Scheduler by lazy { SchedulerImpl(NetworkModule.workManager) }
+    internal val scheduler: Scheduler by lazy {
+        SchedulerImpl(
+            NetworkModule.workManager,
+            AppModule.config
+        )
+    }
 
     internal fun cacheTrackRequest(): CacheTrackRequest =
         CacheTrackRequest(DataModule.trackRequestRepository)
@@ -288,7 +293,7 @@ object LibraryModule {
 
     fun release() {
         initializer.set(false)
-        appContext = null
+        //appContext = null
         config = null
     }
 }

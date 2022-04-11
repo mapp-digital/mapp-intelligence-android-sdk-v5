@@ -33,6 +33,8 @@
         android:layout_height="match_parent"
         android:keepScreenOn="true"
         android:orientation="vertical"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="10dp"
         tools:context=".MainActivity">
 
         <Button

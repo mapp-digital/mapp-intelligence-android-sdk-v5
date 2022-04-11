@@ -29,6 +29,10 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
+import webtrekk.android.sdk.DefaultConfiguration
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.WebtrekkConfiguration
+import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ClearCustomParamsRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
@@ -36,6 +40,8 @@ import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
+import webtrekk.android.sdk.util.trackDomain
+import webtrekk.android.sdk.util.trackIds
 
 /**
  * [WorkManager] worker responsible about cleaning the successfully executed cached requests.
@@ -70,6 +76,21 @@ internal class CleanUpWorker(
          * [logger] the injected logger from Webtrekk.
          */
         val logger by lazy { AppModule.logger }
+
+        val trackDomainLocal: String = inputData.getString("trackDomain") ?: trackDomain
+
+        val trackIdsLocal : List<String> = inputData.getStringArray("trackIds")?.toList() ?: trackIds
+
+        // this check and initialization is needed for cross platform solutions
+        if (!Webtrekk.getInstance().isInitialized()) {
+            val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
+            val config = WebtrekkConfiguration.fromJson(
+                configJson,
+                DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
+                DefaultConfiguration.OKHTTP_CLIENT
+            )
+            Webtrekk.getInstance().init(applicationContext, config)
+        }
 
         // get the data from the data base with state DONE only.
         // todo handle Result.failure()

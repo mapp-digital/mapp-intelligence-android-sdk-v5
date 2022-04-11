@@ -71,8 +71,9 @@ internal var userUpdate: Boolean
     inline get() = WebtrekkImpl.getInstance().sessions.isUserUpdated()
     set(value) = WebtrekkImpl.getInstance().sessions.updateUser(value)
 
-internal val appVersionInRequest: Boolean
+internal var appVersionInRequest: Boolean
     inline get() = WebtrekkImpl.getInstance().config.versionInEachRequest
+    set(value) { WebtrekkImpl.getInstance().config.versionInEachRequest=value}
 
 internal var anonymous: Boolean
     inline get() = WebtrekkImpl.getInstance().sessions.isAnonymous()

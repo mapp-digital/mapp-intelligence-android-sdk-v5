@@ -33,6 +33,7 @@ import android.content.SharedPreferences
  */
 internal class WebtrekkSharedPrefs(context: Context) {
     val localContext = context
+
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -105,6 +106,10 @@ internal class WebtrekkSharedPrefs(context: Context) {
             ?: emptySet()
         set(value) = sharedPreferences.edit().putStringSet(ANONYMOUS_SUPPRESS_PARAM, value).apply()
 
+    var configJson: String
+        inline get() = sharedPreferences.getString(CONFIG, "") ?: ""
+        set(value) = sharedPreferences.edit().putString(CONFIG, value).apply()
+
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 
     companion object {
@@ -124,5 +129,6 @@ internal class WebtrekkSharedPrefs(context: Context) {
         const val IS_USER_UPDATED = "isUserUpdated"
         const val ANONYMOUS_TRACKING = "anonymousTracking"
         const val ANONYMOUS_SUPPRESS_PARAM = "anonymousSuppressParams"
+        const val CONFIG = "config"
     }
 }

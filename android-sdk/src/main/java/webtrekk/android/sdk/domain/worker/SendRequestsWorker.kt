@@ -29,6 +29,10 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
+import webtrekk.android.sdk.DefaultConfiguration
+import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.WebtrekkConfiguration
+import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
@@ -43,7 +47,6 @@ import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.anonymous
 import webtrekk.android.sdk.util.anonymousParam
 import webtrekk.android.sdk.util.batchSupported
-import webtrekk.android.sdk.util.currentEverId
 import webtrekk.android.sdk.util.requestPerBatch
 import webtrekk.android.sdk.util.trackDomain
 import webtrekk.android.sdk.util.trackIds
@@ -84,16 +87,21 @@ internal class SendRequestsWorker(
          */
         val logger by lazy { AppModule.logger }
 
-        val trackDomainLocal = if (inputData.getString("trackDomain") != null) {
-            inputData.getString("trackDomain")
-        } else {
-            trackDomain
+        // this check and initialization is needed for cross platform solutions
+        if (!Webtrekk.getInstance().isInitialized()) {
+            val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
+            val config = WebtrekkConfiguration.fromJson(
+                configJson,
+                DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
+                DefaultConfiguration.OKHTTP_CLIENT
+            )
+            Webtrekk.getInstance().init(applicationContext, config)
         }
-        val trackIdsLocal = if (inputData.getStringArray("trackIds") != null) {
-            inputData.getStringArray("trackIds")!!.toList()
-        } else {
-            trackIds
-        }
+
+        val trackDomainLocal: String = trackDomain
+
+        val trackIdsLocal: List<String> = trackIds
+
         // retrieves the data in the data base with state of NEW or FAILED only.
         // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
@@ -110,25 +118,33 @@ internal class SendRequestsWorker(
                         logger.info("Executing the requests")
                         // Must execute requests sync and in order
                         if (batchSupported) {
-                            dataTracks.asSequence().batch(requestPerBatch).forEach { group ->
-                                val urlRequest =
-                                    group.buildPostRequest(
-                                        trackDomainLocal!!,
-                                        trackIdsLocal, currentEverId, anonymous,
-                                        anonymousParam
-                                    )
-                                logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
+                            // group requests by everId
+                            dataTracks.groupBy { it.trackRequest.everId }
+                                .forEach { map ->
+                                    // request are grouped in Map<String, List<DataTrack>>
+                                    // where "KEY" is everId
+                                    map.value.asSequence()
+                                        .batch(requestPerBatch)
+                                        .forEach { dataTrack ->
+                                            val urlRequest = dataTrack.buildPostRequest(
+                                                trackDomain = trackDomainLocal!!,
+                                                trackIds = trackIdsLocal,
+                                                currentEverId = map.key, // map.Key is everId
+                                                anonymous = anonymous,
+                                                anonymousParam = anonymousParam
+                                            )
+                                            logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
-                                executePostRequest(
-                                    ExecutePostRequest.Params(
-                                        request = urlRequest,
-                                        dataTracks = dataTracks
-                                    )
-                                )
-                                    .onSuccess { logger.debug("Sent the request successfully $it") }
-                                    .onFailure { logger.error("Failed to send the request $it") }
-                                //   }
-                            }
+                                            executePostRequest(
+                                                ExecutePostRequest.Params(
+                                                    request = urlRequest,
+                                                    dataTracks = dataTracks
+                                                )
+                                            )
+                                                .onSuccess { logger.debug("Sent the request successfully $it") }
+                                                .onFailure { logger.error("Failed to send the request $it") }
+                                        }
+                                }
                         } else {
                             dataTracks.forEach { dataTrack ->
 
@@ -136,7 +152,7 @@ internal class SendRequestsWorker(
                                     dataTrack.buildUrlRequest(
                                         trackDomainLocal!!,
                                         trackIdsLocal,
-                                        currentEverId,
+                                        dataTrack.trackRequest.everId,
                                         anonymous,
                                         anonymousParam
                                     )

@@ -37,7 +37,7 @@ import webtrekk.android.sdk.extension.toTrackRequest
 /**
  * The implementation of [AppState]. This class listens to both activity and fragments life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
  */
-internal class AppStateImpl : AppState<DataAnnotationClass>() {
+internal class AppStateImpl(override var sessions: Sessions) : AppState<DataAnnotationClass>() {
 
     override fun onActivityStarted(activity: Activity) {
         super.onActivityStarted(activity)
@@ -46,7 +46,7 @@ internal class AppStateImpl : AppState<DataAnnotationClass>() {
             val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
                 DataAnnotationClass(
-                    activity.toTrackRequest(needToTrack),
+                    activity.toTrackRequest(needToTrack, sessions.getEverId()),
                     activity.getTrackerParams()
                 ),
                 needToTrack
@@ -67,7 +67,8 @@ internal class AppStateImpl : AppState<DataAnnotationClass>() {
 /**
  * The implementation of [AppState]. This class listens to ONLY activity life cycles, and automatically creates a [TrackRequest] from the data coming from the life cycles.
  */
-internal class ActivityAppStateImpl : AppState<DataAnnotationClass>() {
+internal class ActivityAppStateImpl(override var sessions: Sessions) :
+    AppState<DataAnnotationClass>() {
 
     override fun onActivityStarted(activity: Activity) {
         super.onActivityStarted(activity)
@@ -76,7 +77,7 @@ internal class ActivityAppStateImpl : AppState<DataAnnotationClass>() {
             val needToTrack = !activity.javaClass.isAnnotationPresent(StopTrack::class.java)
             lifecycleReceiver.onLifecycleEventReceived(
                 DataAnnotationClass(
-                    activity.toTrackRequest(needToTrack),
+                    activity.toTrackRequest(needToTrack, sessions.getEverId()),
                     activity.getTrackerParams()
                 ),
                 needToTrack
