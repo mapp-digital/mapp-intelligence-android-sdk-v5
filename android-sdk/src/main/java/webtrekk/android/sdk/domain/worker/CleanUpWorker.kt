@@ -79,7 +79,7 @@ internal class CleanUpWorker(
 
         val trackDomainLocal: String = inputData.getString("trackDomain") ?: trackDomain
 
-        val trackIdsLocal : List<String> = inputData.getStringArray("trackIds")?.toList() ?: trackIds
+        val trackIdsLocal: List<String> = inputData.getStringArray("trackIds")?.toList() ?: trackIds
 
         // this check and initialization is needed for cross platform solutions
         if (!Webtrekk.getInstance().isInitialized()) {
@@ -101,7 +101,10 @@ internal class CleanUpWorker(
                         logger.info("Cleaning up the completed requests")
 
                         clearTrackRequests(ClearTrackRequests.Params(trackRequests = dataTracks.map { it.trackRequest }))
-                            .onSuccess { logger.debug("Cleaned up the completed requests successfully") }
+                            .onSuccess {
+                                logger.debug("Cleaned up the completed requests successfully")
+                                clearCustomParamsRequest.invoke(null)
+                            }
                             .onFailure {
                                 logger.error("Failed while cleaning up the completed requests: $it")
                             }
@@ -109,7 +112,7 @@ internal class CleanUpWorker(
                 }
                 .onFailure { logger.error("Error getting the cached completed requests: $it") }
 
-            clearCustomParamsRequest.invoke(null)
+
         }
 
         return Result.success()
