@@ -26,11 +26,12 @@
 package webtrekk.android.sdk
 
 import androidx.work.Constraints
+import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
+import org.json.JSONObject
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
-import webtrekk.android.sdk.util.generateEverId
-import java.util.concurrent.TimeUnit
+import webtrekk.android.sdk.util.webtrekkLogger
 
 /**
  * The entry point where you can set up all the configurations that will be used by the lib.
@@ -46,7 +47,7 @@ import java.util.concurrent.TimeUnit
  *      .build()
  *
  */
-class WebtrekkConfiguration private constructor(
+data class WebtrekkConfiguration private constructor(
     override var trackIds: List<String>,
     override var trackDomain: String,
     override val logLevel: Logger.Level,
@@ -55,13 +56,12 @@ class WebtrekkConfiguration private constructor(
     override val fragmentsAutoTracking: Boolean,
     override val workManagerConstraints: Constraints,
     override val okHttpClient: OkHttpClient,
-    override val requestPerBatch: Int,
-    override val batchSupport: Boolean,
+    override var requestPerBatch: Int,
+    override var batchSupport: Boolean,
     override val activityAutoTracking: Boolean,
-    override val exceptionLogLevel: ExceptionType,
+    override var exceptionLogLevel: ExceptionType,
     override val shouldMigrate: Boolean,
-    override val versionInEachRequest: Boolean,
-    override val everId: String?
+    override var versionInEachRequest: Boolean,
 ) : Config {
 
     /**
@@ -82,7 +82,6 @@ class WebtrekkConfiguration private constructor(
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
-        private var everId: String? = generateEverId()
 
         /**
          * Configure the log level of the lib.
@@ -154,8 +153,8 @@ class WebtrekkConfiguration private constructor(
          * It is recommended to enable when using the pre-defined app version parameter in order to be inline with the sessions as detected by the Mapp Intelligence backend.
          */
 
-        fun sendAppVersionInEveryRequest() = apply {
-            this.versionInEachRequest = true
+        fun sendAppVersionInEveryRequest(enabled: Boolean = true) = apply {
+            this.versionInEachRequest = enabled
         }
 
         @JvmOverloads
@@ -232,15 +231,26 @@ class WebtrekkConfiguration private constructor(
             exceptionLogLevel,
             shouldMigrate,
             versionInEachRequest,
-            everId
         )
+    }
 
-        /**
-         * Set custom ever id
-         */
-        fun setEverId(everId: String?) = apply {
-            this.everId = everId
-        }
+    override fun copy(): Config {
+        return WebtrekkConfiguration(
+            trackIds = this.trackIds,
+            trackDomain = this.trackDomain,
+            logLevel = this.logLevel,
+            requestsInterval = this.requestsInterval,
+            autoTracking = this.autoTracking,
+            fragmentsAutoTracking = this.fragmentsAutoTracking,
+            workManagerConstraints = this.workManagerConstraints,
+            okHttpClient = this.okHttpClient,
+            requestPerBatch = this.requestPerBatch,
+            batchSupport = this.batchSupport,
+            activityAutoTracking = this.activityAutoTracking,
+            exceptionLogLevel = this.exceptionLogLevel,
+            shouldMigrate = this.shouldMigrate,
+            versionInEachRequest = this.versionInEachRequest,
+        )
     }
 
     override fun equals(other: Any?): Boolean {
@@ -283,6 +293,66 @@ class WebtrekkConfiguration private constructor(
         result = 31 * result + shouldMigrate.hashCode()
         result = 31 * result + versionInEachRequest.hashCode()
         return result
+    }
+
+    override fun toJson(): String {
+        try {
+            var jsonObject = JSONObject("{}")
+            jsonObject.put("trackDomain", trackDomain)
+            jsonObject.put("trackIds", trackIds)
+            jsonObject.put("activityAutoTracking", activityAutoTracking)
+            jsonObject.put("autoTracking", autoTracking)
+            jsonObject.put("batchSupport", batchSupport)
+            jsonObject.put("exceptionLogLevel", exceptionLogLevel.name)
+            jsonObject.put("fragmentsAutoTracking", fragmentsAutoTracking)
+            jsonObject.put("logLevel", logLevel.name)
+            jsonObject.put("requestPerBatch", requestPerBatch)
+            jsonObject.put("requestsInterval", requestsInterval)
+            jsonObject.put("shouldMigrate", shouldMigrate)
+            jsonObject.put("versionInEachRequest", versionInEachRequest)
+
+            return jsonObject.toString()
+        } catch (e: Exception) {
+            webtrekkLogger.error(e.message ?: "Unknown error")
+        }
+        return "{}"
+    }
+
+    companion object {
+        internal fun fromJson(
+            json: String,
+            webtrekkConstraints: Constraints,
+            okHttpClient: OkHttpClient
+        ): Config {
+            val obj = JSONObject(json)
+
+            val trackIdsJsonArray = obj.getJSONArray("trackIds")
+
+            val trackIds = mutableListOf<String>()
+
+            for (i in 0 until trackIdsJsonArray.length()) {
+                trackIds.add(trackIdsJsonArray.get(i).toString())
+            }
+
+            return WebtrekkConfiguration(
+                trackIds = trackIds,
+                trackDomain = obj.getString("trackDomain"),
+                logLevel = Logger.Level.valueOf(obj.getString("logLevel")),
+                requestsInterval = obj.getLong("requestsInterval"),
+                autoTracking = obj.getBoolean("autoTracking"),
+                fragmentsAutoTracking = obj.getBoolean("fragmentsAutoTracking"),
+                requestPerBatch = obj.getInt("requestPerBatch"),
+                activityAutoTracking = obj.getBoolean("activityAutoTracking"),
+                versionInEachRequest = obj.getBoolean("versionInEachRequest"),
+                exceptionLogLevel = ExceptionType.valueOf(
+                    obj.getString("exceptionLogLevel"),
+                ),
+                batchSupport = obj.getBoolean("batchSupport"),
+                shouldMigrate = obj.getBoolean("shouldMigrate"),
+                okHttpClient = okHttpClient,
+                workManagerConstraints = webtrekkConstraints
+            )
+        }
     }
 
     override fun toString(): String {

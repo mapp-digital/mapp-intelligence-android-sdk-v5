@@ -45,20 +45,15 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         }
     }
 
-    override fun setEverId(everId: String?) {
-        if (!webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
+    override fun setEverId(everId: String?, forceUpdate: Boolean) {
+        if (forceUpdate || !webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
             webtrekkSharedPrefs.everId =
-                if (everId?.isBlank() != false) generateEverId() else everId
+                if (everId.isNullOrBlank()) generateEverId() else everId
         }
     }
 
-    override fun generateNewEverId() {
-        webtrekkSharedPrefs.everId = generateEverId()
-    }
-
     override fun getEverId(): String = webtrekkSharedPrefs.let {
-        setEverId()
-        return webtrekkSharedPrefs.everId
+        return webtrekkSharedPrefs.everId.ifEmpty { generateEverId() }
     }
 
     override fun getUserAgent(): String {

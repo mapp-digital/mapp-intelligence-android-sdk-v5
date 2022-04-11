@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Track IDs"
+            app:placeholderText="Enter custom track ids, separated with ','">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieTrackIds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="826582930668809" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Track Domain"
+            app:placeholderText="Enter custom Track domain">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieTrackDomain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="http://vdestellaaccount01.wt-eu02.net" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Ever Id"
+            app:placeholderText="Enter custom Ever ID">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieEverId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="111111111111" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchBatchRequests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Send requests in batch" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Batch Request Size"
+            app:placeholderText="Number of request to send in one batch">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieBatchRequestSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="20" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchSentAppVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Send app version in each request" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Exception Log Level" />
+
+        <Spinner
+            android:id="@+id/spinnerExceptionLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="40dp" />
+
+        <Button
+            android:id="@+id/btnResetOnly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Reset only" />
+
+        <Button
+            android:id="@+id/btnResetAndSetValues"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset and set new values" />
+
+        <Button
+            android:id="@+id/btnOnlySetValues"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Only set new values" />
+    </LinearLayout>
+</ScrollView>

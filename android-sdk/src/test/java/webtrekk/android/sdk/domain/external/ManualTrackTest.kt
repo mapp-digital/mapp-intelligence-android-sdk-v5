@@ -23,7 +23,6 @@ import webtrekk.android.sdk.util.trackingParams
 @ExperimentalCoroutinesApi
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ManualTrackTest : BaseExternalTest() {
-
     @RelaxedMockK
     lateinit var sessions: Sessions
 
@@ -31,7 +30,7 @@ internal class ManualTrackTest : BaseExternalTest() {
 
     lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
-    private lateinit var manualTrack: ManualTrack
+    lateinit var manualTrack: ManualTrack
 
     @BeforeAll
     override fun setup() {

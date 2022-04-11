@@ -31,11 +31,14 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import webtrekk.android.sdk.Config
 
 /**
  * An abstract class, used for listening to the events coming from [LifecycleWrapper] and propagate their events data.
  */
 internal abstract class AppState<T : Any> : LifecycleWrapper() {
+
+    open lateinit var sessions: Sessions
 
     /**
      * The callback which is used in children classes whenever they receive an event and propagate the values to the lambda.

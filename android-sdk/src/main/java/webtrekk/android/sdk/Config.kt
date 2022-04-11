@@ -41,6 +41,12 @@ import okhttp3.OkHttpClient
  * @see [DefaultConfiguration] for the default values (behaviour) of each parameter.
  */
 interface Config {
+    /**
+     * Copy object by values
+     */
+    fun copy(): Config
+
+    fun toJson():String
 
     /**
      * The [trackIds] that you get in your Webtrekk's account. [trackIds] must be set in the configuration,
@@ -113,7 +119,7 @@ interface Config {
      * Choose [exceptionLogLevel] type to track different exceptions individually ([ExceptionType.UNCAUGHT], [ExceptionType.CAUGHT], [ExceptionType.CUSTOM]),
      * or different combinations of them. ([ExceptionType.ALL], [ExceptionType.UNCAUGHT_AND_CUSTOM], [ExceptionType.CUSTOM_AND_CAUGHT])
      */
-    val exceptionLogLevel: ExceptionType
+    var exceptionLogLevel: ExceptionType
 
     /**
      * [workManagerConstraints] the constraints that will be used by the work manager to send the requests.
@@ -144,7 +150,7 @@ interface Config {
      *
      * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.BATCH_SUPPORT_ENABLED]
      */
-    val batchSupport: Boolean
+    var batchSupport: Boolean
 
     /**
      * [shouldMigrate] set to true to enable migration of ever id and one parameter values from sdk version 4.
@@ -158,15 +164,10 @@ interface Config {
      *
      * In [WebtrekkConfiguration] the defailt requestPerBatch is [DefaultConfiguration.REQUEST_PER_BATCH]
      */
-    val requestPerBatch: Int
+    var requestPerBatch: Int
 
     /**
      * [versionInEachRequest] if versionInEachRequest is true we will send apk version in each request
      */
-    val versionInEachRequest: Boolean
-
-    /**
-     * id assigned to a user
-     */
-    val everId: String?
+    var versionInEachRequest: Boolean
 }

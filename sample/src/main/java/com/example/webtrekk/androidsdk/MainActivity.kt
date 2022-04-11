@@ -28,8 +28,6 @@ package com.example.webtrekk.androidsdk
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
@@ -44,12 +42,13 @@ import kotlinx.android.synthetic.main.activity_main.formActivity
 import kotlinx.android.synthetic.main.activity_main.startDetailsActivity
 import kotlinx.android.synthetic.main.activity_main.videoActivity
 import kotlinx.android.synthetic.main.activity_main.webViewActivity
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackPageDetail
 import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.WebtrekkConfiguration
 
+@Suppress("UNCHECKED_CAST")
 @TrackPageDetail(
     contextName = "Main Page",
     trackingParams = [TrackParams(
@@ -59,13 +58,13 @@ import webtrekk.android.sdk.WebtrekkConfiguration
 )
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var prefs:Prefs
+    private lateinit var prefs: Prefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        prefs= Prefs(this);
+        prefs = Prefs(this);
 
         setTitle("${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME}")
 /*
@@ -126,24 +125,44 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnResetSdk.setOnClickListener {
-            ResetDialogBuilder(this) { batchEnabled,everId->
-                val oldSdk=Webtrekk.getInstance().toString().split("@")[1]
-                val oldEverId=Webtrekk.getInstance().getEverId()
-                val oldBatchEnabled=Webtrekk.getInstance().isBatchEnabled()
+            ResetDialog.getInstance(object : ResetCallback {
+                override fun resetOnly() {
+                    Webtrekk.reset(this@MainActivity)
+                }
 
-                val trackIds=BuildConfig.TRACK_IDS.split(",").toList()
-                val config=WebtrekkConfiguration.Builder(trackIds, BuildConfig.DOMEIN)
-                    .setBatchSupport(batchEnabled)
-                    .setEverId(everId)
-                    .build()
+                override fun resetAndSetNewValues(data: Map<String, Any>) {
+                    Webtrekk.reset(this@MainActivity)
+                    updateConfig(data)
+                }
 
-                Webtrekk.reset(this,config)
+                override fun onlySetNewValues(data: Map<String, Any>) {
+                    updateConfig(data)
+                }
+            }).show(supportFragmentManager, ResetDialog.TAG)
 
-                val newSdk=Webtrekk.getInstance().toString().split("@")[1]
-                val newEverId=Webtrekk.getInstance().getEverId()
-                val newBatchEnabled=Webtrekk.getInstance().isBatchEnabled()
+            /*ResetDialogBuilder(this) { batchEnabled, everId ->
+                val oldSdk = Webtrekk.getInstance().toString().split("@")[1]
+                val oldEverId = Webtrekk.getInstance().getEverId()
+                val oldBatchEnabled = Webtrekk.getInstance().isBatchEnabled()
 
-                val sb=StringBuffer()
+                val trackIds = BuildConfig.TRACK_IDS.split(",").toList()
+
+                Webtrekk.reset(this)
+
+                Webtrekk.getInstance()
+                    .setIdsAndDomain(trackIds = trackIds, trackDomain = BuildConfig.DOMEIN)
+                if (!everId.isNullOrEmpty())
+                    Webtrekk.getInstance().setEverId(everId)
+                Webtrekk.getInstance().setVersionInEachRequest(true)
+                Webtrekk.getInstance().setBatchEnabled(batchEnabled)
+                Webtrekk.getInstance().setRequestPerBatch(20)
+                Webtrekk.getInstance().setExceptionLogLevel(ExceptionType.ALL)
+
+                val newSdk = Webtrekk.getInstance().toString().split("@")[1]
+                val newEverId = Webtrekk.getInstance().getEverId()
+                val newBatchEnabled = Webtrekk.getInstance().isBatchEnabled()
+
+                val sb = StringBuffer()
 
                 sb.append("Old SDK: $oldSdk").append("\n")
                     .append("Old Ever ID: $oldEverId").append("\n")
@@ -158,14 +177,14 @@ class MainActivity : AppCompatActivity() {
                 //.append("New App First Open: $newAppFirstOpen").append("\n")
                 //.append("New Current Session: $newCurrentSession").append("\n")
 
-                val msg=sb.toString()
+                val msg = sb.toString()
 
                 AlertDialog.Builder(this)
                     .setMessage("Webtrekk")
                     .setMessage(msg)
                     .setPositiveButton("Ok") { dialog, _ -> dialog.dismiss() }
                     .show()
-            }
+            }*/
         }
 
         buttonTestPageRequest.setOnClickListener {
@@ -180,6 +199,40 @@ class MainActivity : AppCompatActivity() {
             val url = Uri.parse(result)
             Webtrekk.getInstance().trackUrl(url)
             Webtrekk.getInstance().trackPage(this)
+        }
+    }
+
+
+    private fun updateConfig(data: Map<String, Any>) {
+        if (data.containsKey("trackIds") && data.containsKey("trackDomain")) {
+            val trackIds: List<String> = data.getValue("trackIds") as List<String>
+            val trackDomain: String = data.getValue("trackDomain") as String
+            Webtrekk.getInstance()
+                .setIdsAndDomain(trackIds = trackIds, trackDomain = trackDomain)
+        }
+        if (data.containsKey("everId")) {
+            val everId: String = data.getValue("everId") as String
+            Webtrekk.getInstance().setEverId(everId)
+        }
+        if (data.containsKey("batchEnabled")) {
+            val batchEnabled = data.getValue("batchEnabled") as Boolean
+            Webtrekk.getInstance().setBatchEnabled(batchEnabled)
+        }
+
+        if (data.containsKey("batchRequestSize")) {
+            val batchRequestSize = data.getValue("batchRequestSize") as Int
+            Webtrekk.getInstance().setRequestPerBatch(batchRequestSize)
+        }
+
+        if (data.containsKey("sendAppVersionInRequest")) {
+            val sendAppVersionInRequest =
+                data.getValue("sendAppVersionInRequest") as Boolean
+            Webtrekk.getInstance().setVersionInEachRequest(sendAppVersionInRequest)
+        }
+
+        if (data.containsKey("exceptionLogLevel")) {
+            val exceptionLogLevel = data.getValue("exceptionLogLevel") as ExceptionType
+            Webtrekk.getInstance().setExceptionLogLevel(exceptionLogLevel)
         }
     }
 
