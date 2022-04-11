@@ -38,14 +38,13 @@ internal interface Sessions {
     fun setEverId()
 
     /**
-     * Generate and set the ever id that uniquely associated per user.
-     */
-    fun generateNewEverId()
-
-    /**
      * Set the ever id provided by the client.
+     * If everId is not provided, new everId will be generated.
+     * If everId already is created, then forceUpdate must me set to true
+     * to override existing everId.
+     * If forceUpdate == false, then everId will not be changed if already exist.
      */
-    fun setEverId(everId: String?)
+    fun setEverId(everId: String?, forceUpdate: Boolean)
 
     /**
      * Returns the ever id which is stored in the SharedPreferences.

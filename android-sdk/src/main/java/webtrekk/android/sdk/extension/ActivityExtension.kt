@@ -29,6 +29,7 @@ import android.app.Activity
 import androidx.fragment.app.Fragment
 import webtrekk.android.sdk.TrackPageDetail
 import webtrekk.android.sdk.TrackParams
+import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.util.appFirstOpen
 import webtrekk.android.sdk.util.currentSession
@@ -36,14 +37,15 @@ import webtrekk.android.sdk.util.currentSession
 /**
  * Extension function to create a [TrackRequest] from [Activity] to be inserted in the DB.
  */
-internal fun Activity.toTrackRequest(needToTrack: Boolean = true): TrackRequest =
+internal fun Activity.toTrackRequest(needToTrack: Boolean = true, everId:String): TrackRequest =
     TrackRequest(
         name = getName(),
         screenResolution = this.resolution(),
         forceNewSession = if (needToTrack) currentSession else "1",
         appFirstOpen = if (needToTrack) appFirstOpen else "1",
         appVersionName = this.appVersionName,
-        appVersionCode = this.appVersionCode
+        appVersionCode = this.appVersionCode,
+        everId = everId
     )
 
 /**
@@ -56,7 +58,8 @@ internal fun Fragment.toTrackRequest(): TrackRequest =
         forceNewSession = currentSession,
         appFirstOpen = appFirstOpen,
         appVersionName = this.context?.appVersionName,
-        appVersionCode = this.context?.appVersionCode
+        appVersionCode = this.context?.appVersionCode,
+        everId = Webtrekk.getInstance().getEverId(),
     )
 
 private fun <T : Any> T.getName(): String {

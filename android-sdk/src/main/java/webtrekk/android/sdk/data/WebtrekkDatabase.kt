@@ -38,7 +38,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 
 @Database(
     entities = [TrackRequest::class, CustomParam::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(RequestStateConverter::class)

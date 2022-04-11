@@ -32,8 +32,6 @@ import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.trackDomain
-import webtrekk.android.sdk.util.trackIds
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -49,12 +47,7 @@ internal class SendAndClean(
         CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
-        scheduler.sendRequestsThenCleanUp(
-            trackDomain = trackDomain,
-            trackIds = trackIds
-        )
-        invokeParams.config.trackDomain = invokeParams.trackDomain
-        invokeParams.config.trackIds = invokeParams.trackIds
+        scheduler.sendRequestsThenCleanUp()
     }
 
     /**

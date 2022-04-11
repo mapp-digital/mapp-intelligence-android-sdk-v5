@@ -281,6 +281,7 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun hasOptOut(): Boolean
 
+
     /**
      * Returns [String] the user ever id which is associated per each unique user.
      *
@@ -298,6 +299,10 @@ abstract class Webtrekk protected constructor() {
      * @throws [IllegalStateException] if [Context] context is not initialized.
      */
     abstract fun setIdsAndDomain(trackIds: List<String>, trackDomain: String)
+
+    abstract fun getTrackIds():List<String>
+
+    abstract fun getTrackDomain():String
 
     /**
      * Returns [String] the user Agent which is associated per each unique device.
@@ -333,9 +338,56 @@ abstract class Webtrekk protected constructor() {
     abstract fun isBatchEnabled(): Boolean
 
     /**
+     * Set batch enabled or disabled after initialization
+     */
+    abstract fun setBatchEnabled(enabled: Boolean)
+
+    /**
+     * Get number of track records sent in one batch
+     */
+    abstract fun getRequestsPerBatch():Int
+
+    /**
+     * Set count of track records to be sent in one batch
+     */
+    abstract fun setRequestPerBatch(requestsCount:Int)
+
+    /**
+     * Get exception tracking mode
+     */
+    abstract fun getExceptionLogLevel():ExceptionType
+
+    /**
+     * Set exception tracking mode
+     */
+    abstract fun setExceptionLogLevel(exceptionType: ExceptionType)
+
+    /**
      * Reset SDK configuration, clean all saved settings
      */
-    internal abstract fun resetSdkConfig()
+    internal abstract fun clearSdkConfig()
+
+    /**
+     * Reset everId in runtime, after initialization.
+     *
+     * If null or empty string provided, new everId will be generated and set
+     */
+    abstract fun setEverId(everId:String?)
+
+    /**
+     * Enable or disable sending app version in every request
+     */
+    abstract fun setVersionInEachRequest(enabled: Boolean)
+
+    /**
+     * Check if app version is set to be sent in every request or not
+     */
+    abstract fun getVersionInEachRequest():Boolean
+
+    /**
+     * Chck if SDK is initialized
+     */
+    abstract fun isInitialized():Boolean
 
     companion object {
 
@@ -353,8 +405,8 @@ abstract class Webtrekk protected constructor() {
          * Resets all configuration for SDK. After this call client must initialize SDK with new configuration.
          */
         @JvmStatic
-        fun reset(context: Context, config: Config? = null) {
-            WebtrekkImpl.reset(context, config)
+        fun reset(context: Context) {
+            WebtrekkImpl.reset(context)
         }
     }
 }
