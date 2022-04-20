@@ -131,25 +131,26 @@
         </activity>
         <activity android:name=".mapp.PageRequestsActivity"
             android:exported="false"/>
+        <activity android:name=".CampaignActivity" />
 
-<!--        <receiver
-            android:name=".mapp.MyPushBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.appoxee.PUSH_OPENED" />
-                <action android:name="com.appoxee.PUSH_RECEIVED" />
-                <action android:name="com.appoxee.PUSH_DISMISSED" />
-                <action android:name="com.appoxee.BUTTON_CLICKED" />
+        <!--        <receiver
+                    android:name=".mapp.MyPushBroadcastReceiver"
+                    android:enabled="true"
+                    android:exported="false">
+                    <intent-filter>
+                        <action android:name="com.appoxee.PUSH_OPENED" />
+                        <action android:name="com.appoxee.PUSH_RECEIVED" />
+                        <action android:name="com.appoxee.PUSH_DISMISSED" />
+                        <action android:name="com.appoxee.BUTTON_CLICKED" />
 
-                <category android:name="${applicationId}" />
+                        <category android:name="${applicationId}" />
 
-                <action android:name="android.intent.action.VIEW" />
+                        <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
-        </receiver>-->
+                        <category android:name="android.intent.category.DEFAULT" />
+                        <category android:name="android.intent.category.BROWSABLE" />
+                    </intent-filter>
+                </receiver>-->
     </application>
 
 </manifest>

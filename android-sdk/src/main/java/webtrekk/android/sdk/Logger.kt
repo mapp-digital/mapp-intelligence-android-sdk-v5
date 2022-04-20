@@ -52,4 +52,6 @@ interface Logger {
     fun warn(message: String)
 
     fun error(message: String)
+
+    fun setLevel(logLevel: Level)
 }

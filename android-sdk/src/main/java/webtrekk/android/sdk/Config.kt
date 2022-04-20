@@ -80,7 +80,7 @@ interface Config {
      * *NOTE* the minimum interval period is 15 minutes.
      * In [WebtrekkConfiguration] the default is [DefaultConfiguration.REQUESTS_INTERVAL]
      */
-    val requestsInterval: Long
+    var requestsInterval: Long
 
     /**
      * [autoTracking] set to true to enable the auto tracking. Set to false to disable the auto tracking.

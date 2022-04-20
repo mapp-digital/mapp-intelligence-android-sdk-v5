@@ -26,10 +26,10 @@
 package webtrekk.android.sdk.domain.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
-import webtrekk.android.sdk.DefaultConfiguration
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
@@ -61,6 +61,15 @@ internal class SendRequestsWorker(
     CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
+        Log.d(TAG, "doWork - starting...")
+        // this check and initialization is needed for cross platform solutions
+        if (!Webtrekk.getInstance().isInitialized()) {
+            val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
+            val config = WebtrekkConfiguration.fromJson(configJson)
+            Webtrekk.getInstance().init(this.applicationContext, config)
+            Log.d(TAG, "doWork - initialized!")
+        }
+
         /**
          * [coroutineDispatchers] the injected coroutine dispatchers.
          */
@@ -87,20 +96,6 @@ internal class SendRequestsWorker(
          */
         val logger by lazy { AppModule.logger }
 
-        // this check and initialization is needed for cross platform solutions
-        if (!Webtrekk.getInstance().isInitialized()) {
-            val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
-            val config = WebtrekkConfiguration.fromJson(
-                configJson,
-                DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
-                DefaultConfiguration.OKHTTP_CLIENT
-            )
-            Webtrekk.getInstance().init(applicationContext, config)
-        }
-
-        val trackDomainLocal: String = trackDomain
-
-        val trackIdsLocal: List<String> = trackIds
 
         // retrieves the data in the data base with state of NEW or FAILED only.
         // todo handle Result.failure()
@@ -127,8 +122,8 @@ internal class SendRequestsWorker(
                                         .batch(requestPerBatch)
                                         .forEach { dataTrack ->
                                             val urlRequest = dataTrack.buildPostRequest(
-                                                trackDomain = trackDomainLocal!!,
-                                                trackIds = trackIdsLocal,
+                                                trackDomain = trackDomain,
+                                                trackIds = trackIds,
                                                 currentEverId = map.key, // map.Key is everId
                                                 anonymous = anonymous,
                                                 anonymousParam = anonymousParam
@@ -150,11 +145,11 @@ internal class SendRequestsWorker(
 
                                 val urlRequest =
                                     dataTrack.buildUrlRequest(
-                                        trackDomainLocal!!,
-                                        trackIdsLocal,
-                                        dataTrack.trackRequest.everId,
-                                        anonymous,
-                                        anonymousParam
+                                        trackDomain = trackDomain,
+                                        trackIds = trackIds,
+                                        currentEverId = dataTrack.trackRequest.everId,
+                                        anonymous = anonymous,
+                                        anonymousParam = anonymousParam
                                     )
                                 logger.info("Sending request = $urlRequest")
 

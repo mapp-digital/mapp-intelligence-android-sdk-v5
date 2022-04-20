@@ -33,10 +33,10 @@ import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
-import kotlinx.android.synthetic.main.activity_main.button5
 import kotlinx.android.synthetic.main.activity_main.button6
 import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
 import kotlinx.android.synthetic.main.activity_main.buttonTestPageRequest
+import kotlinx.android.synthetic.main.activity_main.button_campaign_test
 import kotlinx.android.synthetic.main.activity_main.crashActivity
 import kotlinx.android.synthetic.main.activity_main.formActivity
 import kotlinx.android.synthetic.main.activity_main.startDetailsActivity
@@ -90,6 +90,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        button_campaign_test.setOnClickListener {
+            startActivity(Intent(this, CampaignActivity::class.java))
+        }
+
         formActivity.setOnClickListener {
             val intent = Intent(this, FormActivity::class.java)
             startActivity(intent)
@@ -107,10 +111,6 @@ class MainActivity : AppCompatActivity() {
 
         button4.setOnClickListener {
             val intent = Intent(this, SettingsExample::class.java)
-            startActivity(intent)
-        }
-        button5.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -240,4 +240,8 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
     }
 
+    override fun onStop() {
+        super.onStop()
+        Webtrekk.getInstance().startPeriodicWorkRequest()
+    }
 }

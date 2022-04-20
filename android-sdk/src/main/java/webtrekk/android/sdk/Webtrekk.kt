@@ -332,6 +332,8 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun sendRequestsNowAndClean()
 
+    abstract fun startPeriodicWorkRequest()
+
     /**
      * Check if batch is enabled in the Webtrekk  configuration
      */
@@ -384,8 +386,12 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun getVersionInEachRequest():Boolean
 
+    abstract fun setLogLevel(logLevel: Logger.Level)
+
+    abstract fun setRequestInterval(minutes:Long)
+
     /**
-     * Chck if SDK is initialized
+     * Check if SDK is initialized
      */
     abstract fun isInitialized():Boolean
 

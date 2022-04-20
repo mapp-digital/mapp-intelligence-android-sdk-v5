@@ -57,6 +57,7 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
         )
             .setConstraints(constraints)
             .setInputData(data)
+            .setInitialDelay(60,TimeUnit.SECONDS) // delay not exist previously
             .addTag(SendRequestsWorker.TAG)
 
 
@@ -64,7 +65,7 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
 
         workManager.enqueueUniquePeriodicWork(
             SEND_REQUESTS_WORKER,
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.KEEP, // original value was KEEP
             sendRequestsWorker
         )
     }

@@ -28,6 +28,7 @@ package webtrekk.android.sdk
 import androidx.work.Constraints
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
+import org.json.JSONArray
 import org.json.JSONObject
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
@@ -51,7 +52,7 @@ data class WebtrekkConfiguration private constructor(
     override var trackIds: List<String>,
     override var trackDomain: String,
     override val logLevel: Logger.Level,
-    override val requestsInterval: Long,
+    override var requestsInterval: Long,
     override val autoTracking: Boolean,
     override val fragmentsAutoTracking: Boolean,
     override val workManagerConstraints: Constraints,
@@ -297,9 +298,11 @@ data class WebtrekkConfiguration private constructor(
 
     override fun toJson(): String {
         try {
+            val jsonArr=JSONArray()
+            trackIds.forEach { jsonArr.put(it) }
             var jsonObject = JSONObject("{}")
             jsonObject.put("trackDomain", trackDomain)
-            jsonObject.put("trackIds", trackIds)
+            jsonObject.put("trackIds", jsonArr)
             jsonObject.put("activityAutoTracking", activityAutoTracking)
             jsonObject.put("autoTracking", autoTracking)
             jsonObject.put("batchSupport", batchSupport)
@@ -321,8 +324,6 @@ data class WebtrekkConfiguration private constructor(
     companion object {
         internal fun fromJson(
             json: String,
-            webtrekkConstraints: Constraints,
-            okHttpClient: OkHttpClient
         ): Config {
             val obj = JSONObject(json)
 
@@ -331,7 +332,7 @@ data class WebtrekkConfiguration private constructor(
             val trackIds = mutableListOf<String>()
 
             for (i in 0 until trackIdsJsonArray.length()) {
-                trackIds.add(trackIdsJsonArray.get(i).toString())
+                trackIds.add(trackIdsJsonArray.getString(i))
             }
 
             return WebtrekkConfiguration(
@@ -349,8 +350,8 @@ data class WebtrekkConfiguration private constructor(
                 ),
                 batchSupport = obj.getBoolean("batchSupport"),
                 shouldMigrate = obj.getBoolean("shouldMigrate"),
-                okHttpClient = okHttpClient,
-                workManagerConstraints = webtrekkConstraints
+                okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
+                workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
             )
         }
     }
