@@ -30,10 +30,10 @@ import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 
 internal val trackRequests = listOf(
-    TrackRequest(name = "page 1", forceNewSession = "1", appFirstOpen = "1").apply { this.id = 1 },
-    TrackRequest(name = "page 2", forceNewSession = "0", appFirstOpen = "0").apply { this.id = 2 },
-    TrackRequest(name = "page 3", forceNewSession = "0", appFirstOpen = "0").apply { this.id = 3 },
-    TrackRequest(name = "page 4", forceNewSession = "0", appFirstOpen = "0").apply { this.id = 4 }
+    TrackRequest(name = "page 1", forceNewSession = "1", appFirstOpen = "1", everId = "1234").apply { this.id = 1 },
+    TrackRequest(name = "page 2", forceNewSession = "0", appFirstOpen = "0", everId = "1234").apply { this.id = 2 },
+    TrackRequest(name = "page 3", forceNewSession = "0", appFirstOpen = "0", everId = "1234").apply { this.id = 3 },
+    TrackRequest(name = "page 4", forceNewSession = "0", appFirstOpen = "0", everId = "1234").apply { this.id = 4 }
 )
 
 internal val customParams = listOf(

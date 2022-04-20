@@ -54,6 +54,12 @@
             android:textColor="@android:color/white" />
 
         <Button
+            android:id="@+id/button_campaign_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Campaign Tracking" />
+
+        <Button
             android:id="@+id/button6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,12 +70,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Settings" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Integration" />
 
         <Button
             android:id="@+id/videoActivity"
