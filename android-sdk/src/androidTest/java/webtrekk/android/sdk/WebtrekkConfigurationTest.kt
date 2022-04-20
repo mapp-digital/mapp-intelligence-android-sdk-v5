@@ -132,9 +132,7 @@ internal class WebtrekkConfigurationTest {
     @Test
     fun testToJsonMethod() {
         val json = webtrekkConfiguration.toJson()
-        val constraints = Constraints.Builder().build()
-        val okHttpClient = OkHttpClient.Builder().build()
-        val config = WebtrekkConfiguration.fromJson(json, constraints, okHttpClient)
+        val config = WebtrekkConfiguration.fromJson(json)
         assertEquals(config.trackIds, webtrekkConfiguration.trackIds)
     }
 }
