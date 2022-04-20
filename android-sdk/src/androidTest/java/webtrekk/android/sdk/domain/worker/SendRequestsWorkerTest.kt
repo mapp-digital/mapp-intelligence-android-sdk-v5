@@ -56,6 +56,8 @@ internal class SendRequestsWorkerTest : WorkManagerTest() {
 
         val workInfo = workManager.getWorkInfoById(sendRequestWorker.id).get()
 
+        val data=workInfo.outputData
+
         assertThat(
             workInfo.state,
             CoreMatchers.anyOf(`is`(WorkInfo.State.RUNNING), `is`(WorkInfo.State.ENQUEUED))

@@ -25,23 +25,40 @@
 
 package webtrekk.android.sdk
 
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThat
-import org.junit.Assert.fail
-import org.junit.Test
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import androidx.work.Constraints
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
+import org.junit.Before
+import org.junit.Test
 
-class WebtrekkConfigurationTest {
+internal class WebtrekkConfigurationTest {
 
-    private val webtrekkConfiguration =
-        WebtrekkConfiguration.Builder(listOf("123456789", "123"), "www.webtrekk.com")
-            .requestsInterval(interval = 20)
-            .disableAutoTracking()
-            .build()
+    lateinit var appContext: Context
+
+    private lateinit var webtrekkConfiguration: WebtrekkConfiguration
+
+    private val dispatcher = Dispatchers.Unconfined
+
+    @Before
+    fun setup() {
+        appContext = ApplicationProvider.getApplicationContext<Context>()
+        webtrekkConfiguration =
+            WebtrekkConfiguration.Builder(listOf("123456789", "123"), "www.webtrekk.com")
+                .requestsInterval(interval = 20, timeUnit = TimeUnit.MINUTES)
+                .disableAutoTracking()
+                .build()
+        Webtrekk.getInstance().init(appContext, webtrekkConfiguration)
+    }
 
     @Test
-    fun `throw error if trackIds has null or empty values`() {
+    fun throw_error_if_trackIds_has_null_or_empty_values() {
         val errorMsg =
             "trackIds is missing in the configurations. trackIds is required in the configurations."
 
@@ -56,7 +73,7 @@ class WebtrekkConfigurationTest {
     }
 
     @Test
-    fun `throw error if trackDomain is null or blank`() {
+    fun throw_error_if_trackDomain_is_null_or_blank() {
         val errorMsg =
             "trackDomain is missing in the configurations. trackDomain is required in the configurations."
 
@@ -71,7 +88,7 @@ class WebtrekkConfigurationTest {
     }
 
     @Test
-    fun `test default values`() {
+    fun test_default_values() {
         val defaultWebtrekkConfiguration =
             WebtrekkConfiguration.Builder(listOf("123"), "www.webtrekk.com").build()
 
@@ -86,14 +103,14 @@ class WebtrekkConfigurationTest {
     }
 
     @Test
-    fun `test webtrekk configurations are set`() {
+    fun test_webtrekk_configurations_are_set() {
         assertEquals(webtrekkConfiguration.trackIds, listOf("123456789", "123"))
         assertEquals(webtrekkConfiguration.trackDomain, "www.webtrekk.com")
         assertEquals(
             webtrekkConfiguration.logLevel,
             DefaultConfiguration.LOG_LEVEL_VALUE
         )
-        assertEquals(webtrekkConfiguration.requestsInterval, TimeUnit.MINUTES.toMillis(20))
+        assertEquals(webtrekkConfiguration.requestsInterval, 20)
         assertEquals(webtrekkConfiguration.autoTracking, false)
         assertEquals(webtrekkConfiguration.fragmentsAutoTracking, false)
         assertEquals(
@@ -104,11 +121,20 @@ class WebtrekkConfigurationTest {
     }
 
     @Test
-    fun `test fragments auto track is disabled when auto track is disabled`() {
+    fun test_fragments_auto_track_is_disabled_when_auto_track_is_disabled() {
         val defaultWebtrekkConfiguration =
             WebtrekkConfiguration.Builder(listOf("123"), "www.webtrekk.com")
                 .disableAutoTracking().build()
 
         assertEquals(defaultWebtrekkConfiguration.fragmentsAutoTracking, false)
+    }
+
+    @Test
+    fun testToJsonMethod() {
+        val json = webtrekkConfiguration.toJson()
+        val constraints = Constraints.Builder().build()
+        val okHttpClient = OkHttpClient.Builder().build()
+        val config = WebtrekkConfiguration.fromJson(json, constraints, okHttpClient)
+        assertEquals(config.trackIds, webtrekkConfiguration.trackIds)
     }
 }

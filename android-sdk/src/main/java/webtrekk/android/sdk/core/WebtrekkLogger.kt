@@ -27,7 +27,7 @@ package webtrekk.android.sdk.core
 
 import android.util.Log
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import webtrekk.android.sdk.Logger
 
 /**
@@ -37,7 +37,7 @@ internal class WebtrekkLogger(level: Logger.Level) :
     Logger {
 
     private var basicMessage: String? = null
-    private var logger: Logger.Level? = null
+    private var logger: Logger.Level = Logger.Level.NONE
     private val _dateFormat = SimpleDateFormat.getDateTimeInstance()
     private val date
         inline get() = _dateFormat.format(Date())
@@ -48,6 +48,10 @@ internal class WebtrekkLogger(level: Logger.Level) :
             Logger.Level.NONE -> null
             Logger.Level.BASIC -> date.toString()
         }
+    }
+
+    override fun setLevel(logLevel: Logger.Level) {
+        logger = logLevel
     }
 
     private fun getBasicMessage() {

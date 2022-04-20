@@ -116,7 +116,6 @@ object DefaultConfiguration {
      */
     val WORK_MANAGER_CONSTRAINTS = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresBatteryNotLow(false)
         .build()
 
     /**

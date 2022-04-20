@@ -39,6 +39,7 @@ import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.InternalParam
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
@@ -405,7 +406,7 @@ constructor() : Webtrekk(),
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
         if (generateNewEverId && !enabled)
-            generateEverId()
+            sessions.setEverId(generateEverId(), true)
     }
 
     /**
@@ -414,7 +415,7 @@ constructor() : Webtrekk(),
      *
      */
     override fun setEverId(everId: String?) {
-        val newEverId = if(everId.isNullOrEmpty()) generateEverId() else everId
+        val newEverId = if (everId.isNullOrEmpty()) generateEverId() else everId
 
         sessions.setEverId(newEverId, true)
     }
@@ -428,15 +429,15 @@ constructor() : Webtrekk(),
     }
 
     override fun setBatchEnabled(enabled: Boolean) {
-        config.batchSupport=enabled
+        config.batchSupport = enabled
     }
 
     override fun getRequestsPerBatch(): Int {
-       return config.requestPerBatch
+        return config.requestPerBatch
     }
 
     override fun setRequestPerBatch(requestsCount: Int) {
-        config.requestPerBatch=requestsCount
+        config.requestPerBatch = requestsCount
     }
 
     override fun getExceptionLogLevel(): ExceptionType {
@@ -444,7 +445,7 @@ constructor() : Webtrekk(),
     }
 
     override fun setExceptionLogLevel(exceptionLogLevel: ExceptionType) {
-        config.exceptionLogLevel=exceptionLogLevel
+        config.exceptionLogLevel = exceptionLogLevel
     }
 
     override fun clearSdkConfig() {
@@ -583,12 +584,27 @@ constructor() : Webtrekk(),
         )
     }
 
+    override fun startPeriodicWorkRequest() {
+        scheduler.scheduleSendRequests(
+            repeatInterval = config.requestsInterval,
+            constraints = config.workManagerConstraints
+        )
+    }
+
     override fun isBatchEnabled(): Boolean {
         return config.batchSupport
     }
 
     override fun isInitialized(): Boolean {
         return LibraryModule.isInitialized()
+    }
+
+    override fun setLogLevel(logLevel: Logger.Level) {
+        logger.setLevel(logLevel)
+    }
+
+    override fun setRequestInterval(minutes: Long) {
+        config.requestsInterval=minutes
     }
 
     companion object {
@@ -618,10 +634,10 @@ constructor() : Webtrekk(),
 
             var ids: List<String>? = emptyList()
             var domain: String? = null
-            var configBackup:Config?=null
+            var configBackup: Config? = null
             INSTANCE?.let {
                 it.sendRequestsNowAndClean()
-                configBackup=it.config.copy()
+                configBackup = it.config.copy()
                 ids = it.config.trackIds
                 domain = it.config.trackDomain
                 it.clearSdkConfig()
