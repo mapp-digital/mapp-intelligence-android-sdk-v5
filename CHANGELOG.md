@@ -1,4 +1,10 @@
 # Change Log
+## Version 5.1.4 *(2022-04-21)*
+* Changed Webtrekk.reset(Context, Config) method. Removed second parameter.
+* Added new methods for updating configuration in runtime
+* Fixed bug for uncaught exceptions not tracked
+
+# Change Log
 ## Version 5.1.3 *(2022-03-15)*
 * Updated compile to Java 11
 * Updated targetSdkVersion to 31 (Android 12); 
