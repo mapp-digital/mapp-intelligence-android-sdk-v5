@@ -64,7 +64,7 @@
             android:id="@+id/button6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Url Trackign" />
+            android:text="Url Tracking" />
 
         <Button
             android:id="@+id/button4"
