@@ -117,6 +117,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
     implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
 
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
@@ -125,8 +126,8 @@ dependencies {
 
     //implementation 'com.mapp.sdk:mapp-android:6.0.17'
 
-    implementation(project(':android-sdk'))
-    //implementation ("com.mapp.sdk:intelligence-android:5.1.4")
+    //implementation(project(':android-sdk'))
+    implementation ("com.mapp.sdk:intelligence-android:5.1.4.1")
 
     testImplementation "junit:junit:$versions.junitVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"

@@ -46,7 +46,7 @@ interface Config {
      */
     fun copy(): Config
 
-    fun toJson():String
+    fun toJson(): String
 
     /**
      * The [trackIds] that you get in your Webtrekk's account. [trackIds] must be set in the configuration,
@@ -170,4 +170,9 @@ interface Config {
      * [versionInEachRequest] if versionInEachRequest is true we will send apk version in each request
      */
     var versionInEachRequest: Boolean
+
+    /**
+     * Custom everId that can be set during initialization process
+     */
+    var everId: String?
 }

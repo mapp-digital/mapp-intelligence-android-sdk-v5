@@ -63,6 +63,7 @@ data class WebtrekkConfiguration private constructor(
     override var exceptionLogLevel: ExceptionType,
     override val shouldMigrate: Boolean,
     override var versionInEachRequest: Boolean,
+    override var everId: String?,
 ) : Config {
 
     /**
@@ -83,6 +84,9 @@ data class WebtrekkConfiguration private constructor(
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
+        private var everId: String? = null
+
+        fun setEverId(everId: String?) = apply { this.everId = everId }
 
         /**
          * Configure the log level of the lib.
@@ -232,6 +236,7 @@ data class WebtrekkConfiguration private constructor(
             exceptionLogLevel,
             shouldMigrate,
             versionInEachRequest,
+            everId
         )
     }
 
@@ -251,6 +256,7 @@ data class WebtrekkConfiguration private constructor(
             exceptionLogLevel = this.exceptionLogLevel,
             shouldMigrate = this.shouldMigrate,
             versionInEachRequest = this.versionInEachRequest,
+            everId = this.everId,
         )
     }
 
@@ -298,7 +304,7 @@ data class WebtrekkConfiguration private constructor(
 
     override fun toJson(): String {
         try {
-            val jsonArr=JSONArray()
+            val jsonArr = JSONArray()
             trackIds.forEach { jsonArr.put(it) }
             var jsonObject = JSONObject("{}")
             jsonObject.put("trackDomain", trackDomain)
@@ -313,7 +319,7 @@ data class WebtrekkConfiguration private constructor(
             jsonObject.put("requestsInterval", requestsInterval)
             jsonObject.put("shouldMigrate", shouldMigrate)
             jsonObject.put("versionInEachRequest", versionInEachRequest)
-
+            everId?.let { jsonObject.put("everId", it) }
             return jsonObject.toString()
         } catch (e: Exception) {
             webtrekkLogger.error(e.message ?: "Unknown error")
@@ -348,10 +354,12 @@ data class WebtrekkConfiguration private constructor(
                 exceptionLogLevel = ExceptionType.valueOf(
                     obj.getString("exceptionLogLevel"),
                 ),
+
                 batchSupport = obj.getBoolean("batchSupport"),
                 shouldMigrate = obj.getBoolean("shouldMigrate"),
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
-                workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS
+                workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
+                everId = if (obj.has("everId")) obj.getString("everId") else null
             )
         }
     }

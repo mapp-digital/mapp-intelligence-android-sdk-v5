@@ -118,9 +118,7 @@ object InteractorModule {
         get() = job + AppModule.dispatchers.defaultDispatcher
 
     internal val sessions: Sessions
-        get() = SessionsImpl(AppModule.webtrekkSharedPrefs).apply {
-            setEverId()
-        }
+        get() = SessionsImpl(AppModule.webtrekkSharedPrefs)
 
     internal val scheduler: Scheduler by lazy {
         SchedulerImpl(
