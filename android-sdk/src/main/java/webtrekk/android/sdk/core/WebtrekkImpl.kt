@@ -466,7 +466,10 @@ constructor() : Webtrekk(),
             sessions.migrate()
         }
 
-        sessions.setEverId() // Setting up the ever id at first start of using the SDK.
+        sessions.setEverId(
+            config.everId,
+            false
+        ) // Setting up the ever id at first start of using the SDK.
 
         // Starting a new session at every freshly app open.
         sessions.startNewSession().also { logger.info("A new session has started") }
@@ -604,7 +607,7 @@ constructor() : Webtrekk(),
     }
 
     override fun setRequestInterval(minutes: Long) {
-        config.requestsInterval=minutes
+        config.requestsInterval = minutes
     }
 
     companion object {

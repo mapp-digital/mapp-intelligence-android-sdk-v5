@@ -51,10 +51,11 @@ import webtrekk.android.sdk.util.userUpdate
 internal val TrackRequest.webtrekkRequestParams
     // The webtrekk version number must be sent without '.'.
     inline get() = "${
-        webtrekkVersion.replace(
-            ".",
-            ""
-        )
+        webtrekkVersion.split(".")
+            .subList(0,3)
+            .joinToString(separator = "")
+            .substring(0,3)
+        
     },${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
 
 internal val TrackRequest.userAgent

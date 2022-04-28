@@ -32,6 +32,8 @@ import android.content.Context
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import java.util.concurrent.TimeUnit
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
@@ -47,6 +49,10 @@ class SampleApplication : Application() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
+        val okHttpClient=OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply { level=HttpLoggingInterceptor.Level.BASIC })
+            .build()
+
         val stringIds = BuildConfig.TRACK_IDS
         val domain = BuildConfig.DOMEIN
         val elements: List<String> = stringIds.split(",")
@@ -54,11 +60,12 @@ class SampleApplication : Application() {
             this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE) ?: return
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(elements, domain)
-                //.setEverId("11111")
+                .setEverId("0123456789")
                 .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 1)
                 .sendAppVersionInEveryRequest(true)
+                .okHttpClient(okHttpClient)
                 .enableCrashTracking(
                     ExceptionType.valueOf(
                         sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())
