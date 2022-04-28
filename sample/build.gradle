@@ -126,8 +126,8 @@ dependencies {
 
     //implementation 'com.mapp.sdk:mapp-android:6.0.17'
 
-    //implementation(project(':android-sdk'))
-    implementation ("com.mapp.sdk:intelligence-android:5.1.4.1")
+    implementation(project(':android-sdk'))
+    //implementation ("com.mapp.sdk:intelligence-android:5.1.4.1")
 
     testImplementation "junit:junit:$versions.junitVersion"
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
