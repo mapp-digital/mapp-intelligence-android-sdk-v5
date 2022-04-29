@@ -10,17 +10,16 @@ import com.example.webtrekk.androidsdk.R
 import java.util.logging.Logger
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.events.PageViewEvent
 
 class SecondActivity : Activity() {
     private val DEEPLINK_SCHEME = "com.appoxee.test"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
-//        findViewById<View>(R.id.open_link).setOnClickListener {
-//            val intent = Intent(Intent.ACTION_VIEW)
-//            intent.data = Uri.parse("http://google.com")
-//            startActivity(intent)
-//        }
+        findViewById<View>(R.id.open_link).setOnClickListener {
+            Webtrekk.getInstance().trackPage(PageViewEvent("SecondActivity"))
+        }
         handleIntent()
     }
 
