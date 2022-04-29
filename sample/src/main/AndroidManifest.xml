@@ -91,15 +91,15 @@
         </activity>-->
         <activity
             android:name=".mapp.SecondActivity"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
-                <data android:scheme="apx" />
-                <data android:host="deeplink" />
-
-                <action android:name="com.appoxee.test" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="cdn.wbtrk.net" />
             </intent-filter>
         </activity> <!-- Deeplinking Start -->
         <activity
