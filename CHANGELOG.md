@@ -1,4 +1,9 @@
 # Change Log
+## Version 5.1.4.1 *(2029-04-21)*
+* HotFix version
+* EverID can pre properly set on initialization.
+
+# Change Log
 ## Version 5.1.4 *(2022-04-21)*
 * Changed Webtrekk.reset(Context, Config) method. Removed second parameter.
 * Added new methods for updating configuration in runtime
