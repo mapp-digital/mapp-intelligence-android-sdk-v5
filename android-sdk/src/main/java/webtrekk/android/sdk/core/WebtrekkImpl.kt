@@ -642,11 +642,12 @@ constructor() : Webtrekk(),
             var configBackup: Config? = null
             INSTANCE?.let {
                 it.sendRequestsNowAndClean()
-                configBackup = it.config.copy()
+                configBackup = it.config.copy().apply { everId = null }
                 ids = it.config.trackIds
                 domain = it.config.trackDomain
                 it.clearSdkConfig()
             }
+
 
             val mConfig = configBackup ?: WebtrekkConfiguration.Builder(ids!!, domain!!).build()
             INSTANCE = WebtrekkImpl().also {
