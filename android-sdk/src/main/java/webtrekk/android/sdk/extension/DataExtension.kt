@@ -206,7 +206,7 @@ internal fun DataTrack.buildBody(
         if (userUpdated)
             stringBuffer += "&${UrlParams.USER_OVERWRITE}=1"
     }
-    stringBuffer += customParams.buildCustomParams()
+    stringBuffer += customParams.buildCustomParams(anonymous = anonymous, anonymousParam = anonymousParam)
 
     return stringBuffer
 }

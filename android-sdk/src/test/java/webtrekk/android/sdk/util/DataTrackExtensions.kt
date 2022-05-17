@@ -39,7 +39,7 @@ internal fun DataTrack.buildUrlForTesting(trackDomain: String, trackIds: List<St
         "&${UrlParams.EVER_ID}=123456789" +
         "&${UrlParams.APP_FIRST_OPEN}=${this.trackRequest.appFirstOpen}" +
         "&${UrlParams.FORCE_NEW_SESSION}=${this.trackRequest.forceNewSession}" +
-        customParams.buildCustomParams()
+        customParams.buildCustomParams(anonymous = true, anonymousParam = setOf("uc709","uc703"))
 }
 
 internal fun DataTrack.buildUrlRequestForTesting(

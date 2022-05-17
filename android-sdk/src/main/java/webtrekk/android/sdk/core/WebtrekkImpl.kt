@@ -186,6 +186,7 @@ constructor() : Webtrekk(),
 
     override fun trackCustomPage(pageName: String, trackingParams: Map<String, String>) =
         config.run {
+
             trackCustomPage(
                 TrackCustomPage.Params(
                     trackRequest = TrackRequest(
@@ -446,6 +447,7 @@ constructor() : Webtrekk(),
 
     override fun setExceptionLogLevel(exceptionLogLevel: ExceptionType) {
         config.exceptionLogLevel = exceptionLogLevel
+        initUncaughtExceptionTracking()
     }
 
     override fun clearSdkConfig() {
