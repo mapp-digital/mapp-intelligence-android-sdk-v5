@@ -64,7 +64,7 @@ class SampleApplication : Application() {
                 .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 1)
-                .sendAppVersionInEveryRequest(true)
+                .sendAppVersionInEveryRequest(false)
                 .okHttpClient(okHttpClient)
                 .enableCrashTracking(
                     ExceptionType.valueOf(
