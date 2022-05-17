@@ -53,7 +53,7 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
     }
 
     override fun getEverId(): String = webtrekkSharedPrefs.let {
-        return webtrekkSharedPrefs.everId.ifEmpty { generateEverId() }
+        return it.everId.ifEmpty { generateEverId() }
     }
 
     override fun getUserAgent(): String {
