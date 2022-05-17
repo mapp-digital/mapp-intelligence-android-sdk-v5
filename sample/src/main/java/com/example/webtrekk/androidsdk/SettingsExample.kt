@@ -40,7 +40,7 @@ class SettingsExample : AppCompatActivity() {
         }
 
         enable_anonymous.setOnClickListener {
-            Webtrekk.getInstance().anonymousTracking(true, setOf("la", "cs804", "cs821"), generateNewEverId = false)
+            Webtrekk.getInstance().anonymousTracking(true, setOf("la", "cs804", "cs821", "uc703", "uc709"), generateNewEverId = false)
         }
         disable_anonymous.setOnClickListener {
             Webtrekk.getInstance().anonymousTracking(false, generateNewEverId = false)

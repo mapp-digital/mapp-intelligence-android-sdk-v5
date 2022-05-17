@@ -2,6 +2,7 @@ package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_object_tracking.button_test_anonymous_tracking
 import kotlinx.android.synthetic.main.activity_object_tracking.example10
 import kotlinx.android.synthetic.main.activity_object_tracking.example3
 import kotlinx.android.synthetic.main.activity_object_tracking.example4
@@ -64,9 +65,19 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
             ecommerceTrackingTest2()
         }
 
+        button_test_anonymous_tracking.setOnClickListener {
+            testAnonymousTracking()
+        }
 
     }
 
+    private fun testAnonymousTracking() {
+        val trackingParams = mapOf("uc709" to "Nis, Cicevac", "uc703" to "Stefan")
+        Webtrekk.getInstance().trackCustomPage(
+            pageName = "customName",
+            trackingParams = trackingParams
+        )
+    }
 
     private fun trackAction() {
         val eventParameters = EventParameters(mapOf(Pair(20, "ck20Param1")))

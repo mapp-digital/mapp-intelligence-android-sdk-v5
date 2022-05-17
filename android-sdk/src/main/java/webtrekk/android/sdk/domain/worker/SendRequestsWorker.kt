@@ -44,8 +44,6 @@ import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
-import webtrekk.android.sdk.util.anonymous
-import webtrekk.android.sdk.util.anonymousParam
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.requestPerBatch
 import webtrekk.android.sdk.util.trackDomain
@@ -96,6 +94,7 @@ internal class SendRequestsWorker(
          */
         val logger by lazy { AppModule.logger }
 
+        val webtrekkSharedPrefs = AppModule.webtrekkSharedPrefs
 
         // retrieves the data in the data base with state of NEW or FAILED only.
         // todo handle Result.failure()
@@ -125,8 +124,8 @@ internal class SendRequestsWorker(
                                                 trackDomain = trackDomain,
                                                 trackIds = trackIds,
                                                 currentEverId = map.key, // map.Key is everId
-                                                anonymous = anonymous,
-                                                anonymousParam = anonymousParam
+                                                anonymous = webtrekkSharedPrefs.anonymousTracking,
+                                                anonymousParam = webtrekkSharedPrefs.anonymousSuppress
                                             )
                                             logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
@@ -148,8 +147,8 @@ internal class SendRequestsWorker(
                                         trackDomain = trackDomain,
                                         trackIds = trackIds,
                                         currentEverId = dataTrack.trackRequest.everId,
-                                        anonymous = anonymous,
-                                        anonymousParam = anonymousParam
+                                        anonymous = webtrekkSharedPrefs.anonymousTracking,
+                                        anonymousParam = webtrekkSharedPrefs.anonymousSuppress
                                     )
                                 logger.info("Sending request = $urlRequest")
 
