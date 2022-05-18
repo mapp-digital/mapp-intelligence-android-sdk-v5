@@ -1,4 +1,10 @@
 # Change Log
+## Version 5.1.4.2 *(2029-04-18)*
+* HotFix version
+* Fixed issue for incorrect parsing EventParameters.
+* Fixed issue when anonymous suppressed parameters not calculated for some request's types.
+
+# Change Log
 ## Version 5.1.4.1 *(2029-04-21)*
 * HotFix version
 * EverID can pre properly set on initialization.
