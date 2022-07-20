@@ -32,6 +32,11 @@ import android.content.SharedPreferences
  * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving
  */
 internal class WebtrekkSharedPrefs(val context: Context) {
+
+    var dmcUserId: String
+    inline get() = sharedPreferences.getString(DMC_USER_ID,"") ?: ""
+    set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
+
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 

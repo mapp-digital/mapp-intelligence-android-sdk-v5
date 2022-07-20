@@ -459,6 +459,14 @@ constructor() : Webtrekk(),
         LibraryModule.release()
     }
 
+    override fun isUserMatchingEnabled(): Boolean {
+        return config.userMatchingEnabled
+    }
+
+    override fun setUserMatchingEnabled(enabled: Boolean) {
+        config.userMatchingEnabled = enabled
+    }
+
     /**
      * The internal starting point of the SDK, where sessions, schedulers..etc are used.
      */
@@ -610,6 +618,10 @@ constructor() : Webtrekk(),
 
     override fun setRequestInterval(minutes: Long) {
         config.requestsInterval = minutes
+    }
+
+    override fun getDmcUserId(): String {
+        return AppModule.webtrekkSharedPrefs.dmcUserId
     }
 
     companion object {

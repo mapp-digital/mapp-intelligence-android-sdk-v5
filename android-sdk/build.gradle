@@ -37,15 +37,10 @@ android {
         minSdkVersion versions.minSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionName versions.webtrekkVersion
         setVersionName(versions.webtrekkVersion)
         buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
     }
 
-    lintOptions {
-        textReport true
-        abortOnError false
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -61,6 +56,10 @@ android {
         unitTests.all {
             useJUnitPlatform()
         }
+    }
+    lint {
+        abortOnError false
+        textReport true
     }
 }
 

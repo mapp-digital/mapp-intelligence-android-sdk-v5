@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.dialog_reset.btnResetOnly
 import kotlinx.android.synthetic.main.dialog_reset.spinnerExceptionLog
 import kotlinx.android.synthetic.main.dialog_reset.switchBatchRequests
 import kotlinx.android.synthetic.main.dialog_reset.switchSentAppVersion
+import kotlinx.android.synthetic.main.dialog_reset.switchUserMatchingEnabled
 import kotlinx.android.synthetic.main.dialog_reset.tieBatchRequestSize
 import kotlinx.android.synthetic.main.dialog_reset.tieEverId
 import kotlinx.android.synthetic.main.dialog_reset.tieTrackDomain
@@ -83,6 +84,8 @@ class ResetDialog : DialogFragment() {
         tieBatchRequestSize.setText("${Webtrekk.getInstance().getRequestsPerBatch()}")
         switchBatchRequests.isChecked = Webtrekk.getInstance().isBatchEnabled()
         switchSentAppVersion.isChecked = Webtrekk.getInstance().getVersionInEachRequest()
+        switchUserMatchingEnabled.isChecked=Webtrekk.getInstance().isUserMatchingEnabled()
+
         val logIndex = ExceptionType.values().indexOf(Webtrekk.getInstance().getExceptionLogLevel())
         spinnerExceptionLog.setSelection(logIndex)
     }
@@ -95,6 +98,7 @@ class ResetDialog : DialogFragment() {
         val batchRequestSize = tieBatchRequestSize.text?.toString()?.toInt() ?: 20
         val batchEnabled = switchBatchRequests.isChecked
         val sendAppVersionInRequests = switchSentAppVersion.isChecked
+        val userMatching = switchUserMatchingEnabled.isChecked
         val exceptionLogLevel = ExceptionType.valueOf(
             spinnerExceptionLog.selectedItem?.toString() ?: ExceptionType.ALL.name
         )
@@ -106,7 +110,7 @@ class ResetDialog : DialogFragment() {
         data["batchEnabled"] = batchEnabled
         data["sendAppVersionInRequest"] = sendAppVersionInRequests
         data["exceptionLogLevel"] = exceptionLogLevel
-
+        data["userMatching"] = userMatching
         return data
     }
 }
