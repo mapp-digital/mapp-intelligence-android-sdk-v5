@@ -64,6 +64,7 @@ data class WebtrekkConfiguration private constructor(
     override val shouldMigrate: Boolean,
     override var versionInEachRequest: Boolean,
     override var everId: String?,
+    override var userMatchingEnabled: Boolean,
 ) : Config {
 
     /**
@@ -85,6 +86,7 @@ data class WebtrekkConfiguration private constructor(
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
         private var everId: String? = null
+        private var userMatchingEnabled:Boolean = DefaultConfiguration.USER_MATCHING_ENABLED
 
         fun setEverId(everId: String?) = apply { this.everId = everId }
 
@@ -162,6 +164,14 @@ data class WebtrekkConfiguration private constructor(
             this.versionInEachRequest = enabled
         }
 
+        fun isUserMatchingEnabled(): Boolean {
+            return this.userMatchingEnabled
+        }
+
+        fun setUserMatchingEnabled(enabled: Boolean) =  apply {
+            this.userMatchingEnabled=enabled
+        }
+
         @JvmOverloads
         fun setBatchSupport(
             batchEnable: Boolean,
@@ -236,8 +246,11 @@ data class WebtrekkConfiguration private constructor(
             exceptionLogLevel,
             shouldMigrate,
             versionInEachRequest,
-            everId
-        )
+            everId,
+            userMatchingEnabled,
+        ).also {
+            setUserMatchingEnabled(userMatchingEnabled)
+        }
     }
 
     override fun copy(): Config {
@@ -257,6 +270,7 @@ data class WebtrekkConfiguration private constructor(
             shouldMigrate = this.shouldMigrate,
             versionInEachRequest = this.versionInEachRequest,
             everId = this.everId,
+            userMatchingEnabled = this.userMatchingEnabled
         )
     }
 
@@ -359,6 +373,7 @@ data class WebtrekkConfiguration private constructor(
                 shouldMigrate = obj.getBoolean("shouldMigrate"),
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
                 workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
+                userMatchingEnabled = obj.getBoolean("userMatchingEnabled"),
                 everId = if (obj.has("everId")) obj.getString("everId") else null
             )
         }

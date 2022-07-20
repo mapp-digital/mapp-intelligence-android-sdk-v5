@@ -114,5 +114,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Test Page Request 10k" />
+
+        <Button
+            android:id="@+id/buttonGetDmcUserId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get DMC User ID" />
     </LinearLayout>
 </ScrollView>

@@ -79,10 +79,7 @@ android {
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
 
     }
-    
-    lintOptions {
-        abortOnError false
-    }
+
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_11
@@ -102,6 +99,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lint {
+        abortOnError false
     }
 
 }
@@ -124,7 +124,7 @@ dependencies {
     implementation('com.google.firebase:firebase-messaging')
     implementation("com.google.firebase:firebase-crashlytics")
 
-    //implementation 'com.mapp.sdk:mapp-android:6.0.17'
+    implementation('com.mapp.sdk:mapp-android:6.0.19-rc01')
 
     implementation(project(':android-sdk'))
     //implementation ("com.mapp.sdk:intelligence-android:5.1.4.1")

@@ -175,4 +175,9 @@ interface Config {
      * Custom everId that can be set during initialization process
      */
     var everId: String?
+
+    /**
+     * Parameter to enable or disable user matching between MAPP's Engage and Intelligence SDK
+     */
+    var userMatchingEnabled:Boolean
 }

@@ -29,11 +29,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
 import kotlinx.android.synthetic.main.activity_main.button6
+import kotlinx.android.synthetic.main.activity_main.buttonGetDmcUserId
 import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
 import kotlinx.android.synthetic.main.activity_main.buttonTestPageRequest
 import kotlinx.android.synthetic.main.activity_main.button_campaign_test
@@ -192,6 +194,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        buttonGetDmcUserId.setOnClickListener {
+            Appoxee.instance().getDeviceInfoDMC()
+        }
+
         val int = intent
         val uri = int.data
         if (uri != null) {
@@ -233,6 +239,13 @@ class MainActivity : AppCompatActivity() {
         if (data.containsKey("exceptionLogLevel")) {
             val exceptionLogLevel = data.getValue("exceptionLogLevel") as ExceptionType
             Webtrekk.getInstance().setExceptionLogLevel(exceptionLogLevel)
+        }
+
+        if (data.containsKey("userMatching")) {
+            val userMatching = data.getValue("userMatching") as Boolean
+            Webtrekk.getInstance().setUserMatchingEnabled(userMatching)
+            if (userMatching)
+                Webtrekk.getInstance().getDmcUserId()
         }
     }
 

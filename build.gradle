@@ -65,8 +65,8 @@ buildscript {
 
             'ktlintVersion'          : '0.31.0',
             'dokkaVersion'           : '0.9.17',
-            'googleServices'         : '4.3.3',
-            'firebaseAppDistribution': '2.0.1'
+            'googleServices'         : '4.3.10',
+            'firebaseAppDistribution': '2.1.1'
     ]
 
     ext.libs = [
@@ -105,7 +105,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:7.1.2"
+        classpath 'com.android.tools.build:gradle:7.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlinVersion}"
         classpath "com.github.ben-manes:gradle-versions-plugin:${versions.gradleVersionsPlugin}"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${versions.dokkaVersion}"

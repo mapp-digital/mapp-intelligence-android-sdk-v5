@@ -82,6 +82,13 @@
             android:layout_marginTop="10dp"
             android:text="Send app version in each request" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchUserMatchingEnabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="User matching" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
