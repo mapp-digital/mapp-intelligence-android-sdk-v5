@@ -98,6 +98,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         userCategories.country = "France"
         userCategories.customerId = "CustomerID"
         userCategories.gender = UserCategories.Gender.FEMALE
+        //userCategories.emailReceiverId="111111111"
 
         //sessionproperties
         val sessionParameters = SessionParameters(mapOf(Pair(10, "sessionParam1")))

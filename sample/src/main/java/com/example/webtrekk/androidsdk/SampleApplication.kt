@@ -28,9 +28,14 @@ package com.example.webtrekk.androidsdk
 // import com.facebook.stetho.Stetho
 // import com.facebook.stetho.okhttp3.StethoInterceptor
 import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.work.Constraints
 import androidx.work.NetworkType
+import com.appoxee.internal.api.command.SetDmcUserId.DMC_USER_ID_KEY
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -49,8 +54,10 @@ class SampleApplication : Application() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val okHttpClient=OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply { level=HttpLoggingInterceptor.Level.BASIC })
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            })
             .build()
 
         val stringIds = BuildConfig.TRACK_IDS
@@ -74,8 +81,11 @@ class SampleApplication : Application() {
                 )
                 .workManagerConstraints(constraints = constraints)
                 .setBatchSupport(Prefs(this).isBatchEnabled)
+                .setUserMatchingEnabled(true)
                 .build()
 
-        Webtrekk.getInstance().init(this, webtrekkConfigurations)
+        Webtrekk.getInstance().init(context = this, webtrekkConfigurations)
+
+        EngageSdk.init(application = this)
     }
 }

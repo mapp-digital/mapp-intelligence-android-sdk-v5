@@ -300,9 +300,9 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun setIdsAndDomain(trackIds: List<String>, trackDomain: String)
 
-    abstract fun getTrackIds():List<String>
+    abstract fun getTrackIds(): List<String>
 
-    abstract fun getTrackDomain():String
+    abstract fun getTrackDomain(): String
 
     /**
      * Returns [String] the user Agent which is associated per each unique device.
@@ -347,17 +347,23 @@ abstract class Webtrekk protected constructor() {
     /**
      * Get number of track records sent in one batch
      */
-    abstract fun getRequestsPerBatch():Int
+    abstract fun getRequestsPerBatch(): Int
 
     /**
      * Set count of track records to be sent in one batch
      */
-    abstract fun setRequestPerBatch(requestsCount:Int)
+    abstract fun setRequestPerBatch(requestsCount: Int)
+
+    /**
+     * Returns DMC User ID if exist. DmcUserId is unique id generated from MAPP Engage SDK.
+     * It provides user matching between these two SDKs
+     */
+    abstract fun getDmcUserId(): String
 
     /**
      * Get exception tracking mode
      */
-    abstract fun getExceptionLogLevel():ExceptionType
+    abstract fun getExceptionLogLevel(): ExceptionType
 
     /**
      * Set exception tracking mode
@@ -374,7 +380,7 @@ abstract class Webtrekk protected constructor() {
      *
      * If null or empty string provided, new everId will be generated and set
      */
-    abstract fun setEverId(everId:String?)
+    abstract fun setEverId(everId: String?)
 
     /**
      * Enable or disable sending app version in every request
@@ -384,16 +390,20 @@ abstract class Webtrekk protected constructor() {
     /**
      * Check if app version is set to be sent in every request or not
      */
-    abstract fun getVersionInEachRequest():Boolean
+    abstract fun getVersionInEachRequest(): Boolean
 
     abstract fun setLogLevel(logLevel: Logger.Level)
 
-    abstract fun setRequestInterval(minutes:Long)
+    abstract fun setRequestInterval(minutes: Long)
+
+    abstract fun isUserMatchingEnabled():Boolean
+
+    abstract fun setUserMatchingEnabled(enabled: Boolean)
 
     /**
      * Check if SDK is initialized
      */
-    abstract fun isInitialized():Boolean
+    abstract fun isInitialized(): Boolean
 
     companion object {
 

@@ -2,6 +2,7 @@ package webtrekk.android.sdk.events.eventParams
 
 import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.UserCategoriesParam
+import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.extension.addNotNull
 
 /**
@@ -62,7 +63,17 @@ data class UserCategories @JvmOverloads constructor(
         map.addNotNull(UserCategoriesParam.CITY, city)
         map.addNotNull(UserCategoriesParam.COUNTRY, country)
         map.addNotNull(UserCategoriesParam.EMAIL_ADDRESS, emailAddress)
-        map.addNotNull(UserCategoriesParam.EMAIL_RECEIVER_ID, emailReceiverId)
+
+        /**
+         * EMAIL_RECEIVER_ID is matching parameter from Mapp Engage SDK (DmcUserId)
+         * If exist, that value should be passed, otherwise user defined value can be passed.
+         */
+        if(Webtrekk.getInstance().isUserMatchingEnabled() && Webtrekk.getInstance().getDmcUserId().isNotEmpty()) {
+            map.addNotNull(UserCategoriesParam.EMAIL_RECEIVER_ID, Webtrekk.getInstance().getDmcUserId())
+        }else {
+            map.addNotNull(UserCategoriesParam.EMAIL_RECEIVER_ID, emailReceiverId)
+        }
+
         map.addNotNull(UserCategoriesParam.FIRST_NAME, firstName)
         if (gender != null)
             map.addNotNull(UserCategoriesParam.GENDER, gender?.ordinal.toString())
