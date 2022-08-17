@@ -33,8 +33,6 @@ import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.integration.IntelligenceEvent
-import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
@@ -59,10 +57,6 @@ internal class TrackCustomEvent(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(
-            invokeParams.context,
-            MappIntelligenceListener.EVENT, invokeParams.trackRequest.name
-        )
         if (invokeParams.isOptOut) return
 
         scope.launch(

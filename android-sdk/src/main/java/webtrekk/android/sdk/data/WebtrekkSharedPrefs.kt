@@ -43,9 +43,6 @@ internal class WebtrekkSharedPrefs(val context: Context) {
     val previousSharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
-    val mappSharedPreferences: SharedPreferences =
-        context.getSharedPreferences(MAPP_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
-
     var everId: String
         inline get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
@@ -65,24 +62,6 @@ internal class WebtrekkSharedPrefs(val context: Context) {
     var appVersion: String
         inline get() = sharedPreferences.getString(APP_VERSION, "") ?: ""
         set(value) = sharedPreferences.edit().putString(APP_VERSION, value).apply()
-
-    var alias: String
-        inline get() {
-            sharedPreferences.edit()
-                .putString(ALIAS, mappSharedPreferences.getString(ALIAS, ""))
-                .apply()
-            return sharedPreferences.getString(ALIAS, "")!!
-        }
-        set(value) = sharedPreferences.edit().putString(ALIAS, value).apply()
-
-    var userId: String
-        get() {
-            sharedPreferences.edit()
-                .putString(DMC_USER_ID, mappSharedPreferences.getString(DMC_USER_ID, ""))
-                .apply()
-            return sharedPreferences.getString(DMC_USER_ID, "")!!
-        }
-        set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
 
     var isMigrated: Boolean
         inline get() = sharedPreferences.getBoolean(MIGRATED, false)
@@ -119,13 +98,11 @@ internal class WebtrekkSharedPrefs(val context: Context) {
 
         const val SHARED_PREFS_NAME = "webtrekk_sharedPref"
         const val PREVIOUS_SHARED_PREFS_NAME = "webtrekk-preferences"
-        const val MAPP_SHARED_PREFS_NAME = "appoxee"
         const val EVER_ID_KEY = "everId"
         const val APP_FIRST_OPEN = "appFirstOpen"
         const val NEW_SESSION_KEY = "forceNewSession"
         const val USER_OPT_OUT = "optOut"
         const val APP_VERSION = "appVersion"
-        const val ALIAS = "alias"
         const val DMC_USER_ID = "dmc_user_id"
         const val MIGRATED = "isMigrated"
         const val urlData = "urlData"

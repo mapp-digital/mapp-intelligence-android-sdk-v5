@@ -85,6 +85,12 @@
     <string name="keys">Keys</string>
     <string name="get_custom_attributes_from_server">Get Custom Attributes from Server</string>
     <string name="get_alias_from_server">Get Alias from Server</string>
+    <string name="user_matching_activity">User matching activity</string>
+    <string name="enable_user_matching">Enable user matching</string>
+    <string name="disable_user_matching">Disable user matching</string>
+    <string name="custom_action_with_custom_userid">Custom action with custom userId</string>
+    <string name="custom_action_with_mapp_userid">Custom action with Mapp UserId</string>
+    <string name="send_data">Send data</string>
 
     <string-array name="screen_orientation">
         <item>Screen orientation portrait</item>

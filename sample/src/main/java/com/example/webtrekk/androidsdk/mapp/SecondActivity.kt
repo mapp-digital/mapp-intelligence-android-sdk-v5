@@ -1,24 +1,21 @@
 package com.example.webtrekk.androidsdk.mapp
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.example.webtrekk.androidsdk.R
-import java.util.logging.Logger
-import webtrekk.android.sdk.MediaParam
+import kotlinx.android.synthetic.main.activity_second.tvLink
 import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.events.PageViewEvent
 
 class SecondActivity : Activity() {
     private val DEEPLINK_SCHEME = "com.appoxee.test"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
-        findViewById<View>(R.id.open_link).setOnClickListener {
-            Webtrekk.getInstance().trackPage(PageViewEvent("SecondActivity"))
+        findViewById<View>(R.id.handle_deep_link).setOnClickListener {
+            //Webtrekk.getInstance().trackPage(PageViewEvent("SecondActivity"))
+            handleIntent()
         }
         handleIntent()
     }
@@ -26,7 +23,9 @@ class SecondActivity : Activity() {
     private fun handleIntent(){
         intent?.data?.let {
             Log.d(this::class.java.name,it.toString())
+            tvLink.text=it.toString()
             Webtrekk.getInstance().trackUrl(it, "wt_sm")
+            Webtrekk.getInstance().trackPage(this)
         }
     }
 

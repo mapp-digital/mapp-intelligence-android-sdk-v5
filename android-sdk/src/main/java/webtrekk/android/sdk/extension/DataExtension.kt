@@ -35,6 +35,7 @@ import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.appVersionInRequest
 import webtrekk.android.sdk.util.currentCountry
 import webtrekk.android.sdk.util.currentDeviceManufacturer
@@ -43,7 +44,7 @@ import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentWebtrekkVersion
 import webtrekk.android.sdk.util.userId
-import webtrekk.android.sdk.util.userUpdate
+import webtrekk.android.sdk.util.userUpdated
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -52,10 +53,10 @@ internal val TrackRequest.webtrekkRequestParams
     // The webtrekk version number must be sent without '.'.
     inline get() = "${
         webtrekkVersion.split(".")
-            .subList(0,3)
+            .subList(0, 3)
             .joinToString(separator = "")
-            .substring(0,3)
-        
+            .substring(0, 3)
+
     },${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
 
 internal val TrackRequest.userAgent
@@ -200,13 +201,26 @@ internal fun DataTrack.buildBody(
                     anonymous
                 )
     }
-    val userUpdated = userUpdate
-    if ((this.trackRequest.forceNewSession == "1" || userUpdated) && userId != "") {
-        stringBuffer += "&${UrlParams.USER_ID}=$userId"
-        if (userUpdated)
-            stringBuffer += "&${UrlParams.USER_OVERWRITE}=1"
+
+    // filter custom parameters and look for uc701 (EmailReceiverId)
+    val emailReceiverID = customParams.find {
+        (it.paramKey == UrlParams.USER_ID)
     }
-    stringBuffer += customParams.buildCustomParams(anonymous = anonymous, anonymousParam = anonymousParam)
+
+    // set global EmailReceiverId only if custom EmailReceiverId not set
+    if (emailReceiverID == null && AppModule.config.userMatchingEnabled && userId.isNotBlank()) {
+        stringBuffer += "&${UrlParams.USER_ID}=$userId"
+    }
+
+//    if ((this.trackRequest.forceNewSession == "1" || userUpdated) && userId.isNotBlank()) {
+//        if (userUpdated)
+//            stringBuffer += "&${UrlParams.USER_OVERWRITE}=1"
+//    }
+
+    stringBuffer += customParams.buildCustomParams(
+        anonymous = anonymous,
+        anonymousParam = anonymousParam
+    )
 
     return stringBuffer
 }

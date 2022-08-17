@@ -16,8 +16,6 @@ import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.extension.readParam
 import webtrekk.android.sdk.extension.validateLine
-import webtrekk.android.sdk.integration.IntelligenceEvent
-import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.END_EX_STRING
@@ -55,11 +53,6 @@ internal class TrackUncaughtException(
         invokeParams: TrackUncaughtException.Params,
         coroutineDispatchers: CoroutineDispatchers
     ) {
-
-        IntelligenceEvent.sendEvent(
-            invokeParams.context,
-            MappIntelligenceListener.CRASH, invokeParams.trackRequest.name
-        )
         // If opt out is active, then return
         if (invokeParams.isOptOut) return
 

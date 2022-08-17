@@ -26,7 +26,7 @@ class DeepLinkActivity : Activity() {
         } else {
             link = null
         }
-        findViewById<View>(R.id.open_link).setOnClickListener {
+        findViewById<View>(R.id.handle_deep_link).setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(link)
             startActivity(intent)

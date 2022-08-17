@@ -81,20 +81,12 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         return newSession
     }
 
-    override fun getAlias(): String {
-        return webtrekkSharedPrefs.alias
+    override fun getDmcUserId(): String {
+        return webtrekkSharedPrefs.dmcUserId
     }
 
-    override fun alias(alias: String) {
-        webtrekkSharedPrefs.alias = alias
-    }
-
-    override fun userId(): String {
-        return webtrekkSharedPrefs.userId
-    }
-
-    override fun userId(userId: String) {
-        webtrekkSharedPrefs.userId = userId
+    override fun setDmcUserId(userId: String) {
+        webtrekkSharedPrefs.dmcUserId = userId
     }
 
     override fun optOut(value: Boolean) {
@@ -167,7 +159,7 @@ internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs
         webtrekkSharedPrefs.saveUrlData = builtUri.toString()
     }
 
-    override fun updateUser(value: Boolean) {
+    override fun setUserUpdated(value: Boolean) {
         webtrekkSharedPrefs.isUserUpdated = value
     }
 
