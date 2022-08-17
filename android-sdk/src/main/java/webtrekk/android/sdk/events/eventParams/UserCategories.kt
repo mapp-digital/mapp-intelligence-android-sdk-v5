@@ -2,8 +2,8 @@ package webtrekk.android.sdk.events.eventParams
 
 import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.UserCategoriesParam
-import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.extension.addNotNull
+import webtrekk.android.sdk.module.AppModule
 
 /**
  * Created by Aleksandar Marinkovic on 3/11/21.
@@ -68,9 +68,7 @@ data class UserCategories @JvmOverloads constructor(
          * EMAIL_RECEIVER_ID is matching parameter from Mapp Engage SDK (DmcUserId)
          * If exist, that value should be passed, otherwise user defined value can be passed.
          */
-        if(Webtrekk.getInstance().isUserMatchingEnabled() && Webtrekk.getInstance().getDmcUserId().isNotEmpty()) {
-            map.addNotNull(UserCategoriesParam.EMAIL_RECEIVER_ID, Webtrekk.getInstance().getDmcUserId())
-        }else {
+        if (AppModule.config.userMatchingEnabled) {
             map.addNotNull(UserCategoriesParam.EMAIL_RECEIVER_ID, emailReceiverId)
         }
 

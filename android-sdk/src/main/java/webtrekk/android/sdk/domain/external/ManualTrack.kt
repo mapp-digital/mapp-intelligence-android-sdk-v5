@@ -35,8 +35,6 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.ExternalInteractor
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.integration.IntelligenceEvent
-import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
@@ -63,10 +61,6 @@ internal class ManualTrack(
 
     override operator fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(
-            invokeParams.context,
-            MappIntelligenceListener.PAGE, invokeParams.trackRequest.name
-        )
         if (invokeParams.isOptOut) return
 
         // If auto track is enabled, then return

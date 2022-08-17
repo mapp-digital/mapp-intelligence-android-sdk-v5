@@ -18,7 +18,7 @@ class CustomDeeplinkActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
         tv = findViewById<View>(R.id.textView) as TextView
-        findViewById<View>(R.id.open_link).setOnClickListener {
+        findViewById<View>(R.id.handle_deep_link).setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse("http://google.com")
             startActivity(intent)

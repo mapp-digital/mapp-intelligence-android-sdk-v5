@@ -132,6 +132,8 @@
         <activity android:name=".mapp.PageRequestsActivity"
             android:exported="false"/>
         <activity android:name=".CampaignActivity" />
+        <activity android:name=".mapp.UserMatchingActivity"
+            android:exported="false"/>
 
         <!--        <receiver
                     android:name=".mapp.MyPushBroadcastReceiver"

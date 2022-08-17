@@ -28,23 +28,12 @@
 
     <application>
         <receiver
-            android:name=".integration.MappIntelligenceListener"
+            android:name=".integration.EngageIntegrationReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <category android:name="${applicationId}" />
-                <action android:name="mapp.to.webtrekk.event" />
+                <action android:name="webtrekk.android.sdk.integration.MappIntelligenceListener" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".integration.EngageIntegrationReceiver"
-            android:exported="false"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="webtrekk.android.sdk.integration.MappIntelligenceListener"/>
-            </intent-filter>
-        </receiver>
-
     </application>
-
 </manifest>

@@ -454,7 +454,6 @@ constructor() : Webtrekk(),
         AppModule.webtrekkSharedPrefs.apply {
             sharedPreferences.edit().clear().apply()
             previousSharedPreferences.edit().clear().apply()
-            mappSharedPreferences.edit().clear().apply()
         }
         LibraryModule.release()
     }

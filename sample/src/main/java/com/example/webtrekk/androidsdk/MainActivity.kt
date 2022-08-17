@@ -31,6 +31,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
+import com.example.webtrekk.androidsdk.mapp.UserMatchingActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
@@ -42,6 +43,7 @@ import kotlinx.android.synthetic.main.activity_main.button_campaign_test
 import kotlinx.android.synthetic.main.activity_main.crashActivity
 import kotlinx.android.synthetic.main.activity_main.formActivity
 import kotlinx.android.synthetic.main.activity_main.startDetailsActivity
+import kotlinx.android.synthetic.main.activity_main.startUserMatchingActivity
 import kotlinx.android.synthetic.main.activity_main.videoActivity
 import kotlinx.android.synthetic.main.activity_main.webViewActivity
 import webtrekk.android.sdk.ExceptionType
@@ -98,6 +100,11 @@ class MainActivity : AppCompatActivity() {
 
         formActivity.setOnClickListener {
             val intent = Intent(this, FormActivity::class.java)
+            startActivity(intent)
+        }
+
+        startUserMatchingActivity.setOnClickListener {
+            val intent=Intent(this, UserMatchingActivity::class.java)
             startActivity(intent)
         }
 
