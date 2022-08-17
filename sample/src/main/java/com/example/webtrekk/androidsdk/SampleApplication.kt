@@ -81,7 +81,7 @@ class SampleApplication : Application() {
                 )
                 .workManagerConstraints(constraints = constraints)
                 .setBatchSupport(Prefs(this).isBatchEnabled)
-                .setUserMatchingEnabled(true)
+                //.setUserMatchingEnabled(true)
                 .build()
 
         Webtrekk.getInstance().init(context = this, webtrekkConfigurations)

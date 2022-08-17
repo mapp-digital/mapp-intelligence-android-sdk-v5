@@ -44,8 +44,6 @@ import webtrekk.android.sdk.extension.parseView
 import webtrekk.android.sdk.extension.toFormField
 import webtrekk.android.sdk.extension.toInt
 import webtrekk.android.sdk.extension.toRequest
-import webtrekk.android.sdk.integration.IntelligenceEvent
-import webtrekk.android.sdk.integration.MappIntelligenceListener
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.coroutineExceptionHandler
@@ -70,10 +68,6 @@ internal class TrackCustomForm(
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
         // If opt out is active, then return
-        IntelligenceEvent.sendEvent(
-            invokeParams.context,
-            MappIntelligenceListener.FORM, invokeParams.trackRequest.name
-        )
         if (invokeParams.isOptOut) return
 
         scope.launch(

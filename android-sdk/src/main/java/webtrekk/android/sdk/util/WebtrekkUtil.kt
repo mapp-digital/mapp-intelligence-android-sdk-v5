@@ -59,17 +59,13 @@ internal val trackIds: List<String>
 internal val webtrekkLogger: Logger
     inline get() = WebtrekkImpl.getInstance().logger
 
-internal var alias: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getAlias()
-    set(value) = WebtrekkImpl.getInstance().sessions.alias(value)
-
 internal var userId: String
-    inline get() = WebtrekkImpl.getInstance().sessions.userId()
-    set(value) = WebtrekkImpl.getInstance().sessions.userId(value)
+    inline get() = WebtrekkImpl.getInstance().sessions.getDmcUserId()
+    set(value) = WebtrekkImpl.getInstance().sessions.setDmcUserId(value)
 
-internal var userUpdate: Boolean
+internal var userUpdated: Boolean
     inline get() = WebtrekkImpl.getInstance().sessions.isUserUpdated()
-    set(value) = WebtrekkImpl.getInstance().sessions.updateUser(value)
+    set(value) = WebtrekkImpl.getInstance().sessions.setUserUpdated(value)
 
 internal var appVersionInRequest: Boolean
     inline get() = WebtrekkImpl.getInstance().config.versionInEachRequest
