@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.util
 
+import java.util.*
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.WebtrekkImpl
 import kotlin.random.Random
@@ -75,5 +76,6 @@ internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random
 
-    return "6${String.format("%010d%08d", date, random.nextLong(100000000))}"
+    val everId= "6${String.format(Locale.ENGLISH,"%010d%08d", date, random.nextLong(100000000))}"
+    return everId
 }
