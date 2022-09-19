@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import com.example.webtrekk.androidsdk.R
 import kotlinx.android.synthetic.main.activity_second.tvLink
+import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.Webtrekk
 
 class SecondActivity : Activity() {
@@ -24,6 +25,10 @@ class SecondActivity : Activity() {
         intent?.data?.let {
             Log.d(this::class.java.name,it.toString())
             tvLink.text=it.toString()
+//            val map= mutableMapOf<String,String>()
+//            map.put(Param.MEDIA_CODE, it.getQueryParameter("wt_sm") ?: "")
+//            Webtrekk.getInstance().trackCustomEvent("Custom event", map)
+//            Webtrekk.getInstance().trackPage(this)
             Webtrekk.getInstance().trackUrl(it, "wt_sm")
             Webtrekk.getInstance().trackPage(this)
         }
