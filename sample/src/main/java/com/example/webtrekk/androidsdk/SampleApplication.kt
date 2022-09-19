@@ -67,7 +67,7 @@ class SampleApplication : Application() {
             this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE) ?: return
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(elements, domain)
-                .setEverId("111111111111")
+                //.setEverId("111111111111")
                 .disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 1)
@@ -81,7 +81,7 @@ class SampleApplication : Application() {
                 )
                 .workManagerConstraints(constraints = constraints)
                 .setBatchSupport(Prefs(this).isBatchEnabled)
-                //.setUserMatchingEnabled(true)
+                .setUserMatchingEnabled(true)
                 .build()
 
         Webtrekk.getInstance().init(context = this, webtrekkConfigurations)

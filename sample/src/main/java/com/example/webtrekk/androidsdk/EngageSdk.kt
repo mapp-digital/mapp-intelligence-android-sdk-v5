@@ -8,11 +8,10 @@ import com.appoxee.AppoxeeOptions
 object EngageSdk {
 
     private val appoxeeOptions = AppoxeeOptions().apply {
-        appID = "310498"
-        cepURL = "https://jamie.c.shortest-route.com"
-        tenantID = "60211"
-        server = AppoxeeOptions.Server.EMC_US
-        sdkKey = "18288464ebf62f.59797060"
+        appID = "206974"
+        tenantID = "5963"
+        server = AppoxeeOptions.Server.L3
+        sdkKey = "183408d0cd3632.83592719"
     }
 
     private val listener  = Appoxee.OnInitCompletedListener { successful, failReason ->
