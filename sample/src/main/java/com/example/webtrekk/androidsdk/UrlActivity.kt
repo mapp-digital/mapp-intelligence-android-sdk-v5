@@ -17,14 +17,15 @@ class UrlActivity : AppCompatActivity() {
 
         button7.setOnClickListener {
             val url =
-                Uri.parse("https://testurl.com/?wt_mc=email.newsletter.nov2020.thursday&wt_cc45=parameter45")
+                Uri.parse("https://testurl.com/?wt_mc=email.newsletter.nov2020.thursday&cc45=parameter45")
             Webtrekk.getInstance().trackUrl(url)
             Webtrekk.getInstance().trackPage(this)
+            Webtrekk.getInstance().sendRequestsNowAndClean()
         }
 
         button8.setOnClickListener {
             val url =
-                Uri.parse("https://testurl.com/?abc=email.newsletter.nov2020.thursday&wt_cc12=parameter12")
+                Uri.parse("https://testurl.com/?abc=email.newsletter.nov2020.thursday&cc12=parameter12")
             Webtrekk.getInstance().trackUrl(url, "abc")
             Webtrekk.getInstance().trackPage(this)
         }
