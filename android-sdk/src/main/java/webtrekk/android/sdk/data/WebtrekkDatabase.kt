@@ -64,6 +64,5 @@ internal fun getWebtrekkDatabase(context: Context): WebtrekkDatabase {
             )
         }
     }
-
     return INSTANCE
 }

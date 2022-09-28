@@ -25,9 +25,13 @@
 
 package webtrekk.android.sdk.util
 
+import android.os.Build
+import android.system.Os
 import java.util.*
+import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.WebtrekkImpl
+import webtrekk.android.sdk.module.LibraryModule
 import kotlin.random.Random
 
 /**
@@ -70,12 +74,14 @@ internal var userUpdated: Boolean
 
 internal var appVersionInRequest: Boolean
     inline get() = WebtrekkImpl.getInstance().config.versionInEachRequest
-    set(value) { WebtrekkImpl.getInstance().config.versionInEachRequest=value}
+    set(value) {
+        WebtrekkImpl.getInstance().config.versionInEachRequest = value
+    }
 
 internal fun generateEverId(): String {
     val date = currentTimeStamp / 1000
     val random = Random
 
-    val everId= "6${String.format(Locale.ENGLISH,"%010d%08d", date, random.nextLong(100000000))}"
+    val everId = "6${String.format(Locale.ENGLISH, "%010d%08d", date, random.nextLong(100000000))}"
     return everId
 }
