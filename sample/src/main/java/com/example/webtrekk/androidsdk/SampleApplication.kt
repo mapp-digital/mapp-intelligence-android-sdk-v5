@@ -28,17 +28,13 @@ package com.example.webtrekk.androidsdk
 // import com.facebook.stetho.Stetho
 // import com.facebook.stetho.okhttp3.StethoInterceptor
 import android.app.Application
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.work.Constraints
 import androidx.work.NetworkType
-import com.appoxee.internal.api.command.SetDmcUserId.DMC_USER_ID_KEY
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import webtrekk.android.sdk.DefaultConfiguration
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
@@ -87,5 +83,20 @@ class SampleApplication : Application() {
         Webtrekk.getInstance().init(context = this, webtrekkConfigurations)
 
         EngageSdk.init(application = this)
+    }
+
+    //TODO only for testing updating params via reflection
+    //This should be implemented on the plugins
+    private fun updateCustomParams() {
+        val defaultConfig = DefaultConfiguration::class
+        val exactSdkVersionField = defaultConfig.java.getDeclaredField("exactSdkVersion")
+        exactSdkVersionField.isAccessible = true
+        exactSdkVersionField.set(this, "1.1.1.1")
+        exactSdkVersionField.isAccessible = false
+
+        val platformField = defaultConfig.java.getDeclaredField("platform")
+        platformField.isAccessible = true
+        platformField.set(this, "Flutter")
+        platformField.isAccessible = false
     }
 }

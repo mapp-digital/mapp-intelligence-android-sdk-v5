@@ -28,6 +28,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.dokka-android'
 
+def properties = new Properties()
+try {
+    properties.load(new FileInputStream(rootProject.file("gradle.properties")))
+} catch (Exception e) {
+    logger.warn("Properties not Found!")
+}
+
 android {
     compileSdkVersion versions.compileSdkVersion
     buildToolsVersion versions.buildTools
@@ -39,6 +46,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setVersionName(versions.webtrekkVersion)
         buildConfigField "String", "VERSION_NAME", "\"${versions.webtrekkVersion}\""
+        buildConfigField "String", "LIBRARY_VERSION", "\"$LIBRARY_VERSION\""
     }
 
 
