@@ -118,6 +118,16 @@ internal object UrlParams {
         ParamType.EVENT_PARAM,
         915
     )
+
+    val EXACT_SDK_VERSION = customParam(
+        ParamType.SESSION_PARAM,
+        801
+    )
+
+    val PLATFORM = customParam(
+        ParamType.SESSION_PARAM,
+        802
+    )
 }
 
 /**

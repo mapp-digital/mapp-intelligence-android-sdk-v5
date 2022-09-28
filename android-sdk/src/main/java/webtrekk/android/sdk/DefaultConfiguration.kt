@@ -29,6 +29,7 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
+import webtrekk.android.sdk.module.LibraryModule
 
 /**
  * A singleton object that holds all the default configurations in the library.
@@ -133,4 +134,7 @@ object DefaultConfiguration {
         .readTimeout(60, TimeUnit.SECONDS)
         .connectTimeout(60, TimeUnit.SECONDS)
         .build()
+
+    internal var exactSdkVersion: String? = BuildConfig.LIBRARY_VERSION
+    internal var platform: String = "Android"
 }

@@ -62,6 +62,7 @@ internal data class TrackRequest(
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW,
     @ColumnInfo(name = "ever_id") val everId:String
 ) {
+
     enum class RequestState(val value: String) {
         NEW("NEW"),
         DONE("DONE"),
