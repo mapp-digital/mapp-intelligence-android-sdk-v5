@@ -99,7 +99,7 @@ internal fun List<CustomParam>.buildCustomParams(
 internal fun DataTrack.buildUrl(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String,
+    currentEverId: String?,
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): String {
@@ -117,7 +117,7 @@ internal fun buildUrlOnly(
 internal fun List<DataTrack>.buildBatchUrl(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String,
+    currentEverId: String?,
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): String {
@@ -134,7 +134,7 @@ internal fun List<DataTrack>.buildBatchUrl(
 }
 
 internal fun DataTrack.buildBody(
-    currentEverId: String,
+    currentEverId: String?,
     withOutBatching: Boolean = true,
     anonymous: Boolean = false,
     anonymousParam: Set<String> = emptySet()
@@ -241,7 +241,7 @@ internal fun DataTrack.buildBody(
 internal fun DataTrack.buildUrlRequest(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String,
+    currentEverId: String?,
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): Request {
@@ -254,7 +254,7 @@ internal fun DataTrack.buildUrlRequest(
 internal fun List<DataTrack>.buildPostRequest(
     trackDomain: String,
     trackIds: List<String>,
-    currentEverId: String,
+    currentEverId: String?,
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): Request {
@@ -268,7 +268,7 @@ internal fun List<DataTrack>.buildPostRequest(
 }
 
 internal fun List<DataTrack>.buildUrlRequests(
-    currentEverId: String,
+    currentEverId: String?,
     anonymous: Boolean,
     anonymousParam: Set<String>
 ): String {
@@ -296,8 +296,8 @@ internal fun addParam(
     }
 }
 
-private fun anonymousEid(anonymous: Boolean, currentEverId: String): String {
-    return if (anonymous) {
+private fun anonymousEid(anonymous: Boolean, currentEverId: String?): String {
+    return if (anonymous || currentEverId.isNullOrEmpty()) {
         "${UrlParams.EVER_ID_ANONYMOUS}=1"
     } else {
         "${UrlParams.EVER_ID}=$currentEverId"

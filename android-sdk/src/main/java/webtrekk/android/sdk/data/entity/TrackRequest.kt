@@ -60,7 +60,7 @@ internal data class TrackRequest(
     @ColumnInfo(name = "app_version_name") val appVersionName: String? = "0",
     @ColumnInfo(name = "app_version_code") val appVersionCode: String? = "0",
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW,
-    @ColumnInfo(name = "ever_id") val everId:String
+    @ColumnInfo(name = "ever_id") val everId:String?=null
 ) {
 
     enum class RequestState(val value: String) {

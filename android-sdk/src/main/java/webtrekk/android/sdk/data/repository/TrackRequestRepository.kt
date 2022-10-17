@@ -75,4 +75,9 @@ internal interface TrackRequestRepository {
      * Returns true if all [TrackRequest] are deleted from the database, false otherwise, encapsulated in a [Result].
      */
     suspend fun deleteAllTrackRequests(): Result<Boolean>
+
+    /**
+     * Update everId for all requests
+     */
+    suspend fun updateEverId(everId:String?)
 }

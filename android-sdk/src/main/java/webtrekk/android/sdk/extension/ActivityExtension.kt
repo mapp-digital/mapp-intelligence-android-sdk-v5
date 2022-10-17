@@ -37,7 +37,7 @@ import webtrekk.android.sdk.util.currentSession
 /**
  * Extension function to create a [TrackRequest] from [Activity] to be inserted in the DB.
  */
-internal fun Activity.toTrackRequest(needToTrack: Boolean = true, everId:String): TrackRequest =
+internal fun Activity.toTrackRequest(needToTrack: Boolean = true, everId:String?): TrackRequest =
     TrackRequest(
         name = getName(),
         screenResolution = this.resolution(),

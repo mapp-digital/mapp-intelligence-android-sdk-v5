@@ -25,21 +25,14 @@
 
 package webtrekk.android.sdk.util
 
-import android.os.Build
-import android.system.Os
 import java.util.*
-import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.WebtrekkImpl
-import webtrekk.android.sdk.module.LibraryModule
 import kotlin.random.Random
 
 /**
  * Utils for Webtrekk SDK.
  */
-internal val currentEverId: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getEverId()
-
 internal val currentSession: String
     inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
 
