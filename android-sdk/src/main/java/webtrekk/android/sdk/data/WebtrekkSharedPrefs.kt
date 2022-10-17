@@ -43,8 +43,8 @@ internal class WebtrekkSharedPrefs(val context: Context) {
     val previousSharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
-    var everId: String
-        inline get() = sharedPreferences.getString(EVER_ID_KEY, "") ?: ""
+    var everId: String?
+        inline get() = sharedPreferences.getString(EVER_ID_KEY, null)
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
 
     var appFirstOpen: String

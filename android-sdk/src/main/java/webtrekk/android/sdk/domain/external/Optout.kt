@@ -65,7 +65,7 @@ internal class Optout(
         // Store the opt out value in the shared preferences.
         sessions.optOut(invokeParams.optOutValue)
 
-        // If opt out value is set to true, then disable tracking data, cancel all work manager workers and detete or send then delete current data in the data base.
+        // If opt out value is set to true, then disable tracking data, cancel all work manager workers and delete or send then delete current data in the data base.
         if (invokeParams.optOutValue) {
             appState.disable(invokeParams.context) // Disable the auto track
             scheduler.cancelScheduleSendRequests() // Cancel the work manager workers

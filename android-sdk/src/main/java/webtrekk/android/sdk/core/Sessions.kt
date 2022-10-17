@@ -33,11 +33,6 @@ import android.net.Uri
 internal interface Sessions {
 
     /**
-     * Generate and set the ever id that uniquely associated per user.
-     */
-    fun setEverId()
-
-    /**
      * Set the ever id provided by the client.
      * If everId is not provided, new everId will be generated.
      * If everId already is created, then forceUpdate must me set to true
@@ -49,7 +44,7 @@ internal interface Sessions {
     /**
      * Returns the ever id which is stored in the SharedPreferences.
      */
-    fun getEverId(): String
+    fun getEverId(): String?
 
     /**
      * Returns user agent created for the mobile device.

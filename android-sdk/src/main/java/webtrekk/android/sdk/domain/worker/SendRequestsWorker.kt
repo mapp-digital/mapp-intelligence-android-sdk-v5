@@ -94,10 +94,9 @@ internal class SendRequestsWorker(
          */
         val logger by lazy { AppModule.logger }
 
-        val webtrekkSharedPrefs = AppModule.webtrekkSharedPrefs
+        val session = InteractorModule.sessions
 
         // retrieves the data in the data base with state of NEW or FAILED only.
-        // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
             getCachedDataTracks(
                 GetCachedDataTracks.Params(
@@ -113,31 +112,26 @@ internal class SendRequestsWorker(
                         // Must execute requests sync and in order
                         if (batchSupported) {
                             // group requests by everId
-                            dataTracks.groupBy { it.trackRequest.everId }
-                                .forEach { map ->
-                                    // request are grouped in Map<String, List<DataTrack>>
-                                    // where "KEY" is everId
-                                    map.value.asSequence()
-                                        .batch(requestPerBatch)
-                                        .forEach { dataTrack ->
-                                            val urlRequest = dataTrack.buildPostRequest(
-                                                trackDomain = trackDomain,
-                                                trackIds = trackIds,
-                                                currentEverId = map.key, // map.Key is everId
-                                                anonymous = webtrekkSharedPrefs.anonymousTracking,
-                                                anonymousParam = webtrekkSharedPrefs.anonymousSuppress
-                                            )
-                                            logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
+                            dataTracks.asSequence()
+                                .batch(requestPerBatch)
+                                .forEach { dataTrack ->
+                                    val urlRequest = dataTrack.buildPostRequest(
+                                        trackDomain = trackDomain,
+                                        trackIds = trackIds,
+                                        currentEverId = session.getEverId(), // map.Key is everId
+                                        anonymous = session.isAnonymous(),
+                                        anonymousParam = session.isAnonymousParam()
+                                    )
+                                    logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
-                                            executePostRequest(
-                                                ExecutePostRequest.Params(
-                                                    request = urlRequest,
-                                                    dataTracks = dataTracks
-                                                )
-                                            )
-                                                .onSuccess { logger.debug("Sent the request successfully $it") }
-                                                .onFailure { logger.error("Failed to send the request $it") }
-                                        }
+                                    executePostRequest(
+                                        ExecutePostRequest.Params(
+                                            request = urlRequest,
+                                            dataTracks = dataTracks
+                                        )
+                                    )
+                                        .onSuccess { logger.debug("Sent the request successfully $it") }
+                                        .onFailure { logger.error("Failed to send the request $it") }
                                 }
                         } else {
                             dataTracks.forEach { dataTrack ->
@@ -146,9 +140,9 @@ internal class SendRequestsWorker(
                                     dataTrack.buildUrlRequest(
                                         trackDomain = trackDomain,
                                         trackIds = trackIds,
-                                        currentEverId = dataTrack.trackRequest.everId,
-                                        anonymous = webtrekkSharedPrefs.anonymousTracking,
-                                        anonymousParam = webtrekkSharedPrefs.anonymousSuppress
+                                        currentEverId = session.getEverId(),
+                                        anonymous = session.isAnonymous(),
+                                        anonymousParam = session.isAnonymousParam()
                                     )
                                 logger.info("Sending request = $urlRequest")
 

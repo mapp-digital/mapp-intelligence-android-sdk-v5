@@ -1,6 +1,7 @@
 package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.settings_activity.button
 import kotlinx.android.synthetic.main.settings_activity.button2
@@ -40,15 +41,30 @@ class SettingsExample : AppCompatActivity() {
         }
 
         enable_anonymous.setOnClickListener {
-            Webtrekk.getInstance().anonymousTracking(true, setOf("la", "cs804", "cs821", "uc703", "uc709"), generateNewEverId = false)
+            Webtrekk.getInstance().anonymousTracking(
+                true,
+                setOf("la", "cs804", "cs821", "uc703", "uc709"),
+                generateNewEverId = false
+            )
+            updateAnonymousTrackingStatus()
         }
         disable_anonymous.setOnClickListener {
             Webtrekk.getInstance().anonymousTracking(false, generateNewEverId = false)
+            updateAnonymousTrackingStatus()
         }
 
-        sw_optout.isChecked=Webtrekk.getInstance().hasOptOut()
+        sw_optout.isChecked = Webtrekk.getInstance().hasOptOut()
         sw_optout.setOnCheckedChangeListener { buttonView, isChecked ->
             Webtrekk.getInstance().optOut(isChecked)
         }
+        updateAnonymousTrackingStatus()
+    }
+
+    private fun updateAnonymousTrackingStatus() {
+        val status = "Anonymous status:" + if (Webtrekk.getInstance()
+                .isAnonymousTracking()
+        ) "ENABLED" else "DISABLED"
+        findViewById<TextView>(R.id.tvAnonymousStatus).text = status
+
     }
 }
