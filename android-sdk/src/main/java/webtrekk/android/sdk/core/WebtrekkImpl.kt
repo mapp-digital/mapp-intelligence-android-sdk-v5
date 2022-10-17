@@ -373,7 +373,7 @@ constructor() : Webtrekk(),
         return optOutUser.isActive()
     }
 
-    override fun getEverId(): String = context.run {
+    override fun getEverId(): String? = context.run {
         sessions.getEverId()
     }
 
@@ -406,9 +406,14 @@ constructor() : Webtrekk(),
     ) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
-        if (generateNewEverId && !enabled)
-            sessions.setEverId(generateEverId(), true)
+        sessions.setEverId(generateEverId(), generateNewEverId)
+        if (enabled) setUserMatchingEnabled(false)
     }
+
+    override fun isAnonymousTracking(): Boolean {
+        return sessions.isAnonymous()
+    }
+
 
     /**
      * Set custom everId
@@ -417,7 +422,6 @@ constructor() : Webtrekk(),
      */
     override fun setEverId(everId: String?) {
         val newEverId = if (everId.isNullOrEmpty()) generateEverId() else everId
-
         sessions.setEverId(newEverId, true)
     }
 
@@ -530,12 +534,6 @@ constructor() : Webtrekk(),
         ) {
             lastAction = trackingParams[MediaParam.MEDIA_ACTION].toString()
         }
-//  TODO maybe add later
-//        if (trackingParams[MediaParam.MEDIA_DURATION] == null || trackingParams[MediaParam.MEDIA_POSITION] == null) {
-//            logger.info("Duration and Position is required")
-//            return false
-//        }
-
         lastEqual =
             if (trackingParams[MediaParam.MEDIA_DURATION] == trackingParams[MediaParam.MEDIA_POSITION]) {
                 if (lastEqual) {
@@ -651,11 +649,13 @@ constructor() : Webtrekk(),
             var ids: List<String>? = emptyList()
             var domain: String? = null
             var configBackup: Config? = null
+            var anonymousTracking: Boolean=false
             INSTANCE?.let {
                 it.sendRequestsNowAndClean()
                 configBackup = it.config.copy().apply { everId = null }
                 ids = it.config.trackIds
                 domain = it.config.trackDomain
+                anonymousTracking = it.isAnonymousTracking()
                 it.clearSdkConfig()
             }
 
@@ -663,6 +663,7 @@ constructor() : Webtrekk(),
             val mConfig = configBackup ?: WebtrekkConfiguration.Builder(ids!!, domain!!).build()
             INSTANCE = WebtrekkImpl().also {
                 it.init(context.applicationContext, mConfig)
+                it.sessions.setAnonymous(anonymousTracking)
             }
         }
     }

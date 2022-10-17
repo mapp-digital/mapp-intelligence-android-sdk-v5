@@ -118,7 +118,7 @@ object InteractorModule {
         get() = job + AppModule.dispatchers.defaultDispatcher
 
     internal val sessions: Sessions
-        get() = SessionsImpl(AppModule.webtrekkSharedPrefs)
+        get() = SessionsImpl(AppModule.webtrekkSharedPrefs, DataModule.trackRequestDao, coroutineContext)
 
     internal val scheduler: Scheduler by lazy {
         SchedulerImpl(

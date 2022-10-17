@@ -179,5 +179,5 @@ interface Config {
     /**
      * Parameter to enable or disable user matching between MAPP's Engage and Intelligence SDK
      */
-    var userMatchingEnabled:Boolean
+    var userMatchingEnabled: Boolean
 }

@@ -55,6 +55,10 @@ internal interface TrackRequestDao {
     @Query("SELECT * FROM tracking_data WHERE request_state IN (:requestStates) ORDER BY time_stamp, ever_id")
     suspend fun getTrackRequestsByState(requestStates: List<String>): List<DataTrack>
 
+    @Transaction
+    @Query("UPDATE tracking_data SET ever_id=:everId")
+    suspend fun updateEverId(everId:String?)
+
     @Update
     suspend fun updateTrackRequests(vararg trackRequests: TrackRequest)
 

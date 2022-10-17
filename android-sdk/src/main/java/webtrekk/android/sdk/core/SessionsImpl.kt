@@ -26,35 +26,47 @@
 package webtrekk.android.sdk.core
 
 import android.net.Uri
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.data.dao.TrackRequestDao
 import webtrekk.android.sdk.extension.encodeToUTF8
 import webtrekk.android.sdk.extension.generateUserAgent
 import webtrekk.android.sdk.util.generateEverId
+import kotlin.coroutines.CoroutineContext
 
 /**
  * The implementation of the [Sessions] based on [WebtrekkSharedPrefs].
  */
-internal class SessionsImpl(private val webtrekkSharedPrefs: WebtrekkSharedPrefs) :
+internal class SessionsImpl(
+    private val webtrekkSharedPrefs: WebtrekkSharedPrefs,
+    private val trackRequestDao: TrackRequestDao,
+    coroutineContext: CoroutineContext
+) :
     Sessions {
 
-    // if first time, generate the ever id alongside setting appFirstOpen = 1 as it's app first start.
-    override fun setEverId() {
-        if (!webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
-            webtrekkSharedPrefs.everId = generateEverId()
-        }
-    }
+    private val job = Job()
+    private val scope = CoroutineScope(job + coroutineContext)
 
     override fun setEverId(everId: String?, forceUpdate: Boolean) {
-        if (forceUpdate || !webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
-            webtrekkSharedPrefs.everId =
-                if (everId.isNullOrBlank()) generateEverId() else everId
+        if (!isAnonymous()) {
+            if (forceUpdate || webtrekkSharedPrefs.everId.isNullOrEmpty()) {
+                val newEverId = if (everId.isNullOrBlank()) generateEverId() else everId
+                webtrekkSharedPrefs.everId = newEverId
+                scope.launch {
+                    trackRequestDao.updateEverId(newEverId)
+                }
+            }
+        } else {
+            scope.launch {
+                trackRequestDao.updateEverId(null)
+            }
         }
     }
 
-    override fun getEverId(): String = webtrekkSharedPrefs.let {
-        return it.everId.ifEmpty { generateEverId() }
-    }
+    override fun getEverId(): String? = webtrekkSharedPrefs.everId
 
     override fun getUserAgent(): String {
         return generateUserAgent

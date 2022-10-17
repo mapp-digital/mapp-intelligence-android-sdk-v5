@@ -85,7 +85,6 @@ class SampleApplication : Application() {
         EngageSdk.init(application = this)
     }
 
-    //TODO only for testing updating params via reflection
     //This should be implemented on the plugins
     private fun updateCustomParams() {
         val defaultConfig = DefaultConfiguration::class

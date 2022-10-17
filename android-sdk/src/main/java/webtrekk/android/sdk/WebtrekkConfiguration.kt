@@ -32,6 +32,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
+import webtrekk.android.sdk.util.currentSession
 import webtrekk.android.sdk.util.webtrekkLogger
 
 /**

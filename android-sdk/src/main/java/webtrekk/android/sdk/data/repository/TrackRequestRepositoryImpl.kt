@@ -79,4 +79,10 @@ internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequ
             trackRequestDao.clearAllTrackRequests().run { true }
         }
     }
+
+    override suspend fun updateEverId(everId: String?) {
+        runCatching {
+            trackRequestDao.updateEverId(everId)
+        }
+    }
 }

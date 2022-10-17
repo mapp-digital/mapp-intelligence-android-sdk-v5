@@ -287,7 +287,7 @@ abstract class Webtrekk protected constructor() {
      *
      * @throws [IllegalStateException] if [Context] context is not initialized.
      */
-    abstract fun getEverId(): String
+    abstract fun getEverId(): String?
 
     /**
      * This function can be used to change trackingId and Domain in one session
@@ -326,6 +326,8 @@ abstract class Webtrekk protected constructor() {
         suppressParams: Set<String> = emptySet(),
         generateNewEverId: Boolean = true
     )
+
+    abstract fun isAnonymousTracking():Boolean
 
     /**
      * Start immediate request sending and cleaning after requests are successfully sent

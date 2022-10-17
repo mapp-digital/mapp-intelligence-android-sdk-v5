@@ -49,7 +49,6 @@ internal class CleanUpWorker(
 ) :
     CoroutineWorker(context, workerParameters) {
 
-    // TODO add this::: delete if request is older then one hour (server limitation)
     override suspend fun doWork(): Result {
 
         // this check and initialization is needed for cross platform solutions
@@ -83,7 +82,6 @@ internal class CleanUpWorker(
         val logger by lazy { AppModule.logger }
 
         // get the data from the data base with state DONE only.
-        // todo handle Result.failure()
         withContext(coroutineDispatchers.ioDispatcher) {
             getCachedDataTracks(GetCachedDataTracks.Params(requestStates = listOf(TrackRequest.RequestState.DONE)))
                 .onSuccess { dataTracks ->

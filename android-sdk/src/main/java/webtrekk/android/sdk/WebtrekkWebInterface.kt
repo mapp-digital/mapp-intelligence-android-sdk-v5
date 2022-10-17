@@ -27,6 +27,7 @@ package webtrekk.android.sdk
 
 import android.webkit.JavascriptInterface
 import webtrekk.android.sdk.extension.jsonToMap
+import webtrekk.android.sdk.util.generateEverId
 import webtrekk.android.sdk.util.webtrekkLogger
 
 /**
@@ -54,7 +55,8 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun getEverId(): String {
-        return webtrekk.getEverId()
+        // TODO: everId is nullable, but WebtrekkWebInterface requires everId ???
+        return webtrekk.getEverId() ?: ""
     }
 
     /**
