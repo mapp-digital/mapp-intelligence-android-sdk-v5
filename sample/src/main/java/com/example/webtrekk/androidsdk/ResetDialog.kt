@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.dialog_reset.btnOnlySetValues
 import kotlinx.android.synthetic.main.dialog_reset.btnResetAndSetValues
 import kotlinx.android.synthetic.main.dialog_reset.btnResetOnly
 import kotlinx.android.synthetic.main.dialog_reset.spinnerExceptionLog
+import kotlinx.android.synthetic.main.dialog_reset.switchAnonymousTracking
 import kotlinx.android.synthetic.main.dialog_reset.switchBatchRequests
 import kotlinx.android.synthetic.main.dialog_reset.switchSentAppVersion
 import kotlinx.android.synthetic.main.dialog_reset.switchUserMatchingEnabled
@@ -82,9 +83,20 @@ class ResetDialog : DialogFragment() {
         tieTrackDomain.setText(Webtrekk.getInstance().getTrackDomain())
         tieEverId.setText(Webtrekk.getInstance().getEverId())
         tieBatchRequestSize.setText("${Webtrekk.getInstance().getRequestsPerBatch()}")
+        val anonymousTracking = Webtrekk.getInstance().isAnonymousTracking()
+        switchAnonymousTracking.isChecked = anonymousTracking
         switchBatchRequests.isChecked = Webtrekk.getInstance().isBatchEnabled()
         switchSentAppVersion.isChecked = Webtrekk.getInstance().getVersionInEachRequest()
-        switchUserMatchingEnabled.isChecked=Webtrekk.getInstance().isUserMatchingEnabled()
+        switchUserMatchingEnabled.isChecked =
+            Webtrekk.getInstance().isUserMatchingEnabled() && !anonymousTracking
+
+        switchUserMatchingEnabled.isEnabled = !anonymousTracking
+        switchAnonymousTracking.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchUserMatchingEnabled.isEnabled = !isChecked
+            if (isChecked) {
+                switchUserMatchingEnabled.isChecked = false
+            }
+        }
 
         val logIndex = ExceptionType.values().indexOf(Webtrekk.getInstance().getExceptionLogLevel())
         spinnerExceptionLog.setSelection(logIndex)
@@ -99,6 +111,7 @@ class ResetDialog : DialogFragment() {
         val batchEnabled = switchBatchRequests.isChecked
         val sendAppVersionInRequests = switchSentAppVersion.isChecked
         val userMatching = switchUserMatchingEnabled.isChecked
+        val anonymousTracking = switchAnonymousTracking.isChecked
         val exceptionLogLevel = ExceptionType.valueOf(
             spinnerExceptionLog.selectedItem?.toString() ?: ExceptionType.ALL.name
         )
@@ -111,6 +124,7 @@ class ResetDialog : DialogFragment() {
         data["sendAppVersionInRequest"] = sendAppVersionInRequests
         data["exceptionLogLevel"] = exceptionLogLevel
         data["userMatching"] = userMatching
+        data["anonymousTracking"] = anonymousTracking
         return data
     }
 }
