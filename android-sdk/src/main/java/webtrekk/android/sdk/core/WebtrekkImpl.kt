@@ -467,6 +467,10 @@ constructor() : Webtrekk(),
     }
 
     override fun setUserMatchingEnabled(enabled: Boolean) {
+        if (sessions.isAnonymous()) {
+            config.userMatchingEnabled = false
+            return
+        }
         config.userMatchingEnabled = enabled
     }
 
@@ -649,7 +653,7 @@ constructor() : Webtrekk(),
             var ids: List<String>? = emptyList()
             var domain: String? = null
             var configBackup: Config? = null
-            var anonymousTracking: Boolean=false
+            var anonymousTracking: Boolean = false
             INSTANCE?.let {
                 it.sendRequestsNowAndClean()
                 configBackup = it.config.copy().apply { everId = null }

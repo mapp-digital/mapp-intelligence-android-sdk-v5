@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         startUserMatchingActivity.setOnClickListener {
-            val intent=Intent(this, UserMatchingActivity::class.java)
+            val intent = Intent(this, UserMatchingActivity::class.java)
             startActivity(intent)
         }
 
@@ -223,6 +223,12 @@ class MainActivity : AppCompatActivity() {
             Webtrekk.getInstance()
                 .setIdsAndDomain(trackIds = trackIds, trackDomain = trackDomain)
         }
+
+        if (data.containsKey("anonymousTracking")) {
+            val anonymousTracking = data.getValue("anonymousTracking") as Boolean
+            Webtrekk.getInstance().anonymousTracking(anonymousTracking, emptySet(), false)
+        }
+
         if (data.containsKey("everId")) {
             val everId: String = data.getValue("everId") as String
             Webtrekk.getInstance().setEverId(everId)
