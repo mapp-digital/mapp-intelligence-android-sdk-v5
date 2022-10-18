@@ -76,6 +76,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchAnonymousTracking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Anonymous tracking" />
+
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchSentAppVersion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
