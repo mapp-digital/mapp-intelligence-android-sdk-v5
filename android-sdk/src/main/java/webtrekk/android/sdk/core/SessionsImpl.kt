@@ -61,6 +61,7 @@ internal class SessionsImpl(
             }
         } else {
             scope.launch {
+                webtrekkSharedPrefs.everId=null
                 trackRequestDao.updateEverId(null)
             }
         }

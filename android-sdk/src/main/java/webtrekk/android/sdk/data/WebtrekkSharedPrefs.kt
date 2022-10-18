@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -34,8 +35,8 @@ import android.content.SharedPreferences
 internal class WebtrekkSharedPrefs(val context: Context) {
 
     var dmcUserId: String
-    inline get() = sharedPreferences.getString(DMC_USER_ID,"") ?: ""
-    set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
+        inline get() = sharedPreferences.getString(DMC_USER_ID, "") ?: ""
+        set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
 
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
@@ -81,7 +82,10 @@ internal class WebtrekkSharedPrefs(val context: Context) {
 
     var anonymousTracking: Boolean
         inline get() = sharedPreferences.getBoolean(ANONYMOUS_TRACKING, false)
-        set(value) = sharedPreferences.edit().putBoolean(ANONYMOUS_TRACKING, value).apply()
+        @SuppressLint("ApplySharedPref")
+        set(value) {
+            sharedPreferences.edit().putBoolean(ANONYMOUS_TRACKING, value).commit()
+        }
 
     var anonymousSuppress: Set<String>
         inline get() = sharedPreferences.getStringSet(ANONYMOUS_SUPPRESS_PARAM, emptySet())
