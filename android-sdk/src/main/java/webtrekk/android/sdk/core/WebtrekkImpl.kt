@@ -479,9 +479,7 @@ constructor() : Webtrekk(),
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun internalInit() = launch(coroutineExceptionHandler(logger)) {
-        if (config.shouldMigrate) {
-            sessions.migrate()
-        }
+        sessions.migrate()
 
         sessions.setEverId(
             config.everId,
