@@ -61,7 +61,7 @@ internal class SessionsImpl(
             }
         } else {
             scope.launch {
-                webtrekkSharedPrefs.everId=null
+                webtrekkSharedPrefs.everId = null
                 trackRequestDao.updateEverId(null)
             }
         }
@@ -129,9 +129,10 @@ internal class SessionsImpl(
         if (!webtrekkSharedPrefs.isMigrated) {
             if (webtrekkSharedPrefs.previousSharedPreferences.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
                 val everId = webtrekkSharedPrefs.previousEverId
-                if (everId != "") {
+                if (everId!=null) {
                     webtrekkSharedPrefs.everId = everId
                     webtrekkSharedPrefs.appFirstOpen = "0"
+                    webtrekkSharedPrefs.previousSharedPreferences.edit().clear().apply()
                 }
             }
             webtrekkSharedPrefs.isMigrated = true

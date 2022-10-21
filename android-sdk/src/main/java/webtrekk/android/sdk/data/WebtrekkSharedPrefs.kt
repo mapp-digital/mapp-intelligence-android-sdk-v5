@@ -45,7 +45,9 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
     var everId: String?
-        inline get() = sharedPreferences.getString(EVER_ID_KEY, null)
+        inline get() {
+            return sharedPreferences.getString(EVER_ID_KEY, null)
+        }
         set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
 
     var appFirstOpen: String
@@ -68,9 +70,13 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         inline get() = sharedPreferences.getBoolean(MIGRATED, false)
         set(value) = sharedPreferences.edit().putBoolean(MIGRATED, value).apply()
 
-    var previousEverId: String
-        inline get() = previousSharedPreferences.getString(EVER_ID_KEY, "") ?: ""
-        set(value) = previousSharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+    var previousEverId: String?
+        get() {
+            return previousSharedPreferences.getString(EVER_ID_KEY, "") ?: ""
+        }
+        set(value) {
+            previousSharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+        }
 
     var saveUrlData: String
         inline get() = sharedPreferences.getString(urlData, "") ?: ""
