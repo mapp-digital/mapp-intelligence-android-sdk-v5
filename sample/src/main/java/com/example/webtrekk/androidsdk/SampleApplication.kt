@@ -69,6 +69,7 @@ class SampleApplication : Application() {
                 .requestsInterval(TimeUnit.MINUTES, 1)
                 .sendAppVersionInEveryRequest(false)
                 .okHttpClient(okHttpClient)
+                .enableMigration()
                 .enableCrashTracking(
                     ExceptionType.valueOf(
                         sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())
