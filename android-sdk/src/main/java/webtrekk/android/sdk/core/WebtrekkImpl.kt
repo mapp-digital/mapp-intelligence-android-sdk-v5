@@ -649,25 +649,21 @@ constructor() : Webtrekk(),
          * Context is mandatory, config is optional. If not provided, SDK will be initialized with default values.
          */
         fun reset(context: Context) {
-
             var ids: List<String>? = emptyList()
             var domain: String? = null
             var configBackup: Config? = null
-            var anonymousTracking: Boolean = false
+
             INSTANCE?.let {
                 it.sendRequestsNowAndClean()
                 configBackup = it.config.copy().apply { everId = null }
                 ids = it.config.trackIds
                 domain = it.config.trackDomain
-                anonymousTracking = it.isAnonymousTracking()
                 it.clearSdkConfig()
             }
-
 
             val mConfig = configBackup ?: WebtrekkConfiguration.Builder(ids!!, domain!!).build()
             INSTANCE = WebtrekkImpl().also {
                 it.init(context.applicationContext, mConfig)
-                it.sessions.setAnonymous(anonymousTracking)
             }
         }
     }
