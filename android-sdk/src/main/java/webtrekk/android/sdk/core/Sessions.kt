@@ -69,12 +69,12 @@ internal interface Sessions {
     /**
      * GetUserId
      */
-    fun getDmcUserId(): String
+    fun getDmcUserId(): String?
 
     /**
      * GetUserId
      */
-    fun setDmcUserId(userId: String)
+    fun setDmcUserId(userId: String?)
 
     /**
      * Set the opt out value in SharedPreferences, true means to opt out, false to stop opting out.
@@ -109,15 +109,6 @@ internal interface Sessions {
      * setURl
      */
     fun setUrl(urlString: Uri, mediaCode: String?)
-
-    /**
-     */
-    fun setUserUpdated(value: Boolean)
-
-    /**
-     * Returns true if opt out is active, false otherwise.
-     */
-    fun isUserUpdated(): Boolean
 
     fun isAnonymous(): Boolean
 

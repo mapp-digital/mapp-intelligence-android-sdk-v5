@@ -402,12 +402,13 @@ constructor() : Webtrekk(),
     override fun anonymousTracking(
         enabled: Boolean,
         suppressParams: Set<String>,
-        generateNewEverId: Boolean
     ) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
-        sessions.setEverId(generateEverId(), generateNewEverId)
-        if (enabled) setUserMatchingEnabled(false)
+        sessions.setEverId(generateEverId(),false)
+/*        if(enabled) {
+            setUserMatchingEnabled(false)
+        }*/
     }
 
     override fun isAnonymousTracking(): Boolean {
@@ -467,10 +468,11 @@ constructor() : Webtrekk(),
     }
 
     override fun setUserMatchingEnabled(enabled: Boolean) {
-        if (sessions.isAnonymous()) {
-            config.userMatchingEnabled = false
-            return
-        }
+//        if (sessions.isAnonymous()) {
+//            config.userMatchingEnabled = false
+//            sessions.setDmcUserId("")
+//            return
+//        }
         config.userMatchingEnabled = enabled
     }
 
@@ -621,7 +623,7 @@ constructor() : Webtrekk(),
         config.requestsInterval = minutes
     }
 
-    override fun getDmcUserId(): String {
+    override fun getDmcUserId(): String? {
         return AppModule.webtrekkSharedPrefs.dmcUserId
     }
 
@@ -662,8 +664,8 @@ constructor() : Webtrekk(),
             }
 
             val mConfig = configBackup ?: WebtrekkConfiguration.Builder(ids!!, domain!!).build()
-            INSTANCE = WebtrekkImpl().also {
-                it.init(context.applicationContext, mConfig)
+            INSTANCE = WebtrekkImpl().also { webtrekk->
+                webtrekk.init(context.applicationContext, mConfig)
             }
         }
     }

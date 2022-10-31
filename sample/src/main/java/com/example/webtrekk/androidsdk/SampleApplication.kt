@@ -83,7 +83,7 @@ class SampleApplication : Application() {
 
         Webtrekk.getInstance().init(context = this, webtrekkConfigurations)
 
-        Webtrekk.getInstance().anonymousTracking(true, emptySet(),false)
+        //Webtrekk.getInstance().anonymousTracking(true, emptySet())
 
         EngageSdk.init(application = this)
     }

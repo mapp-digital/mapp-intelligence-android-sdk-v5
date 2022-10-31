@@ -317,14 +317,12 @@ abstract class Webtrekk protected constructor() {
      *
      * @param enabled set it to true we will disable user recognition, and to false it will enable.
      * @param suppressParams this can disable any other parameter alongside the everID.
-     * @param generateNewEverId true is by default. If you like to keep previous id then change it to false
      *
      * @throws [IllegalStateException] if [Context] context is not initialized.
      */
     abstract fun anonymousTracking(
         enabled: Boolean = true,
         suppressParams: Set<String> = emptySet(),
-        generateNewEverId: Boolean = true
     )
 
     abstract fun isAnonymousTracking():Boolean
@@ -360,7 +358,7 @@ abstract class Webtrekk protected constructor() {
      * Returns DMC User ID if exist. DmcUserId is unique id generated from MAPP Engage SDK.
      * It provides user matching between these two SDKs
      */
-    abstract fun getDmcUserId(): String
+    abstract fun getDmcUserId(): String?
 
     /**
      * Get exception tracking mode
