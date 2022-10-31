@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.data.repository
 
+import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.data.dao.TrackRequestDao
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest

@@ -57,13 +57,9 @@ internal val trackIds: List<String>
 internal val webtrekkLogger: Logger
     inline get() = WebtrekkImpl.getInstance().logger
 
-internal var userId: String
+internal var userId: String?
     inline get() = WebtrekkImpl.getInstance().sessions.getDmcUserId()
     set(value) = WebtrekkImpl.getInstance().sessions.setDmcUserId(value)
-
-internal var userUpdated: Boolean
-    inline get() = WebtrekkImpl.getInstance().sessions.isUserUpdated()
-    set(value) = WebtrekkImpl.getInstance().sessions.setUserUpdated(value)
 
 internal var appVersionInRequest: Boolean
     inline get() = WebtrekkImpl.getInstance().config.versionInEachRequest

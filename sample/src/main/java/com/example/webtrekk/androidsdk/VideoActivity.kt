@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Timeline
+import com.google.android.exoplayer2.Tracks
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.MediaSource
@@ -56,10 +57,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
             Log.i(TAG, "onTimelineChanged")
         }
 
-        override fun onTracksChanged(
-            trackGroups: TrackGroupArray,
-            trackSelections: TrackSelectionArray
-        ) {
+        override fun onTracksChanged(tracks: Tracks) {
             Log.i(TAG, "onTracksChanged")
         }
 
