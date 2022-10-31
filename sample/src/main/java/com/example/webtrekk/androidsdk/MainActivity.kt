@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity() {
 
         if (data.containsKey("anonymousTracking")) {
             val anonymousTracking = data.getValue("anonymousTracking") as Boolean
-            Webtrekk.getInstance().anonymousTracking(anonymousTracking, emptySet(), false)
+            Webtrekk.getInstance().anonymousTracking(anonymousTracking, emptySet())
         }
 
         if (data.containsKey("everId")) {

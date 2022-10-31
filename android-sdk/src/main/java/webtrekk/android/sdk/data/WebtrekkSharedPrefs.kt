@@ -34,8 +34,8 @@ import android.content.SharedPreferences
  */
 internal class WebtrekkSharedPrefs(val context: Context) {
 
-    var dmcUserId: String
-        inline get() = sharedPreferences.getString(DMC_USER_ID, "") ?: ""
+    var dmcUserId: String?
+        inline get() = sharedPreferences.getString(DMC_USER_ID, null)
         set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
 
     val sharedPreferences: SharedPreferences =
@@ -81,10 +81,6 @@ internal class WebtrekkSharedPrefs(val context: Context) {
     var saveUrlData: String
         inline get() = sharedPreferences.getString(urlData, "") ?: ""
         set(value) = sharedPreferences.edit().putString(urlData, value).apply()
-
-    var isUserUpdated: Boolean
-        inline get() = sharedPreferences.getBoolean(IS_USER_UPDATED, false)
-        set(value) = sharedPreferences.edit().putBoolean(IS_USER_UPDATED, value).apply()
 
     var anonymousTracking: Boolean
         inline get() = sharedPreferences.getBoolean(ANONYMOUS_TRACKING, false)

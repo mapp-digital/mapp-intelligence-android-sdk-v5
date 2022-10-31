@@ -101,10 +101,11 @@ internal fun DataTrack.buildUrl(
     trackIds: List<String>,
     currentEverId: String?,
     anonymous: Boolean,
-    anonymousParam: Set<String>
+    anonymousParam: Set<String>,
+    userMatchingEnabled: Boolean
 ): String {
     return buildUrlOnly(trackDomain, trackIds) +
-            this.buildBody(currentEverId, anonymous = anonymous, anonymousParam = anonymousParam)
+            this.buildBody(currentEverId, anonymous = anonymous, anonymousParam = anonymousParam, userMatchingEnabled = userMatchingEnabled)
 }
 
 internal fun buildUrlOnly(
@@ -119,7 +120,8 @@ internal fun List<DataTrack>.buildBatchUrl(
     trackIds: List<String>,
     currentEverId: String?,
     anonymous: Boolean,
-    anonymousParam: Set<String>
+    anonymousParam: Set<String>,
+    userMatchingEnabled: Boolean
 ): String {
     return buildUrlOnly(trackDomain, trackIds) + "/batch?" + anonymousEid(
         anonymous,
@@ -137,7 +139,8 @@ internal fun DataTrack.buildBody(
     currentEverId: String?,
     withOutBatching: Boolean = true,
     anonymous: Boolean = false,
-    anonymousParam: Set<String> = emptySet()
+    anonymousParam: Set<String> = emptySet(),
+    userMatchingEnabled: Boolean
 ): String {
     var stringBuffer: String = if (withOutBatching)
         "/wt?"
@@ -221,7 +224,7 @@ internal fun DataTrack.buildBody(
     }
 
     // set global EmailReceiverId only if custom EmailReceiverId not set
-    if (emailReceiverID == null && AppModule.config.userMatchingEnabled && userId.isNotBlank()) {
+    if (emailReceiverID == null && !anonymous && userMatchingEnabled && !userId.isNullOrEmpty()) {
         stringBuffer += "&${UrlParams.USER_ID}=$userId"
     }
 
@@ -243,11 +246,12 @@ internal fun DataTrack.buildUrlRequest(
     trackIds: List<String>,
     currentEverId: String?,
     anonymous: Boolean,
-    anonymousParam: Set<String>
+    anonymousParam: Set<String>,
+    userMatchingEnabled: Boolean
 ): Request {
 
     return Request.Builder()
-        .url(buildUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam))
+        .url(buildUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam, userMatchingEnabled))
         .build()
 }
 
@@ -256,12 +260,13 @@ internal fun List<DataTrack>.buildPostRequest(
     trackIds: List<String>,
     currentEverId: String?,
     anonymous: Boolean,
-    anonymousParam: Set<String>
+    anonymousParam: Set<String>,
+    userMatchingEnabled: Boolean
 ): Request {
     return Request.Builder()
-        .url(buildBatchUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam))
+        .url(buildBatchUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam, userMatchingEnabled))
         .post(
-            this.buildUrlRequests(currentEverId, anonymous, anonymousParam)
+            this.buildUrlRequests(currentEverId, anonymous, anonymousParam, userMatchingEnabled)
                 .toRequestBody("text/plain".toMediaTypeOrNull())
         )
         .build()
@@ -270,11 +275,12 @@ internal fun List<DataTrack>.buildPostRequest(
 internal fun List<DataTrack>.buildUrlRequests(
     currentEverId: String?,
     anonymous: Boolean,
-    anonymousParam: Set<String>
+    anonymousParam: Set<String>,
+    userMatchingEnabled: Boolean
 ): String {
     var string = ""
     this.forEach { dataTrack ->
-        string += dataTrack.buildBody(currentEverId, false, anonymous, anonymousParam) + "\n"
+        string += dataTrack.buildBody(currentEverId, false, anonymous, anonymousParam, userMatchingEnabled) + "\n"
     }
     return string
 }

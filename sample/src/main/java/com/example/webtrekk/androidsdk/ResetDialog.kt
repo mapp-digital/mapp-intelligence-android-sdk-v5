@@ -88,14 +88,14 @@ class ResetDialog : DialogFragment() {
         switchBatchRequests.isChecked = Webtrekk.getInstance().isBatchEnabled()
         switchSentAppVersion.isChecked = Webtrekk.getInstance().getVersionInEachRequest()
         switchUserMatchingEnabled.isChecked =
-            Webtrekk.getInstance().isUserMatchingEnabled() && !anonymousTracking
+            Webtrekk.getInstance().isUserMatchingEnabled()
 
         switchUserMatchingEnabled.isEnabled = !anonymousTracking
         switchAnonymousTracking.setOnCheckedChangeListener { buttonView, isChecked ->
             switchUserMatchingEnabled.isEnabled = !isChecked
-            if (isChecked) {
-                switchUserMatchingEnabled.isChecked = false
-            }
+//            if (isChecked) {
+//                switchUserMatchingEnabled.isChecked = false
+//            }
         }
 
         val logIndex = ExceptionType.values().indexOf(Webtrekk.getInstance().getExceptionLogLevel())

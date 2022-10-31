@@ -60,8 +60,8 @@ internal class SessionsImpl(
                 }
             }
         } else {
+            webtrekkSharedPrefs.everId = null
             scope.launch {
-                webtrekkSharedPrefs.everId = null
                 trackRequestDao.updateEverId(null)
             }
         }
@@ -94,11 +94,11 @@ internal class SessionsImpl(
         return newSession
     }
 
-    override fun getDmcUserId(): String {
+    override fun getDmcUserId(): String? {
         return webtrekkSharedPrefs.dmcUserId
     }
 
-    override fun setDmcUserId(userId: String) {
+    override fun setDmcUserId(userId: String?) {
         webtrekkSharedPrefs.dmcUserId = userId
     }
 
@@ -170,18 +170,6 @@ internal class SessionsImpl(
             .buildUpon()
             .appendQueryParameter("webtrekk_type_param", mediaCode)
         webtrekkSharedPrefs.saveUrlData = builtUri.toString()
-    }
-
-    override fun setUserUpdated(value: Boolean) {
-        webtrekkSharedPrefs.isUserUpdated = value
-    }
-
-    override fun isUserUpdated(): Boolean {
-        val updatedUser = webtrekkSharedPrefs.isUserUpdated
-        if (updatedUser) {
-            webtrekkSharedPrefs.isUserUpdated = false
-        }
-        return updatedUser
     }
 
     override fun isAnonymous(): Boolean {

@@ -96,6 +96,8 @@ internal class SendRequestsWorker(
 
         val session = InteractorModule.sessions
 
+        val config = AppModule.config
+
         // retrieves the data in the data base with state of NEW or FAILED only.
         withContext(coroutineDispatchers.ioDispatcher) {
             getCachedDataTracks(
@@ -120,7 +122,8 @@ internal class SendRequestsWorker(
                                         trackIds = trackIds,
                                         currentEverId = session.getEverId(), // map.Key is everId
                                         anonymous = session.isAnonymous(),
-                                        anonymousParam = session.isAnonymousParam()
+                                        anonymousParam = session.isAnonymousParam(),
+                                        userMatchingEnabled = config.userMatchingEnabled
                                     )
                                     logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
@@ -142,7 +145,8 @@ internal class SendRequestsWorker(
                                         trackIds = trackIds,
                                         currentEverId = session.getEverId(),
                                         anonymous = session.isAnonymous(),
-                                        anonymousParam = session.isAnonymousParam()
+                                        anonymousParam = session.isAnonymousParam(),
+                                        userMatchingEnabled = config.userMatchingEnabled
                                     )
                                 logger.info("Sending request = $urlRequest")
 
