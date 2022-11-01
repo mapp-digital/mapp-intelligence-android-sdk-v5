@@ -23,7 +23,7 @@ class EngageIntegrationReceiver : BroadcastReceiver() {
                 if (it.component?.packageName.equals(ctx.packageName)) {
                     if (ACTION == action) {
                         it.extras?.getString("dmcUserId")?.let { dmcUserId ->
-                            if (!sessions.isAnonymous() && config.userMatchingEnabled && dmcUserId.isNotEmpty()) {
+                            if (dmcUserId.isNotEmpty()) {
                                 sessions.setDmcUserId(dmcUserId)
                             }
                         }
