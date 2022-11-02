@@ -114,7 +114,9 @@ data class WebtrekkConfiguration private constructor(
          */
         @JvmName("setRequestsInterval")
         fun requestsInterval(timeUnit: TimeUnit = TimeUnit.MINUTES, interval: Long) =
-            apply { this.requestsInterval = timeUnit.toMinutes(interval) }
+            apply {
+                this.requestsInterval = timeUnit.toMinutes(interval)
+            }
 
         /**
          * The auto tracking is enabled by default. The auto tracking will track your activities

@@ -29,6 +29,7 @@ import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.dao.TrackRequestDao
@@ -129,7 +130,7 @@ internal class SessionsImpl(
         if (!webtrekkSharedPrefs.isMigrated) {
             if (webtrekkSharedPrefs.previousSharedPreferences.contains(WebtrekkSharedPrefs.EVER_ID_KEY)) {
                 val everId = webtrekkSharedPrefs.previousEverId
-                if (everId!=null) {
+                if (everId != null) {
                     webtrekkSharedPrefs.everId = everId
                     webtrekkSharedPrefs.appFirstOpen = "0"
                     webtrekkSharedPrefs.previousSharedPreferences.edit().clear().apply()
@@ -154,8 +155,15 @@ internal class SessionsImpl(
                             urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] =
                                 "$type=".encodeToUTF8() + value
                     }
-                    if (key.startsWith("cc")) {
+                    if (key.startsWith(CampaignParam.CAMPAIGN_PARAM)) {
                         urlMap[key] = value
+                    }
+                    if (key.startsWith(CampaignParam.CAMPAIGN_PARAM_WT_CC)) {
+                        val newKey = key.replace(
+                            CampaignParam.CAMPAIGN_PARAM_WT_CC,
+                            CampaignParam.CAMPAIGN_PARAM
+                        )
+                        urlMap[newKey] = value
                     }
                 }
             }
