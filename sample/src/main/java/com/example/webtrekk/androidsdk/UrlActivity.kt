@@ -25,9 +25,10 @@ class UrlActivity : AppCompatActivity() {
 
         button8.setOnClickListener {
             val url =
-                Uri.parse("https://testurl.com/?abc=email.newsletter.nov2020.thursday&cc12=parameter12")
+                Uri.parse("https://testurl.com/?abc=email.newsletter.nov2020.thursday&wt_cc12=parameter12")
             Webtrekk.getInstance().trackUrl(url, "abc")
             Webtrekk.getInstance().trackPage(this)
+            Webtrekk.getInstance().sendRequestsNowAndClean()
         }
 
         button9.setOnClickListener {
@@ -40,7 +41,7 @@ class UrlActivity : AppCompatActivity() {
             val event = PageViewEvent(name = "TestCampaign")
             event.campaignParameters = campaignProperties
             Webtrekk.getInstance().trackPage(event)
-
+            Webtrekk.getInstance().sendRequestsNowAndClean()
         }
     }
 }
