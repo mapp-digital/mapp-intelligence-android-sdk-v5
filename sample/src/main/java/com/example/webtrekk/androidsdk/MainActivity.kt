@@ -28,6 +28,7 @@ package com.example.webtrekk.androidsdk
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
@@ -37,6 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
 import kotlinx.android.synthetic.main.activity_main.button6
 import kotlinx.android.synthetic.main.activity_main.buttonGetDmcUserId
+import kotlinx.android.synthetic.main.activity_main.buttonPrintActiveConfig
 import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
 import kotlinx.android.synthetic.main.activity_main.buttonTestPageRequest
 import kotlinx.android.synthetic.main.activity_main.button_campaign_test
@@ -79,6 +81,11 @@ class MainActivity : AppCompatActivity() {
 
         Webtrekk.getInstance().init(this, webtrekkConfiguration)
 */
+
+        buttonPrintActiveConfig.setOnClickListener {
+            val activeConfig = Webtrekk.getInstance().getCurrentConfiguration().toString()
+            Log.w(this::class.java.name,"ACTIVE CONFIG: $activeConfig")
+        }
 
         buttonSendRequests.setOnClickListener {
             Webtrekk.getInstance().sendRequestsNowAndClean()

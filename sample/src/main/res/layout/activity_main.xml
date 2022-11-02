@@ -38,6 +38,14 @@
         tools:context=".MainActivity">
 
         <Button
+            android:id="@+id/buttonPrintActiveConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:text="Print active config to logs"
+            android:textColor="@android:color/white" />
+
+        <Button
             android:id="@+id/buttonSendRequests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

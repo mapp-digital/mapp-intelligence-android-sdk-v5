@@ -405,6 +405,8 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun isInitialized(): Boolean
 
+    abstract fun getCurrentConfiguration():ActiveConfig
+
     companion object {
 
         /**

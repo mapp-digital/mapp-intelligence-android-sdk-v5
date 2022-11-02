@@ -197,6 +197,7 @@ object SessionParam
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 object CampaignParam {
+    const val CAMPAIGN_PARAM_WT_CC="wt_cc"
     const val CAMPAIGN_PARAM = "cc"
     const val CAMPAIGN_ACTION_PARAM = "mca"
     const val MEDIA_CODE = "mc"

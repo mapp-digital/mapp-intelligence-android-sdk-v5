@@ -35,6 +35,7 @@ import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import webtrekk.android.sdk.ActiveConfig
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.FormTrackingSettings
@@ -405,7 +406,7 @@ constructor() : Webtrekk(),
     ) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
-        sessions.setEverId(generateEverId(),false)
+        sessions.setEverId(generateEverId(), false)
 /*        if(enabled) {
             setUserMatchingEnabled(false)
         }*/
@@ -481,7 +482,7 @@ constructor() : Webtrekk(),
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     private fun internalInit() = launch(coroutineExceptionHandler(logger)) {
-        if(config.shouldMigrate) {
+        if (config.shouldMigrate) {
             sessions.migrate()
         }
 
@@ -627,6 +628,31 @@ constructor() : Webtrekk(),
         return AppModule.webtrekkSharedPrefs.dmcUserId
     }
 
+    override fun getCurrentConfiguration(): ActiveConfig {
+        return ActiveConfig(
+            trackDomains = config.trackDomain,
+            trackIds = config.trackIds,
+            everId = sessions.getEverId(),
+            userAgent = sessions.getUserAgent(),
+            userMatchingId = sessions.getDmcUserId(),
+            anonymousParams = sessions.isAnonymousParam(),
+            isAnonymous = sessions.isAnonymous(),
+            logLevel = config.logLevel,
+            exceptionLogLevel = config.exceptionLogLevel,
+            requestInterval = config.requestsInterval,
+            requestsPerBatch = config.requestPerBatch,
+            isActivityAutoTracking = config.activityAutoTracking,
+            isFragmentAutoTracking = config.fragmentsAutoTracking,
+            isAutoTracking = config.autoTracking,
+            isBatchSupport = config.batchSupport,
+            isOptOut = sessions.isOptOut(),
+            isUserMatchingEnabled = config.userMatchingEnabled,
+            shouldMigrate = config.shouldMigrate,
+            sendVersionInEachRequest = config.versionInEachRequest,
+            appFirstOpen = sessions.getAppFirstOpen() == "1"
+        )
+    }
+
     companion object {
 
         const val WEBTREKK_IGNORE = "webtrekk_ignore"
@@ -664,7 +690,7 @@ constructor() : Webtrekk(),
             }
 
             val mConfig = configBackup ?: WebtrekkConfiguration.Builder(ids!!, domain!!).build()
-            INSTANCE = WebtrekkImpl().also { webtrekk->
+            INSTANCE = WebtrekkImpl().also { webtrekk ->
                 webtrekk.init(context.applicationContext, mConfig)
             }
         }
