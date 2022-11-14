@@ -1,11 +1,22 @@
 # Change Log
-## Version 5.1.4.2 *(2029-04-18)*
+## Version 5.1.5 *(2022-11-15)*
+* Added additional tracking parameters
+  - cs801 >> version of the SDK
+  - cs802 >> Platform
+* Adopted behaviour for consentless tracking. EverId is not stored or sent when anonymous tracking is enabled. Also, if a user changes from consent to consentless tracking, previously saved everId will be automatically deleted.
+* Added option to match users between Engage and Intelligence SDK in order to better target specific customers.
+* Added method to get current configuration parameters in runtime. 
+* Fixed invalid encoding of the everId parameter on devices with arabic language
+* Fixed wrong definition for campaign tracking ("cc" parameters is tracked now)
+
+# Change Log
+## Version 5.1.4.2 *(2022-04-18)*
 * HotFix version
 * Fixed issue for incorrect parsing EventParameters.
 * Fixed issue when anonymous suppressed parameters not calculated for some request's types.
 
 # Change Log
-## Version 5.1.4.1 *(2029-04-21)*
+## Version 5.1.4.1 *(2022-04-21)*
 * HotFix version
 * EverID can pre properly set on initialization.
 
