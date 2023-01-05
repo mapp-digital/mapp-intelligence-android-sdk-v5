@@ -119,6 +119,12 @@
             android:text="Form Activity" />
 
         <Button
+            android:id="@+id/buttonOrdersTracking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Orders tracking" />
+
+        <Button
             android:id="@+id/button10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

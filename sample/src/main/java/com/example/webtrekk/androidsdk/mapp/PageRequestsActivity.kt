@@ -16,7 +16,7 @@ import java.util.*
 
 class PageRequestsActivity : AppCompatActivity() {
 
-    private val REQUEST_COUNT=10000
+    private val REQUEST_COUNT=100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_page_requests)
@@ -41,7 +41,7 @@ class PageRequestsActivity : AppCompatActivity() {
             for (i in 0..REQUEST_COUNT){
                 webtrekk.trackPage(this@PageRequestsActivity,"testAndroid${i}", trackingParams)
                 tvInfo.post {
-                    tvInfo.text="Current request sent: ${i}"
+                    tvInfo.text="Current request sent: $i"
                 }
             }
 

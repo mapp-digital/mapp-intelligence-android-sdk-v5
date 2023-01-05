@@ -29,6 +29,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -135,6 +136,8 @@ internal class SendRequestsWorker(
                                     )
                                         .onSuccess { logger.debug("Sent the request successfully $it") }
                                         .onFailure { logger.error("Failed to send the request $it") }
+
+                                    delay(5000)
                                 }
                         } else {
                             dataTracks.forEach { dataTrack ->
@@ -158,6 +161,7 @@ internal class SendRequestsWorker(
                                 )
                                     .onSuccess { logger.debug("Sent the request successfully $it") }
                                     .onFailure { logger.error("Failed to send the request $it") }
+                                delay(5000)
                             }
                         }
                     }
