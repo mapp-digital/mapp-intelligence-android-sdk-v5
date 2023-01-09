@@ -49,7 +49,6 @@ import webtrekk.android.sdk.domain.external.TrackUncaughtException
 import webtrekk.android.sdk.domain.external.UncaughtExceptionHandler
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
-import webtrekk.android.sdk.domain.internal.ClearCustomParamsRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
@@ -147,9 +146,6 @@ object InteractorModule {
 
     internal fun clearTrackRequest(): ClearTrackRequests =
         ClearTrackRequests(DataModule.trackRequestRepository)
-
-    internal fun clearCustomParamsRequest(): ClearCustomParamsRequest =
-        ClearCustomParamsRequest(DataModule.customParamsRepository)
 
     internal val autoTrack: AutoTrack by lazy {
         AutoTrack(
