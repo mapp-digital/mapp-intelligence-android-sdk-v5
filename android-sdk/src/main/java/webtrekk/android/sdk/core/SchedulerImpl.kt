@@ -41,39 +41,37 @@ import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 /**
  * The implementation of [Scheduler] using [WorkManager].
  */
-internal class SchedulerImpl(private val workManager: WorkManager, private val config:Config) :
+internal class SchedulerImpl(private val workManager: WorkManager, private val config: Config) :
     Scheduler {
 
     override fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints) {
-        val data=Data.Builder().apply {
+        val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
-            putString("trackDomain",config.trackDomain)
+            putString("trackDomain", config.trackDomain)
         }.build()
 
         val workBuilder = PeriodicWorkRequest.Builder(
             SendRequestsWorker::class.java,
             repeatInterval,
             TimeUnit.MINUTES
-        )
-            .setConstraints(constraints)
+        ).setConstraints(constraints)
+            .setInitialDelay(0, TimeUnit.MILLISECONDS)
             .setInputData(data)
-            //.setInitialDelay(60,TimeUnit.SECONDS) // delay not exist previously
             .addTag(SendRequestsWorker.TAG)
-
 
         val sendRequestsWorker = workBuilder.build()
 
         workManager.enqueueUniquePeriodicWork(
             SEND_REQUESTS_WORKER,
-            ExistingPeriodicWorkPolicy.KEEP, // original value was KEEP
+            ExistingPeriodicWorkPolicy.REPLACE, // original value was KEEP
             sendRequestsWorker
         )
     }
 
     override fun sendRequestsThenCleanUp() {
-        val data=Data.Builder().apply {
+        val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
-            putString("trackDomain",config.trackDomain)
+            putString("trackDomain", config.trackDomain)
         }.build()
 
         val sendWorkBuilder = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
@@ -96,9 +94,9 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
 
     // To be changed to clean up after executing the requests
     override fun scheduleCleanUp() {
-        val data=Data.Builder().apply {
+        val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
-            putString("trackDomain",config.trackDomain)
+            putString("trackDomain", config.trackDomain)
         }.build()
 
         val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
