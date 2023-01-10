@@ -32,11 +32,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
+import webtrekk.android.sdk.util.webtrekkLogger
 
 /**
  * The implementation of [Scheduler] using [WorkManager].
@@ -69,6 +71,15 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
     }
 
     override fun sendRequestsThenCleanUp() {
+        // check if SendRequestsWorker already running as periodic work request
+        val workers = workManager.getWorkInfosByTag(SendRequestsWorker.TAG).get()
+
+        if(workers.isEmpty() || workers[0].state!=WorkInfo.State.RUNNING){
+            scheduleSendAndCleanWorkers()
+        }
+    }
+
+    private fun scheduleSendAndCleanWorkers(){
         val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
             putString("trackDomain", config.trackDomain)

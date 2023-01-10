@@ -41,7 +41,7 @@ class OrdersTrackingActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     progressBar.progress = i + 1
                 }
-                delay(500)
+                delay(50)
             }
             withContext(Dispatchers.Main) {
                 btnCreateOrders.isEnabled = true

@@ -136,8 +136,6 @@ internal class SendRequestsWorker(
                                     )
                                         .onSuccess { logger.debug("Sent the request successfully $it") }
                                         .onFailure { logger.error("Failed to send the request $it") }
-
-                                    delay(5000)
                                 }
                         } else {
                             dataTracks.forEach { dataTrack ->
@@ -161,7 +159,6 @@ internal class SendRequestsWorker(
                                 )
                                     .onSuccess { logger.debug("Sent the request successfully $it") }
                                     .onFailure { logger.error("Failed to send the request $it") }
-                                delay(5000)
                             }
                         }
                     }

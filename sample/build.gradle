@@ -72,8 +72,8 @@ android {
         applicationId "com.example.webtrekk.androidsdk"
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
-        versionCode 2
-        versionName "1.0.5"
+        versionCode 3
+        versionName "1.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
