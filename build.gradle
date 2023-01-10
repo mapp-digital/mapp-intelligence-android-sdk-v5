@@ -96,7 +96,7 @@ buildscript {
     ]
 
     repositories {
-        mavenLocal()
+        //mavenLocal()
         google()
         mavenCentral()
         gradlePluginPortal()
@@ -120,7 +120,7 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
+        //mavenLocal()
         mavenCentral()
         google()
         gradlePluginPortal()

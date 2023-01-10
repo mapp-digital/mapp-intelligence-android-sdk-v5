@@ -1,4 +1,11 @@
 # Change Log
+## Version 5.1.5.1 *(2023-01-10)*
+* Hotfix version
+* Fixed bug that occasionally deleted optional parameters in requests before they were sent
+* Fixed database migration exception that happened on some devices
+* Added sending requests and re-scheduling SendWorker on every SDK initialization/app open.
+
+# Change Log
 ## Version 5.1.5 *(2022-11-15)*
 * Added additional tracking parameters
   - cs801 >> version of the SDK

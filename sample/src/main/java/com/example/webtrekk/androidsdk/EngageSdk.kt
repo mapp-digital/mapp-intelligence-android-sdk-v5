@@ -8,10 +8,10 @@ import com.appoxee.AppoxeeOptions
 object EngageSdk {
 
     private val appoxeeOptions = AppoxeeOptions().apply {
-        appID = "206974"
-        tenantID = "5963"
-        server = AppoxeeOptions.Server.L3
-        sdkKey = "183408d0cd3632.83592719"
+        appID = "264157"
+        tenantID = "33"
+        server = AppoxeeOptions.Server.TEST
+        sdkKey = "6017dd65b8d820.37698249"
     }
 
     private val listener  = Appoxee.OnInitCompletedListener { successful, failReason ->
