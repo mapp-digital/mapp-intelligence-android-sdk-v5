@@ -33,7 +33,6 @@ import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.domain.internal.ClearCustomParamsRequest
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.module.AppModule
@@ -73,9 +72,6 @@ internal class CleanUpWorker(
          */
         val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
 
-        val clearCustomParamsRequest: ClearCustomParamsRequest =
-            InteractorModule.clearCustomParamsRequest()
-
         /**
          * [logger] the injected logger from Webtrekk.
          */
@@ -91,7 +87,7 @@ internal class CleanUpWorker(
                         clearTrackRequests(ClearTrackRequests.Params(trackRequests = dataTracks.map { it.trackRequest }))
                             .onSuccess {
                                 logger.debug("Cleaned up the completed requests successfully")
-                                clearCustomParamsRequest.invoke(null)
+                                //clearCustomParamsRequest.invoke(null)
                             }
                             .onFailure {
                                 logger.error("Failed while cleaning up the completed requests: $it")

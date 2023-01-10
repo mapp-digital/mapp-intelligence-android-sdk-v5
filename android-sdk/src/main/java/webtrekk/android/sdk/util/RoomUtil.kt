@@ -28,6 +28,19 @@ package webtrekk.android.sdk.util
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+
+val callback = object : RoomDatabase.Callback() {
+    override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
+        super.onDestructiveMigration(db)
+        webtrekkLogger.debug("onDestructiveMigration")
+    }
+
+    override fun onCreate(db: SupportSQLiteDatabase) {
+        super.onCreate(db)
+        webtrekkLogger.debug("onCreate")
+    }
+}
 
 /**
  * A generic helper function for building a room database. Returns an instance of [RoomDatabase].
@@ -45,5 +58,5 @@ fun <T : RoomDatabase> buildRoomDatabase(
     database,
     databaseName
 ).fallbackToDestructiveMigration()
-    .fallbackToDestructiveMigrationOnDowngrade()
+    .addCallback(callback)
     .build()

@@ -33,11 +33,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import com.example.webtrekk.androidsdk.mapp.UserMatchingActivity
+import com.example.webtrekk.androidsdk.tracking.OrdersTrackingActivity
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
 import kotlinx.android.synthetic.main.activity_main.button6
 import kotlinx.android.synthetic.main.activity_main.buttonGetDmcUserId
+import kotlinx.android.synthetic.main.activity_main.buttonOrdersTracking
 import kotlinx.android.synthetic.main.activity_main.buttonPrintActiveConfig
 import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
 import kotlinx.android.synthetic.main.activity_main.buttonTestPageRequest
@@ -133,6 +135,10 @@ class MainActivity : AppCompatActivity() {
         button6.setOnClickListener {
             val intent = Intent(this, UrlActivity::class.java)
             startActivity(intent)
+        }
+
+        buttonOrdersTracking.setOnClickListener {
+            startActivity(Intent(this, OrdersTrackingActivity::class.java))
         }
 
         button10.setOnClickListener {

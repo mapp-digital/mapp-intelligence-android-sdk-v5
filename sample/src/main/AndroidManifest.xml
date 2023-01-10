@@ -15,7 +15,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity
+            android:name=".tracking.OrdersTrackingActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".UrlActivity"
             android:exported="false" />
@@ -31,14 +34,11 @@
         <activity
             android:name=".VideoActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
-
-            <intent-filter android:autoVerify="true"
+            <intent-filter
+                android:autoVerify="true"
                 tools:targetApi="m">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -48,7 +48,7 @@
                 <data
                     android:host="test"
                     android:scheme="mapptest" />
-                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- note that the leading "/" is required for pathPrefix -->
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,7 +74,8 @@
         <activity
             android:name=".ObjectTrackingActivityExample"
             android:exported="false" />
-<!--        <activity
+        <!--
+        <activity
             android:name=".mapp.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
@@ -88,18 +89,20 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="${applicationId}" />
             </intent-filter>
-        </activity>-->
+        </activity>
+        -->
         <activity
             android:name=".mapp.SecondActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="cdn.wbtrk.net" />
+                    android:host="cdn.wbtrk.net"
+                    android:scheme="http" />
             </intent-filter>
         </activity> <!-- Deeplinking Start -->
         <activity
@@ -129,30 +132,13 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name=".mapp.PageRequestsActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".mapp.PageRequestsActivity"
+            android:exported="false" />
         <activity android:name=".CampaignActivity" />
-        <activity android:name=".mapp.UserMatchingActivity"
-            android:exported="false"/>
-
-        <!--        <receiver
-                    android:name=".mapp.MyPushBroadcastReceiver"
-                    android:enabled="true"
-                    android:exported="false">
-                    <intent-filter>
-                        <action android:name="com.appoxee.PUSH_OPENED" />
-                        <action android:name="com.appoxee.PUSH_RECEIVED" />
-                        <action android:name="com.appoxee.PUSH_DISMISSED" />
-                        <action android:name="com.appoxee.BUTTON_CLICKED" />
-
-                        <category android:name="${applicationId}" />
-
-                        <action android:name="android.intent.action.VIEW" />
-
-                        <category android:name="android.intent.category.DEFAULT" />
-                        <category android:name="android.intent.category.BROWSABLE" />
-                    </intent-filter>
-                </receiver>-->
+        <activity
+            android:name=".mapp.UserMatchingActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
