@@ -48,8 +48,8 @@ buildscript {
 
             'okHttpVersion'          : '5.0.0-alpha.5',
 
-            'workManagerVersion'     : '2.7.1',
-            'roomVersion'            : '2.4.3',
+            'workManagerVersion'     : '2.8.0-rc01',
+            'roomVersion'            : '2.5.0',
 
             'testCoreVersion'        : '1.4.0',
             'testCoreVersionJunit'   : '1.1.3',
