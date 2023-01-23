@@ -72,8 +72,8 @@ android {
         applicationId "com.example.webtrekk.androidsdk"
         minSdkVersion versions.minSdkVersion
         targetSdkVersion versions.targetSdkVersion
-        versionCode 4
-        versionName "1.0.7"
+        versionCode 5
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "DOMEIN", "\"" + getTrackDomain() + "\""
         buildConfigField "String", "TRACK_IDS", "\"" + getTrackIds() + "\""
@@ -116,14 +116,14 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
-    implementation('com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10')
+    implementation('com.squareup.okhttp3:logging-interceptor:4.10.0')
     implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
 
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation('com.google.firebase:firebase-messaging')
     implementation("com.google.firebase:firebase-crashlytics")
 
-    implementation('com.mapp.sdk:mapp-android:6.0.19-rc04')
+    implementation('com.mapp.sdk:mapp-android:6.0.19-rc05')
 
     implementation(project(':android-sdk'))
     //implementation ("com.mapp.sdk:intelligence-android:5.1.5.1")

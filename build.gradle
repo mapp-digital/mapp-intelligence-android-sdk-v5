@@ -46,7 +46,7 @@ buildscript {
             'kotlinCoroutines'       : '1.6.4',
             'coreKtxVersion'         : '1.9.0',
 
-            'okHttpVersion'          : '5.0.0-alpha.5',
+            'okHttpVersion'          : '4.10.0',
 
             'workManagerVersion'     : '2.8.0-rc01',
             'roomVersion'            : '2.5.0',
