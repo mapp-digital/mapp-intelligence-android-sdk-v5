@@ -3,9 +3,13 @@ package com.example.webtrekk.androidsdk
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_url_trakcing.btnTrackMc
 import kotlinx.android.synthetic.main.activity_url_trakcing.button7
 import kotlinx.android.synthetic.main.activity_url_trakcing.button8
 import kotlinx.android.synthetic.main.activity_url_trakcing.button9
+import kotlinx.android.synthetic.main.activity_url_trakcing.tietParamKey
+import kotlinx.android.synthetic.main.activity_url_trakcing.tietParamValue
+import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.PageViewEvent
 import webtrekk.android.sdk.events.eventParams.CampaignParameters
@@ -42,6 +46,14 @@ class UrlActivity : AppCompatActivity() {
             event.campaignParameters = campaignProperties
             Webtrekk.getInstance().trackPage(event)
             Webtrekk.getInstance().sendRequestsNowAndClean()
+        }
+
+        btnTrackMc.setOnClickListener {
+            val customPageName = this::class.java.name
+            val key=tietParamKey.text.toString()
+            val value=tietParamValue.text.toString()
+            val trackingParams = mapOf(key to value)
+            Webtrekk.getInstance().trackPage(this, customPageName, trackingParams)
         }
     }
 }

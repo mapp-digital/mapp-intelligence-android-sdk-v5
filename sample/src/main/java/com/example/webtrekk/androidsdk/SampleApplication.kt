@@ -64,7 +64,7 @@ class SampleApplication : Application() {
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(elements, domain)
                 //.setEverId("111111111111")
-                .disableAutoTracking()
+                //.disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 1)
                 .sendAppVersionInEveryRequest(false)
@@ -81,7 +81,7 @@ class SampleApplication : Application() {
                 .setUserMatchingEnabled(true)
                 .build()
 
-        Webtrekk.getInstance().init(context = this, webtrekkConfigurations)
+        Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
 
         //Webtrekk.getInstance().anonymousTracking(true, emptySet())
 

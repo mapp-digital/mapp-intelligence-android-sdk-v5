@@ -37,7 +37,6 @@ import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.CustomParam
 import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.appVersionInRequest
 import webtrekk.android.sdk.util.currentCountry
 import webtrekk.android.sdk.util.currentDeviceManufacturer
@@ -83,13 +82,18 @@ internal fun List<CustomParam>.buildCustomParams(
     if (this == emptyArray<CustomParam>()) return ""
     val string = StringBuilder()
     this.forEach {
-        val paramVal =
-            // For media code param, it needs to be double encoded
-            if (it.paramKey == CampaignParam.MEDIA_CODE) ("${InternalParam.WT_MC_DEFAULT}=").encodeToUTF8() + it.paramValue else it.paramValue
-        val paramKey =
-            if (it.paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER) CampaignParam.MEDIA_CODE else it.paramKey
-        if (anonymousParam.contains(paramKey) && anonymous)
-        else {
+        // For media code param, it needs to be double encoded
+        var paramKey: String=it.paramKey
+        var paramVal = it.paramValue
+
+        if (paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER)
+            paramKey = CampaignParam.MEDIA_CODE
+        if (paramKey == CampaignParam.MEDIA_CODE) {
+            if(!(paramVal.contains("=") || paramVal.contains("%3D") || paramVal.contains("%253D"))){
+                paramVal=(InternalParam.WT_MC_DEFAULT+"=").encodeToUTF8()+paramVal
+            }
+        }
+        if (!anonymous && !anonymousParam.contains(paramKey)) {
             string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
         }
     }
@@ -105,7 +109,12 @@ internal fun DataTrack.buildUrl(
     userMatchingEnabled: Boolean
 ): String {
     return buildUrlOnly(trackDomain, trackIds) +
-            this.buildBody(currentEverId, anonymous = anonymous, anonymousParam = anonymousParam, userMatchingEnabled = userMatchingEnabled)
+            this.buildBody(
+                currentEverId,
+                anonymous = anonymous,
+                anonymousParam = anonymousParam,
+                userMatchingEnabled = userMatchingEnabled
+            )
 }
 
 internal fun buildUrlOnly(
@@ -251,7 +260,16 @@ internal fun DataTrack.buildUrlRequest(
 ): Request {
 
     return Request.Builder()
-        .url(buildUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam, userMatchingEnabled))
+        .url(
+            buildUrl(
+                trackDomain,
+                trackIds,
+                currentEverId,
+                anonymous,
+                anonymousParam,
+                userMatchingEnabled
+            )
+        )
         .build()
 }
 
@@ -264,7 +282,16 @@ internal fun List<DataTrack>.buildPostRequest(
     userMatchingEnabled: Boolean
 ): Request {
     return Request.Builder()
-        .url(buildBatchUrl(trackDomain, trackIds, currentEverId, anonymous, anonymousParam, userMatchingEnabled))
+        .url(
+            buildBatchUrl(
+                trackDomain,
+                trackIds,
+                currentEverId,
+                anonymous,
+                anonymousParam,
+                userMatchingEnabled
+            )
+        )
         .post(
             this.buildUrlRequests(currentEverId, anonymous, anonymousParam, userMatchingEnabled)
                 .toRequestBody("text/plain".toMediaTypeOrNull())
@@ -280,7 +307,13 @@ internal fun List<DataTrack>.buildUrlRequests(
 ): String {
     var string = ""
     this.forEach { dataTrack ->
-        string += dataTrack.buildBody(currentEverId, false, anonymous, anonymousParam, userMatchingEnabled) + "\n"
+        string += dataTrack.buildBody(
+            currentEverId,
+            false,
+            anonymous,
+            anonymousParam,
+            userMatchingEnabled
+        ) + "\n"
     }
     return string
 }

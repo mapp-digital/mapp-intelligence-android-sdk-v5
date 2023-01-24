@@ -2,6 +2,7 @@ package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_object_tracking.btnTrackCustomECommerce
 import kotlinx.android.synthetic.main.activity_object_tracking.button_test_anonymous_tracking
 import kotlinx.android.synthetic.main.activity_object_tracking.example10
 import kotlinx.android.synthetic.main.activity_object_tracking.example3
@@ -36,6 +37,10 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
 
         secondExample.setOnClickListener {
             trackCustomAction()
+        }
+
+        btnTrackCustomECommerce.setOnClickListener {
+            trackCustomECommerceParameter()
         }
 
         example3.setOnClickListener {
@@ -109,6 +114,29 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         event.sessionParameters = sessionParameters
 
         Webtrekk.getInstance().trackAction(event)
+    }
+
+    private fun trackCustomECommerceParameter() {
+        val product = ProductParameters(
+            name = "Example product name",
+        )
+        product.cost = 100
+        product.quantity = 15
+        product.categories = mapOf(1 to "ProductCategory1", 2 to "ProductCategory2")
+        product.ecommerceParameters = mapOf(1 to "01_cb_brand")
+
+
+        val eCommerceParameters = ECommerceParameters(
+            customParameters = mapOf(1 to "Custom ECommerce Parameters"),
+        )
+        eCommerceParameters.products = listOf(product)
+
+        val pageEvent = PageViewEvent(
+            name = "ECommerce Page Example"
+        )
+        pageEvent.eCommerceParameters = eCommerceParameters
+
+        Webtrekk.getInstance().trackPage(pageEvent)
     }
 
     private val product1: ProductParameters = run {
