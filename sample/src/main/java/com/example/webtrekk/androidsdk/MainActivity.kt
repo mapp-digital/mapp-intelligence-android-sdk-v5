@@ -272,6 +272,7 @@ class MainActivity : AppCompatActivity() {
             Webtrekk.getInstance().setUserMatchingEnabled(userMatching)
             if (userMatching)
                 Webtrekk.getInstance().getDmcUserId()
+            Webtrekk.getInstance().sendRequestsNowAndClean()
         }
     }
 

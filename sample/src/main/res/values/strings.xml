@@ -91,6 +91,8 @@
     <string name="custom_action_with_custom_userid">Custom action with custom userId</string>
     <string name="custom_action_with_mapp_userid">Custom action with Mapp UserId</string>
     <string name="send_data">Send data</string>
+    <string name="parameter_key">Parameter key</string>
+    <string name="parameter_value">Parameter value</string>
 
     <string-array name="screen_orientation">
         <item>Screen orientation portrait</item>
