@@ -51,6 +51,17 @@
         app:layout_constraintTop_toBottomOf="@+id/firstExample" />
 
     <Button
+        android:id="@+id/btnTrackCustomECommerce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track Custom E Commerce Tracking"
+        app:layout_constraintBottom_toTopOf="@+id/example3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstExample" />
+
+
+    <Button
         android:id="@+id/example3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
