@@ -85,18 +85,13 @@ internal class CleanUpWorker(
                         logger.info("Cleaning up the completed requests")
 
                         clearTrackRequests(ClearTrackRequests.Params(trackRequests = dataTracks.map { it.trackRequest }))
-                            .onSuccess {
-                                logger.debug("Cleaned up the completed requests successfully")
-                                //clearCustomParamsRequest.invoke(null)
-                            }
+                            .onSuccess { logger.debug("Cleaned up the completed requests successfully") }
                             .onFailure {
                                 logger.error("Failed while cleaning up the completed requests: $it")
                             }
                     }
                 }
                 .onFailure { logger.error("Error getting the cached completed requests: $it") }
-
-
         }
 
         return Result.success()
