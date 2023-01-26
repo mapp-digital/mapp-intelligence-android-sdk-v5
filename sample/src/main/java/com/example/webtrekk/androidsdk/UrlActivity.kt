@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_url_trakcing.btnTrackMc
 import kotlinx.android.synthetic.main.activity_url_trakcing.button7
 import kotlinx.android.synthetic.main.activity_url_trakcing.button8
 import kotlinx.android.synthetic.main.activity_url_trakcing.button9
-import kotlinx.android.synthetic.main.activity_url_trakcing.tietParamKey
 import kotlinx.android.synthetic.main.activity_url_trakcing.tietParamValue
 import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.Webtrekk
@@ -50,7 +49,7 @@ class UrlActivity : AppCompatActivity() {
 
         btnTrackMc.setOnClickListener {
             val customPageName = this::class.java.name
-            val key=tietParamKey.text.toString()
+            val key=CampaignParam.MEDIA_CODE
             val value=tietParamValue.text.toString()
             val trackingParams = mapOf(key to value)
             Webtrekk.getInstance().trackPage(this, customPageName, trackingParams)
