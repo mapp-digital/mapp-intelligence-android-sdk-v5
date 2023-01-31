@@ -1,4 +1,5 @@
 # Change Log
+
 ## Version 5.1.5.2 *(2023-01-31)*
 * Hotfix version
 * Updated WorkManager version to 2.8.0-rc01 because current release version has known bug that cause OOM exception.
