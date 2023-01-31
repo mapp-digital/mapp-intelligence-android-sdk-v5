@@ -1,4 +1,10 @@
 # Change Log
+## Version 5.1.5.2 *(2023-01-31)*
+* Hotfix version
+* Updated WorkManager version to 2.8.0-rc01 because current release version has known bug that cause OOM exception.
+* Fixed bug when wt_mc parameter is injected into parameter value when media code is mc.
+
+# Change Log
 ## Version 5.1.5.1 *(2023-01-10)*
 * Hotfix version
 * Fixed bug that occasionally deleted optional parameters in requests before they were sent
