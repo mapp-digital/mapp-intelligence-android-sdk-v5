@@ -4,14 +4,12 @@
 * Updated WorkManager version to 2.8.0-rc01 because current release version has known bug that cause OOM exception.
 * Fixed bug when wt_mc parameter is injected into parameter value when media code is mc.
 
-# Change Log
 ## Version 5.1.5.1 *(2023-01-10)*
 * Hotfix version
 * Fixed bug that occasionally deleted optional parameters in requests before they were sent
 * Fixed database migration exception that happened on some devices
 * Added sending requests and re-scheduling SendWorker on every SDK initialization/app open.
 
-# Change Log
 ## Version 5.1.5 *(2022-11-15)*
 * Added additional tracking parameters
   - cs801 >> version of the SDK
@@ -22,24 +20,20 @@
 * Fixed invalid encoding of the everId parameter on devices with arabic language
 * Fixed wrong definition for campaign tracking ("cc" parameters is tracked now)
 
-# Change Log
 ## Version 5.1.4.2 *(2022-04-18)*
 * HotFix version
 * Fixed issue for incorrect parsing EventParameters.
 * Fixed issue when anonymous suppressed parameters not calculated for some request's types.
 
-# Change Log
 ## Version 5.1.4.1 *(2022-04-21)*
 * HotFix version
 * EverID can pre properly set on initialization.
 
-# Change Log
 ## Version 5.1.4 *(2022-04-21)*
 * Changed Webtrekk.reset(Context, Config) method. Removed second parameter.
 * Added new methods for updating configuration in runtime
 * Fixed bug for uncaught exceptions not tracked
 
-# Change Log
 ## Version 5.1.3 *(2022-03-15)*
 * Updated compile to Java 11
 * Updated targetSdkVersion to 31 (Android 12); 
