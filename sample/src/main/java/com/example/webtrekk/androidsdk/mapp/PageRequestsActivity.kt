@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webtrekk.androidsdk.BACKGROUND_COLOR
 import com.example.webtrekk.androidsdk.R
+import java.util.*
 import kotlinx.android.synthetic.main.activity_page_requests.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,6 @@ import kotlinx.coroutines.launch
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
-import java.util.*
 
 class PageRequestsActivity : AppCompatActivity() {
 
