@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import com.example.webtrekk.androidsdk.R
 import kotlinx.android.synthetic.main.activity_second.tvLink
-import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.Webtrekk
 
 class SecondActivity : Activity() {
