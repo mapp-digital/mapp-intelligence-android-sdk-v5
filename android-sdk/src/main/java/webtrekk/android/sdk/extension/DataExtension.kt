@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.extension
 
+import androidx.room.util.splitToIntList
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -81,7 +82,7 @@ internal fun List<CustomParam>.buildCustomParams(
 ): String {
     if (this == emptyArray<CustomParam>()) return ""
     val string = StringBuilder()
-    this.forEach {
+    for(it in this){
         // For media code param, it needs to be double encoded
         var paramKey: String=it.paramKey
         var paramVal = it.paramValue
@@ -93,7 +94,7 @@ internal fun List<CustomParam>.buildCustomParams(
                 paramVal=(InternalParam.WT_MC_DEFAULT+"=").encodeToUTF8()+paramVal
             }
         }
-        if (!anonymous && !anonymousParam.contains(paramKey)) {
+        if (!anonymous || !anonymousParam.contains(paramKey)) {
             string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")
         }
     }
@@ -242,10 +243,12 @@ internal fun DataTrack.buildBody(
 //            stringBuffer += "&${UrlParams.USER_OVERWRITE}=1"
 //    }
 
-    stringBuffer += customParams.buildCustomParams(
+    val customParamsString = customParams.buildCustomParams(
         anonymous = anonymous,
         anonymousParam = anonymousParam
     )
+
+    stringBuffer +=customParamsString
 
     return stringBuffer
 }
