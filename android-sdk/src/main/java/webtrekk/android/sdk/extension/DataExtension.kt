@@ -25,13 +25,15 @@
 
 package webtrekk.android.sdk.extension
 
-import androidx.room.util.splitToIntList
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import webtrekk.android.sdk.ActiveConfig
+import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.DefaultConfiguration.exactSdkVersion
 import webtrekk.android.sdk.DefaultConfiguration.platform
+import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.api.UrlParams
@@ -46,6 +48,7 @@ import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentWebtrekkVersion
 import webtrekk.android.sdk.util.userId
+import webtrekk.android.sdk.util.webtrekkLogger
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -82,16 +85,16 @@ internal fun List<CustomParam>.buildCustomParams(
 ): String {
     if (this == emptyArray<CustomParam>()) return ""
     val string = StringBuilder()
-    for(it in this){
+    for (it in this) {
         // For media code param, it needs to be double encoded
-        var paramKey: String=it.paramKey
+        var paramKey: String = it.paramKey
         var paramVal = it.paramValue
 
         if (paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER)
             paramKey = CampaignParam.MEDIA_CODE
         if (paramKey == CampaignParam.MEDIA_CODE) {
-            if(!(paramVal.contains("=") || paramVal.contains("%3D") || paramVal.contains("%253D"))){
-                paramVal=(InternalParam.WT_MC_DEFAULT+"=").encodeToUTF8()+paramVal
+            if (!(paramVal.contains("=") || paramVal.contains("%3D") || paramVal.contains("%253D"))) {
+                paramVal = (InternalParam.WT_MC_DEFAULT + "=").encodeToUTF8() + paramVal
             }
         }
         if (!anonymous || !anonymousParam.contains(paramKey)) {
@@ -102,19 +105,12 @@ internal fun List<CustomParam>.buildCustomParams(
 }
 
 internal fun DataTrack.buildUrl(
-    trackDomain: String,
-    trackIds: List<String>,
-    currentEverId: String?,
-    anonymous: Boolean,
-    anonymousParam: Set<String>,
-    userMatchingEnabled: Boolean
+    activeConfig: ActiveConfig
 ): String {
-    return buildUrlOnly(trackDomain, trackIds) +
+    return buildUrlOnly(activeConfig.trackDomains, activeConfig.trackIds) +
             this.buildBody(
-                currentEverId,
-                anonymous = anonymous,
-                anonymousParam = anonymousParam,
-                userMatchingEnabled = userMatchingEnabled
+                withOutBatching = true,
+                activeConfig = activeConfig
             )
 }
 
@@ -126,31 +122,26 @@ internal fun buildUrlOnly(
 }
 
 internal fun List<DataTrack>.buildBatchUrl(
-    trackDomain: String,
-    trackIds: List<String>,
-    currentEverId: String?,
-    anonymous: Boolean,
-    anonymousParam: Set<String>,
-    userMatchingEnabled: Boolean
+    activeConfig: ActiveConfig
 ): String {
-    return buildUrlOnly(trackDomain, trackIds) + "/batch?" + anonymousEid(
-        anonymous,
-        currentEverId
+    return buildUrlOnly(
+        activeConfig.trackDomains,
+        activeConfig.trackIds
+    ) + "/batch?" + anonymousEid(
+        activeConfig.isAnonymous,
+        activeConfig.everId
     ) +
             addParam(
                 UrlParams.USER_AGENT,
                 this[0].trackRequest.userAgent.encodeToUTF8(),
-                anonymousParam,
-                anonymous
+                activeConfig.anonymousParams,
+                activeConfig.isAnonymous
             )
 }
 
 internal fun DataTrack.buildBody(
-    currentEverId: String?,
     withOutBatching: Boolean = true,
-    anonymous: Boolean = false,
-    anonymousParam: Set<String> = emptySet(),
-    userMatchingEnabled: Boolean
+    activeConfig: ActiveConfig
 ): String {
     var stringBuffer: String = if (withOutBatching)
         "/wt?"
@@ -158,7 +149,12 @@ internal fun DataTrack.buildBody(
         "wt?"
     }
     stringBuffer += "${UrlParams.WEBTREKK_PARAM}=${this.trackRequest.webtrekkRequestParams}" +
-            addParam(UrlParams.LANGUAGE, this.trackRequest.language, anonymousParam, anonymous)
+            addParam(
+                UrlParams.LANGUAGE,
+                this.trackRequest.language,
+                activeConfig.anonymousParams,
+                activeConfig.isAnonymous
+            )
 
     stringBuffer += if (this.trackRequest.forceNewSession == "1") {
         "&${UrlParams.APP_ONE}=${this.trackRequest.appFirstOpen}" +
@@ -166,26 +162,26 @@ internal fun DataTrack.buildBody(
                 addParam(
                     UrlParams.APP_FIRST_OPEN,
                     this.trackRequest.appFirstOpen,
-                    anonymousParam,
-                    anonymous
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
                 ) +
                 addParam(
                     UrlParams.ANDROID_API_LEVEL,
                     this.trackRequest.apiLevel,
-                    anonymousParam,
-                    anonymous
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
                 ) +
                 addParam(
                     UrlParams.APP_VERSION_NAME,
                     this.trackRequest.appVersionName,
-                    anonymousParam,
-                    anonymous
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
                 ) +
                 addParam(
                     UrlParams.APP_VERSION_CODE,
                     this.trackRequest.appVersionCode,
-                    anonymousParam,
-                    anonymous
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
                 )
     } else {
         var value = ""
@@ -193,40 +189,46 @@ internal fun DataTrack.buildBody(
             value = addParam(
                 UrlParams.APP_VERSION_NAME,
                 this.trackRequest.appVersionName,
-                anonymousParam,
-                anonymous
+                activeConfig.anonymousParams,
+                activeConfig.isAnonymous
             ) +
                     addParam(
                         UrlParams.APP_VERSION_CODE,
                         this.trackRequest.appVersionCode,
-                        anonymousParam,
-                        anonymous
+                        activeConfig.anonymousParams,
+                        activeConfig.isAnonymous
                     )
         }
         value
     }
 
     if (withOutBatching) {
-        stringBuffer += "&${anonymousEid(anonymous, currentEverId)}" +
+        stringBuffer += "&${anonymousEid(activeConfig.isAnonymous, activeConfig.everId)}" +
                 addParam(
                     UrlParams.USER_AGENT,
                     this.trackRequest.userAgent.encodeToUTF8(),
-                    anonymousParam,
-                    anonymous
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
                 )
     }
 
     stringBuffer += addParam(
         UrlParams.EXACT_SDK_VERSION,
         exactSdkVersion,
-        anonymousParam,
-        anonymous
+        activeConfig.anonymousParams,
+        activeConfig.isAnonymous
     ) + addParam(
         UrlParams.PLATFORM,
         platform,
-        anonymousParam,
-        anonymous
+        activeConfig.anonymousParams,
+        activeConfig.isAnonymous
     )
+
+    stringBuffer += "&${UrlParams.CONFIGURED_SDK_FEATURES}=${activeConfig.calculateUsageParam()}"
+
+    if(activeConfig.temporaryUserId?.isNotBlank()==true){
+        stringBuffer+="&${UrlParams.TEMPORARY_USER_ID_NAME}=${activeConfig.temporaryUserId}"
+    }
 
     // filter custom parameters and look for uc701 (EmailReceiverId)
     val emailReceiverID = customParams.find {
@@ -234,88 +236,47 @@ internal fun DataTrack.buildBody(
     }
 
     // set global EmailReceiverId only if custom EmailReceiverId not set
-    if (emailReceiverID == null && !anonymous && userMatchingEnabled && !userId.isNullOrEmpty()) {
+    if (emailReceiverID == null && !activeConfig.isAnonymous && activeConfig.isUserMatchingEnabled && !userId.isNullOrEmpty()) {
         stringBuffer += "&${UrlParams.USER_ID}=$userId"
     }
 
-//    if ((this.trackRequest.forceNewSession == "1" || userUpdated) && userId.isNotBlank()) {
-//        if (userUpdated)
-//            stringBuffer += "&${UrlParams.USER_OVERWRITE}=1"
-//    }
-
     val customParamsString = customParams.buildCustomParams(
-        anonymous = anonymous,
-        anonymousParam = anonymousParam
+        activeConfig.isAnonymous,
+        activeConfig.anonymousParams
     )
-
-    stringBuffer +=customParamsString
+    stringBuffer += customParamsString
 
     return stringBuffer
 }
 
 internal fun DataTrack.buildUrlRequest(
-    trackDomain: String,
-    trackIds: List<String>,
-    currentEverId: String?,
-    anonymous: Boolean,
-    anonymousParam: Set<String>,
-    userMatchingEnabled: Boolean
+    activeConfig: ActiveConfig
 ): Request {
-
     return Request.Builder()
-        .url(
-            buildUrl(
-                trackDomain,
-                trackIds,
-                currentEverId,
-                anonymous,
-                anonymousParam,
-                userMatchingEnabled
-            )
-        )
+        .url(buildUrl(activeConfig))
         .build()
 }
 
 internal fun List<DataTrack>.buildPostRequest(
-    trackDomain: String,
-    trackIds: List<String>,
-    currentEverId: String?,
-    anonymous: Boolean,
-    anonymousParam: Set<String>,
-    userMatchingEnabled: Boolean
+    activeConfig: ActiveConfig
 ): Request {
     return Request.Builder()
-        .url(
-            buildBatchUrl(
-                trackDomain,
-                trackIds,
-                currentEverId,
-                anonymous,
-                anonymousParam,
-                userMatchingEnabled
-            )
-        )
+        .url(buildBatchUrl(activeConfig))
         .post(
-            this.buildUrlRequests(currentEverId, anonymous, anonymousParam, userMatchingEnabled)
+            this.buildUrlRequests(activeConfig)
                 .toRequestBody("text/plain".toMediaTypeOrNull())
         )
         .build()
 }
 
 internal fun List<DataTrack>.buildUrlRequests(
-    currentEverId: String?,
-    anonymous: Boolean,
-    anonymousParam: Set<String>,
-    userMatchingEnabled: Boolean
+    activeConfig: ActiveConfig
 ): String {
     var string = ""
     this.forEach { dataTrack ->
         string += dataTrack.buildBody(
-            currentEverId,
-            false,
-            anonymous,
-            anonymousParam,
-            userMatchingEnabled
+            withOutBatching = false,
+            activeConfig = activeConfig
         ) + "\n"
     }
     return string

@@ -29,8 +29,8 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
@@ -47,8 +47,6 @@ import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.requestPerBatch
-import webtrekk.android.sdk.util.trackDomain
-import webtrekk.android.sdk.util.trackIds
 
 /**
  * [WorkManager] worker that retrieves the data from the data base, builds the requests and send them to the server.
@@ -99,6 +97,8 @@ internal class SendRequestsWorker(
 
         val config = AppModule.config
 
+        val activeConfig = Webtrekk.getInstance().getCurrentConfiguration()
+
         // retrieves the data in the data base with state of NEW or FAILED only.
         withContext(coroutineDispatchers.ioDispatcher) {
             getCachedDataTracks(
@@ -118,14 +118,7 @@ internal class SendRequestsWorker(
                             dataTracks.asSequence()
                                 .batch(requestPerBatch)
                                 .forEach { dataTrack ->
-                                    val urlRequest = dataTrack.buildPostRequest(
-                                        trackDomain = trackDomain,
-                                        trackIds = trackIds,
-                                        currentEverId = session.getEverId(), // map.Key is everId
-                                        anonymous = session.isAnonymous(),
-                                        anonymousParam = session.isAnonymousParam(),
-                                        userMatchingEnabled = config.userMatchingEnabled
-                                    )
+                                    val urlRequest = dataTrack.buildPostRequest(activeConfig)
                                     logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
                                     executePostRequest(
@@ -139,16 +132,7 @@ internal class SendRequestsWorker(
                                 }
                         } else {
                             dataTracks.forEach { dataTrack ->
-
-                                val urlRequest =
-                                    dataTrack.buildUrlRequest(
-                                        trackDomain = trackDomain,
-                                        trackIds = trackIds,
-                                        currentEverId = session.getEverId(),
-                                        anonymous = session.isAnonymous(),
-                                        anonymousParam = session.isAnonymousParam(),
-                                        userMatchingEnabled = config.userMatchingEnabled
-                                    )
+                                val urlRequest = dataTrack.buildUrlRequest(activeConfig)
                                 logger.info("Sending request = $urlRequest")
 
                                 executeRequest(
@@ -161,6 +145,10 @@ internal class SendRequestsWorker(
                                     .onFailure { logger.error("Failed to send the request $it") }
                             }
                         }
+                    }
+
+                    if (BuildConfig.DEBUG) {
+                        logger.debug(activeConfig.printUsageStatisticCalculation())
                     }
                 }
                 .onFailure { logger.error("Error getting cached data tracks: $it") }

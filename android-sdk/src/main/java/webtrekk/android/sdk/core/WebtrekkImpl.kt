@@ -407,9 +407,6 @@ constructor() : Webtrekk(),
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
         sessions.setEverId(generateEverId(), false)
-/*        if(enabled) {
-            setUserMatchingEnabled(false)
-        }*/
     }
 
     override fun isAnonymousTracking(): Boolean {
@@ -649,8 +646,13 @@ constructor() : Webtrekk(),
             isUserMatchingEnabled = config.userMatchingEnabled,
             shouldMigrate = config.shouldMigrate,
             sendVersionInEachRequest = config.versionInEachRequest,
-            appFirstOpen = sessions.getAppFirstOpen() == "1"
+            appFirstOpen = sessions.getAppFirstOpen() == "1",
+            temporaryUserId = sessions.getTemporaryUserId()
         )
+    }
+
+    override fun setTemporaryUserId(userId: String?) {
+        sessions.setTemporaryUserId(userId)
     }
 
     companion object {

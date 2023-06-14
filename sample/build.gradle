@@ -107,8 +107,8 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation('com.google.android.material:material:1.8.0')
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+    implementation('com.google.android.material:material:1.9.0')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
     implementation "androidx.appcompat:appcompat:$versions.appCompatVersion"
@@ -117,7 +117,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
     implementation "com.squareup.okhttp3:okhttp:$versions.okHttpVersion"
     implementation('com.squareup.okhttp3:logging-interceptor:4.10.0')
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.3'
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.7'
 
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation('com.google.firebase:firebase-messaging')
@@ -125,8 +125,8 @@ dependencies {
 
     implementation('com.mapp.sdk:mapp-android:6.0.19')
 
-    //implementation(project(':android-sdk'))
-    implementation ("com.mapp.sdk:intelligence-android:5.1.5.3")
+    implementation(project(':android-sdk'))
+    //implementation ("com.mapp.sdk:intelligence-android:5.1.5.3")
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 

@@ -28,9 +28,9 @@ package com.example.webtrekk.androidsdk
 // import com.facebook.stetho.Stetho
 // import com.facebook.stetho.okhttp3.StethoInterceptor
 import android.app.Application
-import android.content.Context
 import androidx.work.Constraints
 import androidx.work.NetworkType
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -58,24 +58,18 @@ class SampleApplication : Application() {
 
         val stringIds = BuildConfig.TRACK_IDS
         val domain = BuildConfig.DOMEIN
-        val elements: List<String> = stringIds.split(",")
-        val sharedPref =
-            this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE) ?: return
+        val trackIds: List<String> = stringIds.split(",")
+
         val webtrekkConfigurations =
-            WebtrekkConfiguration.Builder(elements, domain)
+            WebtrekkConfiguration.Builder(trackIds, domain)
                 //.setEverId("111111111111")
                 //.disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .requestsInterval(TimeUnit.MINUTES, 1)
-                .sendAppVersionInEveryRequest(false)
+                .sendAppVersionInEveryRequest(true)
                 .okHttpClient(okHttpClient)
                 .enableMigration()
-                .enableCrashTracking(
-                    ExceptionType.valueOf(
-                        sharedPref.getString("ExceptionType", ExceptionType.ALL.toString())
-                            ?: ExceptionType.ALL.toString()
-                    )
-                )
+                .enableCrashTracking(ExceptionType.ALL)
                 .workManagerConstraints(constraints = constraints)
                 .setBatchSupport(Prefs(this).isBatchEnabled)
                 .setUserMatchingEnabled(true)
@@ -83,7 +77,8 @@ class SampleApplication : Application() {
 
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
 
-        //Webtrekk.getInstance().anonymousTracking(true, emptySet())
+        Webtrekk.getInstance().anonymousTracking(true, emptySet())
+        Webtrekk.getInstance().setTemporaryUserId("user-xyz-123456789")
 
         EngageSdk.init(application = this)
     }
