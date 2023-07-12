@@ -392,12 +392,24 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun getVersionInEachRequest(): Boolean
 
+    /**
+     * Set logging level for console printing
+     */
     abstract fun setLogLevel(logLevel: Logger.Level)
 
+    /**
+     * Set interval for automatic data sending
+     */
     abstract fun setRequestInterval(minutes: Long)
 
+    /**
+     * Returns if user matching is enabled or disabled
+     */
     abstract fun isUserMatchingEnabled():Boolean
 
+    /**
+     * Enable or disable user matching between Engage and Intelligence system
+     */
     abstract fun setUserMatchingEnabled(enabled: Boolean)
 
     /**
@@ -405,7 +417,17 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun isInitialized(): Boolean
 
+    /**
+     * Get configuration parameter that are valid in the method calling time
+     */
     abstract fun getCurrentConfiguration():ActiveConfig
+
+    /**
+     * Set temporary userId used to track user during a single session.
+     * It can be used only when anonymous tracking is enabled.
+     * Setting this value has no effect when anonymous tracking is disabled.
+     */
+    abstract fun setTemporaryUserId(userId:String?)
 
     companion object {
 
