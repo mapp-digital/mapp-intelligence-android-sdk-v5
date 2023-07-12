@@ -117,4 +117,8 @@ internal interface Sessions {
     fun isAnonymousParam(): Set<String>
 
     fun setAnonymousParam(enabled: Set<String>)
+
+    fun setTemporaryUserId(userId:String?)
+
+    fun getTemporaryUserId():String?
 }

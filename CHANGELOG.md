@@ -1,5 +1,5 @@
 # Change Log
-## Version 5.1.5.3 *(2023-05-17)*
+## Version 5.1.5.3 *(2023-05-18)*
 * Hotfix version
 * Updated WorkManager version to 2.8.1 from previous 2.8.0-rc01 version.
 * Updated Room library to version 2.5.1 because of some important fixed included in this release. More about this on official page: https://developer.android.com/jetpack/androidx/releases/room#2.5.1

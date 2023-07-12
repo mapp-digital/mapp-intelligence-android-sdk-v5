@@ -69,6 +69,10 @@ internal object UrlParams {
 
     const val USER_OVERWRITE = "uc713"
 
+    const val CONFIGURED_SDK_FEATURES="pf"
+
+    const val TEMPORARY_USER_ID_NAME="fpv"
+
     val ANDROID_API_LEVEL = customParam(
         ParamType.SESSION_PARAM,
         814
