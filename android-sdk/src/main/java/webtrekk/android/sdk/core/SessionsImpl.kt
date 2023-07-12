@@ -48,6 +48,7 @@ internal class SessionsImpl(
 ) :
     Sessions {
 
+    private var temporaryUserId:String?=null
     private val job = Job()
     private val scope = CoroutineScope(job + coroutineContext)
 
@@ -186,6 +187,9 @@ internal class SessionsImpl(
 
     override fun setAnonymous(enabled: Boolean) {
         webtrekkSharedPrefs.anonymousTracking = enabled
+
+        // when anonymous tracking is disabled, set temporaryUserId to null
+        if(!enabled) temporaryUserId=null
     }
 
     override fun isAnonymousParam(): Set<String> {
@@ -194,5 +198,13 @@ internal class SessionsImpl(
 
     override fun setAnonymousParam(enabled: Set<String>) {
         webtrekkSharedPrefs.anonymousSuppress = enabled
+    }
+
+    override fun setTemporaryUserId(userId: String?) {
+        this.temporaryUserId=userId
+    }
+
+    override fun getTemporaryUserId(): String? {
+        return if(isAnonymous()) temporaryUserId else null
     }
 }
