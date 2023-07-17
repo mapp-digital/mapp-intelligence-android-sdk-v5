@@ -466,11 +466,6 @@ constructor() : Webtrekk(),
     }
 
     override fun setUserMatchingEnabled(enabled: Boolean) {
-//        if (sessions.isAnonymous()) {
-//            config.userMatchingEnabled = false
-//            sessions.setDmcUserId("")
-//            return
-//        }
         config.userMatchingEnabled = enabled
     }
 
