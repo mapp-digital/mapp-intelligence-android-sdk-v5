@@ -642,12 +642,12 @@ constructor() : Webtrekk(),
             shouldMigrate = config.shouldMigrate,
             sendVersionInEachRequest = config.versionInEachRequest,
             appFirstOpen = sessions.getAppFirstOpen() == "1",
-            temporaryUserId = sessions.getTemporaryUserId()
+            temporarySessionId = sessions.getTemporarySessionId()
         )
     }
 
     override fun setTemporarySessionId(sessionId: String) {
-        sessions.setTemporaryUserId(sessionId)
+        sessions.setTemporarySessionId(sessionId)
     }
 
     companion object {
