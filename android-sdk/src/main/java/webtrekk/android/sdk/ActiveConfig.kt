@@ -21,7 +21,7 @@ class ActiveConfig(
     val shouldMigrate: Boolean,
     val sendVersionInEachRequest: Boolean,
     val isUserMatchingEnabled: Boolean,
-    val temporaryUserId: String?,
+    val temporarySessionId: String?,
 ) {
     fun calculateUsageParam(): Int {
         /*
@@ -74,7 +74,7 @@ class ActiveConfig(
     }
 
     override fun toString(): String {
-        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatchingEnabled, temporaryUserId=$temporaryUserId)"
+        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatchingEnabled, temporarySessionId=$temporarySessionId)"
     }
 
 }

@@ -29,11 +29,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import webtrekk.android.sdk.ActiveConfig
-import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.DefaultConfiguration.exactSdkVersion
 import webtrekk.android.sdk.DefaultConfiguration.platform
-import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.TrackParams
 import webtrekk.android.sdk.api.UrlParams
@@ -48,7 +46,6 @@ import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentWebtrekkVersion
 import webtrekk.android.sdk.util.userId
-import webtrekk.android.sdk.util.webtrekkLogger
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -226,8 +223,8 @@ internal fun DataTrack.buildBody(
 
     stringBuffer += "&${UrlParams.CONFIGURED_SDK_FEATURES}=${activeConfig.calculateUsageParam()}"
 
-    if(activeConfig.temporaryUserId?.isNotBlank()==true){
-        stringBuffer+="&${UrlParams.TEMPORARY_USER_ID_NAME}=${activeConfig.temporaryUserId}"
+    if(activeConfig.temporarySessionId?.isNotBlank()==true){
+        stringBuffer+="&${UrlParams.TEMPORARY_USER_ID_NAME}=${activeConfig.temporarySessionId}"
     }
 
     // filter custom parameters and look for uc701 (EmailReceiverId)
