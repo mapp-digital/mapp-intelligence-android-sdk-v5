@@ -69,8 +69,10 @@ internal object UrlParams {
 
     const val USER_OVERWRITE = "uc713"
 
+    // query parameter name for sum of all configuration parameters that are turned on
     const val CONFIGURED_SDK_FEATURES="pf"
 
+    // query parameter for temporaryUserId, that can be set only when anonymous tracking is ENABLED
     const val TEMPORARY_USER_ID_NAME="fpv"
 
     val ANDROID_API_LEVEL = customParam(
