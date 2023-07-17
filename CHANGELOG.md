@@ -1,4 +1,9 @@
 # Change Log
+## Version 5.1.6 *(2023-07-17)*
+* Enabled customers to set a temporary session ID in anonymous tracking to improve data quality
+* Internal performance improvements
+
+# Change Log
 ## Version 5.1.5.3 *(2023-05-18)*
 * Hotfix version
 * Updated WorkManager version to 2.8.1 from previous 2.8.0-rc01 version.
