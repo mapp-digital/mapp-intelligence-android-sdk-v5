@@ -423,11 +423,11 @@ abstract class Webtrekk protected constructor() {
     abstract fun getCurrentConfiguration():ActiveConfig
 
     /**
-     * Set temporary userId used to track user during a single session.
+     * Set temporary session ID used to track user during a single session.
      * It can be used only when anonymous tracking is enabled.
      * Setting this value has no effect when anonymous tracking is disabled.
      */
-    abstract fun setTemporaryUserId(userId:String?)
+    abstract fun setTemporarySessionId(sessionId:String)
 
     companion object {
 

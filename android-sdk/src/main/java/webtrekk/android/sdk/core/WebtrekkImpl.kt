@@ -646,8 +646,8 @@ constructor() : Webtrekk(),
         )
     }
 
-    override fun setTemporaryUserId(userId: String?) {
-        sessions.setTemporaryUserId(userId)
+    override fun setTemporarySessionId(sessionId: String) {
+        sessions.setTemporaryUserId(sessionId)
     }
 
     companion object {
