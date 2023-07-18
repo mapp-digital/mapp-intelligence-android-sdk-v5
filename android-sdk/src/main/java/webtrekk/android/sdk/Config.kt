@@ -27,6 +27,7 @@ package webtrekk.android.sdk
 
 import androidx.work.Constraints
 import okhttp3.OkHttpClient
+import webtrekk.android.sdk.data.model.GenerationMode
 
 /**
  * A configuration interface for customizing [Webtrekk] configurations.
@@ -176,6 +177,11 @@ interface Config {
      */
     var everId: String?
 
+    /**
+     * Indicator to show generation mode for everId
+     * [GenerationMode.USER_GENERATED] or [GenerationMode.AUTO_GENERATED]
+      */
+    var everIdMode:GenerationMode?
     /**
      * Parameter to enable or disable user matching between MAPP's Engage and Intelligence SDK
      */

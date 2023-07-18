@@ -75,7 +75,7 @@ class SampleApplication : Application() {
 
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
 
-        //Webtrekk.getInstance().setEverId("2222222222")
+        Webtrekk.getInstance().setEverId(null)
 
 
 //        Webtrekk.getInstance().anonymousTracking(true, emptySet())
