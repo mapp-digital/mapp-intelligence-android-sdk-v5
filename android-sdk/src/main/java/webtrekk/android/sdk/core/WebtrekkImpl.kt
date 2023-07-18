@@ -47,6 +47,7 @@ import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.TrackRequest
+import webtrekk.android.sdk.data.model.GenerationMode
 import webtrekk.android.sdk.domain.external.AutoTrack
 import webtrekk.android.sdk.domain.external.ManualTrack
 import webtrekk.android.sdk.domain.external.Optout
@@ -406,7 +407,7 @@ constructor() : Webtrekk(),
     ) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
-        sessions.setEverId(generateEverId(), false)
+        sessions.setEverId(generateEverId(), false, GenerationMode.AUTO_GENERATED)
     }
 
     override fun isAnonymousTracking(): Boolean {
@@ -419,9 +420,19 @@ constructor() : Webtrekk(),
      * If null or empty string provided, new everId will be generated and set
      *
      */
+    @Synchronized
     override fun setEverId(everId: String?) {
-        val newEverId = if (everId.isNullOrEmpty()) generateEverId() else everId
-        sessions.setEverId(newEverId, true)
+        val newEverId: String
+        val everIdMode: GenerationMode
+
+        if (everId.isNullOrEmpty()) {
+            newEverId = generateEverId()
+            everIdMode = GenerationMode.AUTO_GENERATED
+        } else {
+            newEverId = everId
+            everIdMode = GenerationMode.USER_GENERATED
+        }
+        sessions.setEverId(newEverId, true, everIdMode)
     }
 
     override fun getVersionInEachRequest(): Boolean {
@@ -480,7 +491,8 @@ constructor() : Webtrekk(),
 
         sessions.setEverId(
             config.everId,
-            false
+            false,
+            if (config.everId.isNullOrEmpty()) GenerationMode.AUTO_GENERATED else GenerationMode.USER_GENERATED
         ) // Setting up the ever id at first start of using the SDK.
 
         // Starting a new session at every freshly app open.
@@ -625,6 +637,7 @@ constructor() : Webtrekk(),
             trackDomains = config.trackDomain,
             trackIds = config.trackIds,
             everId = sessions.getEverId(),
+            everIdMode=sessions.getEverIdMode(),
             userAgent = sessions.getUserAgent(),
             userMatchingId = sessions.getDmcUserId(),
             anonymousParams = sessions.isAnonymousParam(),
@@ -642,7 +655,8 @@ constructor() : Webtrekk(),
             shouldMigrate = config.shouldMigrate,
             sendVersionInEachRequest = config.versionInEachRequest,
             appFirstOpen = sessions.getAppFirstOpen() == "1",
-            temporarySessionId = sessions.getTemporarySessionId()
+            temporarySessionId = sessions.getTemporarySessionId(),
+
         )
     }
 

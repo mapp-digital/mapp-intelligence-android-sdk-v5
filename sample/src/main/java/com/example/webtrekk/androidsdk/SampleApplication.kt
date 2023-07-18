@@ -30,12 +30,9 @@ package com.example.webtrekk.androidsdk
 import android.app.Application
 import androidx.work.Constraints
 import androidx.work.NetworkType
-import java.util.UUID
-import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import webtrekk.android.sdk.DefaultConfiguration
-import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -65,23 +62,27 @@ class SampleApplication : Application() {
                 //.setEverId("111111111111")
                 //.disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
-                .requestsInterval(TimeUnit.MINUTES, 1)
-                .sendAppVersionInEveryRequest(true)
-                .okHttpClient(okHttpClient)
-                .enableMigration()
-                .enableCrashTracking(ExceptionType.ALL)
-                .workManagerConstraints(constraints = constraints)
-                .setBatchSupport(Prefs(this).isBatchEnabled)
-                .setUserMatchingEnabled(true)
+                .disableAutoTracking()
+//                .requestsInterval(TimeUnit.MINUTES, 1)
+//                .sendAppVersionInEveryRequest(true)
+//                .okHttpClient(okHttpClient)
+//                .enableMigration()
+//                .enableCrashTracking(ExceptionType.ALL)
+//                .workManagerConstraints(constraints = constraints)
+//                .setBatchSupport(Prefs(this).isBatchEnabled)
+//                .setUserMatchingEnabled(true)
                 .build()
 
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
 
-        Webtrekk.getInstance().anonymousTracking(true, emptySet())
+        //Webtrekk.getInstance().setEverId("2222222222")
 
-        Webtrekk.getInstance().setTemporarySessionId("user-xyz-123456789")
 
-        EngageSdk.init(application = this)
+//        Webtrekk.getInstance().anonymousTracking(true, emptySet())
+//
+//        Webtrekk.getInstance().setTemporarySessionId("user-xyz-123456789")
+//
+//        EngageSdk.init(application = this)
     }
 
     //This should be implemented on the plugins

@@ -65,7 +65,7 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
 
         workManager.enqueueUniquePeriodicWork(
             SEND_REQUESTS_WORKER,
-            ExistingPeriodicWorkPolicy.REPLACE, // original value was KEEP
+            ExistingPeriodicWorkPolicy.UPDATE, // original value was KEEP
             sendRequestsWorker
         )
     }

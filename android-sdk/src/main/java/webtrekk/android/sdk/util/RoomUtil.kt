@@ -40,6 +40,8 @@ val callback = object : RoomDatabase.Callback() {
         super.onCreate(db)
         webtrekkLogger.debug("onCreate")
     }
+
+
 }
 
 /**
