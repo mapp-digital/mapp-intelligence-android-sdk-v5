@@ -126,7 +126,7 @@ dependencies {
     implementation('com.mapp.sdk:mapp-android:6.0.19')
 
     implementation(project(':android-sdk'))
-    //implementation ("com.mapp.sdk:intelligence-android:5.1.5.3")
+    //implementation ("com.mapp.sdk:intelligence-android:5.1.6")
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 

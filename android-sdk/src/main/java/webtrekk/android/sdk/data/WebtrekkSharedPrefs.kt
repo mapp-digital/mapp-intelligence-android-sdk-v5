@@ -28,6 +28,7 @@ package webtrekk.android.sdk.data
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import webtrekk.android.sdk.data.model.GenerationMode
 
 /**
  * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving
@@ -44,11 +45,29 @@ internal class WebtrekkSharedPrefs(val context: Context) {
     val previousSharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
-    var everId: String?
+    var everId:String?
         inline get() {
             return sharedPreferences.getString(EVER_ID_KEY, null)
         }
-        set(value) = sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+        set(value) {
+            sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+        }
+
+    var everIdGenerationMode: GenerationMode?
+        inline get() {
+            val mode = sharedPreferences.getInt(
+                EVER_ID_GENERATION_MODE,
+                -1
+            )
+            return if (0 > mode || mode > 1) null else GenerationMode.value(mode)
+        }
+        set(value) {
+            if (value != null) {
+                sharedPreferences.edit().putInt(EVER_ID_GENERATION_MODE, value.mode).apply()
+            } else {
+                sharedPreferences.edit().remove(EVER_ID_GENERATION_MODE).apply()
+            }
+        }
 
     var appFirstOpen: String
         inline get() = sharedPreferences.getString(APP_FIRST_OPEN, "1") ?: "1"
@@ -116,5 +135,6 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         const val ANONYMOUS_TRACKING = "anonymousTracking"
         const val ANONYMOUS_SUPPRESS_PARAM = "anonymousSuppressParams"
         const val CONFIG = "config"
+        const val EVER_ID_GENERATION_MODE = "everIdGenerationMode"
     }
 }

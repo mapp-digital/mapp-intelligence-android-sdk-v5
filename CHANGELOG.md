@@ -1,4 +1,9 @@
 # Change Log
+## Version 5.1.6.1 *(2023-07-19)*
+* Hotfix version
+* Updated calculation of the Set everId configuration parameter
+
+# Change Log
 ## Version 5.1.6 *(2023-07-17)*
 * Enabled customers to set a temporary session ID in anonymous tracking to improve data quality
 * Internal performance improvements

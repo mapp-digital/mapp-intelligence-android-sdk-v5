@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.data
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -39,7 +40,7 @@ import webtrekk.android.sdk.data.entity.TrackRequest
 @Database(
     entities = [TrackRequest::class, CustomParam::class],
     version = 8,
-    exportSchema = false
+    exportSchema = false,
 )
 @TypeConverters(RequestStateConverter::class)
 internal abstract class WebtrekkDatabase : RoomDatabase() {
