@@ -33,9 +33,11 @@ import webtrekk.android.sdk.CampaignParam
 import webtrekk.android.sdk.InternalParam
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.dao.TrackRequestDao
+import webtrekk.android.sdk.data.model.GenerationMode
 import webtrekk.android.sdk.extension.encodeToUTF8
 import webtrekk.android.sdk.extension.generateUserAgent
 import webtrekk.android.sdk.util.generateEverId
+import webtrekk.android.sdk.util.webtrekkLogger
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -48,21 +50,25 @@ internal class SessionsImpl(
 ) :
     Sessions {
 
-    private var temporarySessionId:String?=null
+    private var temporarySessionId: String? = null
     private val job = Job()
     private val scope = CoroutineScope(job + coroutineContext)
 
-    override fun setEverId(everId: String?, forceUpdate: Boolean) {
+    @Synchronized
+    override fun setEverId(everId: String?, forceUpdate: Boolean, mode: GenerationMode) {
         if (!isAnonymous()) {
             if (forceUpdate || webtrekkSharedPrefs.everId.isNullOrEmpty()) {
                 val newEverId = if (everId.isNullOrBlank()) generateEverId() else everId
+                webtrekkLogger.info("NEW EVER ID: $newEverId")
                 webtrekkSharedPrefs.everId = newEverId
+                webtrekkSharedPrefs.everIdGenerationMode = mode
                 scope.launch {
                     trackRequestDao.updateEverId(newEverId)
                 }
             }
         } else {
             webtrekkSharedPrefs.everId = null
+            webtrekkSharedPrefs.everIdGenerationMode = null
             scope.launch {
                 trackRequestDao.updateEverId(null)
             }
@@ -70,6 +76,10 @@ internal class SessionsImpl(
     }
 
     override fun getEverId(): String? = webtrekkSharedPrefs.everId
+
+    override fun getEverIdMode(): GenerationMode? {
+        return webtrekkSharedPrefs.everIdGenerationMode
+    }
 
     override fun getUserAgent(): String {
         return generateUserAgent
@@ -189,7 +199,7 @@ internal class SessionsImpl(
         webtrekkSharedPrefs.anonymousTracking = enabled
 
         // when anonymous tracking is disabled, set temporaryUserId to null
-        if(!enabled) temporarySessionId=null
+        if (!enabled) temporarySessionId = null
     }
 
     override fun isAnonymousParam(): Set<String> {
@@ -201,10 +211,10 @@ internal class SessionsImpl(
     }
 
     override fun setTemporarySessionId(sessionId: String?) {
-        this.temporarySessionId=sessionId
+        this.temporarySessionId = sessionId
     }
 
     override fun getTemporarySessionId(): String? {
-        return if(isAnonymous()) temporarySessionId else null
+        return if (isAnonymous()) temporarySessionId else null
     }
 }

@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.core
 
 import android.net.Uri
+import webtrekk.android.sdk.data.model.GenerationMode
 
 /**
  * An interface contains all the methods that are used by SharedPreferences in the SDK.
@@ -39,12 +40,14 @@ internal interface Sessions {
      * to override existing everId.
      * If forceUpdate == false, then everId will not be changed if already exist.
      */
-    fun setEverId(everId: String?, forceUpdate: Boolean)
+    fun setEverId(everId: String?, forceUpdate: Boolean, mode: GenerationMode)
 
     /**
      * Returns the ever id which is stored in the SharedPreferences.
      */
     fun getEverId(): String?
+
+    fun getEverIdMode():GenerationMode?
 
     /**
      * Returns user agent created for the mobile device.

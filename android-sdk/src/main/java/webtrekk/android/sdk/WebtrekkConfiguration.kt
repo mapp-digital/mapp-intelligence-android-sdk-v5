@@ -30,9 +30,9 @@ import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
+import webtrekk.android.sdk.data.model.GenerationMode
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
-import webtrekk.android.sdk.util.currentSession
 import webtrekk.android.sdk.util.webtrekkLogger
 
 /**
@@ -66,6 +66,7 @@ data class WebtrekkConfiguration private constructor(
     override var versionInEachRequest: Boolean,
     override var everId: String?,
     override var userMatchingEnabled: Boolean,
+    override var everIdMode: GenerationMode?,
 ) : Config {
 
     /**
@@ -87,9 +88,14 @@ data class WebtrekkConfiguration private constructor(
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
         private var everId: String? = null
-        private var userMatchingEnabled:Boolean = DefaultConfiguration.USER_MATCHING_ENABLED
+        private var userMatchingEnabled: Boolean = DefaultConfiguration.USER_MATCHING_ENABLED
+        private var everIdMode: GenerationMode? = null
 
-        fun setEverId(everId: String?) = apply { this.everId = everId }
+
+        fun setEverId(everId: String?) = apply {
+            this.everId = everId
+            this.everIdMode = GenerationMode.USER_GENERATED
+        }
 
         /**
          * Configure the log level of the lib.
@@ -171,8 +177,8 @@ data class WebtrekkConfiguration private constructor(
             return this.userMatchingEnabled
         }
 
-        fun setUserMatchingEnabled(enabled: Boolean) =  apply {
-            this.userMatchingEnabled=enabled
+        fun setUserMatchingEnabled(enabled: Boolean) = apply {
+            this.userMatchingEnabled = enabled
         }
 
         @JvmOverloads
@@ -251,6 +257,7 @@ data class WebtrekkConfiguration private constructor(
             versionInEachRequest,
             everId,
             userMatchingEnabled,
+            everIdMode,
         ).also {
             setUserMatchingEnabled(userMatchingEnabled)
         }
@@ -273,7 +280,8 @@ data class WebtrekkConfiguration private constructor(
             shouldMigrate = this.shouldMigrate,
             versionInEachRequest = this.versionInEachRequest,
             everId = this.everId,
-            userMatchingEnabled = this.userMatchingEnabled
+            userMatchingEnabled = this.userMatchingEnabled,
+            everIdMode = this.everIdMode,
         )
     }
 
@@ -297,7 +305,7 @@ data class WebtrekkConfiguration private constructor(
         if (exceptionLogLevel != other.exceptionLogLevel) return false
         if (shouldMigrate != other.shouldMigrate) return false
         if (versionInEachRequest != other.versionInEachRequest) return false
-
+        if (everIdMode != other.everIdMode) return false
         return true
     }
 
@@ -336,6 +344,7 @@ data class WebtrekkConfiguration private constructor(
             jsonObject.put("requestsInterval", requestsInterval)
             jsonObject.put("shouldMigrate", shouldMigrate)
             jsonObject.put("versionInEachRequest", versionInEachRequest)
+            everIdMode?.let { jsonObject.put("eveIdMode", it.mode) }
             everId?.let { jsonObject.put("everId", it) }
             return jsonObject.toString()
         } catch (e: Exception) {
@@ -358,6 +367,9 @@ data class WebtrekkConfiguration private constructor(
                 trackIds.add(trackIdsJsonArray.getString(i))
             }
 
+            val mode = if (obj.has("everIdMode")) obj.getInt("everIdMode") else null
+            val everIdMode = if (mode != null) GenerationMode.value(mode) else null
+
             return WebtrekkConfiguration(
                 trackIds = trackIds,
                 trackDomain = obj.getString("trackDomain"),
@@ -377,7 +389,8 @@ data class WebtrekkConfiguration private constructor(
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
                 workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
                 userMatchingEnabled = obj.getBoolean("userMatchingEnabled"),
-                everId = if (obj.has("everId")) obj.getString("everId") else null
+                everId = if (obj.has("everId")) obj.getString("everId") else null,
+                everIdMode = everIdMode
             )
         }
     }
