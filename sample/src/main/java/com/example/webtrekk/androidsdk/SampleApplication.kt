@@ -25,16 +25,12 @@
 
 package com.example.webtrekk.androidsdk
 
-// import com.facebook.stetho.Stetho
-// import com.facebook.stetho.okhttp3.StethoInterceptor
 import android.app.Application
 import androidx.work.Constraints
 import androidx.work.NetworkType
-import java.util.UUID
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import webtrekk.android.sdk.DefaultConfiguration
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
@@ -62,9 +58,10 @@ class SampleApplication : Application() {
 
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(trackIds, domain)
-                //.setEverId("111111111111")
+                .setEverId("111111111111")
                 //.disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
+                .disableAutoTracking()
                 .requestsInterval(TimeUnit.MINUTES, 1)
                 .sendAppVersionInEveryRequest(true)
                 .okHttpClient(okHttpClient)
@@ -77,24 +74,12 @@ class SampleApplication : Application() {
 
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
 
+        Webtrekk.getInstance().setEverId(null)
+
         Webtrekk.getInstance().anonymousTracking(true, emptySet())
 
         Webtrekk.getInstance().setTemporarySessionId("user-xyz-123456789")
-
-        EngageSdk.init(application = this)
-    }
-
-    //This should be implemented on the plugins
-    private fun updateCustomParams() {
-        val defaultConfig = DefaultConfiguration::class
-        val exactSdkVersionField = defaultConfig.java.getDeclaredField("exactSdkVersion")
-        exactSdkVersionField.isAccessible = true
-        exactSdkVersionField.set(this, "1.1.1.1")
-        exactSdkVersionField.isAccessible = false
-
-        val platformField = defaultConfig.java.getDeclaredField("platform")
-        platformField.isAccessible = true
-        platformField.set(this, "Flutter")
-        platformField.isAccessible = false
+//
+//        EngageSdk.init(application = this)
     }
 }
