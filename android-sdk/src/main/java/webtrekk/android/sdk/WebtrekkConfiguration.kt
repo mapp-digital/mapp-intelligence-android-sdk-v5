@@ -91,6 +91,12 @@ data class WebtrekkConfiguration private constructor(
         private var userMatchingEnabled: Boolean = DefaultConfiguration.USER_MATCHING_ENABLED
         private var everIdMode: GenerationMode? = null
 
+
+        fun setEverId(everId: String?) = apply {
+            this.everId = everId
+            this.everIdMode = GenerationMode.USER_GENERATED
+        }
+
         /**
          * Configure the log level of the lib.
          *

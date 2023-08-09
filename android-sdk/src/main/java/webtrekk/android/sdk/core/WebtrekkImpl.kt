@@ -407,7 +407,9 @@ constructor() : Webtrekk(),
     ) {
         sessions.setAnonymous(enabled)
         sessions.setAnonymousParam(suppressParams)
-        sessions.setEverId(generateEverId(), false, GenerationMode.AUTO_GENERATED)
+        if (enabled || !sessions.getEverId().isNullOrEmpty()) {
+            sessions.setEverId(generateEverId(), false, GenerationMode.AUTO_GENERATED)
+        }
     }
 
     override fun isAnonymousTracking(): Boolean {
@@ -491,7 +493,7 @@ constructor() : Webtrekk(),
 
         sessions.setEverId(
             config.everId,
-            false,
+            !config.everId.isNullOrEmpty(),
             if (config.everId.isNullOrEmpty()) GenerationMode.AUTO_GENERATED else GenerationMode.USER_GENERATED
         ) // Setting up the ever id at first start of using the SDK.
 
@@ -637,7 +639,7 @@ constructor() : Webtrekk(),
             trackDomains = config.trackDomain,
             trackIds = config.trackIds,
             everId = sessions.getEverId(),
-            everIdMode=sessions.getEverIdMode(),
+            everIdMode = sessions.getEverIdMode(),
             userAgent = sessions.getUserAgent(),
             userMatchingId = sessions.getDmcUserId(),
             anonymousParams = sessions.isAnonymousParam(),
@@ -657,7 +659,7 @@ constructor() : Webtrekk(),
             appFirstOpen = sessions.getAppFirstOpen() == "1",
             temporarySessionId = sessions.getTemporarySessionId(),
 
-        )
+            )
     }
 
     override fun setTemporarySessionId(sessionId: String) {
