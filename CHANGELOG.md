@@ -1,5 +1,5 @@
 # Change Log
-## Version 5.1.6.1 *(2023-07-19)*
+## Version 5.1.6.1 *(2023-08-17)*
 * Hotfix version
 * Updated calculation of the Set everId configuration parameter
 
