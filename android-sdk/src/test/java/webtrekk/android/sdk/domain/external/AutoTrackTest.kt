@@ -90,22 +90,6 @@ internal class AutoTrackTest {
         }
     }
 
-//    @Test
-//    fun `verify that auto track received a track request and cached it`() = runTest {
-//        val params = AutoTrack.Params(context = appContext, isOptOut = false)
-//
-//        // todo will fail since it's not possible to mock inline functions
-//        every { appState.listenToLifeCycle(params.context, any()) } answers {
-//            secondArg<(TrackRequest) -> Unit>().invoke(trackRequest)
-//        }
-//
-//        autoTrack(params, coroutinesDispatchersProvider())
-//
-//        coVerifyAll {
-//            cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
-//        }
-//    }
-
     @AfterAll
     fun tearDown(){
         Dispatchers.resetMain()

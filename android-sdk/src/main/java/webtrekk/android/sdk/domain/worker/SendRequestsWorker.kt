@@ -44,6 +44,7 @@ import webtrekk.android.sdk.extension.buildUrlRequest
 import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
+import webtrekk.android.sdk.module.LibraryModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.requestPerBatch
@@ -95,7 +96,7 @@ internal class SendRequestsWorker(
 
         val session = InteractorModule.sessions
 
-        val config = AppModule.config
+        val config = LibraryModule.configuration
 
         val activeConfig = Webtrekk.getInstance().getCurrentConfiguration()
 

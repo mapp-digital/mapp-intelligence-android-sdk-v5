@@ -27,7 +27,9 @@ package webtrekk.android.sdk.data.dao
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,15 +42,38 @@ import webtrekk.android.sdk.data.trackRequests
 internal class TrackRequestDaoTest : DbTest() {
 
     @Test
+    fun insert_track_requests_Test() = runBlocking {
+        val requests = ArrayList(trackRequests)
+        trackRequestDao.setTrackRequests(requests)
+        val dbRequests = trackRequestDao.getTrackRequests().map { it.trackRequest }
+        MatcherAssert.assertThat(dbRequests, equalTo(requests))
+    }
+
+    @Test
+    fun update_everId_for_all_requests_test()= runBlocking{
+        val request=ArrayList(trackRequests)
+        trackRequestDao.setTrackRequests(request)
+        trackRequestDao.updateEverId("2222")
+        val dbRequests=trackRequestDao.getTrackRequests().map { it.trackRequest }
+        dbRequests.forEach {
+            MatcherAssert.assertThat(it.everId, equalTo("2222"))
+        }
+    }
+
+    @Test
     @Throws(Exception::class)
     fun getSingleTrackRequest() = runBlocking {
-        assertThat(trackRequestDao.getTrackRequests()[0].trackRequest, `is`(trackRequests[0]))
+        MatcherAssert.assertThat(
+            trackRequestDao.getTrackRequests()[0].trackRequest, equalTo(
+                trackRequests[0]
+            )
+        )
     }
 
     @Test
     @Throws(Exception::class)
     fun getTrackRequests_WithCustomParams() = runBlocking {
-        assertThat(trackRequestDao.getTrackRequests(), `is`(dataTracks))
+        MatcherAssert.assertThat(trackRequestDao.getTrackRequests(), equalTo(dataTracks))
     }
 
     @Test
@@ -63,7 +88,7 @@ internal class TrackRequestDaoTest : DbTest() {
 
         val results = trackRequestDao.getTrackRequests().map { it.trackRequest }
 
-        assertThat(results, `is`(updatedTrackRequests))
+        MatcherAssert.assertThat(results, equalTo(updatedTrackRequests))
     }
 
     @Test
@@ -82,9 +107,9 @@ internal class TrackRequestDaoTest : DbTest() {
                 .map { it.trackRequest }
 
         // Validate that we have the updated track requests with state "DONE" from DB
-        assertThat(
+        MatcherAssert.assertThat(
             results,
-            `is`(updatedTrackRequests.filter { it.requestState == TrackRequest.RequestState.DONE })
+            equalTo(updatedTrackRequests.filter { it.requestState == TrackRequest.RequestState.DONE })
         )
 
         val twoStateResults =
@@ -97,9 +122,9 @@ internal class TrackRequestDaoTest : DbTest() {
                 .map { it.trackRequest }
 
         // Validate that if we had multi states, we get the updated ones from DB
-        assertThat(twoStateResults, `is`(updatedTrackRequests.filter {
+        MatcherAssert.assertThat(twoStateResults, equalTo(updatedTrackRequests.filter {
             it.requestState == TrackRequest.RequestState.DONE ||
-                it.requestState == TrackRequest.RequestState.FAILED
+                    it.requestState == TrackRequest.RequestState.FAILED
         }))
     }
 
@@ -109,11 +134,25 @@ internal class TrackRequestDaoTest : DbTest() {
         // First, let's delete only 2 elements and verify their results
         trackRequestDao.clearTrackRequests(listOf(trackRequests[0], trackRequests[1]))
 
-        assertThat(trackRequestDao.getTrackRequests().size, `is`(trackRequests.size - 2))
+        MatcherAssert.assertThat(
+            trackRequestDao.getTrackRequests().size,
+            equalTo(trackRequests.size - 2)
+        )
 
         // Clear all track requests and verify
         trackRequestDao.clearTrackRequests(trackRequests)
 
-        assertThat(trackRequestDao.getTrackRequests().size, `is`(0))
+        MatcherAssert.assertThat(trackRequestDao.getTrackRequests().size, equalTo(0))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun clear_all_requests_test()= runBlocking {
+        val dbRequests= trackRequestDao.getTrackRequests().map { it.trackRequest }
+        MatcherAssert.assertThat(dbRequests.size, equalTo(4))
+
+        trackRequestDao.clearAllTrackRequests()
+        val dbRequestsEmpty=trackRequestDao.getTrackRequests().map { it.trackRequest }
+        MatcherAssert.assertThat(dbRequestsEmpty.size, equalTo(0))
     }
 }
