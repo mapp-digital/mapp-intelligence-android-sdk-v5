@@ -57,9 +57,6 @@ import webtrekk.android.sdk.util.CoroutineDispatchers
 import kotlin.coroutines.CoroutineContext
 
 object AppModule {
-    internal val config: Config
-        get() = LibraryModule.configuration
-
     internal val webtrekkSharedPrefs: WebtrekkSharedPrefs by lazy {
         WebtrekkSharedPrefs(
             LibraryModule.application
@@ -68,7 +65,7 @@ object AppModule {
 
     internal val cash: Cash by lazy { Cash() }
 
-    internal val logger: Logger by lazy { WebtrekkLogger(config.logLevel) }
+    internal val logger: Logger by lazy { WebtrekkLogger(LibraryModule.configuration.logLevel) }
 
     internal val dispatchers: CoroutineDispatchers by lazy {
         CoroutineDispatchers(
@@ -81,11 +78,11 @@ object AppModule {
     internal val appState: AppState<DataAnnotationClass> by lazy { provideAppState() }
 
     private fun provideAppState(): AppState<DataAnnotationClass> {
-        return if (config.fragmentsAutoTracking && config.activityAutoTracking)
+        return if (LibraryModule.configuration.fragmentsAutoTracking && LibraryModule.configuration.activityAutoTracking)
             AppStateImpl(sessions = InteractorModule.sessions)
-        else if (config.fragmentsAutoTracking)
+        else if (LibraryModule.configuration.fragmentsAutoTracking)
             FragmentStateImpl()
-        else if (config.activityAutoTracking)
+        else if (LibraryModule.configuration.activityAutoTracking)
             ActivityAppStateImpl(sessions = InteractorModule.sessions)
         else DisabledStateImpl()
     }
@@ -116,13 +113,14 @@ object InteractorModule {
     internal val coroutineContext: CoroutineContext
         get() = job + AppModule.dispatchers.defaultDispatcher
 
-    internal val sessions: Sessions
-        get() = SessionsImpl(AppModule.webtrekkSharedPrefs, DataModule.trackRequestDao, coroutineContext)
+    internal val sessions: Sessions by lazy {
+        SessionsImpl(AppModule.webtrekkSharedPrefs, DataModule.trackRequestDao, coroutineContext)
+    }
 
     internal val scheduler: Scheduler by lazy {
         SchedulerImpl(
             NetworkModule.workManager,
-            AppModule.config
+            LibraryModule.configuration
         )
     }
 

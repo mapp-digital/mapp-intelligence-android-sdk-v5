@@ -34,13 +34,13 @@ import org.junit.Test
 
 internal class WebtrekkSharedPrefsTest {
 
-    private lateinit var webtrekkSharedPrefs: webtrekk.android.sdk.data.WebtrekkSharedPrefs
+    private lateinit var webtrekkSharedPrefs: WebtrekkSharedPrefs
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
-        webtrekkSharedPrefs = webtrekk.android.sdk.data.WebtrekkSharedPrefs(context)
+        webtrekkSharedPrefs = WebtrekkSharedPrefs(context)
     }
 
     @Test

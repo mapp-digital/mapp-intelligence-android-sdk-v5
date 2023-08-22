@@ -87,9 +87,9 @@ data class WebtrekkConfiguration private constructor(
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
-        private var everId: String? = null
+        private var everId: String? =""
         private var userMatchingEnabled: Boolean = DefaultConfiguration.USER_MATCHING_ENABLED
-        private var everIdMode: GenerationMode? = null
+        private var everIdMode: GenerationMode? = GenerationMode.AUTO_GENERATED
 
 
         fun setEverId(everId: String?) = apply {
@@ -241,25 +241,27 @@ data class WebtrekkConfiguration private constructor(
          * Returns an instance of [WebtrekkConfiguration] with configurations that are set in the [Builder]
          */
         fun build() = WebtrekkConfiguration(
-            trackIds.validateEntireList("trackIds"),
-            trackDomain.nullOrEmptyThrowError("trackDomain"),
-            logLevel,
-            requestsInterval,
-            autoTracking,
-            fragmentsAutoTracking,
-            constraints,
-            okHttpClientBuilder,
-            requestPerBatch,
-            batchSupport,
-            activityAutoTracking,
-            exceptionLogLevel,
-            shouldMigrate,
-            versionInEachRequest,
-            everId,
-            userMatchingEnabled,
-            everIdMode,
+            trackIds = trackIds.validateEntireList("trackIds"),
+            trackDomain = trackDomain.nullOrEmptyThrowError("trackDomain"),
+            logLevel = logLevel,
+            requestsInterval = requestsInterval,
+            autoTracking = autoTracking,
+            fragmentsAutoTracking = fragmentsAutoTracking,
+            workManagerConstraints = constraints,
+            okHttpClient = okHttpClientBuilder,
+            requestPerBatch = requestPerBatch,
+            batchSupport = batchSupport,
+            activityAutoTracking = activityAutoTracking,
+            exceptionLogLevel = exceptionLogLevel,
+            shouldMigrate = shouldMigrate,
+            versionInEachRequest = versionInEachRequest,
+            everId = everId,
+            userMatchingEnabled = userMatchingEnabled,
+            everIdMode = everIdMode,
         ).also {
             setUserMatchingEnabled(userMatchingEnabled)
+            setEverId(everId)
+            it.everIdMode=everIdMode
         }
     }
 
@@ -306,6 +308,7 @@ data class WebtrekkConfiguration private constructor(
         if (shouldMigrate != other.shouldMigrate) return false
         if (versionInEachRequest != other.versionInEachRequest) return false
         if (everIdMode != other.everIdMode) return false
+        if (everId != other.everId) return false
         return true
     }
 
@@ -331,7 +334,7 @@ data class WebtrekkConfiguration private constructor(
         try {
             val jsonArr = JSONArray()
             trackIds.forEach { jsonArr.put(it) }
-            var jsonObject = JSONObject("{}")
+            val jsonObject = JSONObject("{}")
             jsonObject.put("trackDomain", trackDomain)
             jsonObject.put("trackIds", jsonArr)
             jsonObject.put("activityAutoTracking", activityAutoTracking)
@@ -344,13 +347,17 @@ data class WebtrekkConfiguration private constructor(
             jsonObject.put("requestsInterval", requestsInterval)
             jsonObject.put("shouldMigrate", shouldMigrate)
             jsonObject.put("versionInEachRequest", versionInEachRequest)
-            everIdMode?.let { jsonObject.put("eveIdMode", it.mode) }
-            everId?.let { jsonObject.put("everId", it) }
+            jsonObject.put("everId",everId)
+            jsonObject.put("everIdMode",everIdMode?.mode)
             return jsonObject.toString()
         } catch (e: Exception) {
             webtrekkLogger.error(e.message ?: "Unknown error")
         }
         return "{}"
+    }
+
+    override fun toString(): String {
+        return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport, activityAutoTracking=$activityAutoTracking, exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate, versionInEachRequest=$versionInEachRequest, everId=$everId, userMatchingEnabled=$userMatchingEnabled, everIdMode=$everIdMode)"
     }
 
     companion object {
@@ -388,17 +395,11 @@ data class WebtrekkConfiguration private constructor(
                 shouldMigrate = obj.getBoolean("shouldMigrate"),
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
                 workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
-                userMatchingEnabled = obj.getBoolean("userMatchingEnabled"),
+                userMatchingEnabled = if (obj.has("userMatchingEnabled")) obj.getBoolean("userMatchingEnabled") else false,
                 everId = if (obj.has("everId")) obj.getString("everId") else null,
                 everIdMode = everIdMode
             )
         }
     }
 
-    override fun toString(): String {
-        return "WebtrekkConfiguration(trackIds=$trackIds, trackDomain='$trackDomain', logLevel=$logLevel, requestsInterval=$requestsInterval, " +
-                "autoTracking=$autoTracking, fragmentsAutoTracking=$fragmentsAutoTracking, workManagerConstraints=$workManagerConstraints, " +
-                "okHttpClient=$okHttpClient, requestPerBatch=$requestPerBatch, batchSupport=$batchSupport, activityAutoTracking=$activityAutoTracking," +
-                "exceptionLogLevel=$exceptionLogLevel, shouldMigrate=$shouldMigrate, versionInEachRequest=$versionInEachRequest)"
-    }
 }
