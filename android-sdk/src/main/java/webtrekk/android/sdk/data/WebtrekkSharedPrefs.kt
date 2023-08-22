@@ -49,8 +49,9 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         inline get() {
             return sharedPreferences.getString(EVER_ID_KEY, null)
         }
+        @SuppressLint("ApplySharedPref")
         set(value) {
-            sharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+            sharedPreferences.edit().putString(EVER_ID_KEY, value).commit()
         }
 
     var everIdGenerationMode: GenerationMode?
@@ -71,7 +72,9 @@ internal class WebtrekkSharedPrefs(val context: Context) {
 
     var appFirstOpen: String
         inline get() = sharedPreferences.getString(APP_FIRST_OPEN, "1") ?: "1"
-        set(value) = sharedPreferences.edit().putString(APP_FIRST_OPEN, value).apply()
+        set(value) {
+            sharedPreferences.edit().putString(APP_FIRST_OPEN, value).apply()
+        }
 
     var fns: String
         inline get() = sharedPreferences.getString(NEW_SESSION_KEY, "1") ?: "1"

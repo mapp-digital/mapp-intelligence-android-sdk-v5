@@ -51,7 +51,7 @@ internal abstract class DbTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
         webtrekkDatabase = Room.inMemoryDatabaseBuilder(
-            context, webtrekk.android.sdk.data.WebtrekkDatabase::class.java
+            context, WebtrekkDatabase::class.java
         ).build()
 
         trackRequestDao = webtrekkDatabase.trackRequestDao()

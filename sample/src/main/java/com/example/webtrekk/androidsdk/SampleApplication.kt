@@ -58,7 +58,7 @@ class SampleApplication : Application() {
 
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(trackIds, domain)
-                .setEverId("111111111111")
+                .setEverId("2222")
                 //.disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .disableAutoTracking()
@@ -73,12 +73,12 @@ class SampleApplication : Application() {
                 .build()
 
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
+        //Webtrekk.getInstance().anonymousTracking(false, emptySet())
 
-        Webtrekk.getInstance().setEverId(null)
+        //Webtrekk.getInstance().setEverId(null)
 
-        Webtrekk.getInstance().anonymousTracking(true, emptySet())
 
-        Webtrekk.getInstance().setTemporarySessionId("user-xyz-123456789")
+        //Webtrekk.getInstance().setTemporarySessionId("user-xyz-123456789")
 //
 //        EngageSdk.init(application = this)
     }

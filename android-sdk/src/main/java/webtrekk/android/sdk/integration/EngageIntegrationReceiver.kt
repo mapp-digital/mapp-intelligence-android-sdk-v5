@@ -8,13 +8,14 @@ import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
+import webtrekk.android.sdk.module.LibraryModule
 
 class EngageIntegrationReceiver : BroadcastReceiver() {
     private val ACTION = "webtrekk.android.sdk.integration.MappIntelligenceListener"
 
     private val sessions: Sessions by lazy { InteractorModule.sessions }
 
-    private val config:Config by lazy { AppModule.config }
+    private val config:Config by lazy { LibraryModule.configuration }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
