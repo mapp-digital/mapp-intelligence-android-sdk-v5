@@ -233,7 +233,7 @@ internal fun DataTrack.buildBody(
     }
 
     // set global EmailReceiverId only if custom EmailReceiverId not set
-    if (emailReceiverID == null && !activeConfig.isAnonymous && activeConfig.isUserMatchingEnabled && !userId.isNullOrEmpty()) {
+    if (emailReceiverID == null && !activeConfig.isAnonymous && activeConfig.isUserMatching && !userId.isNullOrEmpty()) {
         stringBuffer += "&${UrlParams.USER_ID}=$userId"
     }
 

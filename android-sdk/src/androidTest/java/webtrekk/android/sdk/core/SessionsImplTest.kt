@@ -1,13 +1,18 @@
 package webtrekk.android.sdk.core
 
+import android.content.Context
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
+import io.mockk.impl.annotations.OverrideMockKs
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert
 import org.junit.After
 import org.junit.Before
@@ -21,40 +26,41 @@ import webtrekk.android.sdk.data.WebtrekkDatabase
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.model.GenerationMode
 import webtrekk.android.sdk.userDefinedEverId
-import webtrekk.android.sdk.util.appFirstOpen
 
 @FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 internal class SessionsImplTest {
-    private val context = InstrumentationRegistry.getInstrumentation().context
+    private lateinit var context: Context
 
     private val coroutineContext = Dispatchers.Unconfined
 
-    private val database = Room.inMemoryDatabaseBuilder(
-        context, WebtrekkDatabase::class.java
-    ).build()
+    private lateinit var webtrekk: Webtrekk
+
+    private lateinit var database: WebtrekkDatabase
 
     private lateinit var webtrekkSharedPrefs: WebtrekkSharedPrefs
 
+    @OverrideMockKs
     private lateinit var session: Sessions
 
-    private val config: Config = mockk<WebtrekkConfiguration>(relaxed = true)
+    private lateinit var config: Config
 
     @Before
     fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().context
+        config = mockk<WebtrekkConfiguration>(relaxed = true)
+        mockkStatic(WebtrekkImpl::class)
+        WebtrekkImpl.getInstance().init(context, config)
+        database = Room.inMemoryDatabaseBuilder(
+            context, WebtrekkDatabase::class.java
+        ).build()
         webtrekkSharedPrefs = WebtrekkSharedPrefs(context)
-        session = SessionsImpl(
-            webtrekkSharedPrefs = webtrekkSharedPrefs,
-            database.trackRequestDao(),
-            coroutineContext
-        )
-
-        Webtrekk.getInstance().init(context, config)
+        session = SessionsImpl(webtrekkSharedPrefs, database.trackRequestDao(), coroutineContext)
     }
 
     @After
     fun tearDown() {
-        Webtrekk.reset(context)
-        webtrekkSharedPrefs.sharedPreferences.edit().clear().apply()
+        Webtrekk.getInstance().clearSdkConfig()
+        unmockkAll()
     }
 
     @Test
@@ -70,8 +76,8 @@ internal class SessionsImplTest {
     }
 
     @Test
-    fun test_02_getEverId() {
-        session.setAnonymous(false)
+    fun test_02_getEverId() = runBlocking {
+        //session.setAnonymous(false)
         session.setEverId(userDefinedEverId, true, GenerationMode.USER_GENERATED)
         val currentEverId = session.getEverId()
         MatcherAssert.assertThat("EverID must be set", currentEverId, notNullValue())
@@ -84,9 +90,9 @@ internal class SessionsImplTest {
 
     @Test
     fun test_03_getEverIdMode() {
-        session.setAnonymous(false)
-        session.setEverId("2222", true, GenerationMode.USER_GENERATED)
-        val mode = session.getEverIdMode()
+        session.setEverId(userDefinedEverId, true, GenerationMode.USER_GENERATED)
+
+        val mode: GenerationMode? = session.getEverIdMode()
         MatcherAssert.assertThat(
             "EverID mode is user defined",
             mode,
@@ -101,12 +107,11 @@ internal class SessionsImplTest {
     }
 
     @Test
-    fun test_05_getAppFirstOpen() = runBlocking{
+    fun test_05_getAppFirstOpen() = runBlocking {
         val firstOpen = session.getAppFirstOpen()
         MatcherAssert.assertThat("App first open equals to 1", "1", equalTo(firstOpen))
-
         delay(1000)
-        val secondOpen=session.getAppFirstOpen()
+        val secondOpen = session.getAppFirstOpen()
         MatcherAssert.assertThat("Every next open should return 0", "0", equalTo(secondOpen))
     }
 
@@ -207,10 +212,32 @@ internal class SessionsImplTest {
     }
 
     @Test
-    fun test_17_setTemporarySessionId() {
+    fun test_17_everId_is_deleted_when_set_anonymous_tracking_to_enabled() = runBlocking {
+        session.setEverId(userDefinedEverId, true, GenerationMode.USER_GENERATED)
+        Webtrekk.getInstance().anonymousTracking(true, emptySet())
+        val currentEverId = session.getEverId()
+        MatcherAssert.assertThat("EverID must be set", currentEverId, nullValue())
     }
 
     @Test
-    fun test_18_getTemporarySessionId() {
+    fun test_18_set_temporary_session_id() {
+        Webtrekk.getInstance().anonymousTracking(true, emptySet())
+        session.setTemporarySessionId("user-xyz")
+        val temporarySessionId = session.getTemporarySessionId()
+        MatcherAssert.assertThat(
+            "Temporary session id must be set",
+            temporarySessionId,
+            equalTo("user-xyz")
+        )
+    }
+
+    @Test
+    fun test_19_auto_generate_everId_and_delete_temporary_session_id_when_anonymous_tracking_set_to_disabled() {
+        session.setTemporarySessionId("user-xyz")
+        Webtrekk.getInstance().anonymousTracking(false, emptySet())
+        val temporarySessionId = session.getTemporarySessionId()
+        val everId = session.getEverId()
+        MatcherAssert.assertThat("Temporary session id is null", temporarySessionId, nullValue())
+        MatcherAssert.assertThat("EverId is not null", everId, notNullValue())
     }
 }
