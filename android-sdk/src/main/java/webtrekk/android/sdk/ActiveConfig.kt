@@ -4,16 +4,16 @@ import webtrekk.android.sdk.data.model.GenerationMode
 
 class ActiveConfig(
     val trackDomains: String,
-    val trackIds: List<String>,
+    val trackIds: List<String> = emptyList(),
     val everId: String?,
     val everIdMode: GenerationMode?,
     val userAgent: String?,
     val userMatchingId: String?,
-    val anonymousParams: Set<String>,
-    val logLevel: Logger.Level,
+    val anonymousParams: Set<String> = emptySet(),
+    val logLevel: Logger.Level = Logger.Level.NONE,
     val requestInterval: Long,
     val requestsPerBatch: Int,
-    val exceptionLogLevel: ExceptionType,
+    val exceptionLogLevel: ExceptionType? = ExceptionType.NONE,
     val appFirstOpen: Boolean,
     val isOptOut: Boolean,
     val isAnonymous: Boolean,
@@ -23,7 +23,7 @@ class ActiveConfig(
     val isBatchSupport: Boolean,
     val shouldMigrate: Boolean,
     val sendVersionInEachRequest: Boolean,
-    val isUserMatchingEnabled: Boolean,
+    val isUserMatching: Boolean,
     val temporarySessionId: String?,
 ) {
     fun calculateUsageParam(): Int {
@@ -41,21 +41,35 @@ class ActiveConfig(
         */
 
         var usage = 0
-        if (isActivityAutoTracking) usage += 512
-        if (isFragmentAutoTracking) usage += 256
-        if (isAutoTracking) usage += 128
+        if (isActivityAutoTrackingEnabled()) usage += 512
+        if (isFragmentAutoTrackingEnabled()) usage += 256
+        if (isAutoTrackingEnabled()) usage += 128
         // background sendout only for iOS, so there is no addition of 64
-        if (isUserMatchingEnabled) usage += 32
+        if (isUserMatchingEnabled()) usage += 32
         // webview is for Pixel side, so there is no addition of 16
         if (isEverIdSetByUser()) usage += 8
-        if (sendVersionInEachRequest) usage += 4
-        if (exceptionLogLevel != ExceptionType.NONE) usage += 2
-        if (isBatchSupport) usage += 1
+        if (sendVersionInEveryRequest()) usage += 4
+        if (exceptionLogLevel != null && exceptionLogLevel != ExceptionType.NONE) usage += 2
+        if (isBatchSupportEnabled()) usage += 1
 
         return usage
     }
 
-    fun isEverIdSetByUser():Boolean{
+    fun isActivityAutoTrackingEnabled(): Boolean = isActivityAutoTracking
+
+    fun isFragmentAutoTrackingEnabled(): Boolean = isFragmentAutoTracking
+
+    fun isUserMatchingEnabled(): Boolean = isUserMatching
+
+    fun sendVersionInEveryRequest(): Boolean = sendVersionInEachRequest
+
+    fun isBatchSupportEnabled(): Boolean = isBatchSupport
+
+    fun isAutoTrackingEnabled(): Boolean {
+        return isAutoTracking
+    }
+
+    fun isEverIdSetByUser(): Boolean {
         return everId?.isNotBlank() == true && everIdMode == GenerationMode.USER_GENERATED
     }
 
@@ -69,7 +83,7 @@ class ActiveConfig(
         sb.appendLine("Fragment auto tracking: ${if (isFragmentAutoTracking) 256 else 0}")
         sb.appendLine("Auto tracking: ${if (isAutoTracking) 128 else 0}")
         sb.appendLine("Background sendout: ${0}")
-        sb.appendLine("User matching: ${if (isUserMatchingEnabled) 32 else 0}")
+        sb.appendLine("User matching: ${if (isUserMatching) 32 else 0}")
         sb.appendLine("Webview: ${0}")
         sb.appendLine("Set EverId: ${if (isEverIdSetByUser()) 8 else 0}")
         sb.appendLine("App Version in every request: ${if (sendVersionInEachRequest) 4 else 0}")
@@ -81,7 +95,7 @@ class ActiveConfig(
     }
 
     override fun toString(): String {
-        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, everIdMode=$everIdMode, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatchingEnabled, temporarySessionId=$temporarySessionId)"
+        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, everIdMode=$everIdMode, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatching, temporarySessionId=$temporarySessionId)"
     }
 
 }
