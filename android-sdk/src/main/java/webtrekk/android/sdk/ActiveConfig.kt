@@ -65,9 +65,7 @@ class ActiveConfig(
 
     fun isBatchSupportEnabled(): Boolean = isBatchSupport
 
-    fun isAutoTrackingEnabled(): Boolean {
-        return isAutoTracking
-    }
+    fun isAutoTrackingEnabled(): Boolean = isAutoTracking
 
     fun isEverIdSetByUser(): Boolean {
         return everId?.isNotBlank() == true && everIdMode == GenerationMode.USER_GENERATED
@@ -79,16 +77,16 @@ class ActiveConfig(
         sb.appendLine("================================================")
         sb.appendLine("================USAGE STATISTICS================")
         sb.appendLine("================================================")
-        sb.appendLine("Activity auto tracking: ${if (isActivityAutoTracking) 512 else 0}")
-        sb.appendLine("Fragment auto tracking: ${if (isFragmentAutoTracking) 256 else 0}")
-        sb.appendLine("Auto tracking: ${if (isAutoTracking) 128 else 0}")
+        sb.appendLine("Activity auto tracking: ${if (isActivityAutoTrackingEnabled()) 512 else 0}")
+        sb.appendLine("Fragment auto tracking: ${if (isFragmentAutoTrackingEnabled()) 256 else 0}")
+        sb.appendLine("Auto tracking: ${if (isAutoTrackingEnabled()) 128 else 0}")
         sb.appendLine("Background sendout: ${0}")
-        sb.appendLine("User matching: ${if (isUserMatching) 32 else 0}")
+        sb.appendLine("User matching: ${if (isUserMatchingEnabled()) 32 else 0}")
         sb.appendLine("Webview: ${0}")
         sb.appendLine("Set EverId: ${if (isEverIdSetByUser()) 8 else 0}")
-        sb.appendLine("App Version in every request: ${if (sendVersionInEachRequest) 4 else 0}")
+        sb.appendLine("App Version in every request: ${if (sendVersionInEveryRequest()) 4 else 0}")
         sb.appendLine("Crash tracking: ${if (exceptionLogLevel != ExceptionType.NONE) 2 else 0}")
-        sb.appendLine("Batch support: ${if (isBatchSupport) 1 else 0}")
+        sb.appendLine("Batch support: ${if (isBatchSupportEnabled()) 1 else 0}")
         sb.appendLine("================================================")
 
         return sb.toString()
