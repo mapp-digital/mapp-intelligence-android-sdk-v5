@@ -34,6 +34,7 @@ import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import com.example.webtrekk.androidsdk.mapp.UserMatchingActivity
 import com.example.webtrekk.androidsdk.tracking.OrdersTrackingActivity
+import kotlinx.android.synthetic.main.activity_main.btnObjectTrackingProductStatus
 import kotlinx.android.synthetic.main.activity_main.btnResetSdk
 import kotlinx.android.synthetic.main.activity_main.button10
 import kotlinx.android.synthetic.main.activity_main.button4
@@ -143,6 +144,11 @@ class MainActivity : AppCompatActivity() {
 
         button10.setOnClickListener {
             val intent = Intent(this, ObjectTrackingActivityExample::class.java)
+            startActivity(intent)
+        }
+
+        btnObjectTrackingProductStatus.setOnClickListener {
+            val intent=Intent(this, ObjectTrackingProductStatus::class.java)
             startActivity(intent)
         }
 

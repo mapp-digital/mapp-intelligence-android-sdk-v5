@@ -68,7 +68,7 @@ class SampleApplication : Application() {
                 .enableMigration()
                 .enableCrashTracking(ExceptionType.ALL)
                 .workManagerConstraints(constraints = constraints)
-                .setBatchSupport(Prefs(this).isBatchEnabled)
+                .setBatchSupport(false)
                 .setUserMatchingEnabled(true)
                 .build()
 

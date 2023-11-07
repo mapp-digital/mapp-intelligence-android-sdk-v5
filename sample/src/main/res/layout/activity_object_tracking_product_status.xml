@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="5dp"
+    tools:ignore="HardcodedText">
+    <Button
+        android:id="@+id/btnNoneStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce None Status"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example3" />
+
+    <Button
+        android:id="@+id/btnPurchaseProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce Purchase Product"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example3" />
+
+
+    <Button
+        android:id="@+id/btnViewProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce View Product"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example3" />
+
+    <Button
+        android:id="@+id/btnAddedToBasket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce Added To Basket"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example4" />
+
+    <Button
+        android:id="@+id/btnDeletedFromBasket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce Deleted From Basket"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example4" />
+
+    <Button
+        android:id="@+id/btnAddedToWishlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce Added To Wishlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example4" />
+
+    <Button
+        android:id="@+id/btnDeletedFromWishlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce Deleted From Wishlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example4" />
+
+    <Button
+        android:id="@+id/btnCheckout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Ecommerce Checkout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/example4" />
+
+</LinearLayout>

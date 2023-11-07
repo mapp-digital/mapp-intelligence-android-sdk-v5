@@ -6,8 +6,6 @@ import kotlinx.android.synthetic.main.activity_object_tracking.btnTrackCustomECo
 import kotlinx.android.synthetic.main.activity_object_tracking.button_test_anonymous_tracking
 import kotlinx.android.synthetic.main.activity_object_tracking.example10
 import kotlinx.android.synthetic.main.activity_object_tracking.example3
-import kotlinx.android.synthetic.main.activity_object_tracking.example4
-import kotlinx.android.synthetic.main.activity_object_tracking.example5
 import kotlinx.android.synthetic.main.activity_object_tracking.example6
 import kotlinx.android.synthetic.main.activity_object_tracking.example7
 import kotlinx.android.synthetic.main.activity_object_tracking.example8
@@ -46,12 +44,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         example3.setOnClickListener {
             trackGoal()
         }
-        example4.setOnClickListener {
-            trackEcommerceViewProduct()
-        }
-        example5.setOnClickListener {
-            trackEcommerceAddedToBasket()
-        }
+
         example6.setOnClickListener {
             trackEcommerceConfirmation()
         }
@@ -204,65 +197,6 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         val ecommerceParameters = ECommerceParameters(customParameters = mapOf(1 to "goal value 1"))
         val pageEvent = PageViewEvent(name = "page name")
         pageEvent.eCommerceParameters = ecommerceParameters
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-    }
-
-
-    private fun trackEcommerceViewProduct() {
-
-        val ecommerceParameters1 = ECommerceParameters(
-            customParameters = mapOf(
-                1 to "ProductParam1",
-                2 to "ProductParam2"
-            )
-        )
-        ecommerceParameters1.products = listOf(product1)
-        ecommerceParameters1.status = ECommerceParameters.Status.VIEWED
-        ecommerceParameters1.cancellationValue = 2
-        ecommerceParameters1.couponValue = 33
-        ecommerceParameters1.currency = "EUR"
-        ecommerceParameters1.markUp = 1
-        ecommerceParameters1.orderStatus = "order received"
-        ecommerceParameters1.orderID = "ud679adn"
-        ecommerceParameters1.orderValue = 456
-        ecommerceParameters1.paymentMethod = "credit card"
-        ecommerceParameters1.returnValue = 3
-        ecommerceParameters1.returningOrNewCustomer = "new customer"
-        ecommerceParameters1.shippingCost = 35
-        ecommerceParameters1.shippingSpeed = "highest"
-        ecommerceParameters1.shippingServiceProvider = "DHL"
-
-        val pageEvent = PageViewEvent(name = "TrackProductView")
-        pageEvent.eCommerceParameters = ecommerceParameters1
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
-        Webtrekk.getInstance().trackPage(pageEvent)
-    }
-
-    private fun trackEcommerceAddedToBasket() {
-
-        val ecommerceParameters1 = ECommerceParameters(
-            customParameters = mapOf(
-                1 to "ProductParam1",
-                2 to "ProductParam2"
-            )
-        )
-        product1.quantity = 3
-        product2.quantity = 2
-
-        ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_BASKET
-        ecommerceParameters1.products = listOf(product1)
-
-        val pageEvent = PageViewEvent(name = "TrackProductAddedToBasket")
-        pageEvent.eCommerceParameters = ecommerceParameters1
-
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
 
         Webtrekk.getInstance().trackPage(pageEvent)
     }

@@ -131,6 +131,12 @@
             android:text="Object tracking" />
 
         <Button
+            android:id="@+id/btnObjectTrackingProductStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Object tracking - Product Status" />
+
+        <Button
             android:id="@+id/buttonTestPageRequest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
