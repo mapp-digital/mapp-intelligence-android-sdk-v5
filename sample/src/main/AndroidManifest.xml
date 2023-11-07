@@ -139,6 +139,7 @@
         <activity
             android:name=".mapp.UserMatchingActivity"
             android:exported="false" />
+        <activity android:name=".ObjectTrackingProductStatus" />
     </application>
 
 </manifest>

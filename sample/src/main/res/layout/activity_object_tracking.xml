@@ -69,25 +69,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/secondExample" />
-
-    <Button
-        android:id="@+id/example4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="trackEcommerceViewProduct"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/example3" />
-
-    <Button
-        android:id="@+id/example5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="trackEcommerceAddedToBasket"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/example4" />
-
     <Button
         android:id="@+id/example6"
         android:layout_width="wrap_content"

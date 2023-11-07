@@ -15,20 +15,15 @@ data class ECommerceParameters
 constructor(
     var customParameters: Map<Int, String> = emptyMap()
 ) : BaseEvent {
-    enum class Status {
-        NONE_STATUS,
-        ADDED_TO_BASKET,
-        PURCHASED,
-        VIEWED;
-
-        fun toStatus(): String {
-            return when (this) {
-                ADDED_TO_BASKET -> "add"
-                PURCHASED -> "conf"
-                VIEWED -> "view"
-                NONE_STATUS -> ""
-            }
-        }
+    enum class Status(val value:String) {
+        NONE_STATUS(""),
+        ADDED_TO_BASKET("add"),
+        PURCHASED("conf"),
+        VIEWED("view"),
+        DELETED_FROM_BASKET("del"),
+        ADDED_TO_WISHLIST("add-wl"),
+        DELETED_FROM_WISHLIST("del-wl"),
+        CHECKOUT("checkout");
     }
 
     var products = listOf<ProductParameters>()
@@ -56,7 +51,7 @@ constructor(
         map.addNotNull(ECommerceParam.PRODUCT_CURRENCY, currency)
         map.addNotNull(ECommerceParam.ORDER_ID, orderID)
         map.addNotNull(ECommerceParam.ORDER_VALUE, orderValue)
-        map.addNotNull(ECommerceParam.STATUS_OF_SHOPPING_CARD, status.toStatus())
+        map.addNotNull(ECommerceParam.STATUS_OF_SHOPPING_CARD, status.value)
         map.addNotNull(ECommerceParam.RETURNING_OR_NEW_CUSTOMER, returningOrNewCustomer)
         map.addNotNull(ECommerceParam.RETURN_VALUE, returnValue)
         map.addNotNull(ECommerceParam.CANCELLATION_VALUE, cancellationValue)
