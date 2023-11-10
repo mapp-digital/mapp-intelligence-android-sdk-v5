@@ -94,12 +94,9 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         ecommerceParameters1.shippingSpeed = "highest"
         ecommerceParameters1.shippingServiceProvider = "DHL"
 
-        val pageEvent = PageViewEvent(name = "TrackProductView")
+        val pageEvent = PageViewEvent(name = "TrackProductNoneStatus")
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -127,12 +124,9 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         ecommerceParameters1.shippingSpeed = "highest"
         ecommerceParameters1.shippingServiceProvider = "DHL"
 
-        val pageEvent = PageViewEvent(name = "TrackProductView")
+        val pageEvent = PageViewEvent(name = "TrackProductPurchased")
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -161,11 +155,8 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         ecommerceParameters1.shippingServiceProvider = "DHL"
 
         val pageEvent = PageViewEvent(name = "TrackProductView")
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -180,17 +171,10 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         product1.quantity = 3
         product2.quantity = 2
 
-        ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_BASKET
-        ecommerceParameters1.products = listOf(product1)
-
         val pageEvent = PageViewEvent(name = "TrackProductAddedToBasket")
+        ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_BASKET
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
-
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -205,17 +189,10 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         product1.quantity = 3
         product2.quantity = 2
 
-        ecommerceParameters1.status = ECommerceParameters.Status.DELETED_FROM_BASKET
-        ecommerceParameters1.products = listOf(product1)
-
         val pageEvent = PageViewEvent(name = "TrackProductDeletedFromBasket")
+        ecommerceParameters1.status = ECommerceParameters.Status.DELETED_FROM_BASKET
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
-
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -230,17 +207,10 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         product1.quantity = 3
         product2.quantity = 2
 
-        ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_WISHLIST
-        ecommerceParameters1.products = listOf(product1)
-
         val pageEvent = PageViewEvent(name = "TrackProductAddedToWishlist")
+        ecommerceParameters1.status = ECommerceParameters.Status.ADDED_TO_WISHLIST
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
-
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -255,17 +225,10 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         product1.quantity = 3
         product2.quantity = 2
 
-        ecommerceParameters1.status = ECommerceParameters.Status.DELETED_FROM_WISHLIST
-        ecommerceParameters1.products = listOf(product1)
-
         val pageEvent = PageViewEvent(name = "TrackProductDeletedFromWishlist")
+        ecommerceParameters1.status = ECommerceParameters.Status.DELETED_FROM_WISHLIST
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
-
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 
@@ -280,17 +243,10 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
         product1.quantity = 3
         product2.quantity = 2
 
-        ecommerceParameters1.status = ECommerceParameters.Status.CHECKOUT
-        ecommerceParameters1.products = listOf(product1)
-
         val pageEvent = PageViewEvent(name = "TrackProductCheckout")
+        ecommerceParameters1.status = ECommerceParameters.Status.CHECKOUT
+        ecommerceParameters1.products = listOf(product1,product2)
         pageEvent.eCommerceParameters = ecommerceParameters1
-
-
-        Webtrekk.getInstance().trackPage(pageEvent)
-
-        ecommerceParameters1.products = listOf(product2)
-
         Webtrekk.getInstance().trackPage(pageEvent)
     }
 }
