@@ -1,4 +1,8 @@
 # Change Log
+## Version 5.1.7.1 *(2023-11-23)*
+* Fixed issue of typealias TrackingParameters is not recognised
+
+# Change Log
 ## Version 5.1.7 *(2023-11-23)*
 * Add New Product Status to Android SDK
 
