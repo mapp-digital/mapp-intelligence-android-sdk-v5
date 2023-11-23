@@ -1,4 +1,8 @@
 # Change Log
+## Version 5.1.7 *(2023-11-23)*
+* Add New Product Status to Android SDK
+
+# Change Log
 ## Version 5.1.6.1 *(2023-08-17)*
 * Hotfix version
 * Updated calculation of the Set everId configuration parameter
