@@ -69,6 +69,7 @@ android {
         abortOnError false
         textReport true
     }
+    namespace 'webtrekk.android.sdk'
 
 
 //    packagingOptions {

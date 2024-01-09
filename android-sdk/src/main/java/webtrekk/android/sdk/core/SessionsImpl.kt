@@ -86,9 +86,9 @@ internal class SessionsImpl(
     }
 
     // after getting app first start, set it to 0 forever.
-    override fun getAppFirstOpen(): String {
+    override fun getAppFirstOpen(updateValue: Boolean): String {
         val firstOpen = webtrekkSharedPrefs.appFirstOpen
-        if (firstOpen == "1") {
+        if (updateValue && firstOpen == "1") {
             webtrekkSharedPrefs.appFirstOpen = "0"
         }
         return firstOpen

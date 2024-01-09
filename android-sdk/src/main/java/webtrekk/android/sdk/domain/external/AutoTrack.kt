@@ -70,7 +70,7 @@ internal class AutoTrack(
                     logger
                 )
             ) {
-                cacheTrackRequest(
+                cacheTrackRequest.invoke(
                     CacheTrackRequestWithCustomParams.Params(
                         trackRequest.trackRequest,
                         trackRequest.trackParams.toParam()

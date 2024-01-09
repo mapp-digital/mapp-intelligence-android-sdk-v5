@@ -24,7 +24,8 @@ class StandardVideoActivity : AppCompatActivity() {
         try {
             myVideoView!!.setMediaController(mediaControls)
             mediaControls!!.setAnchorView(myVideoView)
-            myVideoView!!.setVideoURI(Uri.parse("android.resource://" + packageName + "/" + R.raw.wt))
+            //myVideoView!!.setVideoURI(Uri.parse("android.resource://" + packageName + "/" + R.raw.wt))
+            myVideoView!!.setVideoURI(Uri.parse("https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"))
         } catch (e: Exception) {
         }
 

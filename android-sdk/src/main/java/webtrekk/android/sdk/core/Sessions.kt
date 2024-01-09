@@ -57,7 +57,7 @@ internal interface Sessions {
     /**
      * Returns "1" if the app is first used by the SDK, after that always returns "0".
      */
-    fun getAppFirstOpen(): String
+    fun getAppFirstOpen(updateValue:Boolean = false): String
 
     /**
      * Starting a new session when the app is freshly opened, setting its value to "1".

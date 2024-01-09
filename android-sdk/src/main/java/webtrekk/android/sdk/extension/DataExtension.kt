@@ -183,18 +183,18 @@ internal fun DataTrack.buildBody(
     } else {
         var value = ""
         if (appVersionInRequest) {
-            value = addParam(
-                UrlParams.APP_VERSION_NAME,
-                this.trackRequest.appVersionName,
-                activeConfig.anonymousParams,
-                activeConfig.isAnonymous
-            ) +
-                    addParam(
-                        UrlParams.APP_VERSION_CODE,
-                        this.trackRequest.appVersionCode,
-                        activeConfig.anonymousParams,
-                        activeConfig.isAnonymous
-                    )
+            value =
+                addParam(
+                    UrlParams.APP_VERSION_NAME,
+                    this.trackRequest.appVersionName,
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
+                ) + addParam(
+                    UrlParams.APP_VERSION_CODE,
+                    this.trackRequest.appVersionCode,
+                    activeConfig.anonymousParams,
+                    activeConfig.isAnonymous
+                )
         }
         value
     }
@@ -223,8 +223,8 @@ internal fun DataTrack.buildBody(
 
     stringBuffer += "&${UrlParams.CONFIGURED_SDK_FEATURES}=${activeConfig.calculateUsageParam()}"
 
-    if(activeConfig.temporarySessionId?.isNotBlank()==true){
-        stringBuffer+="&${UrlParams.TEMPORARY_USER_ID_NAME}=${activeConfig.temporarySessionId}"
+    if (activeConfig.temporarySessionId?.isNotBlank() == true) {
+        stringBuffer += "&${UrlParams.TEMPORARY_USER_ID_NAME}=${activeConfig.temporarySessionId}"
     }
 
     // filter custom parameters and look for uc701 (EmailReceiverId)
