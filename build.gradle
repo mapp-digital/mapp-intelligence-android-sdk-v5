@@ -96,21 +96,17 @@ buildscript {
     ]
 
     repositories {
-        //mavenLocal()
         google()
         mavenCentral()
         gradlePluginPortal()
-//        jcenter()
-
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlinVersion}"
         classpath "com.github.ben-manes:gradle-versions-plugin:${versions.gradleVersionsPlugin}"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${versions.dokkaVersion}"
         classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.mavenPluginVersion}"
-//        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintrayPluginVersion}"
         classpath "com.google.gms:google-services:${versions.googleServices}"
         classpath "com.google.firebase:firebase-appdistribution-gradle:${versions.firebaseAppDistribution}"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
@@ -120,12 +116,10 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
+        //mavenLocal()
         mavenCentral()
         google()
         gradlePluginPortal()
-//        jcenter()
-
     }
 
     apply from: "$rootDir/ktlint.gradle"

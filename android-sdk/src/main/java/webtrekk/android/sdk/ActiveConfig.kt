@@ -93,7 +93,7 @@ class ActiveConfig(
     }
 
     override fun toString(): String {
-        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, everIdMode=$everIdMode, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatching, temporarySessionId=$temporarySessionId)"
+        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, everIdMode=${everIdMode?.name}, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatching, temporarySessionId=$temporarySessionId)"
     }
 
 }

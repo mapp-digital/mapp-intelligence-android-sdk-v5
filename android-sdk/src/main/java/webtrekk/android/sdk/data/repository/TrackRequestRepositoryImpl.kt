@@ -71,13 +71,15 @@ internal class TrackRequestRepositoryImpl(private val trackRequestDao: TrackRequ
 
     override suspend fun deleteTrackRequests(trackRequests: List<TrackRequest>): Result<Boolean> {
         return runCatching {
-            trackRequestDao.clearTrackRequests(trackRequests).run { true }
+            trackRequestDao.clearTrackRequests(trackRequests)
+            true
         }
     }
 
     override suspend fun deleteAllTrackRequests(): Result<Boolean> {
         return runCatching {
-            trackRequestDao.clearAllTrackRequests().run { true }
+            trackRequestDao.clearAllTrackRequests()
+            true
         }
     }
 

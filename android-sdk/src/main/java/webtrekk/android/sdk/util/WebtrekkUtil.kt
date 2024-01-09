@@ -25,9 +25,9 @@
 
 package webtrekk.android.sdk.util
 
-import java.util.*
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.WebtrekkImpl
+import java.util.Locale
 import kotlin.random.Random
 
 /**
@@ -36,8 +36,8 @@ import kotlin.random.Random
 internal val currentSession: String
     inline get() = WebtrekkImpl.getInstance().sessions.getCurrentSession()
 
-internal val appFirstOpen: String
-    inline get() = WebtrekkImpl.getInstance().sessions.getAppFirstOpen()
+internal fun appFirstOpen(updateValue: Boolean = true): String =
+    WebtrekkImpl.getInstance().sessions.getAppFirstOpen(updateValue = updateValue)
 
 internal val appUpdated: Boolean
     inline get() = WebtrekkImpl.getInstance().isAppUpdate()

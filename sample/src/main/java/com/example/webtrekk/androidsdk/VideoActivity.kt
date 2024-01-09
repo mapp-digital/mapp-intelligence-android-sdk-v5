@@ -17,12 +17,14 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.activity_video.playerView
@@ -47,7 +49,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
     private var muted = false
     private var isPlayingNow = true
     val trackingParams = TrackingParams()
-    private val url =
+    private val url =//"https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
         "https://firebasestorage.googleapis.com/v0/b/videostreaming-481cd.appspot.com/o/Mobile_Rich_Push.mp4?alt=media&token=3e9156fa-5af7-4344-9efb-7a8c882ab2dc";
 
 
@@ -139,10 +141,13 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun buildMediaSource(): MediaSource {
-        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, null)
-        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
-        val mediaItem = MediaItem.fromUri(Uri.parse(url))
-        return mediaSourceFactory.createMediaSource(mediaItem)
+//        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, null)
+//        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
+//        val mediaItem = MediaItem.fromUri(Uri.parse(url))
+//        return mediaSourceFactory.createMediaSource(mediaItem)
+        val uri=Uri.parse(url)
+        val mediaItem = MediaItem.fromUri(uri)
+        return HlsMediaSource.Factory(DefaultHttpDataSource.Factory()).createMediaSource(mediaItem)
     }
 
     override fun onClick(v: View?) {
