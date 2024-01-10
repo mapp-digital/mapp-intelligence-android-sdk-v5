@@ -1,4 +1,9 @@
 # Change Log
+## Version 5.1.7.2 *(2024-01-10)*
+* Fixed bug - everId not generated after anonymousTracking set to false
+* Fixed bug - firstAppOpen parameter not properly calculated
+
+# Change Log
 ## Version 5.1.7.1 *(2023-11-23)*
 * Fixed issue of typealias TrackingParameters is not recognised
 
