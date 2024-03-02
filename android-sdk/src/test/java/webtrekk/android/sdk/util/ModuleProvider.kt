@@ -28,6 +28,6 @@ package webtrekk.android.sdk.util
 import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.core.WebtrekkLogger
 
-val loggerModule by lazy { WebtrekkLogger(Logger.Level.BASIC) as Logger }
+val loggerModule by lazy { WebtrekkLogger(Logger.Level.BASIC) }
 
 val coroutineDispatchers by lazy { coroutinesDispatchersProvider() }

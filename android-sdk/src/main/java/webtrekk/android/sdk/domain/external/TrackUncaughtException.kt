@@ -50,7 +50,7 @@ internal class TrackUncaughtException(
     private val logger by lazy { AppModule.logger }
 
     override fun invoke(
-        invokeParams: TrackUncaughtException.Params,
+        invokeParams: Params,
         coroutineDispatchers: CoroutineDispatchers
     ) {
         // If opt out is active, then return

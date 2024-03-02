@@ -11,7 +11,7 @@ import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
 import webtrekk.android.sdk.util.START_EX_STRING
 import webtrekk.android.sdk.util.getFileName
 
-internal class UncaughtExceptionHandler constructor(
+internal class UncaughtExceptionHandler(
     private val defaultHandler: Thread.UncaughtExceptionHandler?,
     private val context: Context
 ) :
@@ -80,7 +80,7 @@ internal class UncaughtExceptionHandler constructor(
         }
     }
 
-    fun isHandlingException(): Boolean? {
+    fun isHandlingException(): Boolean {
         return isHandlingException.get()
     }
 }

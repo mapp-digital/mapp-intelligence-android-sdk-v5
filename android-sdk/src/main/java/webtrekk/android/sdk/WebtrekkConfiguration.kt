@@ -308,8 +308,7 @@ data class WebtrekkConfiguration private constructor(
         if (shouldMigrate != other.shouldMigrate) return false
         if (versionInEachRequest != other.versionInEachRequest) return false
         if (everIdMode != other.everIdMode) return false
-        if (everId != other.everId) return false
-        return true
+        return everId == other.everId
     }
 
     override fun hashCode(): Int {

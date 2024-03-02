@@ -28,22 +28,24 @@ package com.example.webtrekk.androidsdk
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.web_view_activity.webView
+import com.example.webtrekk.androidsdk.databinding.WebViewActivityBinding
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkWebInterface
 
 class WebViewActivity : AppCompatActivity() {
+    private lateinit var binding: WebViewActivityBinding
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.web_view_activity)
+        binding=WebViewActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        webView.addJavascriptInterface(
+        binding.webView.addJavascriptInterface(
             WebtrekkWebInterface(Webtrekk.getInstance()),
             WebtrekkWebInterface.TAG
         )
-        webView.settings.javaScriptEnabled = true
-        webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
     }
 }

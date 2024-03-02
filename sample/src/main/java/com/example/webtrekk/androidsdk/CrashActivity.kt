@@ -8,10 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_crash.chooseExceptionType
-import kotlinx.android.synthetic.main.activity_crash.trackCaught
-import kotlinx.android.synthetic.main.activity_crash.trackCustom
-import kotlinx.android.synthetic.main.activity_crash.trackUncaught
+import com.example.webtrekk.androidsdk.databinding.ActivityCrashBinding
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Webtrekk
 
@@ -19,24 +16,26 @@ import webtrekk.android.sdk.Webtrekk
 class CrashActivity : AppCompatActivity() {
 
     var isFirstTime = true
+    private lateinit var binding: ActivityCrashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crash)
+        binding=ActivityCrashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val adapter: ArrayAdapter<Enum<ExceptionType>> =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, ExceptionType.values())
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        chooseExceptionType.adapter = adapter
-        chooseExceptionType.prompt = "Choose ExceptionType"
+        binding.chooseExceptionType.adapter = adapter
+        binding.chooseExceptionType.prompt = "Choose ExceptionType"
         val sharedPreferences: SharedPreferences =
             this.getSharedPreferences("Sample Application", Context.MODE_PRIVATE)
                 ?: return
         sharedPreferences.getString("ExceptionType", ExceptionType.ALL.toString())
             ?.let { ExceptionType.valueOf(it).ordinal }
-            ?.let { chooseExceptionType.setSelection(it) }
+            ?.let { binding.chooseExceptionType.setSelection(it) }
 
-        chooseExceptionType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.chooseExceptionType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -59,11 +58,11 @@ class CrashActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        trackUncaught.setOnClickListener {
+        binding.trackUncaught.setOnClickListener {
             Integer.parseInt("@!#")
         }
 
-        trackCaught.setOnClickListener {
+        binding.trackCaught.setOnClickListener {
             try {
                 Integer.parseInt("@!#")
             } catch (e: Exception) {
@@ -71,7 +70,7 @@ class CrashActivity : AppCompatActivity() {
             }
         }
 
-        trackCustom.setOnClickListener {
+        binding.trackCustom.setOnClickListener {
             try {
                 Integer.parseInt("@!#")
             } catch (e: Exception) {

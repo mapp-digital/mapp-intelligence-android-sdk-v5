@@ -33,20 +33,19 @@ task androidSourcesJar(type: Jar) {
 //    from androidJavadocs.destinationDir
 //}
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
+tasks.register('sourcesJar', Jar) {
     from android.sourceSets.main.java.srcDirs
-        archiveClassifier.set('javadoc')
-     //from dokkaJavadoc.outputDirectory
+    archiveClassifier.set('javadoc')
+    //from dokkaJavadoc.outputDirectory
 }
 
-task javadoc(type: Javadoc) {
+tasks.register('javadoc', Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+tasks.register('javadocJar', Jar) {
+    dependsOn javadoc
     from javadoc.destinationDir
 }
 

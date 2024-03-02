@@ -2,16 +2,7 @@ package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_object_tracking.btnTrackCustomECommerce
-import kotlinx.android.synthetic.main.activity_object_tracking.button_test_anonymous_tracking
-import kotlinx.android.synthetic.main.activity_object_tracking.example10
-import kotlinx.android.synthetic.main.activity_object_tracking.example3
-import kotlinx.android.synthetic.main.activity_object_tracking.example6
-import kotlinx.android.synthetic.main.activity_object_tracking.example7
-import kotlinx.android.synthetic.main.activity_object_tracking.example8
-import kotlinx.android.synthetic.main.activity_object_tracking.example9
-import kotlinx.android.synthetic.main.activity_object_tracking.firstExample
-import kotlinx.android.synthetic.main.activity_object_tracking.secondExample
+import com.example.webtrekk.androidsdk.databinding.ActivityObjectTrackingBinding
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
@@ -25,45 +16,47 @@ import webtrekk.android.sdk.events.eventParams.SessionParameters
 import webtrekk.android.sdk.events.eventParams.UserCategories
 
 class ObjectTrackingActivityExample : AppCompatActivity() {
+    private lateinit var binding: ActivityObjectTrackingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_object_tracking)
+        binding=ActivityObjectTrackingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        firstExample.setOnClickListener {
+        binding.firstExample.setOnClickListener {
             trackAction()
         }
 
-        secondExample.setOnClickListener {
+        binding.secondExample.setOnClickListener {
             trackCustomAction()
         }
 
-        btnTrackCustomECommerce.setOnClickListener {
+        binding.btnTrackCustomECommerce.setOnClickListener {
             trackCustomECommerceParameter()
         }
 
-        example3.setOnClickListener {
+        binding.example3.setOnClickListener {
             trackGoal()
         }
 
-        example6.setOnClickListener {
+        binding.example6.setOnClickListener {
             trackEcommerceConfirmation()
         }
-        example7.setOnClickListener {
+        binding.example7.setOnClickListener {
             trackCustomPage()
         }
 
-        example8.setOnClickListener {
+        binding.example8.setOnClickListener {
             trackMedia1()
         }
-        example9.setOnClickListener {
+        binding.example9.setOnClickListener {
             ecommerceTracking()
         }
 
-        example10.setOnClickListener {
+        binding.example10.setOnClickListener {
             ecommerceTrackingTest2()
         }
 
-        button_test_anonymous_tracking.setOnClickListener {
+        binding.buttonTestAnonymousTracking.setOnClickListener {
             testAnonymousTracking()
         }
 
@@ -168,7 +161,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         product.cost = 33.33
         product.quantity = 2
         product.productSoldOut = false
-        product.productAdvertiseID = 562918888888888.2223;
+        product.productAdvertiseID = 562918888888888.2223
         product.productVariant = "blue"
         product.categories = mapOf(Pair(1, "t-shirt"), Pair(2, "gucci"))
         product.ecommerceParameters = mapOf(Pair(1, "product2 param 1"))

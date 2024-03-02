@@ -1,107 +1,104 @@
+@file:UnstableApi
+
 package com.example.webtrekk.androidsdk
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
-import com.google.android.exoplayer2.Tracks
-import com.google.android.exoplayer2.analytics.AnalyticsListener
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
-import com.google.android.exoplayer2.ui.PlayerControlView
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.util.EventLogger
-import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.activity_video.playerView
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.C.DATA_TYPE_MEDIA
+import androidx.media3.common.C.DataType
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.Timeline
+import androidx.media3.common.Tracks
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.common.util.Util
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DataSourceUtil
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.analytics.AnalyticsListener
+import androidx.media3.exoplayer.hls.DefaultHlsDataSourceFactory
+import androidx.media3.exoplayer.hls.HlsDataSourceFactory
+import androidx.media3.exoplayer.hls.HlsMediaSource
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.TrackGroupArray
+import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.util.EventLogger
+import androidx.media3.ui.PlayerControlView
+import androidx.media3.ui.PlayerView
+import com.example.webtrekk.androidsdk.databinding.ActivityVideoBinding
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
 import kotlin.math.max
 
 
-class VideoActivity : AppCompatActivity(), View.OnClickListener,
-    PlayerControlView.VisibilityListener {
+class VideoActivity : AppCompatActivity(), View.OnClickListener {
     val TUNNELING_EXTRA = "tunneling"
     private val TAG = "VideoActivity"
-    private var player: ExoPlayer? = null
-    private var mediaSource: MediaSource? = null
-    private var trackSelector: DefaultTrackSelector? = null
-    private var trackSelectorParameters: DefaultTrackSelector.Parameters? = null
-    private var lastSeenTrackGroupArray: TrackGroupArray? = null
-    private var startAutoPlay = false
+    private lateinit var binding: ActivityVideoBinding
+    private lateinit var player: ExoPlayer
+    private var playWhenReady = true
     private var startWindow = 0
     private var startPosition: Long = 0
     private var muted = false
     private var isPlayingNow = true
     val trackingParams = TrackingParams()
-    private val url =//"https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
-        "https://firebasestorage.googleapis.com/v0/b/videostreaming-481cd.appspot.com/o/Mobile_Rich_Push.mp4?alt=media&token=3e9156fa-5af7-4344-9efb-7a8c882ab2dc";
+    private val url = "https://live-par-2-cdn-alt.livepush.io/live/bigbuckbunnyclip/index.m3u8"
 
-
-    private val eventListener: Player.Listener = object : Player.Listener {
-        fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {
-            Log.i(TAG, "onTimelineChanged")
-        }
-
-        override fun onTracksChanged(tracks: Tracks) {
-            Log.i(TAG, "onTracksChanged")
-        }
-
-        override fun onLoadingChanged(isLoading: Boolean) {
-            Log.i(TAG, "onLoadingChanged")
-        }
-
-        override fun onPlayerStateChanged(
-            playWhenReady: Boolean,
-            playbackState: Int
-        ) {
-            Log.i(
-                TAG,
-                "onPlayerStateChanged: playWhenReady = $playWhenReady playbackState = $playbackState"
-            )
+    private val eventListener: Player.Listener = @UnstableApi object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
-                ExoPlayer.STATE_ENDED -> {
+                Player.STATE_BUFFERING -> {
+                    Log.i(TAG, "Playback buffering!")
+                }
+
+                Player.STATE_IDLE -> {
+                    Log.i(TAG, "ExoPlayer idle!")
+                }
+
+                Player.STATE_ENDED -> {
                     Log.i(TAG, "Playback ended!")
                     //Stop playback and return to start position
 
                     trackingParams.putAll(
                         mapOf(
-                            MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                            MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
                             MediaParam.MEDIA_ACTION to "eof"
                         )
                     )
                     Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
                     clearStartPosition()
                 }
-                ExoPlayer.STATE_READY -> {
 
+                Player.STATE_READY -> {
+                    Log.i(TAG, "Playback ready!")
                 }
-                ExoPlayer.STATE_BUFFERING -> Log.i(TAG, "Playback buffering!")
-                ExoPlayer.STATE_IDLE -> Log.i(TAG, "ExoPlayer idle!")
             }
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            Log.e(TAG, "Error playing video: $error")
         }
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             isPlayingNow = isPlaying
             trackingParams.putAll(
                 mapOf(
-                    MediaParam.MEDIA_DURATION to (player!!.duration / 1000).toString(),
-                    MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                    MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
                     MediaParam.MEDIA_ACTION to if (isPlaying) "play" else "pause"
                 )
             )
@@ -112,7 +109,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
             super.onVolumeChanged(volume)
             trackingParams.putAll(
                 mapOf(
-                    MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
                     MediaParam.VOLUME to volume.toInt().toString(),
                     MediaParam.MUTE to if (volume.toInt() == 0) "1" else "0"
                 )
@@ -122,67 +119,46 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video)
-        playerView.setControllerVisibilityListener(this)
-        playerView.requestFocus()
-
-        val builder = ParametersBuilder( /* context= */this)
-        val tunneling = intent.getBooleanExtra(
-            TUNNELING_EXTRA,
-            false
-        )
-        if (Util.SDK_INT >= 21 && tunneling) {
-//            builder.setTunnelingAudioSessionId(C.generateAudioSessionIdV21( /* context= */this))
-        }
-        trackSelectorParameters = builder.build()
-        clearStartPosition()
+    private val visibilityListener = PlayerView.ControllerVisibilityListener {
+        Log.d(TAG, "visibilityChanged: $it")
     }
 
-    private fun buildMediaSource(): MediaSource {
-//        val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, null)
-//        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
-//        val mediaItem = MediaItem.fromUri(Uri.parse(url))
-//        return mediaSourceFactory.createMediaSource(mediaItem)
-        val uri=Uri.parse(url)
-        val mediaItem = MediaItem.fromUri(uri)
-        return HlsMediaSource.Factory(DefaultHttpDataSource.Factory()).createMediaSource(mediaItem)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityVideoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.playerView.setControllerVisibilityListener(visibilityListener)
+        binding.playerView.requestFocus()
+
+        clearStartPosition()
     }
 
     override fun onClick(v: View?) {
 
     }
 
-    override fun onVisibilityChange(visibility: Int) {
-
-    }
-
     private fun updateStartPosition() {
-        player?.let {
-            startAutoPlay = it.playWhenReady
+        player.let {
+            playWhenReady = it.playWhenReady
             startWindow = it.currentMediaItemIndex
             startPosition = max(0, it.currentPosition)
         }
     }
 
-    private fun updateTrackSelectorParameters() {
-        trackSelector.let {
-            trackSelectorParameters = it?.parameters
-        }
-    }
-
     private fun clearStartPosition() {
-        startAutoPlay = true
+        playWhenReady = true
         startWindow = C.INDEX_UNSET
         startPosition = C.TIME_UNSET
     }
 
     private val analyticsListener = object : AnalyticsListener {
-        override fun onSeekProcessed(eventTime: AnalyticsListener.EventTime) {
-        }
-
-        override fun onSeekStarted(eventTime: AnalyticsListener.EventTime) {
+        override fun onPositionDiscontinuity(
+            eventTime: AnalyticsListener.EventTime,
+            oldPosition: Player.PositionInfo,
+            newPosition: Player.PositionInfo,
+            reason: Int
+        ) {
             trackingParams.putAll(
                 mapOf(
                     MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
@@ -193,47 +169,36 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    private val eventLoggerAnalyticsListener = EventLogger(trackSelector)
-
     // Internal methods
+    @OptIn(UnstableApi::class)
     private fun initializePlayer() {
-        if (player == null) {
-            val trackSelectionFactory = AdaptiveTrackSelection.Factory()
-            trackSelector = DefaultTrackSelector( /* context= */this, trackSelectionFactory).apply {
-                parameters = trackSelectorParameters!!
-            }
-
-            mediaSource = buildMediaSource()
-            if (mediaSource == null) {
-                return
-            }
-
-            player = ExoPlayer.Builder( /* context= */this)
-                .setTrackSelector(trackSelector!!)
-                .build().apply {
-                    lastSeenTrackGroupArray = null
-
-                    addListener(eventListener)
-                    setAudioAttributes(
+        if (!::player.isInitialized) {
+            player = ExoPlayer.Builder(this)
+                .build().also {
+                    binding.playerView.player = it
+                    it.addListener(eventListener)
+                    it.setAudioAttributes(
                         AudioAttributes.DEFAULT,  /* handleAudioFocus= */
                         true
                     )
-                    playWhenReady = startAutoPlay
-
+                    it.playWhenReady = playWhenReady
                 }
         }
 
-        player?.let {
-            it.addAnalyticsListener(eventLoggerAnalyticsListener)
+        val mediaItem = MediaItem.Builder().setUri(url).build()
+        val mediaSource = DefaultMediaSourceFactory(this)
+            .setLiveMaxSpeed(1.02f)
+            .setLiveTargetOffsetMs(5000)
+            .createMediaSource(mediaItem)
+        player.let {
             it.addAnalyticsListener(analyticsListener)
-            playerView.player = player
-            it.setMediaSource(mediaSource!!)
+            it.setMediaSources(listOf(mediaSource))
             it.prepare()
         }
 
         trackingParams.putAll(
             mapOf(
-                MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString()
+                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString()
             )
         )
     }
@@ -242,15 +207,15 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         super.onStart()
         if (Util.SDK_INT > 23) {
             initializePlayer()
-            playerView?.onResume()
+            binding.playerView.onResume()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT <= 23 || player == null) {
+        if (Util.SDK_INT <= 23 || !::player.isInitialized) {
             initializePlayer()
-            playerView?.onResume()
+            binding.playerView.onResume()
         }
     }
 
@@ -258,13 +223,13 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         super.onPause()
         trackingParams.putAll(
             mapOf(
-                MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
                 MediaParam.MEDIA_ACTION to "stop"
             )
         )
         Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
         if (Util.SDK_INT <= 23) {
-            playerView?.onPause()
+            binding.playerView.onPause()
             releasePlayer()
         }
     }
@@ -272,7 +237,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23) {
-            playerView?.onPause()
+            binding.playerView.onPause()
             releasePlayer()
         }
     }
@@ -281,30 +246,24 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         Log.d(TAG, "releasePlayer")
         trackingParams.putAll(
             mapOf(
-                MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
                 MediaParam.MEDIA_ACTION to "eof"
             )
         )
         Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
-        updateTrackSelectorParameters()
+
         updateStartPosition()
-        player?.let {
-            it.removeAnalyticsListener(eventLoggerAnalyticsListener)
+        player.let {
             it.removeAnalyticsListener(analyticsListener)
             it.stop()
             it.clearMediaItems()
             it.clearVideoSurface()
             it.release()
-            //mediaSource = null
-            //trackSelector = null
-        }.also {
-            player = null
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        updateTrackSelectorParameters()
         updateStartPosition()
     }
 
@@ -313,7 +272,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener,
         if (keyCode == KeyEvent.KEYCODE_MUTE || keyCode == KeyEvent.KEYCODE_VOLUME_MUTE) {
             trackingParams.putAll(
                 mapOf(
-                    MediaParam.MEDIA_POSITION to (player!!.currentPosition / 1000).toString(),
+                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
                     MediaParam.MUTE to (if (muted) "1" else "0")
                 )
             )
