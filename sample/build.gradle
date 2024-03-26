@@ -91,8 +91,8 @@ android {
     buildTypes {
         debug {
             firebaseAppDistribution {
-                releaseNotes="This is test build for testers to accept the invitation and get the app :)"
-                testersFile="testers_webtrekk.txt"
+                releaseNotes = "This is test build for testers to accept the invitation and get the app :)"
+                testersFile = "testers_webtrekk.txt"
             }
         }
         release {
@@ -104,8 +104,17 @@ android {
         abortOnError false
     }
 
-    buildFeatures{
-        viewBinding=true
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+
+    packagingOptions {
+        resources.excludes.addAll(
+                List.of(
+                        'META-INF/LICENSE.md',
+                )
+        )
     }
 }
 

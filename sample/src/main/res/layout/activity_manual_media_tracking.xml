@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:ignore="HardcodedText">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Media Name" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tietMediaName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Media name"
+            android:inputType="text"
+            android:text="Sample test video" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current time" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tietCurrentTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Current time (sec.)"
+                android:inputType="number"
+                android:text="0" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current time" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tietDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Duration (sec.)"
+                android:inputType="number"
+                android:text="0" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/swIncrementTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@string/increment_current_time_by_s_seconds_on_each_action" />
+
+    <Button
+        android:id="@+id/btnInit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Init" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play" />
+
+    <Button
+        android:id="@+id/btnPause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pause" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop" />
+
+    <Button
+        android:id="@+id/btnPosition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Position" />
+
+    <Button
+        android:id="@+id/btnSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seek" />
+
+    <Button
+        android:id="@+id/btnEof"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EOF" />
+</LinearLayout>

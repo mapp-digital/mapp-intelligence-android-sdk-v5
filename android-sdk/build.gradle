@@ -71,10 +71,19 @@ android {
     }
     namespace 'webtrekk.android.sdk'
 
-    buildFeatures{
-        viewBinding=true
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 
+    packagingOptions {
+        resources.excludes.addAll(
+                List.of(
+                        'META-INF/LICENSE.md',
+                        'META-INF/LICENSE-notice.md',
+                )
+        )
+    }
 //    packagingOptions {
 //        exclude("META-INF/DEPENDENCIES")
 //        exclude("META-INF/LICENSE")

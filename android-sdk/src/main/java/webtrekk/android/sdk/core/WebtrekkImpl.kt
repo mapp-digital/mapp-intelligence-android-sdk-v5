@@ -60,6 +60,7 @@ import webtrekk.android.sdk.domain.external.TrackUncaughtException
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
+import webtrekk.android.sdk.events.eventParams.MediaParameters
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.extension.isCaughtAllowed
@@ -79,6 +80,7 @@ import webtrekk.android.sdk.util.generateEverId
 import webtrekk.android.sdk.util.getFileName
 import webtrekk.android.sdk.util.webtrekkLogger
 import java.io.File
+import java.util.Objects
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -537,33 +539,19 @@ constructor() : Webtrekk(),
     }
 
     private fun mediaParamValidation(trackingParams: Map<String, String>): Boolean {
-        if ("pos".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
+        if (Objects.equals(
+                trackingParams[MediaParam.MEDIA_ACTION],
+                MediaParameters.Action.POS.code()
+            )
+        ) {
             if ((lastTimeMedia + 3000) > System.currentTimeMillis()) {
                 logger.info("The limit for the position parameter is one request every 3 seconds")
                 return false
             }
             lastTimeMedia = System.currentTimeMillis()
         }
-
-        if ("play".equals(trackingParams[MediaParam.MEDIA_ACTION], true) or "pause".equals(
-                trackingParams[MediaParam.MEDIA_ACTION],
-                true
-            )
-        ) {
-            lastAction = trackingParams[MediaParam.MEDIA_ACTION].toString()
-        }
-        lastEqual =
-            if (trackingParams[MediaParam.MEDIA_DURATION] == trackingParams[MediaParam.MEDIA_POSITION]) {
-                if (lastEqual) {
-                    logger.info("Duration and Position are the same")
-                    return false
-                } else {
-                    true
-                }
-            } else {
-                false
-            }
-        return true
+        return trackingParams.containsKey(MediaParam.MEDIA_DURATION) &&
+                trackingParams.containsKey(MediaParam.MEDIA_POSITION)
     }
 
     /**

@@ -179,6 +179,10 @@ abstract class Webtrekk protected constructor() {
         mediaName: String,
         trackingParams: Map<String, String> = emptyMap()
     )
+    
+    abstract fun trackMedia(
+        media: MediaEvent
+    )
 
     /**
      * Tracks specific exception event.
@@ -250,10 +254,6 @@ abstract class Webtrekk protected constructor() {
 
     abstract fun trackAction(
         action: ActionEvent
-    )
-
-    abstract fun trackMedia(
-        media: MediaEvent
     )
 
     /**

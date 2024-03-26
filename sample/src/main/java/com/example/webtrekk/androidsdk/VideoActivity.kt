@@ -2,8 +2,6 @@
 
 package com.example.webtrekk.androidsdk
 
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -12,42 +10,28 @@ import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
-import androidx.media3.common.C.DATA_TYPE_MEDIA
-import androidx.media3.common.C.DataType
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Timeline
-import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
-import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DataSourceUtil
-import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.analytics.AnalyticsListener
-import androidx.media3.exoplayer.hls.DefaultHlsDataSourceFactory
-import androidx.media3.exoplayer.hls.HlsDataSourceFactory
-import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
-import androidx.media3.exoplayer.source.MediaSource
-import androidx.media3.exoplayer.source.TrackGroupArray
-import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
-import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
-import androidx.media3.exoplayer.util.EventLogger
-import androidx.media3.ui.PlayerControlView
 import androidx.media3.ui.PlayerView
 import com.example.webtrekk.androidsdk.databinding.ActivityVideoBinding
 import webtrekk.android.sdk.MediaParam
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
+import webtrekk.android.sdk.events.MediaEvent
+import webtrekk.android.sdk.events.eventParams.MediaParameters
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.max
 
 
 class VideoActivity : AppCompatActivity(), View.OnClickListener {
     val TUNNELING_EXTRA = "tunneling"
-    private val TAG = "VideoActivity"
+    private val TAG = VideoActivity::class.java.simpleName
     private lateinit var binding: ActivityVideoBinding
     private lateinit var player: ExoPlayer
     private var playWhenReady = true
@@ -55,8 +39,9 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
     private var startPosition: Long = 0
     private var muted = false
     private var isPlayingNow = true
-    val trackingParams = TrackingParams()
     private val url = "https://live-par-2-cdn-alt.livepush.io/live/bigbuckbunnyclip/index.m3u8"
+    private val videoName = "Sample video - big buck bunny clip"
+    private val trackingInitialized=AtomicBoolean(false)
 
     private val eventListener: Player.Listener = @UnstableApi object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -72,19 +57,31 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
                 Player.STATE_ENDED -> {
                     Log.i(TAG, "Playback ended!")
                     //Stop playback and return to start position
-
-                    trackingParams.putAll(
-                        mapOf(
-                            MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
-                            MediaParam.MEDIA_ACTION to "eof"
+                    val trackingParams = TrackingParams().apply {
+                        putAll(
+                            mapOf(
+                                MediaParam.MEDIA_ACTION to MediaParameters.Action.EOF.code(),
+                                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
+                                MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                            )
                         )
-                    )
-                    Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+                    }
+                    Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
                     clearStartPosition()
                 }
 
                 Player.STATE_READY -> {
                     Log.i(TAG, "Playback ready!")
+                    if(!trackingInitialized.getAndSet(true)) {
+                        val mediaParameters = MediaParameters(
+                            videoName,
+                            MediaParameters.Action.INIT.code(),
+                            player.currentPosition / 1000,
+                            player.duration / 1000
+                        )
+                        val mediaEvent = MediaEvent(TAG, mediaParameters);
+                        Webtrekk.getInstance().trackMedia(mediaEvent)
+                    }
                 }
             }
         }
@@ -95,27 +92,32 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             isPlayingNow = isPlaying
-            trackingParams.putAll(
-                mapOf(
-                    MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
-                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
-                    MediaParam.MEDIA_ACTION to if (isPlaying) "play" else "pause"
+            player.isCurrentMediaItemDynamic
+            val trackingParams = TrackingParams().apply {
+                putAll(
+                    mapOf(
+                        MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                        MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
+                        MediaParam.MEDIA_ACTION to if (isPlaying) MediaParameters.Action.PLAY.code() else MediaParameters.Action.PAUSE.code()
+                    )
                 )
-            )
-            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+            }
+            Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
         }
 
         override fun onVolumeChanged(volume: Float) {
             super.onVolumeChanged(volume)
-            trackingParams.putAll(
-                mapOf(
-                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
-                    MediaParam.VOLUME to volume.toInt().toString(),
-                    MediaParam.MUTE to if (volume.toInt() == 0) "1" else "0"
+            val trackingParams = TrackingParams().apply {
+                putAll(
+                    mapOf(
+                        MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                        MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
+                        MediaParam.VOLUME to volume.toInt().toString(),
+                        MediaParam.MUTE to if (player.isDeviceMuted) "1" else "0"
+                    )
                 )
-
-            )
-            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+            }
+            Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
         }
     }
 
@@ -159,13 +161,16 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
             newPosition: Player.PositionInfo,
             reason: Int
         ) {
-            trackingParams.putAll(
-                mapOf(
-                    MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
-                    MediaParam.MEDIA_ACTION to "seek"
+            val trackingParams = TrackingParams().apply {
+                putAll(
+                    mapOf(
+                        MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                        MediaParam.MEDIA_POSITION to (eventTime.currentPlaybackPositionMs / 1000).toString(),
+                        MediaParam.MEDIA_ACTION to MediaParameters.Action.SEEK.code()
+                    )
                 )
-            )
-            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+            }
+            Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
         }
     }
 
@@ -195,15 +200,10 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
             it.setMediaSources(listOf(mediaSource))
             it.prepare()
         }
-
-        trackingParams.putAll(
-            mapOf(
-                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString()
-            )
-        )
     }
 
     override fun onStart() {
+        Log.d(TAG, "onStart()")
         super.onStart()
         if (Util.SDK_INT > 23) {
             initializePlayer()
@@ -212,6 +212,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onResume() {
+        Log.d(TAG, "onResume()")
         super.onResume()
         if (Util.SDK_INT <= 23 || !::player.isInitialized) {
             initializePlayer()
@@ -220,14 +221,18 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onPause() {
+        Log.d(TAG, "onPause()")
         super.onPause()
-        trackingParams.putAll(
-            mapOf(
-                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
-                MediaParam.MEDIA_ACTION to "stop"
+        val trackingParams = TrackingParams().apply {
+            putAll(
+                mapOf(
+                    MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
+                    MediaParam.MEDIA_ACTION to MediaParameters.Action.STOP.code()
+                )
             )
-        )
-        Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+        }
+        Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
         if (Util.SDK_INT <= 23) {
             binding.playerView.onPause()
             releasePlayer()
@@ -235,6 +240,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onStop() {
+        Log.d(TAG, "onStop()")
         super.onStop()
         if (Util.SDK_INT > 23) {
             binding.playerView.onPause()
@@ -244,13 +250,16 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun releasePlayer() {
         Log.d(TAG, "releasePlayer")
-        trackingParams.putAll(
-            mapOf(
-                MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
-                MediaParam.MEDIA_ACTION to "eof"
+        val trackingParams = TrackingParams().apply {
+            putAll(
+                mapOf(
+                    MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
+                    MediaParam.MEDIA_ACTION to MediaParameters.Action.EOF.code()
+                )
             )
-        )
-        Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+        }
+        Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
 
         updateStartPosition()
         player.let {
@@ -270,14 +279,17 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_MUTE || keyCode == KeyEvent.KEYCODE_VOLUME_MUTE) {
-            trackingParams.putAll(
-                mapOf(
-                    MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
-                    MediaParam.MUTE to (if (muted) "1" else "0")
+            val trackingParams = TrackingParams().apply {
+                putAll(
+                    mapOf(
+                        MediaParam.MEDIA_DURATION to (player.duration / 1000).toString(),
+                        MediaParam.MEDIA_POSITION to (player.currentPosition / 1000).toString(),
+                        MediaParam.MUTE to (if (muted) "1" else "0")
+                    )
                 )
-            )
+            }
             muted = !muted
-            Webtrekk.getInstance().trackMedia("VideoActivity", "video name", trackingParams)
+            Webtrekk.getInstance().trackMedia(TAG, videoName, trackingParams)
             return true
         }
         return super.onKeyDown(keyCode, event)

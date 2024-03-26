@@ -28,5 +28,10 @@ class MediaExample : AppCompatActivity() {
             val intent = Intent(this, MediaActivityExample::class.java)
             startActivity(intent)
         }
+
+        binding.button4.setOnClickListener {
+            val intent=Intent(this, ManualMediaTracking::class.java)
+            startActivity(intent)
+        }
     }
 }
