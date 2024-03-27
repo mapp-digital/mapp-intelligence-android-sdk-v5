@@ -246,6 +246,20 @@ constructor() : Webtrekk(),
         }
         config.run {
             val appFirstOpen = appFirstOpen(true)
+            val params = trackingParams.toMutableMap()
+
+            if (!params.containsKey(MediaParam.MEDIA_DURATION) ||
+                params[MediaParam.MEDIA_DURATION].isNullOrEmpty() ||
+                "null".equals(params[MediaParam.MEDIA_DURATION],true)) {
+                params[MediaParam.MEDIA_DURATION] = "0"
+            }
+
+            if (!params.containsKey(MediaParam.MEDIA_POSITION) ||
+                params[MediaParam.MEDIA_POSITION].isNullOrEmpty() ||
+                "null".equals(params[MediaParam.MEDIA_POSITION],true)) {
+                params[MediaParam.MEDIA_POSITION] = "0"
+            }
+
             trackCustomMedia(
                 TrackCustomMedia.Params(
                     trackRequest = TrackRequest(
@@ -257,7 +271,7 @@ constructor() : Webtrekk(),
                         appVersionCode = context.appVersionCode,
                         everId = getEverId(),
                     ),
-                    trackingParams = trackingParams,
+                    trackingParams = params,
                     isOptOut = hasOptOut(),
                     context = context,
                     mediaName = mediaName
@@ -550,6 +564,7 @@ constructor() : Webtrekk(),
             }
             lastTimeMedia = System.currentTimeMillis()
         }
+
         return trackingParams.containsKey(MediaParam.MEDIA_DURATION) &&
                 trackingParams.containsKey(MediaParam.MEDIA_POSITION)
     }

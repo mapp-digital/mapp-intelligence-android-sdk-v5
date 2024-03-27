@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Current time (sec.)"
-                android:inputType="number"
+                android:inputType="numberDecimal|numberSigned"
                 android:text="0" />
         </LinearLayout>
 
@@ -66,14 +66,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Current time" />
+                android:text="Duration" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Duration (sec.)"
-                android:inputType="number"
+                android:inputType="numberDecimal|numberSigned"
                 android:text="0" />
         </LinearLayout>
 

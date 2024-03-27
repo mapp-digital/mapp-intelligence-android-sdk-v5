@@ -14,10 +14,10 @@ class ManualMediaTracking : AppCompatActivity() {
     private val TAG = ManualMediaTracking::class.java.simpleName
     private lateinit var binding: ActivityManualMediaTrackingBinding
 
-    private val currentTime: Int
+    private val currentTime: Double
         get() {
             val timeString = binding.tietCurrentTime.text.toString()
-            var time = timeString.toIntOrNull() ?: 0
+            var time = timeString.toDoubleOrNull() ?: 0.0
             if (increaseCurrentTime) {
                 time += secondsCountToIncrease
                 binding.tietCurrentTime.setText(time.toString())
@@ -25,10 +25,10 @@ class ManualMediaTracking : AppCompatActivity() {
             return time
         }
 
-    private val durationTime: Int
+    private val durationTime: Double
         get() {
             val durationString = binding.tietDuration.text.toString()
-            return durationString.toIntOrNull() ?: 0
+            return durationString.toDoubleOrNull() ?: 0.0
         }
 
     private val videoName: String
@@ -89,18 +89,15 @@ class ManualMediaTracking : AppCompatActivity() {
     }
 
     private fun track(action:MediaParameters.Action){
-        val params = createTrackingParams(action.code())
-        Webtrekk.getInstance().trackMedia(TAG, videoName, params)
-    }
-    private fun createTrackingParams(action: String): TrackingParams {
-        return TrackingParams().apply {
+        val params=TrackingParams().apply {
             putAll(
                 mapOf(
                     MediaParam.MEDIA_POSITION to currentTime.toString(),
                     MediaParam.MEDIA_DURATION to durationTime.toString(),
-                    MediaParam.MEDIA_ACTION to action
+                    MediaParam.MEDIA_ACTION to action.code()
                 )
             )
         }
+        Webtrekk.getInstance().trackMedia(TAG, videoName, params)
     }
 }

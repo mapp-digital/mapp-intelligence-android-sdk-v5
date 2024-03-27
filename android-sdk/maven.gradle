@@ -6,32 +6,12 @@ task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
     if (project.plugins.findPlugin("com.android.library")) {
         from android.sourceSets.main.java.srcDirs
-        from android.sourceSets.main.kotlin.srcDirs
+        //from android.sourceSets.main.kotlin.srcDirs
     } else {
         from sourceSets.main.java.srcDirs
-        from sourceSets.main.kotlin.srcDirs
+        //from sourceSets.main.kotlin.srcDirs
     }
 }
-
-//tasks.withType(dokkaHtmlPartial.getClass()).configureEach {
-//    pluginsMapConfiguration.set(
-//            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
-//    )
-//}
-
-//task javadocJar(type: Jar) {
-//    archiveClassifier.set('javadoc')
-//   //from dokkaJavadoc.outputDirectory
-//}
-
-//task androidJavadocs(type: Javadoc) {
-//    source = android.sourceSets.main.allJava
-//}
-
-//task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-//    classifier = 'javadoc'
-//    from androidJavadocs.destinationDir
-//}
 
 tasks.register('sourcesJar', Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -50,10 +30,10 @@ tasks.register('javadocJar', Jar) {
 }
 
 
-artifacts {
-    archives androidSourcesJar
-    archives javadocJar
-}
+//artifacts {
+//    archives androidSourcesJar
+//    archives javadocJar
+//}
 
 
 group = PUBLISHED_GROUP_ID
@@ -89,17 +69,7 @@ project.afterEvaluate {
                 groupId PUBLISHED_GROUP_ID
                 artifactId ARTIFACT
                 version LIBRARY_VERSION
-//                    artifact("$buildDir/libs/${project.getName()}-${version}.jar")
-//                if (project.plugins.findPlugin("com.android.library")) {
-//
-//                } else {
-//                    artifact("$buildDir/libs/${project.getName()}-${version}.jar")
-//                }
-                  from components.release
-               // artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
-
-                artifact androidSourcesJar
-                artifact javadocJar
+                from components.release
 
                 pom {
                     name = PUBLISHED_GROUP_ID
@@ -123,17 +93,6 @@ project.afterEvaluate {
                         developerConnection = POM_SCM_DEV_CONNECTION
                         url = POM_SCM_URL
                     }
-
-//                    withXml {
-//                        def dependenciesNode = asNode().appendNode('dependencies')
-//
-//                        project.configurations.implementation.allDependencies.each {
-//                            def dependencyNode = dependenciesNode.appendNode('dependency')
-//                            dependencyNode.appendNode('groupId', it.group)
-//                            dependencyNode.appendNode('artifactId', it.name)
-//                            dependencyNode.appendNode('version', it.version)
-//                        }
-//                    }
                 }
             }
         }
