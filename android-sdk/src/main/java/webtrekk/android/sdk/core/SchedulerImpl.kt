@@ -29,16 +29,17 @@ import android.os.Build
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import java.util.concurrent.TimeUnit
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
 import webtrekk.android.sdk.util.webtrekkLogger
+import java.util.concurrent.TimeUnit
 
 /**
  * The implementation of [Scheduler] using [WorkManager].
@@ -46,7 +47,10 @@ import webtrekk.android.sdk.util.webtrekkLogger
 internal class SchedulerImpl(private val workManager: WorkManager, private val config: Config) :
     Scheduler {
 
-    override fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints) {
+    override fun scheduleSendRequests(
+        repeatInterval: Long,
+        constraints: Constraints,
+    ) {
         val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
             putString("trackDomain", config.trackDomain)
@@ -57,7 +61,7 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
             repeatInterval,
             TimeUnit.MINUTES
         ).setConstraints(constraints)
-            .setInitialDelay(0, TimeUnit.MILLISECONDS)
+            .setInitialDelay(0, TimeUnit.SECONDS)
             .setInputData(data)
             .addTag(SendRequestsWorker.TAG)
 
@@ -65,7 +69,7 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
 
         workManager.enqueueUniquePeriodicWork(
             SEND_REQUESTS_WORKER,
-            ExistingPeriodicWorkPolicy.UPDATE, // original value was KEEP
+            ExistingPeriodicWorkPolicy.UPDATE,
             sendRequestsWorker
         )
     }
@@ -74,12 +78,12 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
         // check if SendRequestsWorker already running as periodic work request
         val workers = workManager.getWorkInfosByTag(SendRequestsWorker.TAG).get()
 
-        if(workers.isEmpty() || workers[0].state!=WorkInfo.State.RUNNING){
+        if (workers.isEmpty() || workers[0].state != WorkInfo.State.RUNNING) {
             scheduleSendAndCleanWorkers()
         }
     }
 
-    private fun scheduleSendAndCleanWorkers(){
+    private fun scheduleSendAndCleanWorkers() {
         val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
             putString("trackDomain", config.trackDomain)
@@ -98,9 +102,11 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
             cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }
 
-        workManager.beginWith(sendWorkBuilder.build())
-            .then(cleanWorkBuilder.build())
-            .enqueue()
+        workManager.enqueueUniqueWork(
+            "oneTimeRequest",
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
+            listOf(sendWorkBuilder.build(), cleanWorkBuilder.build())
+        )
     }
 
     // To be changed to clean up after executing the requests
@@ -118,10 +124,15 @@ internal class SchedulerImpl(private val workManager: WorkManager, private val c
             cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }
 
-        workManager.enqueue(cleanWorkBuilder.build())
+        workManager.enqueueUniqueWork(
+            "CleanUpWorker",
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
+            cleanWorkBuilder.build()
+        )
     }
 
     override fun cancelScheduleSendRequests() {
+        workManager.cancelAllWorkByTag(CleanUpWorker.TAG)
         workManager.cancelAllWorkByTag(SendRequestsWorker.TAG)
     }
 

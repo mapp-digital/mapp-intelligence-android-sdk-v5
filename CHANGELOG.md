@@ -1,4 +1,13 @@
 # Change Log
+## Version 5.1.8 *(2024-03-27)*
+* Fixed unexpected tracking behaviour for media tracking
+* Updated targetSdk to 34
+* Updated Gradle v7.x.x to v8.2.2
+* Updated 3rd party dependencies for SDK
+* (Sample App) Migrated Kotlin synthetics to viewBinding (https://developer.android.com/topic/libraries/view-binding/migration)
+* (Sample App) Migrated ExoPlayer2 to Media3 (https://developer.android.com/media/media3/exoplayer/migration-guide)
+
+# Change Log
 ## Version 5.1.7.2 *(2024-01-10)*
 * Fixed bug - everId not generated after anonymousTracking set to false
 * Fixed bug - firstAppOpen parameter not properly calculated

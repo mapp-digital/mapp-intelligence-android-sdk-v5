@@ -3,11 +3,7 @@ package com.example.webtrekk.androidsdk.tracking
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.webtrekk.androidsdk.R
-import kotlinx.android.synthetic.main.activity_orders_tracking.btnCreateOrders
-import kotlinx.android.synthetic.main.activity_orders_tracking.etRequestsCount
-import kotlinx.android.synthetic.main.activity_orders_tracking.progressBar
-import kotlinx.android.synthetic.main.activity_orders_tracking.tvOrdersCreatedInfo
+import com.example.webtrekk.androidsdk.databinding.ActivityOrdersTrackingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,36 +13,38 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class OrdersTrackingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityOrdersTrackingBinding
     private val coroutineContext = Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext + Job())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_orders_tracking)
+        binding = ActivityOrdersTrackingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnCreateOrders.setOnClickListener {
+        binding.btnCreateOrders.setOnClickListener {
             createOrders()
         }
     }
 
     private fun createOrders() {
-        btnCreateOrders.isEnabled = false
+        binding.btnCreateOrders.isEnabled = false
         val testData = OrdersTestData()
-        val ordersCount: Int = etRequestsCount.text.toString().parseInt()
-        progressBar.max = ordersCount
-        tvOrdersCreatedInfo.visibility = View.GONE
+        val ordersCount: Int = binding.etRequestsCount.text.toString().parseInt()
+        binding.progressBar.max = ordersCount
+        binding.tvOrdersCreatedInfo.visibility = View.GONE
         coroutineScope.launch {
             for (i in 0 until ordersCount) {
                 testData.createOrder()
                 withContext(Dispatchers.Main) {
-                    progressBar.progress = i + 1
+                    binding.progressBar.progress = i + 1
                 }
                 delay(50)
             }
             withContext(Dispatchers.Main) {
-                btnCreateOrders.isEnabled = true
-                progressBar.progress = 0
-                tvOrdersCreatedInfo.visibility = View.VISIBLE
+                binding.btnCreateOrders.isEnabled = true
+                binding.progressBar.progress = 0
+                binding.tvOrdersCreatedInfo.visibility = View.VISIBLE
             }
         }
     }

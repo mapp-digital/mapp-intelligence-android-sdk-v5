@@ -6,18 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_reset.btnOnlySetValues
-import kotlinx.android.synthetic.main.dialog_reset.btnResetAndSetValues
-import kotlinx.android.synthetic.main.dialog_reset.btnResetOnly
-import kotlinx.android.synthetic.main.dialog_reset.spinnerExceptionLog
-import kotlinx.android.synthetic.main.dialog_reset.switchAnonymousTracking
-import kotlinx.android.synthetic.main.dialog_reset.switchBatchRequests
-import kotlinx.android.synthetic.main.dialog_reset.switchSentAppVersion
-import kotlinx.android.synthetic.main.dialog_reset.switchUserMatchingEnabled
-import kotlinx.android.synthetic.main.dialog_reset.tieBatchRequestSize
-import kotlinx.android.synthetic.main.dialog_reset.tieEverId
-import kotlinx.android.synthetic.main.dialog_reset.tieTrackDomain
-import kotlinx.android.synthetic.main.dialog_reset.tieTrackIds
+import com.example.webtrekk.androidsdk.databinding.DialogResetBinding
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Webtrekk
 
@@ -28,6 +17,9 @@ interface ResetCallback {
 }
 
 class ResetDialog : DialogFragment() {
+    private var _binding:DialogResetBinding?=null
+    private val binding:DialogResetBinding
+        get() = _binding!!
     companion object {
         val TAG = ResetDialog::class.java.name
 
@@ -49,28 +41,28 @@ class ResetDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.dialog_reset, container, false)
-        return view
+    ): View {
+        _binding= DialogResetBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val exceptionTypes = ExceptionType.values().map { it.name }
+        val exceptionTypes = ExceptionType.entries.map { it.name }
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, exceptionTypes)
-        spinnerExceptionLog.adapter = adapter
+        binding.spinnerExceptionLog.adapter = adapter
 
-        btnResetOnly.setOnClickListener {
+        binding.btnResetOnly.setOnClickListener {
             callback.resetOnly()
             dismissAllowingStateLoss()
         }
 
-        btnResetAndSetValues.setOnClickListener {
+        binding.btnResetAndSetValues.setOnClickListener {
             callback.resetAndSetNewValues(getData())
             dismissAllowingStateLoss()
         }
 
-        btnOnlySetValues.setOnClickListener {
+        binding.btnOnlySetValues.setOnClickListener {
             callback.onlySetNewValues(getData())
             dismissAllowingStateLoss()
         }
@@ -79,41 +71,41 @@ class ResetDialog : DialogFragment() {
     }
 
     private fun initValues() {
-        tieTrackIds.setText(Webtrekk.getInstance().getTrackIds().joinToString(separator = ", "))
-        tieTrackDomain.setText(Webtrekk.getInstance().getTrackDomain())
-        tieEverId.setText(Webtrekk.getInstance().getEverId())
-        tieBatchRequestSize.setText("${Webtrekk.getInstance().getRequestsPerBatch()}")
+        binding.tieTrackIds.setText(Webtrekk.getInstance().getTrackIds().joinToString(separator = ", "))
+        binding.tieTrackDomain.setText(Webtrekk.getInstance().getTrackDomain())
+        binding.tieEverId.setText(Webtrekk.getInstance().getEverId())
+        binding.tieBatchRequestSize.setText("${Webtrekk.getInstance().getRequestsPerBatch()}")
         val anonymousTracking = Webtrekk.getInstance().isAnonymousTracking()
-        switchAnonymousTracking.isChecked = anonymousTracking
-        switchBatchRequests.isChecked = Webtrekk.getInstance().isBatchEnabled()
-        switchSentAppVersion.isChecked = Webtrekk.getInstance().getVersionInEachRequest()
-        switchUserMatchingEnabled.isChecked =
+        binding.switchAnonymousTracking.isChecked = anonymousTracking
+        binding.switchBatchRequests.isChecked = Webtrekk.getInstance().isBatchEnabled()
+        binding.switchSentAppVersion.isChecked = Webtrekk.getInstance().getVersionInEachRequest()
+        binding.switchUserMatchingEnabled.isChecked =
             Webtrekk.getInstance().isUserMatchingEnabled()
 
-        switchUserMatchingEnabled.isEnabled = !anonymousTracking
-        switchAnonymousTracking.setOnCheckedChangeListener { buttonView, isChecked ->
-            switchUserMatchingEnabled.isEnabled = !isChecked
+        binding.switchUserMatchingEnabled.isEnabled = !anonymousTracking
+        binding.switchAnonymousTracking.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.switchUserMatchingEnabled.isEnabled = !isChecked
 //            if (isChecked) {
 //                switchUserMatchingEnabled.isChecked = false
 //            }
         }
 
-        val logIndex = ExceptionType.values().indexOf(Webtrekk.getInstance().getExceptionLogLevel())
-        spinnerExceptionLog.setSelection(logIndex)
+        val logIndex = ExceptionType.entries.indexOf(Webtrekk.getInstance().getExceptionLogLevel())
+        binding.spinnerExceptionLog.setSelection(logIndex)
     }
 
     private fun getData(): Map<String, Any> {
         val data = HashMap<String, Any>()
-        val trackIds = tieTrackIds.text?.toString()?.split(",")?.map { it.trim() }
-        val trackDomain = tieTrackDomain.text?.toString()
-        val everId = tieEverId.text?.toString()
-        val batchRequestSize = tieBatchRequestSize.text?.toString()?.toInt() ?: 20
-        val batchEnabled = switchBatchRequests.isChecked
-        val sendAppVersionInRequests = switchSentAppVersion.isChecked
-        val userMatching = switchUserMatchingEnabled.isChecked
-        val anonymousTracking = switchAnonymousTracking.isChecked
+        val trackIds = binding.tieTrackIds.text?.toString()?.split(",")?.map { it.trim() }
+        val trackDomain = binding.tieTrackDomain.text?.toString()
+        val everId = binding.tieEverId.text?.toString()
+        val batchRequestSize = binding.tieBatchRequestSize.text?.toString()?.toInt() ?: 20
+        val batchEnabled = binding.switchBatchRequests.isChecked
+        val sendAppVersionInRequests = binding.switchSentAppVersion.isChecked
+        val userMatching = binding.switchUserMatchingEnabled.isChecked
+        val anonymousTracking = binding.switchAnonymousTracking.isChecked
         val exceptionLogLevel = ExceptionType.valueOf(
-            spinnerExceptionLog.selectedItem?.toString() ?: ExceptionType.ALL.name
+            binding.spinnerExceptionLog.selectedItem?.toString() ?: ExceptionType.ALL.name
         )
 
         trackIds?.let { data.put("trackIds", it) }
@@ -126,5 +118,10 @@ class ResetDialog : DialogFragment() {
         data["userMatching"] = userMatching
         data["anonymousTracking"] = anonymousTracking
         return data
+    }
+
+    override fun onDestroyView() {
+        _binding=null
+        super.onDestroyView()
     }
 }

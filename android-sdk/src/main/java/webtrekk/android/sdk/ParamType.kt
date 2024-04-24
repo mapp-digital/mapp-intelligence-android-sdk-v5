@@ -264,7 +264,7 @@ enum class ParamType(val value: String) {
  *      )
  * )
  */
-typealias TrackingParams = LinkedHashMap<String, String>
+class TrackingParams:LinkedHashMap<String,String>()
 
 /**
  * A helper function, that is used to create a custom param name/key depends on the real custom param name in the analytics.

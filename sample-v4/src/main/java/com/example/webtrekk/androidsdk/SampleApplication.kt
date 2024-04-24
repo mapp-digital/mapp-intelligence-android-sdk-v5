@@ -5,8 +5,4 @@ import com.webtrekk.webtrekksdk.Webtrekk
 
 class SampleApplication : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-
-    }
 }

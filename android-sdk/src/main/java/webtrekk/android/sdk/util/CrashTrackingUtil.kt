@@ -6,7 +6,7 @@ import java.io.File
 /**
  * Utils for CrashTracking
  */
-internal class ExceptionWrapper constructor(val name: String, val customMessage: String) :
+internal class ExceptionWrapper(val name: String, val customMessage: String) :
     Exception()
 
 internal class IncorrectErrorFileFormatException(message: String) : java.lang.Exception(message)

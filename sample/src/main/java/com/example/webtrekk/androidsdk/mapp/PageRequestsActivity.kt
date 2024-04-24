@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webtrekk.androidsdk.BACKGROUND_COLOR
 import com.example.webtrekk.androidsdk.R
+import com.example.webtrekk.androidsdk.databinding.ActivityPageRequestsBinding
 import java.util.*
-import kotlinx.android.synthetic.main.activity_page_requests.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,13 +15,15 @@ import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
 
 class PageRequestsActivity : AppCompatActivity() {
+    private lateinit var binding:ActivityPageRequestsBinding
 
     private val REQUEST_COUNT=100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_page_requests)
+        binding=ActivityPageRequestsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        buttonSendRequests.setOnClickListener {
+        binding.buttonSendRequests.setOnClickListener {
             resetUI()
             sendRequests()
         }
@@ -30,9 +32,9 @@ class PageRequestsActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun sendRequests() {
         CoroutineScope(Dispatchers.Default).launch {
-            val webtrekk= Webtrekk.getInstance();
+            val webtrekk= Webtrekk.getInstance()
 
-            val startTime=System.currentTimeMillis();
+            val startTime=System.currentTimeMillis()
 
             val trackingParams = TrackingParams().apply {
                 putAll(mapOf(Param.BACKGROUND_COLOR to "red"))
@@ -40,24 +42,24 @@ class PageRequestsActivity : AppCompatActivity() {
 
             for (i in 0..REQUEST_COUNT){
                 webtrekk.trackPage(this@PageRequestsActivity,"testAndroid${i}", trackingParams)
-                tvInfo.post {
-                    tvInfo.text="Current request sent: $i"
+                binding.tvInfo.post {
+                    binding.tvInfo.text="Current request sent: $i"
                 }
             }
 
-            val endTime=System.currentTimeMillis();
+            val endTime=System.currentTimeMillis()
             val secondsDuration : Double = ((endTime-startTime)/1000.0)
-            tvExecutionTime.text = "Time duration: ${String.format(Locale.US, "%.2f",secondsDuration)}"
+            binding.tvExecutionTime.text = "Time duration: ${String.format(Locale.US, "%.2f",secondsDuration)}"
 
-            buttonSendRequests.post {
-                buttonSendRequests.isEnabled=true
+            binding.buttonSendRequests.post {
+                binding.buttonSendRequests.isEnabled=true
             }
         }
     }
 
     private fun resetUI(){
-        buttonSendRequests.isEnabled=false
-        tvInfo.text=""
-        tvExecutionTime.text=""
+        binding.buttonSendRequests.isEnabled=false
+        binding.tvInfo.text=""
+        binding.tvExecutionTime.text=""
     }
 }

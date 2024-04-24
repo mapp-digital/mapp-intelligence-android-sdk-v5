@@ -29,20 +29,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.form_main.anonymous
-import kotlinx.android.synthetic.main.form_main.cancel
-import kotlinx.android.synthetic.main.form_main.confirm
-import kotlinx.android.synthetic.main.form_main.spinner
+import com.example.webtrekk.androidsdk.databinding.FormMainBinding
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.Webtrekk
 
 class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var anonymousField = false
+    private lateinit var binding: FormMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.form_main)
+        binding=FormMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        cancel.setOnClickListener {
+        binding.cancel.setOnClickListener {
             val form = FormTrackingSettings()
             form.confirmButton = false
             form.formName = "test123"
@@ -52,7 +51,7 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
-        confirm.setOnClickListener {
+        binding.confirm.setOnClickListener {
             val form = FormTrackingSettings()
             form.confirmButton = true
             form.formName = "test123"
@@ -63,11 +62,11 @@ class FormActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             Webtrekk.getInstance().formTracking(this, formTrackingSettings = form)
         }
 
-        anonymous.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.anonymous.setOnCheckedChangeListener { buttonView, isChecked ->
             anonymousField = isChecked
         }
 
-        spinner.onItemSelectedListener = this
+        binding.spinner.onItemSelectedListener = this
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

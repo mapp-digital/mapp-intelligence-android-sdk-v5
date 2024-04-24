@@ -3,6 +3,7 @@ package webtrekk.android.sdk.events.eventParams
 import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.PageParam
 import webtrekk.android.sdk.extension.addNotNull
+import java.sql.Struct
 
 /**
  * Created by Aleksandar Marinkovic on 3/11/21.
@@ -17,13 +18,13 @@ constructor(
 
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
-        if (!parameters.isNullOrEmpty()) {
+        if (parameters.isNotEmpty()) {
             parameters.forEach { (key, value) ->
-                map.addNotNull("${BaseParam.PAGE_PARAM}$key", value)
+                map.addNotNull("${BaseParam.PAGE_PARAM}${key}", value)
             }
         }
 
-        if (!pageCategory.isNullOrEmpty()) {
+        if (pageCategory.isNotEmpty()) {
             pageCategory.forEach { (key, value) ->
                 map.addNotNull("${BaseParam.PAGE_CATEGORY}$key", value)
             }

@@ -31,26 +31,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
+import com.example.webtrekk.androidsdk.databinding.ActivityMainBinding
 import com.example.webtrekk.androidsdk.mapp.PageRequestsActivity
 import com.example.webtrekk.androidsdk.mapp.UserMatchingActivity
 import com.example.webtrekk.androidsdk.tracking.OrdersTrackingActivity
-import kotlinx.android.synthetic.main.activity_main.btnObjectTrackingProductStatus
-import kotlinx.android.synthetic.main.activity_main.btnResetSdk
-import kotlinx.android.synthetic.main.activity_main.button10
-import kotlinx.android.synthetic.main.activity_main.button4
-import kotlinx.android.synthetic.main.activity_main.button6
-import kotlinx.android.synthetic.main.activity_main.buttonGetDmcUserId
-import kotlinx.android.synthetic.main.activity_main.buttonOrdersTracking
-import kotlinx.android.synthetic.main.activity_main.buttonPrintActiveConfig
-import kotlinx.android.synthetic.main.activity_main.buttonSendRequests
-import kotlinx.android.synthetic.main.activity_main.buttonTestPageRequest
-import kotlinx.android.synthetic.main.activity_main.button_campaign_test
-import kotlinx.android.synthetic.main.activity_main.crashActivity
-import kotlinx.android.synthetic.main.activity_main.formActivity
-import kotlinx.android.synthetic.main.activity_main.startDetailsActivity
-import kotlinx.android.synthetic.main.activity_main.startUserMatchingActivity
-import kotlinx.android.synthetic.main.activity_main.videoActivity
-import kotlinx.android.synthetic.main.activity_main.webViewActivity
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Param
 import webtrekk.android.sdk.TrackPageDetail
@@ -68,14 +52,16 @@ import webtrekk.android.sdk.Webtrekk
 class MainActivity : AppCompatActivity() {
 
     private lateinit var prefs: Prefs
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding=ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        prefs = Prefs(this);
+        prefs = Prefs(this)
 
-        setTitle("${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME}")
+        title = "${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME}"
 /*
         val stringIds = BuildConfig.TRACK_IDS
         val domain = BuildConfig.DOMEIN
@@ -85,74 +71,74 @@ class MainActivity : AppCompatActivity() {
         Webtrekk.getInstance().init(this, webtrekkConfiguration)
 */
 
-        buttonPrintActiveConfig.setOnClickListener {
+        binding.buttonPrintActiveConfig.setOnClickListener {
             val activeConfig = Webtrekk.getInstance().getCurrentConfiguration().toString()
             Log.w(this::class.java.name,"ACTIVE CONFIG: $activeConfig")
         }
 
-        buttonSendRequests.setOnClickListener {
+        binding.buttonSendRequests.setOnClickListener {
             Webtrekk.getInstance().sendRequestsNowAndClean()
         }
 
-        startDetailsActivity.setOnClickListener {
+        binding.startDetailsActivity.setOnClickListener {
             val intent = Intent(this, DetailsActivity::class.java)
             startActivity(intent)
         }
 
-        webViewActivity.setOnClickListener {
+        binding.webViewActivity.setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
             startActivity(intent)
         }
 
-        button_campaign_test.setOnClickListener {
+        binding.buttonCampaignTest.setOnClickListener {
             startActivity(Intent(this, CampaignActivity::class.java))
         }
 
-        formActivity.setOnClickListener {
+        binding.formActivity.setOnClickListener {
             val intent = Intent(this, FormActivity::class.java)
             startActivity(intent)
         }
 
-        startUserMatchingActivity.setOnClickListener {
+        binding.startUserMatchingActivity.setOnClickListener {
             val intent = Intent(this, UserMatchingActivity::class.java)
             startActivity(intent)
         }
 
-        crashActivity.setOnClickListener {
+        binding.crashActivity.setOnClickListener {
             val intent = Intent(this, CrashActivity::class.java)
             startActivity(intent)
         }
 
-        videoActivity.setOnClickListener {
+        binding.videoActivity.setOnClickListener {
             val intent = Intent(this, MediaExample::class.java)
             startActivity(intent)
         }
 
-        button4.setOnClickListener {
+        binding.button4.setOnClickListener {
             val intent = Intent(this, SettingsExample::class.java)
             startActivity(intent)
         }
 
-        button6.setOnClickListener {
+        binding.button6.setOnClickListener {
             val intent = Intent(this, UrlActivity::class.java)
             startActivity(intent)
         }
 
-        buttonOrdersTracking.setOnClickListener {
+        binding.buttonOrdersTracking.setOnClickListener {
             startActivity(Intent(this, OrdersTrackingActivity::class.java))
         }
 
-        button10.setOnClickListener {
+        binding.button10.setOnClickListener {
             val intent = Intent(this, ObjectTrackingActivityExample::class.java)
             startActivity(intent)
         }
 
-        btnObjectTrackingProductStatus.setOnClickListener {
+        binding.btnObjectTrackingProductStatus.setOnClickListener {
             val intent=Intent(this, ObjectTrackingProductStatus::class.java)
             startActivity(intent)
         }
 
-        btnResetSdk.setOnClickListener {
+        binding.btnResetSdk.setOnClickListener {
             ResetDialog.getInstance(object : ResetCallback {
                 override fun resetOnly() {
                     Webtrekk.reset(this@MainActivity)
@@ -215,12 +201,12 @@ class MainActivity : AppCompatActivity() {
             }*/
         }
 
-        buttonTestPageRequest.setOnClickListener {
+        binding.buttonTestPageRequest.setOnClickListener {
             val intent = Intent(this, PageRequestsActivity::class.java)
             startActivity(intent)
         }
 
-        buttonGetDmcUserId.setOnClickListener {
+        binding.buttonGetDmcUserId.setOnClickListener {
             Appoxee.instance().getDeviceInfoDMC()
         }
 
