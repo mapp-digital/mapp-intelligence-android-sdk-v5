@@ -26,6 +26,7 @@
 package webtrekk.android.sdk.domain.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.withContext
@@ -49,7 +50,6 @@ internal class CleanUpWorker(
     CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-
         // this check and initialization is needed for cross platform solutions
         if (!Webtrekk.getInstance().isInitialized()) {
             val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson

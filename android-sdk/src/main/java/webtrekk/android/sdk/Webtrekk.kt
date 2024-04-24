@@ -332,8 +332,6 @@ abstract class Webtrekk protected constructor() {
      */
     abstract fun sendRequestsNowAndClean()
 
-    abstract fun startPeriodicWorkRequest()
-
     /**
      * Check if batch is enabled in the Webtrekk  configuration
      */

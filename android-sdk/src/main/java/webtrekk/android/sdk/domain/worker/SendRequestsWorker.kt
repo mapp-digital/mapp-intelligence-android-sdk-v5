@@ -28,7 +28,9 @@ package webtrekk.android.sdk.domain.worker
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.Webtrekk
@@ -59,7 +61,7 @@ internal class SendRequestsWorker(
     CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        Log.d(TAG, "doWork - starting...")
+        Log.d(TAG, "doWork - starting... ${tags.joinToString(separator = ", ")}")
         // this check and initialization is needed for cross platform solutions
         if (!Webtrekk.getInstance().isInitialized()) {
             val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
@@ -93,10 +95,6 @@ internal class SendRequestsWorker(
          * [logger] the injected logger from Webtrekk.
          */
         val logger by lazy { AppModule.logger }
-
-        val session = InteractorModule.sessions
-
-        val config = LibraryModule.configuration
 
         val activeConfig = Webtrekk.getInstance().getCurrentConfiguration()
 
@@ -155,6 +153,7 @@ internal class SendRequestsWorker(
                 .onFailure { logger.error("Error getting cached data tracks: $it") }
         }
 
+        delay(5000)
         return Result.success()
     }
 

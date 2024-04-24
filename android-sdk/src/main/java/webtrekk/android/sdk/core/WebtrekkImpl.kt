@@ -250,13 +250,15 @@ constructor() : Webtrekk(),
 
             if (!params.containsKey(MediaParam.MEDIA_DURATION) ||
                 params[MediaParam.MEDIA_DURATION].isNullOrEmpty() ||
-                "null".equals(params[MediaParam.MEDIA_DURATION],true)) {
+                "null".equals(params[MediaParam.MEDIA_DURATION], true)
+            ) {
                 params[MediaParam.MEDIA_DURATION] = "0"
             }
 
             if (!params.containsKey(MediaParam.MEDIA_POSITION) ||
                 params[MediaParam.MEDIA_POSITION].isNullOrEmpty() ||
-                "null".equals(params[MediaParam.MEDIA_POSITION],true)) {
+                "null".equals(params[MediaParam.MEDIA_POSITION], true)
+            ) {
                 params[MediaParam.MEDIA_POSITION] = "0"
             }
 
@@ -528,13 +530,6 @@ constructor() : Webtrekk(),
             sendAppUpdateEvent()
         }
 
-        // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
-        scheduler.scheduleCleanUp()
-        scheduler.scheduleSendRequests(
-            repeatInterval = config.requestsInterval,
-            constraints = config.workManagerConstraints
-        )
-
         // If auto tracked is enabled, start [AutoTrack] use case.
         if (config.autoTracking) {
             autoTrack.invoke(
@@ -550,6 +545,12 @@ constructor() : Webtrekk(),
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
             initUncaughtExceptionTracking()
         }
+        // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
+        scheduler.scheduleCleanUp()
+        scheduler.scheduleSendRequests(
+            repeatInterval = config.requestsInterval,
+            constraints = config.workManagerConstraints
+        )
     }
 
     private fun mediaParamValidation(trackingParams: Map<String, String>): Boolean {
@@ -612,13 +613,6 @@ constructor() : Webtrekk(),
                 trackIds = config.trackIds,
                 config = config
             ), coroutineDispatchers
-        )
-    }
-
-    override fun startPeriodicWorkRequest() {
-        scheduler.scheduleSendRequests(
-            repeatInterval = config.requestsInterval,
-            constraints = config.workManagerConstraints
         )
     }
 

@@ -52,7 +52,6 @@ class WebViewActivity : AppCompatActivity() {
             javaScriptEnabled=true
             textZoom=100
         }
-
         binding.webView.webViewClient=object :WebViewClient(){
             override fun onReceivedHttpAuthRequest(
                 view: WebView?,
@@ -63,7 +62,7 @@ class WebViewActivity : AppCompatActivity() {
                 handler?.proceed("demo","demo")
             }
         }
-        //binding.webView.loadUrl("http://demoshop.webtrekk.com/web2app/index.html")
-        binding.webView.loadUrl("https://www.zeit.de/geld/2023-07/chatgpt-plugins-ki-aktien-etfs-portfolio-pilot")
+
+        binding.webView.loadUrl("https://demoshop.webtrekk.com/media/web2app/index.html")
     }
 }
