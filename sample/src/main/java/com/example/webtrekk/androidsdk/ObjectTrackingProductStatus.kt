@@ -2,20 +2,14 @@ package com.example.webtrekk.androidsdk
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnAddedToBasket
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnAddedToWishlist
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnCheckout
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnDeletedFromBasket
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnDeletedFromWishlist
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnNoneStatus
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnPurchaseProduct
-import kotlinx.android.synthetic.main.activity_object_tracking_product_status.btnViewProduct
+import com.example.webtrekk.androidsdk.databinding.ActivityObjectTrackingProductStatusBinding
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.PageViewEvent
 import webtrekk.android.sdk.events.eventParams.ECommerceParameters
 import webtrekk.android.sdk.events.eventParams.ProductParameters
 
 class ObjectTrackingProductStatus : AppCompatActivity() {
+    private lateinit var binding: ActivityObjectTrackingProductStatusBinding
 
     private val product1: ProductParameters = run {
         val product = ProductParameters()
@@ -35,37 +29,38 @@ class ObjectTrackingProductStatus : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_object_tracking_product_status)
+        binding=ActivityObjectTrackingProductStatusBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnNoneStatus.setOnClickListener {
+        binding.btnNoneStatus.setOnClickListener {
             trackEcommerceNoneStatus()
         }
 
-        btnPurchaseProduct.setOnClickListener {
+        binding.btnPurchaseProduct.setOnClickListener {
             trackEcommercePurchaseProduct()
         }
 
-        btnViewProduct.setOnClickListener {
+        binding.btnViewProduct.setOnClickListener {
             trackEcommerceViewProduct()
         }
 
-        btnAddedToBasket.setOnClickListener {
+        binding.btnAddedToBasket.setOnClickListener {
             trackEcommerceAddedToBasket()
         }
 
-        btnDeletedFromBasket.setOnClickListener {
+        binding.btnDeletedFromBasket.setOnClickListener {
             trackEcommerceDeletedFromBasket()
         }
 
-        btnAddedToWishlist.setOnClickListener {
+        binding.btnAddedToWishlist.setOnClickListener {
             trackEcommerceAddedToWishlist()
         }
 
-        btnDeletedFromWishlist.setOnClickListener {
+        binding.btnDeletedFromWishlist.setOnClickListener {
             trackEcommerceDeletedFromWishlist()
         }
 
-        btnCheckout.setOnClickListener {
+        binding.btnCheckout.setOnClickListener {
             trackEcommerceCheckout()
         }
     }

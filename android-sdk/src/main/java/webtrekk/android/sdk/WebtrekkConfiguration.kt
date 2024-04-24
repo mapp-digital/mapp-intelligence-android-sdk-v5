@@ -87,7 +87,7 @@ data class WebtrekkConfiguration private constructor(
         private var exceptionLogLevel = DefaultConfiguration.CRASH_TRACKING_ENABLED
         private var shouldMigrate = DefaultConfiguration.SHOULD_MIGRATE_ENABLED
         private var versionInEachRequest = DefaultConfiguration.VERSION_IN_EACH_REQUEST
-        private var everId: String? =""
+        private var everId: String? = ""
         private var userMatchingEnabled: Boolean = DefaultConfiguration.USER_MATCHING_ENABLED
         private var everIdMode: GenerationMode? = GenerationMode.AUTO_GENERATED
 
@@ -287,49 +287,6 @@ data class WebtrekkConfiguration private constructor(
         )
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as WebtrekkConfiguration
-
-        if (trackIds != other.trackIds) return false
-        if (trackDomain != other.trackDomain) return false
-        if (logLevel != other.logLevel) return false
-        if (requestsInterval != other.requestsInterval) return false
-        if (autoTracking != other.autoTracking) return false
-        if (fragmentsAutoTracking != other.fragmentsAutoTracking) return false
-        if (workManagerConstraints != other.workManagerConstraints) return false
-        if (okHttpClient != other.okHttpClient) return false
-        if (requestPerBatch != other.requestPerBatch) return false
-        if (batchSupport != other.batchSupport) return false
-        if (activityAutoTracking != other.activityAutoTracking) return false
-        if (exceptionLogLevel != other.exceptionLogLevel) return false
-        if (shouldMigrate != other.shouldMigrate) return false
-        if (versionInEachRequest != other.versionInEachRequest) return false
-        if (everIdMode != other.everIdMode) return false
-        if (everId != other.everId) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = trackIds.hashCode()
-        result = 31 * result + trackDomain.hashCode()
-        result = 31 * result + logLevel.hashCode()
-        result = 31 * result + requestsInterval.hashCode()
-        result = 31 * result + autoTracking.hashCode()
-        result = 31 * result + fragmentsAutoTracking.hashCode()
-        result = 31 * result + workManagerConstraints.hashCode()
-        result = 31 * result + okHttpClient.hashCode()
-        result = 31 * result + requestPerBatch
-        result = 31 * result + batchSupport.hashCode()
-        result = 31 * result + activityAutoTracking.hashCode()
-        result = 31 * result + exceptionLogLevel.hashCode()
-        result = 31 * result + shouldMigrate.hashCode()
-        result = 31 * result + versionInEachRequest.hashCode()
-        return result
-    }
-
     override fun toJson(): String {
         try {
             val jsonArr = JSONArray()
@@ -366,38 +323,38 @@ data class WebtrekkConfiguration private constructor(
         ): Config {
             val obj = JSONObject(json)
 
-            val trackIdsJsonArray = obj.getJSONArray("trackIds")
+            val trackIdsJsonArray = obj.optJSONArray("trackIds") ?: JSONArray()
 
             val trackIds = mutableListOf<String>()
 
             for (i in 0 until trackIdsJsonArray.length()) {
-                trackIds.add(trackIdsJsonArray.getString(i))
+                trackIds.add(trackIdsJsonArray.optString(i))
             }
 
-            val mode = if (obj.has("everIdMode")) obj.getInt("everIdMode") else null
+            val mode = if (obj.has("everIdMode")) obj.optInt("everIdMode") else null
             val everIdMode = if (mode != null) GenerationMode.value(mode) else null
 
             return WebtrekkConfiguration(
                 trackIds = trackIds,
-                trackDomain = obj.getString("trackDomain"),
-                logLevel = Logger.Level.valueOf(obj.getString("logLevel")),
-                requestsInterval = obj.getLong("requestsInterval"),
-                autoTracking = obj.getBoolean("autoTracking"),
-                fragmentsAutoTracking = obj.getBoolean("fragmentsAutoTracking"),
-                requestPerBatch = obj.getInt("requestPerBatch"),
-                activityAutoTracking = obj.getBoolean("activityAutoTracking"),
-                versionInEachRequest = obj.getBoolean("versionInEachRequest"),
+                trackDomain = obj.optString("trackDomain"),
+                logLevel = Logger.Level.valueOf(obj.optString("logLevel")),
+                requestsInterval = obj.optLong("requestsInterval"),
+                autoTracking = obj.optBoolean("autoTracking"),
+                fragmentsAutoTracking = obj.optBoolean("fragmentsAutoTracking"),
+                requestPerBatch = obj.optInt("requestPerBatch"),
+                activityAutoTracking = obj.optBoolean("activityAutoTracking"),
+                versionInEachRequest = obj.optBoolean("versionInEachRequest"),
                 exceptionLogLevel = ExceptionType.valueOf(
-                    obj.getString("exceptionLogLevel"),
+                    obj.optString("exceptionLogLevel"),
                 ),
 
-                batchSupport = obj.getBoolean("batchSupport"),
-                shouldMigrate = obj.getBoolean("shouldMigrate"),
+                batchSupport = obj.optBoolean("batchSupport"),
+                shouldMigrate = obj.optBoolean("shouldMigrate"),
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
                 workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
-                userMatchingEnabled = if (obj.has("userMatchingEnabled")) obj.getBoolean("userMatchingEnabled") else false,
-                everId = if (obj.has("everId")) obj.getString("everId") else null,
-                everIdMode = everIdMode
+                userMatchingEnabled = if (obj.has("userMatchingEnabled")) obj.optBoolean("userMatchingEnabled") else false,
+                everId = if (obj.has("everId")) obj.optString("everId") else null,
+                everIdMode = everIdMode,
             )
         }
     }

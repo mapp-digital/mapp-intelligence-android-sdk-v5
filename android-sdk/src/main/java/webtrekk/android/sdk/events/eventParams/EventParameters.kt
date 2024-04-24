@@ -15,7 +15,7 @@ constructor(
 ) : BaseEvent {
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
-        if (!customParameters.isNullOrEmpty()) {
+        if (customParameters.isNotEmpty()) {
             customParameters.forEach { (key, value) ->
                 map.addNotNull("${BaseParam.EVENT_PARAM}$key", value)
             }

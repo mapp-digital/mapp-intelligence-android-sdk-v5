@@ -3,35 +3,32 @@ package com.example.webtrekk.androidsdk
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.settings_activity.button
-import kotlinx.android.synthetic.main.settings_activity.button2
-import kotlinx.android.synthetic.main.settings_activity.button3
-import kotlinx.android.synthetic.main.settings_activity.disable_anonymous
-import kotlinx.android.synthetic.main.settings_activity.enable_anonymous
-import kotlinx.android.synthetic.main.settings_activity.sw_optout
+import com.example.webtrekk.androidsdk.databinding.SettingsActivityBinding
 import webtrekk.android.sdk.Webtrekk
 
 class SettingsExample : AppCompatActivity() {
+    private lateinit var binding: SettingsActivityBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding=SettingsActivityBinding.inflate(layoutInflater)
         setContentView(R.layout.settings_activity)
 
 
-        button.setOnClickListener {
+        binding.button.setOnClickListener {
             val stringIds = BuildConfig.TRACK_IDS
             val domain = BuildConfig.DOMEIN
             val elements: List<String> = stringIds.split(",")
             Webtrekk.getInstance().setIdsAndDomain(elements, domain)
         }
 
-        button2.setOnClickListener {
+        binding.button2.setOnClickListener {
             Webtrekk.getInstance().setIdsAndDomain(
                 listOf("826582930668809"),
                 "http://vdestellaaccount01.wt-eu02.net"
             )
         }
 
-        button3.setOnClickListener {
+        binding.button3.setOnClickListener {
             val stringIds = BuildConfig.TRACK_IDS
             val domain = BuildConfig.DOMEIN
             var elements: MutableList<String> = stringIds.split(",").toMutableList()
@@ -40,19 +37,19 @@ class SettingsExample : AppCompatActivity() {
 
         }
 
-        enable_anonymous.setOnClickListener {
+        binding.enableAnonymous.setOnClickListener {
             Webtrekk.getInstance().anonymousTracking(
                 true,
                 setOf("la", "cs804", "cs821", "uc703", "uc709"))
             updateAnonymousTrackingStatus()
         }
-        disable_anonymous.setOnClickListener {
+        binding.disableAnonymous.setOnClickListener {
             Webtrekk.getInstance().anonymousTracking(false)
             updateAnonymousTrackingStatus()
         }
 
-        sw_optout.isChecked = Webtrekk.getInstance().hasOptOut()
-        sw_optout.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.swOptout.isChecked = Webtrekk.getInstance().hasOptOut()
+        binding.swOptout.setOnCheckedChangeListener { buttonView, isChecked ->
             Webtrekk.getInstance().optOut(isChecked)
         }
         updateAnonymousTrackingStatus()

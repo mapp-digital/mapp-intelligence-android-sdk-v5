@@ -17,9 +17,7 @@ internal data class DataAnnotationClass(
         other as DataAnnotationClass
 
         if (trackRequest != other.trackRequest) return false
-        if (!trackParams.contentEquals(other.trackParams)) return false
-
-        return true
+        return trackParams.contentEquals(other.trackParams)
     }
 
     override fun hashCode(): Int {

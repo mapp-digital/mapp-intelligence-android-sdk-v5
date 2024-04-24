@@ -30,7 +30,7 @@ def getTrackDomain() {
     Properties properties = new Properties()
     if (localPropFile.exists()) {
         properties.load(localPropFile.newDataInputStream())
-        return properties.getProperty("trackDomain");
+        return properties.getProperty("trackDomain")
     } else {
         if (System.getenv('trackDomain') != null) {
             properties.setProperty("trackDomain", System.getenv('trackDomain'))
@@ -39,7 +39,7 @@ def getTrackDomain() {
         }
 
     }
-    return properties.getProperty("trackDomain");
+    return properties.getProperty("trackDomain")
 }
 
 def getTrackIds() {
@@ -47,7 +47,7 @@ def getTrackIds() {
     Properties properties = new Properties()
     if (localPropFile.exists()) {
         properties.load(localPropFile.newDataInputStream())
-        return properties.getProperty("trackIds");
+        return properties.getProperty("trackIds")
     } else {
         if (System.getenv('trackIds') != null) {
             properties.setProperty("trackIds", System.getenv('trackIds'))
@@ -55,7 +55,7 @@ def getTrackIds() {
             return "12312"
         }
     }
-    return properties.getProperty("trackIds");
+    return properties.getProperty("trackIds")
 }
 
 

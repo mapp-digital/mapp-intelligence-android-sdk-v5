@@ -60,6 +60,7 @@ import webtrekk.android.sdk.domain.external.TrackUncaughtException
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
+import webtrekk.android.sdk.events.eventParams.MediaParameters
 import webtrekk.android.sdk.extension.appVersionCode
 import webtrekk.android.sdk.extension.appVersionName
 import webtrekk.android.sdk.extension.isCaughtAllowed
@@ -79,6 +80,7 @@ import webtrekk.android.sdk.util.generateEverId
 import webtrekk.android.sdk.util.getFileName
 import webtrekk.android.sdk.util.webtrekkLogger
 import java.io.File
+import java.util.Objects
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -244,6 +246,22 @@ constructor() : Webtrekk(),
         }
         config.run {
             val appFirstOpen = appFirstOpen(true)
+            val params = trackingParams.toMutableMap()
+
+            if (!params.containsKey(MediaParam.MEDIA_DURATION) ||
+                params[MediaParam.MEDIA_DURATION].isNullOrEmpty() ||
+                "null".equals(params[MediaParam.MEDIA_DURATION], true)
+            ) {
+                params[MediaParam.MEDIA_DURATION] = "0"
+            }
+
+            if (!params.containsKey(MediaParam.MEDIA_POSITION) ||
+                params[MediaParam.MEDIA_POSITION].isNullOrEmpty() ||
+                "null".equals(params[MediaParam.MEDIA_POSITION], true)
+            ) {
+                params[MediaParam.MEDIA_POSITION] = "0"
+            }
+
             trackCustomMedia(
                 TrackCustomMedia.Params(
                     trackRequest = TrackRequest(
@@ -255,7 +273,7 @@ constructor() : Webtrekk(),
                         appVersionCode = context.appVersionCode,
                         everId = getEverId(),
                     ),
-                    trackingParams = trackingParams,
+                    trackingParams = params,
                     isOptOut = hasOptOut(),
                     context = context,
                     mediaName = mediaName
@@ -512,13 +530,6 @@ constructor() : Webtrekk(),
             sendAppUpdateEvent()
         }
 
-        // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
-        scheduler.scheduleCleanUp()
-        scheduler.scheduleSendRequests(
-            repeatInterval = config.requestsInterval,
-            constraints = config.workManagerConstraints
-        )
-
         // If auto tracked is enabled, start [AutoTrack] use case.
         if (config.autoTracking) {
             autoTrack.invoke(
@@ -534,10 +545,20 @@ constructor() : Webtrekk(),
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
             initUncaughtExceptionTracking()
         }
+        // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
+        scheduler.scheduleCleanUp()
+        scheduler.scheduleSendRequests(
+            repeatInterval = config.requestsInterval,
+            constraints = config.workManagerConstraints
+        )
     }
 
     private fun mediaParamValidation(trackingParams: Map<String, String>): Boolean {
-        if ("pos".equals(trackingParams[MediaParam.MEDIA_ACTION], true)) {
+        if (Objects.equals(
+                trackingParams[MediaParam.MEDIA_ACTION],
+                MediaParameters.Action.POS.code()
+            )
+        ) {
             if ((lastTimeMedia + 3000) > System.currentTimeMillis()) {
                 logger.info("The limit for the position parameter is one request every 3 seconds")
                 return false
@@ -545,25 +566,8 @@ constructor() : Webtrekk(),
             lastTimeMedia = System.currentTimeMillis()
         }
 
-        if ("play".equals(trackingParams[MediaParam.MEDIA_ACTION], true) or "pause".equals(
-                trackingParams[MediaParam.MEDIA_ACTION],
-                true
-            )
-        ) {
-            lastAction = trackingParams[MediaParam.MEDIA_ACTION].toString()
-        }
-        lastEqual =
-            if (trackingParams[MediaParam.MEDIA_DURATION] == trackingParams[MediaParam.MEDIA_POSITION]) {
-                if (lastEqual) {
-                    logger.info("Duration and Position are the same")
-                    return false
-                } else {
-                    true
-                }
-            } else {
-                false
-            }
-        return true
+        return trackingParams.containsKey(MediaParam.MEDIA_DURATION) &&
+                trackingParams.containsKey(MediaParam.MEDIA_POSITION)
     }
 
     /**
@@ -609,13 +613,6 @@ constructor() : Webtrekk(),
                 trackIds = config.trackIds,
                 config = config
             ), coroutineDispatchers
-        )
-    }
-
-    override fun startPeriodicWorkRequest() {
-        scheduler.scheduleSendRequests(
-            repeatInterval = config.requestsInterval,
-            constraints = config.workManagerConstraints
         )
     }
 

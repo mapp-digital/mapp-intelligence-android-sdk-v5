@@ -93,6 +93,7 @@
     <string name="send_data">Send data</string>
     <string name="parameter_key">Parameter key</string>
     <string name="parameter_value">Parameter value</string>
+    <string name="increment_current_time_by_s_seconds_on_each_action">Increment current time by %s seconds on each action.</string>
 
     <string-array name="screen_orientation">
         <item>Screen orientation portrait</item>

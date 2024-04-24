@@ -3,7 +3,7 @@ package com.example.webtrekk.androidsdk
 import android.os.Bundle
 import androidx.annotation.Size
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_campaign.button1
+import com.example.webtrekk.androidsdk.databinding.ActivityCampaignBinding
 import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.ActionEvent
@@ -12,11 +12,12 @@ class CampaignActivity : AppCompatActivity() {
 
     private val CT = "ct"
 
+    private lateinit var binding: ActivityCampaignBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_campaign)
-
-        button1.setOnClickListener {
+        binding=ActivityCampaignBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.button1.setOnClickListener {
 
         }
     }

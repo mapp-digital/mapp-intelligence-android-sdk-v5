@@ -45,9 +45,6 @@ class TrackedVideoView : VideoView {
             mapOf(
                 MediaParam.MEDIA_POSITION to (currentPosition / 1000).toString(),
                 MediaParam.MEDIA_ACTION to "init",
-                ParamType.EVENT_PARAM.value to "EVENT_PARAM"
-
-
             )
         )
         Webtrekk.getInstance().trackMedia("TrackedVideoView","video name", trackingParams)

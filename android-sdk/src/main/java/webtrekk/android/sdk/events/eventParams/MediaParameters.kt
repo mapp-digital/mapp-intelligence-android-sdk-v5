@@ -39,7 +39,7 @@ data class MediaParameters(
 
     override fun toHasMap(): MutableMap<String, String> {
         val map = mutableMapOf<String, String>()
-        if (!customCategories.isNullOrEmpty()) {
+        if (customCategories.isNotEmpty()) {
             customCategories.forEach { (key, value) ->
                 map.addNotNull("${MediaParam.MEDIA_CATEGORY}$key", value)
             }

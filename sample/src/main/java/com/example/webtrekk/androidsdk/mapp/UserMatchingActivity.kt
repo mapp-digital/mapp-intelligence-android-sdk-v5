@@ -3,11 +3,7 @@ package com.example.webtrekk.androidsdk.mapp
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.webtrekk.androidsdk.R
-import kotlinx.android.synthetic.main.activity_user_matching.btnCustomActionWithCustomUserId
-import kotlinx.android.synthetic.main.activity_user_matching.btnCustomActionWithMappUserId
-import kotlinx.android.synthetic.main.activity_user_matching.btnDisableUserMatching
-import kotlinx.android.synthetic.main.activity_user_matching.btnEnableUserMatching
-import kotlinx.android.synthetic.main.activity_user_matching.btnSendData
+import com.example.webtrekk.androidsdk.databinding.ActivityUserMatchingBinding
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.eventParams.EventParameters
@@ -15,28 +11,30 @@ import webtrekk.android.sdk.events.eventParams.SessionParameters
 import webtrekk.android.sdk.events.eventParams.UserCategories
 
 class UserMatchingActivity : AppCompatActivity(){
+    private lateinit var binding:ActivityUserMatchingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_matching)
+        binding=ActivityUserMatchingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnEnableUserMatching.setOnClickListener {
+        binding.btnEnableUserMatching.setOnClickListener {
             Webtrekk.getInstance().setUserMatchingEnabled(true)
         }
 
-        btnDisableUserMatching.setOnClickListener {
+        binding.btnDisableUserMatching.setOnClickListener {
             Webtrekk.getInstance().setUserMatchingEnabled(false)
         }
 
-        btnCustomActionWithCustomUserId.setOnClickListener {
+        binding.btnCustomActionWithCustomUserId.setOnClickListener {
             trackCustomActionWithCustomUserId()
         }
 
-        btnCustomActionWithMappUserId.setOnClickListener {
+        binding.btnCustomActionWithMappUserId.setOnClickListener {
             trackCustomActionWithMappUserId()
         }
 
-        btnSendData.setOnClickListener {
+        binding.btnSendData.setOnClickListener {
             Webtrekk.getInstance().sendRequestsNowAndClean()
         }
     }

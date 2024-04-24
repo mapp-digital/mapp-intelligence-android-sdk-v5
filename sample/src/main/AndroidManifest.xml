@@ -13,11 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="m">
         <activity
             android:name=".tracking.OrdersTrackingActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".UrlActivity"
             android:exported="false" />
@@ -73,64 +73,6 @@
         <activity
             android:name=".ObjectTrackingActivityExample"
             android:exported="false" />
-        <!--
-        <activity
-            android:name=".mapp.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="com.mapp.RICH_PUSH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </activity>
-        -->
-        <activity
-            android:name=".mapp.SecondActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="cdn.wbtrk.net"
-                    android:scheme="http" />
-            </intent-filter>
-        </activity> <!-- Deeplinking Start -->
-        <activity
-            android:name=".mapp.DeepLinkActivity"
-            android:exported="false">
-            <intent-filter>
-                <data android:scheme="apx" />
-                <data android:host="deeplink" />
-
-                <action android:name="com.appoxee.VIEW_DEEPLINK" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="${applicationId}" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".mapp.CustomDeeplinkActivity"
-            android:exported="false">
-            <intent-filter>
-                <data android:scheme="apx" />
-                <data android:host="custom" />
-
-                <action android:name="com.appoxee.VIEW_CUSTOM_LINKS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".mapp.PageRequestsActivity"
             android:exported="false" />
@@ -139,6 +81,11 @@
             android:name=".mapp.UserMatchingActivity"
             android:exported="false" />
         <activity android:name=".ObjectTrackingProductStatus" />
+        <activity
+            android:name="com.example.webtrekk.androidsdk.ManualMediaTracking"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:taskAffinity="" />
     </application>
 
 </manifest>

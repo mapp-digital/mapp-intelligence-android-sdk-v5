@@ -73,13 +73,13 @@ class SampleApplication : Application() {
                 .build()
 
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
-        //Webtrekk.getInstance().anonymousTracking(false, emptySet())
 
-        //Webtrekk.getInstance().setEverId(null)
-
-
-        //Webtrekk.getInstance().setTemporarySessionId("user-xyz-123456789")
-//
-//        EngageSdk.init(application = this)
+        Webtrekk.getInstance().apply {
+            optOut(false,true)
+            // anonymousTracking(false, emptySet())
+            // setEverId(null)
+            // setTemporarySessionId("user-xyz-123456789")
+        }
+        // EngageSdk.init(application = this)
     }
 }

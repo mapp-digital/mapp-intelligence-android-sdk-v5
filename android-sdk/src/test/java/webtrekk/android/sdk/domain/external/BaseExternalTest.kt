@@ -28,7 +28,7 @@ open class BaseExternalTest {
     @RelaxedMockK
     lateinit var appContext: Context
 
-    protected val job = SupervisorJob();
+    protected val job = SupervisorJob()
 
     protected val dispatcher = Dispatchers.Unconfined
 
