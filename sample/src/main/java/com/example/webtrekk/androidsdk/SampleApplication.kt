@@ -75,7 +75,7 @@ class SampleApplication : Application() {
         Webtrekk.getInstance().init(context = this, config = webtrekkConfigurations)
 
         Webtrekk.getInstance().apply {
-            optOut(false,true)
+            optOut(true,true)
             // anonymousTracking(false, emptySet())
             // setEverId(null)
             // setTemporarySessionId("user-xyz-123456789")

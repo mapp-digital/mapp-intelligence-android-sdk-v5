@@ -5,6 +5,7 @@ import androidx.work.Constraints
 import androidx.work.WorkManager
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CompletableJob
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
@@ -120,7 +121,7 @@ object InteractorModule {
     internal val scheduler: Scheduler by lazy {
         SchedulerImpl(
             NetworkModule.workManager,
-            LibraryModule.configuration
+            LibraryModule.configuration,
         )
     }
 

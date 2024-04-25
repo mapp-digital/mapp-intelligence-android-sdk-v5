@@ -29,6 +29,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -49,14 +50,17 @@ internal class CleanUpWorker(
 ) :
     CoroutineWorker(context, workerParameters) {
 
-    override suspend fun doWork(): Result {
+    override suspend fun doWork(): Result = coroutineScope {
         // this check and initialization is needed for cross platform solutions
         if (!Webtrekk.getInstance().isInitialized()) {
-            val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
+            val configJson = WebtrekkSharedPrefs(applicationContext).configJson
             val config = WebtrekkConfiguration.fromJson(configJson)
             Webtrekk.getInstance().init(applicationContext, config)
         }
 
+        /**
+         * [coroutineDispatchers] the injected coroutine dispatchers.
+         */
         /**
          * [coroutineDispatchers] the injected coroutine dispatchers.
          */
@@ -65,13 +69,22 @@ internal class CleanUpWorker(
         /**
          * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
          */
+        /**
+         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+         */
         val getCachedDataTracks: GetCachedDataTracks = InteractorModule.getCachedDataTracks()
 
         /**
          * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
          */
+        /**
+         * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
+         */
         val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
 
+        /**
+         * [logger] the injected logger from Webtrekk.
+         */
         /**
          * [logger] the injected logger from Webtrekk.
          */
@@ -93,8 +106,7 @@ internal class CleanUpWorker(
                 }
                 .onFailure { logger.error("Error getting the cached completed requests: $it") }
         }
-
-        return Result.success()
+        Result.success()
     }
 
     companion object {
