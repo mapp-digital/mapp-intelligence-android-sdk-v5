@@ -46,7 +46,7 @@ buildscript {
             'constraintLayoutVersion': '2.1.4',
 
             'kotlinCoroutines'       : '1.8.0',
-            'coreKtxVersion'         : '1.12.0',
+            'coreKtxVersion'         : '1.13.0',
 
             'okHttpVersion'          : '4.12.0',
 

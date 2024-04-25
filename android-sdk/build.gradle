@@ -110,7 +110,7 @@ dependencies {
 
     implementation libs.room
     implementation libs.roomKtx
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     kapt libs.roomCompiler
 
     testImplementation libs.junit
