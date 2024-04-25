@@ -30,6 +30,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.BuildConfig
@@ -60,21 +61,27 @@ internal class SendRequestsWorker(
 ) :
     CoroutineWorker(context, workerParameters) {
 
-    override suspend fun doWork(): Result {
+    override suspend fun doWork(): Result = coroutineScope {
         Log.d(TAG, "doWork - starting... ${tags.joinToString(separator = ", ")}")
         // this check and initialization is needed for cross platform solutions
         if (!Webtrekk.getInstance().isInitialized()) {
-            val configJson = WebtrekkSharedPrefs(this.applicationContext).configJson
+            val configJson = WebtrekkSharedPrefs(applicationContext).configJson
             val config = WebtrekkConfiguration.fromJson(configJson)
-            Webtrekk.getInstance().init(this.applicationContext, config)
+            Webtrekk.getInstance().init(applicationContext, config)
             Log.d(TAG, "doWork - initialized!")
         }
 
         /**
          * [coroutineDispatchers] the injected coroutine dispatchers.
          */
+        /**
+         * [coroutineDispatchers] the injected coroutine dispatchers.
+         */
         val coroutineDispatchers: CoroutineDispatchers = AppModule.dispatchers
 
+        /**
+         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+         */
         /**
          * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
          */
@@ -84,13 +91,22 @@ internal class SendRequestsWorker(
         /**
          * [executeRequest] the injected internal interactor for executing the requests.
          */
+        /**
+         * [executeRequest] the injected internal interactor for executing the requests.
+         */
         val executeRequest: ExecuteRequest = InteractorModule.executeRequest()
 
         /**
          * [ExecutePostRequest] the injected internal interactor for executing the requests.
          */
+        /**
+         * [ExecutePostRequest] the injected internal interactor for executing the requests.
+         */
         val executePostRequest: ExecutePostRequest = InteractorModule.executePostRequest()
 
+        /**
+         * [logger] the injected logger from Webtrekk.
+         */
         /**
          * [logger] the injected logger from Webtrekk.
          */
@@ -152,9 +168,7 @@ internal class SendRequestsWorker(
                 }
                 .onFailure { logger.error("Error getting cached data tracks: $it") }
         }
-
-        delay(5000)
-        return Result.success()
+        Result.success()
     }
 
     companion object {
