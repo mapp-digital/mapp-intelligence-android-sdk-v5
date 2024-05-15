@@ -39,6 +39,7 @@ import kotlinx.coroutines.sync.Mutex
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
+import webtrekk.android.sdk.util.webtrekkLogger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -55,10 +56,8 @@ internal class SchedulerImpl(
         repeatInterval: Long,
         constraints: Constraints,
     ) {
+        webtrekkLogger.debug("SEND WORKER - scheduleSendRequests")
         synchronized(mutex) {
-            val workers = workManager.getWorkInfosByTag(SendRequestsWorker.TAG).get()
-            val isRunning = workers.any { it.state in listOf(WorkInfo.State.RUNNING) }
-
             val data = Data.Builder().apply {
                 putStringArray("trackIds", config.trackIds.toTypedArray())
                 putString("trackDomain", config.trackDomain)
@@ -69,7 +68,7 @@ internal class SchedulerImpl(
                 repeatInterval,
                 TimeUnit.MINUTES
             ).setConstraints(constraints)
-                .setInitialDelay(if (isRunning) 15 else 0, TimeUnit.MINUTES)
+                .setInitialDelay(0, TimeUnit.MILLISECONDS)
                 .setInputData(data)
                 .addTag(SendRequestsWorker.TAG)
 
@@ -77,20 +76,22 @@ internal class SchedulerImpl(
 
             workManager.enqueueUniquePeriodicWork(
                 SEND_REQUESTS_WORKER,
-                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                ExistingPeriodicWorkPolicy.UPDATE,
                 sendRequestsWorker
             )
         }
     }
 
     override fun sendRequestsThenCleanUp() {
+        webtrekkLogger.debug("SEND WORKER - sendRequestsThenCleanUp")
         synchronized(mutex) {
             // check if SendRequestsWorker already running as periodic work request
-            val future = workManager.getWorkInfosByTag(SendRequestsWorker.TAG)
-            val workers = future.get()
-            if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
-                scheduleSendAndCleanWorkers()
-            }
+//            val future = workManager.getWorkInfosByTag(SendRequestsWorker.TAG)
+//            val workers = future.get()
+//            if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
+//                scheduleSendAndCleanWorkers()
+//            }
+            scheduleSendAndCleanWorkers()
         }
     }
 

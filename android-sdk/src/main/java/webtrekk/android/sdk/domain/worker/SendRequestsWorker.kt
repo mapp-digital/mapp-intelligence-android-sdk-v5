@@ -28,10 +28,14 @@ package webtrekk.android.sdk.domain.worker
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.Webtrekk
@@ -47,8 +51,6 @@ import webtrekk.android.sdk.extension.buildUrlRequest
 import webtrekk.android.sdk.extension.stringifyRequestBody
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
-import webtrekk.android.sdk.module.LibraryModule
-import webtrekk.android.sdk.util.CoroutineDispatchers
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.requestPerBatch
 
@@ -60,118 +62,104 @@ internal class SendRequestsWorker(
     workerParameters: WorkerParameters
 ) :
     CoroutineWorker(context, workerParameters) {
-
     override suspend fun doWork(): Result = coroutineScope {
-        Log.d(TAG, "doWork - starting... ${tags.joinToString(separator = ", ")}")
-        // this check and initialization is needed for cross platform solutions
-        if (!Webtrekk.getInstance().isInitialized()) {
-            val configJson = WebtrekkSharedPrefs(applicationContext).configJson
-            val config = WebtrekkConfiguration.fromJson(configJson)
-            Webtrekk.getInstance().init(applicationContext, config)
-            Log.d(TAG, "doWork - initialized!")
-        }
+        withContext(AppModule.dispatchers.ioDispatcher) {
+            mutex.withLock {
+                Log.d(TAG, "doWork - starting... ${tags.joinToString(separator = ", ")}")
+                // this check and initialization is needed for cross platform solutions
+                if (!Webtrekk.getInstance().isInitialized()) {
+                    val configJson = WebtrekkSharedPrefs(applicationContext).configJson
+                    val config = WebtrekkConfiguration.fromJson(configJson)
+                    Webtrekk.getInstance().init(applicationContext, config)
+                    Log.d(TAG, "doWork - initialized!")
+                }
 
-        /**
-         * [coroutineDispatchers] the injected coroutine dispatchers.
-         */
-        /**
-         * [coroutineDispatchers] the injected coroutine dispatchers.
-         */
-        val coroutineDispatchers: CoroutineDispatchers = AppModule.dispatchers
+                /**
+                 * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+                 */
+                val getCachedDataTracks: GetCachedDataTracks =
+                    InteractorModule.getCachedDataTracks()
 
-        /**
-         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
-         */
-        /**
-         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
-         */
-        val getCachedDataTracks: GetCachedDataTracks =
-            InteractorModule.getCachedDataTracks()
+                /**
+                 * [executeRequest] the injected internal interactor for executing the requests.
+                 */
+                val executeRequest: ExecuteRequest = InteractorModule.executeRequest()
 
-        /**
-         * [executeRequest] the injected internal interactor for executing the requests.
-         */
-        /**
-         * [executeRequest] the injected internal interactor for executing the requests.
-         */
-        val executeRequest: ExecuteRequest = InteractorModule.executeRequest()
+                /**
+                 * [ExecutePostRequest] the injected internal interactor for executing the requests.
+                 */
+                val executePostRequest: ExecutePostRequest =
+                    InteractorModule.executePostRequest()
 
-        /**
-         * [ExecutePostRequest] the injected internal interactor for executing the requests.
-         */
-        /**
-         * [ExecutePostRequest] the injected internal interactor for executing the requests.
-         */
-        val executePostRequest: ExecutePostRequest = InteractorModule.executePostRequest()
+                /**
+                 * [logger] the injected logger from Webtrekk.
+                 */
+                val logger by lazy { AppModule.logger }
 
-        /**
-         * [logger] the injected logger from Webtrekk.
-         */
-        /**
-         * [logger] the injected logger from Webtrekk.
-         */
-        val logger by lazy { AppModule.logger }
+                val activeConfig = Webtrekk.getInstance().getCurrentConfiguration()
 
-        val activeConfig = Webtrekk.getInstance().getCurrentConfiguration()
-
-        // retrieves the data in the data base with state of NEW or FAILED only.
-        withContext(coroutineDispatchers.ioDispatcher) {
-            getCachedDataTracks(
-                GetCachedDataTracks.Params(
-                    requestStates = listOf(
-                        TrackRequest.RequestState.NEW,
-                        TrackRequest.RequestState.FAILED
+                // retrieves the data in the data base with state of NEW or FAILED only.
+                logger.debug("SEND WORKER - START ${this@SendRequestsWorker}")
+                getCachedDataTracks(
+                    GetCachedDataTracks.Params(
+                        requestStates = listOf(
+                            TrackRequest.RequestState.NEW,
+                            TrackRequest.RequestState.FAILED
+                        )
                     )
                 )
-            )
-                .onSuccess { dataTracks ->
-                    if (dataTracks.isNotEmpty()) {
-                        logger.info("Executing the requests")
-                        // Must execute requests sync and in order
-                        if (batchSupported) {
-                            // group requests by everId
-                            dataTracks.asSequence()
-                                .batch(requestPerBatch)
-                                .forEach { dataTrack ->
-                                    val urlRequest = dataTrack.buildPostRequest(activeConfig)
-                                    logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
+                    .onSuccess { dataTracks ->
+                        if (dataTracks.isNotEmpty()) {
+                            logger.info("Executing the requests")
+                            // Must execute requests sync and in order
+                            if (batchSupported) {
+                                // group requests by everId
+                                dataTracks.asSequence()
+                                    .batch(requestPerBatch)
+                                    .forEach { dataTrack ->
+                                        val urlRequest =
+                                            dataTrack.buildPostRequest(activeConfig)
+                                        logger.info("Sending request = $urlRequest, Request Body= " + urlRequest.stringifyRequestBody())
 
-                                    executePostRequest(
-                                        ExecutePostRequest.Params(
+                                        executePostRequest(
+                                            ExecutePostRequest.Params(
+                                                request = urlRequest,
+                                                dataTracks = dataTracks
+                                            )
+                                        )
+                                            .onSuccess { logger.debug("Sent the request successfully $it") }
+                                            .onFailure { logger.error("Failed to send the request $it") }
+                                    }
+                            } else {
+                                dataTracks.forEach { dataTrack ->
+                                    val urlRequest = dataTrack.buildUrlRequest(activeConfig)
+                                    logger.info("Sending request = $urlRequest")
+
+                                    executeRequest(
+                                        ExecuteRequest.Params(
                                             request = urlRequest,
-                                            dataTracks = dataTracks
+                                            dataTrack = dataTrack
                                         )
                                     )
                                         .onSuccess { logger.debug("Sent the request successfully $it") }
                                         .onFailure { logger.error("Failed to send the request $it") }
                                 }
-                        } else {
-                            dataTracks.forEach { dataTrack ->
-                                val urlRequest = dataTrack.buildUrlRequest(activeConfig)
-                                logger.info("Sending request = $urlRequest")
-
-                                executeRequest(
-                                    ExecuteRequest.Params(
-                                        request = urlRequest,
-                                        dataTrack = dataTrack
-                                    )
-                                )
-                                    .onSuccess { logger.debug("Sent the request successfully $it") }
-                                    .onFailure { logger.error("Failed to send the request $it") }
                             }
                         }
-                    }
 
-                    if (BuildConfig.DEBUG) {
-                        logger.debug(activeConfig.printUsageStatisticCalculation())
+                        if (BuildConfig.DEBUG) {
+                            logger.debug(activeConfig.printUsageStatisticCalculation())
+                        }
                     }
-                }
-                .onFailure { logger.error("Error getting cached data tracks: $it") }
+                    .onFailure { logger.error("Error getting cached data tracks: $it") }
+                logger.debug("SEND WORKER - END ${this@SendRequestsWorker}")
+            }
+            return@withContext Result.success()
         }
-        Result.success()
     }
 
     companion object {
+        private val mutex = Mutex()
         const val TAG = "send_track_requests"
         const val TAG_ONE_TIME_WORKER = "send_track_requests_now"
     }
