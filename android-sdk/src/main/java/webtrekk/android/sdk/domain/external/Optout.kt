@@ -67,6 +67,8 @@ internal class Optout(
 
         // If opt out value is set to true, then disable tracking data, cancel all work manager workers and delete or send then delete current data in the data base.
         if (invokeParams.optOutValue) {
+            appState.disable(invokeParams.context) // Disable the auto track
+            scheduler.cancelScheduleSendRequests() // Cancel the work manager workers
             // If sendCurrentData is true, then one time worker will send current data requests to the server, then clean up the data base.
             if (invokeParams.sendCurrentData) {
                 scheduler.sendRequestsThenCleanUp()
@@ -82,8 +84,6 @@ internal class Optout(
                         .onFailure { logger.error("Failed to clear the track requests while opting out") }
                 }
             }
-            appState.disable(invokeParams.context) // Disable the auto track
-            scheduler.cancelScheduleSendRequests() // Cancel the work manager workers
         }
     }
 

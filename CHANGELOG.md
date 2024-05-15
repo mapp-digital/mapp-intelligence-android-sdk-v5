@@ -1,4 +1,8 @@
 # Change Log
+## Version 5.1.9 *(2024-05-15)*
+* Fixed bug - duplicate request are sent when application starts with optOut set to true, and there are some requests previously stored in the database.
+
+# Change Log
 ## Version 5.1.8 *(2024-03-27)*
 * Fixed unexpected tracking behaviour for media tracking
 * Updated targetSdk to 34
