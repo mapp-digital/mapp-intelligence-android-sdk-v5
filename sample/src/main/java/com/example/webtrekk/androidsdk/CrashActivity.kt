@@ -59,7 +59,8 @@ class CrashActivity : AppCompatActivity() {
         }
 
         binding.trackUncaught.setOnClickListener {
-            Integer.parseInt("@!#")
+            //Integer.parseInt("@!#")
+            throw RuntimeException("Test runtime native exception uncaught!!!")
         }
 
         binding.trackCaught.setOnClickListener {

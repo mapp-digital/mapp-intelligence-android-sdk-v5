@@ -23,13 +23,14 @@
   ~
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <receiver
-            android:name=".integration.EngageIntegrationReceiver"
+            android:name="webtrekk.android.sdk.integration.EngageIntegrationReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="webtrekk.android.sdk.integration.MappIntelligenceListener" />
             </intent-filter>

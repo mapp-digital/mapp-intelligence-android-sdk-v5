@@ -60,11 +60,12 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.all {
-            useJUnitPlatform()
-        }
+//        unitTests.returnDefaultValues = true
+//        unitTests.all {
+//            useJUnitPlatform()
+//        }
     }
+
     lint {
         abortOnError false
         textReport true

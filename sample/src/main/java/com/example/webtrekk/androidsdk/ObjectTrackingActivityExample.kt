@@ -89,6 +89,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         userCategories.country = "France"
         userCategories.customerId = "CustomerID"
         userCategories.gender = UserCategories.Gender.FEMALE
+        userCategories.customCategories= mapOf(20 to "( \$', /:?@=&+ !.;()-_")
         //userCategories.emailReceiverId="111111111"
 
         //sessionproperties
@@ -100,6 +101,7 @@ class ObjectTrackingActivityExample : AppCompatActivity() {
         event.sessionParameters = sessionParameters
 
         Webtrekk.getInstance().trackAction(event)
+        Webtrekk.getInstance().sendRequestsNowAndClean()
     }
 
     private fun trackCustomECommerceParameter() {
