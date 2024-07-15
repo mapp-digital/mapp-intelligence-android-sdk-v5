@@ -111,14 +111,14 @@ buildscript {
         classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.mavenPluginVersion}"
         classpath "com.google.gms:google-services:${versions.googleServices}"
         classpath "com.google.firebase:firebase-appdistribution-gradle:${versions.firebaseAppDistribution}"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0'
     }
 }
 
 allprojects {
     repositories {
-        //mavenLocal()
+        mavenLocal()
         mavenCentral()
         google()
         gradlePluginPortal()

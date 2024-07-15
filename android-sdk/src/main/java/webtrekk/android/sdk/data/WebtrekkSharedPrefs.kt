@@ -35,17 +35,19 @@ import webtrekk.android.sdk.data.model.GenerationMode
  */
 internal class WebtrekkSharedPrefs(val context: Context) {
 
-    var dmcUserId: String?
-        inline get() = sharedPreferences.getString(DMC_USER_ID, null)
-        set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
-
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
     val previousSharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREVIOUS_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
-    var everId:String?
+    var dmcUserId: String?
+        inline get() {
+            return sharedPreferences.getString(DMC_USER_ID, null)
+        }
+        set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
+
+    var everId: String?
         inline get() {
             return sharedPreferences.getString(EVER_ID_KEY, null)
         }

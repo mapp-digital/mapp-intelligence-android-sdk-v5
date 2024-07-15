@@ -34,6 +34,7 @@ import androidx.annotation.RestrictTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import okhttp3.internal.userAgent
 import webtrekk.android.sdk.ActiveConfig
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.ExceptionType
@@ -633,35 +634,34 @@ constructor() : Webtrekk(),
     }
 
     override fun getDmcUserId(): String? {
-        return AppModule.webtrekkSharedPrefs.dmcUserId
+        return if (config.userMatchingEnabled) sessions.getDmcUserId() else null
     }
 
     override fun getCurrentConfiguration(): ActiveConfig {
         return ActiveConfig(
-            trackDomains = config.trackDomain,
-            trackIds = config.trackIds,
-            everId = sessions.getEverId(),
+            trackDomains = getTrackDomain(),
+            trackIds = getTrackIds(),
+            everId = getEverId(),
             everIdMode = sessions.getEverIdMode(),
-            userAgent = sessions.getUserAgent(),
-            userMatchingId = sessions.getDmcUserId(),
+            userAgent = getUserAgent(),
+            userMatchingId = getDmcUserId(),
             anonymousParams = sessions.isAnonymousParam(),
-            isAnonymous = sessions.isAnonymous(),
+            isAnonymous = isAnonymousTracking(),
             logLevel = config.logLevel,
-            exceptionLogLevel = config.exceptionLogLevel,
+            exceptionLogLevel = getExceptionLogLevel(),
             requestInterval = config.requestsInterval,
-            requestsPerBatch = config.requestPerBatch,
+            requestsPerBatch = getRequestsPerBatch(),
             isActivityAutoTracking = config.activityAutoTracking,
             isFragmentAutoTracking = config.fragmentsAutoTracking,
             isAutoTracking = config.autoTracking,
-            isBatchSupport = config.batchSupport,
-            isOptOut = sessions.isOptOut(),
-            isUserMatching = config.userMatchingEnabled,
+            isBatchSupport = isBatchEnabled(),
+            isOptOut = hasOptOut(),
+            isUserMatching = isUserMatchingEnabled(),
             shouldMigrate = config.shouldMigrate,
-            sendVersionInEachRequest = config.versionInEachRequest,
+            sendVersionInEachRequest = getVersionInEachRequest(),
             appFirstOpen = sessions.getAppFirstOpen(false) == "1",
             temporarySessionId = sessions.getTemporarySessionId(),
-
-            )
+        )
     }
 
     override fun setTemporarySessionId(sessionId: String) {

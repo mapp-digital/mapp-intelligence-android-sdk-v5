@@ -45,7 +45,6 @@ import webtrekk.android.sdk.util.currentDeviceModel
 import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentWebtrekkVersion
-import webtrekk.android.sdk.util.userId
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -233,8 +232,8 @@ internal fun DataTrack.buildBody(
     }
 
     // set global EmailReceiverId only if custom EmailReceiverId not set
-    if (emailReceiverID == null && !activeConfig.isAnonymous && activeConfig.isUserMatching && !userId.isNullOrEmpty()) {
-        stringBuffer += "&${UrlParams.USER_ID}=$userId"
+    if (emailReceiverID == null && !activeConfig.isAnonymous && activeConfig.isUserMatching && !activeConfig.userMatchingId.isNullOrEmpty()) {
+        stringBuffer += "&${UrlParams.USER_ID}=${activeConfig.userMatchingId}"
     }
 
     val customParamsString = customParams.buildCustomParams(
