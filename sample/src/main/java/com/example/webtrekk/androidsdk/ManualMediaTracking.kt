@@ -52,7 +52,7 @@ class ManualMediaTracking : AppCompatActivity() {
         binding.swIncrementTime.text = String.format(
             Locale.US,
             getString(R.string.increment_current_time_by_s_seconds_on_each_action),
-            secondsCountToIncrease
+            secondsCountToIncrease.toString()
         )
 
         binding.swIncrementTime.isChecked = false

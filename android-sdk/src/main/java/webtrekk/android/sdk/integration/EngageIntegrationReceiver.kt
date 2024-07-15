@@ -13,10 +13,6 @@ import webtrekk.android.sdk.module.LibraryModule
 class EngageIntegrationReceiver : BroadcastReceiver() {
     private val ACTION = "webtrekk.android.sdk.integration.MappIntelligenceListener"
 
-    private val sessions: Sessions by lazy { InteractorModule.sessions }
-
-    private val config:Config by lazy { LibraryModule.configuration }
-
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
             context?.let { ctx ->
@@ -25,7 +21,7 @@ class EngageIntegrationReceiver : BroadcastReceiver() {
                     if (ACTION == action) {
                         it.extras?.getString("dmcUserId")?.let { dmcUserId ->
                             if (dmcUserId.isNotEmpty()) {
-                                sessions.setDmcUserId(dmcUserId)
+                                InteractorModule.sessions.setDmcUserId(dmcUserId)
                             }
                         }
                     }
