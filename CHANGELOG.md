@@ -1,4 +1,9 @@
 # Change Log
+## Version 5.1.10 *(2024-07-16)*
+* Updated logic for user matching to support cross-platform solutions (react-native, flutter).
+* 'p' parameter is hardcoded to value 5.0.0
+
+# Change Log
 ## Version 5.1.9 *(2024-05-15)*
 * Fixed bug - duplicate request are sent when application starts with optOut set to true, and there are some requests previously stored in the database.
 
