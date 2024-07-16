@@ -36,7 +36,7 @@ import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentOsVersion
 import webtrekk.android.sdk.util.currentTimeStamp
 import webtrekk.android.sdk.util.currentTimeZone
-import webtrekk.android.sdk.util.currentWebtrekkVersion
+import webtrekk.android.sdk.util.webtrekkVersionName
 
 /**
  * A table represents the tracking data per each request in the database.
@@ -56,7 +56,7 @@ internal data class TrackRequest(
     @ColumnInfo(name = "time_stamp") val timeStamp: String? = currentTimeStamp.toString(),
     @ColumnInfo(name = "force_new_session") val forceNewSession: String,
     @ColumnInfo(name = "app_first_open") val appFirstOpen: String,
-    @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = currentWebtrekkVersion,
+    @ColumnInfo(name = "webtrekk_version") val webtrekkVersion: String = webtrekkVersionName,
     @ColumnInfo(name = "app_version_name") val appVersionName: String? = "0",
     @ColumnInfo(name = "app_version_code") val appVersionCode: String? = "0",
     @ColumnInfo(name = "request_state") var requestState: RequestState = RequestState.NEW,
