@@ -30,7 +30,7 @@ apply plugin: 'io.codearte.nexus-staging'
 
 buildscript {
     ext.versions = [
-            'webtrekkVersion'        : '5.1.9',
+            'webtrekkVersion'        : '5.0.0',
             'gradleVersion'          : '3.6.4',
             'kotlinVersion'          : '1.9.23',//'1.4.32',
             'gradleVersionsPlugin'   : '0.21.0',
@@ -42,27 +42,27 @@ buildscript {
             'targetSdkVersion'       : 34,
             'buildTools'             : '34.0.0',
 
-            'appCompatVersion'       : '1.6.1',
+            'appCompatVersion'       : '1.7.0',
             'constraintLayoutVersion': '2.1.4',
 
-            'kotlinCoroutines'       : '1.8.0',
-            'coreKtxVersion'         : '1.13.0',
+            'kotlinCoroutines'       : '1.8.1',
+            'coreKtxVersion'         : '1.13.1',
 
             'okHttpVersion'          : '4.12.0',
 
             'workManagerVersion'     : '2.9.0',
             'roomVersion'            : '2.6.1',
 
-            'testCoreVersion'        : '1.5.0',
-            'testCoreVersionJunit'   : '1.1.5',
+            'testCoreVersion'        : '1.6.1',
+            'testCoreVersionJunit'   : '1.2.1',
             'junitVersion'           : '4.13.2',
-            'runnerVersion'          : '1.5.2',
+            'runnerVersion'          : '1.6.1',
             'espressoCoreVersion'    : '3.5.1',
             //Version 2.1.0 depends on androidx.arch.core:core-runtime:2.1.0 which must be explicitly added in android-sdk gradle
             'coreTestingVersion'     : '2.2.0',
             //Downgraded version from 1.9.3 to 1.9.2 while this issue is not resolved
             //https://github.com/mockk/mockk/issues/281
-            'mockkVersion'           : '1.13.10',
+            'mockkVersion'           : '1.13.12',
             'kotlinTestVersion'      : '3.4.2',
 
             'ktlintVersion'          : '0.31.0',
