@@ -68,5 +68,8 @@ val currentTimeZone: Int
 val currentTimeStamp: Long
     inline get() = System.currentTimeMillis()
 
-val currentWebtrekkVersion: String
+val realWebtrekkVersion: String
+    inline get() = BuildConfig.LIBRARY_VERSION
+
+val webtrekkVersionName: String
     inline get() = BuildConfig.VERSION_NAME

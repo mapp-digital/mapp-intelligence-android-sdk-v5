@@ -44,7 +44,7 @@ import webtrekk.android.sdk.util.currentDeviceManufacturer
 import webtrekk.android.sdk.util.currentDeviceModel
 import webtrekk.android.sdk.util.currentLanguage
 import webtrekk.android.sdk.util.currentOsVersion
-import webtrekk.android.sdk.util.currentWebtrekkVersion
+import webtrekk.android.sdk.util.realWebtrekkVersion
 
 /**
  * This file contains extension & helper functions used to form the request url from [TrackRequest] and [DataTrack].
@@ -60,10 +60,10 @@ internal val TrackRequest.webtrekkRequestParams
     },${name.encodeToUTF8()},0,$screenResolution,0,0,$timeStamp,0,0,0"
 
 internal val TrackRequest.userAgent
-    inline get() = "Tracking Library $webtrekkVersion (Android $osVersion; $deviceManufacturer $deviceModel; ${language}_$country)"
+    inline get() = "Tracking Library $realWebtrekkVersion (Android $osVersion; $deviceManufacturer $deviceModel; ${language}_$country)"
 
 internal val generateUserAgent
-    inline get() = "Tracking Library $currentWebtrekkVersion (Android $currentOsVersion; $currentDeviceManufacturer $currentDeviceModel; ${currentLanguage}_$currentCountry)"
+    inline get() = "Tracking Library $realWebtrekkVersion (Android $currentOsVersion; $currentDeviceManufacturer $currentDeviceModel; ${currentLanguage}_$currentCountry)"
 
 internal fun Map<String, String>.toCustomParams(trackRequestId: Long): List<CustomParam> {
     return this.map {
