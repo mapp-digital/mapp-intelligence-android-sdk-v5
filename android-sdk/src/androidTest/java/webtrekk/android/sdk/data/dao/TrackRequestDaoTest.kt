@@ -28,7 +28,6 @@ package webtrekk.android.sdk.data.dao
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -50,11 +49,11 @@ internal class TrackRequestDaoTest : DbTest() {
     }
 
     @Test
-    fun update_everId_for_all_requests_test()= runBlocking{
-        val request=ArrayList(trackRequests)
+    fun update_everId_for_all_requests_test() = runBlocking {
+        val request = ArrayList(trackRequests)
         trackRequestDao.setTrackRequests(request)
         trackRequestDao.updateEverId("2222")
-        val dbRequests=trackRequestDao.getTrackRequests().map { it.trackRequest }
+        val dbRequests = trackRequestDao.getTrackRequests().map { it.trackRequest }
         dbRequests.forEach {
             MatcherAssert.assertThat(it.everId, equalTo("2222"))
         }
@@ -147,12 +146,12 @@ internal class TrackRequestDaoTest : DbTest() {
 
     @Test
     @Throws(Exception::class)
-    fun clear_all_requests_test()= runBlocking {
-        val dbRequests= trackRequestDao.getTrackRequests().map { it.trackRequest }
+    fun clear_all_requests_test() = runBlocking {
+        val dbRequests = trackRequestDao.getTrackRequests().map { it.trackRequest }
         MatcherAssert.assertThat(dbRequests.size, equalTo(4))
 
         trackRequestDao.clearAllTrackRequests()
-        val dbRequestsEmpty=trackRequestDao.getTrackRequests().map { it.trackRequest }
+        val dbRequestsEmpty = trackRequestDao.getTrackRequests().map { it.trackRequest }
         MatcherAssert.assertThat(dbRequestsEmpty.size, equalTo(0))
     }
 }

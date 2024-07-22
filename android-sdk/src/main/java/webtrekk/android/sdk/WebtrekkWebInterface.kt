@@ -27,7 +27,6 @@ package webtrekk.android.sdk
 
 import android.webkit.JavascriptInterface
 import webtrekk.android.sdk.extension.jsonToMap
-import webtrekk.android.sdk.util.generateEverId
 import webtrekk.android.sdk.util.webtrekkLogger
 
 /**

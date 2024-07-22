@@ -3,12 +3,7 @@ package webtrekk.android.sdk.integration
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import webtrekk.android.sdk.Config
-import webtrekk.android.sdk.core.Sessions
-import webtrekk.android.sdk.data.WebtrekkSharedPrefs
-import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
-import webtrekk.android.sdk.module.LibraryModule
 
 class EngageIntegrationReceiver : BroadcastReceiver() {
     private val ACTION = "webtrekk.android.sdk.integration.MappIntelligenceListener"

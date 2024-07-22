@@ -15,7 +15,7 @@ data class ECommerceParameters
 constructor(
     var customParameters: Map<Int, String> = emptyMap()
 ) : BaseEvent {
-    enum class Status(val value:String) {
+    enum class Status(val value: String) {
         NONE_STATUS(""),
         ADDED_TO_BASKET("add"),
         PURCHASED("conf"),

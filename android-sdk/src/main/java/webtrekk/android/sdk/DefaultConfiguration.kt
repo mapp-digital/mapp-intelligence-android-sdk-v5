@@ -29,7 +29,6 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
-import webtrekk.android.sdk.module.LibraryModule
 
 /**
  * A singleton object that holds all the default configurations in the library.
@@ -113,7 +112,7 @@ object DefaultConfiguration {
     /**
      * The default value for user matching between Engage and Intelligence SDKs
      */
-    const val USER_MATCHING_ENABLED=false
+    const val USER_MATCHING_ENABLED = false
 
     /**
      * The default work manager constraints that are used by the library when sending the requests to the server.

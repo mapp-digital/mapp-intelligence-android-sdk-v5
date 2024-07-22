@@ -77,7 +77,7 @@ internal class SessionsImplTest {
 
     @Test
     fun test_02_getEverId() = runBlocking {
-        //session.setAnonymous(false)
+        // session.setAnonymous(false)
         session.setEverId(userDefinedEverId, true, GenerationMode.USER_GENERATED)
         val currentEverId = session.getEverId()
         MatcherAssert.assertThat("EverID must be set", currentEverId, notNullValue())

@@ -31,7 +31,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import webtrekk.android.sdk.Config
 
 /**
  * An abstract class, used for listening to the events coming from [LifecycleWrapper] and propagate their events data.

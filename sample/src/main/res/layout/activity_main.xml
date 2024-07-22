@@ -90,14 +90,13 @@
             android:id="@+id/startDetailsActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:visibility="gone"
             android:text="@string/details_activity" />
 
         <Button
             android:id="@+id/startUserMatchingActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="@string/user_matching_activity" />
 
         <Button

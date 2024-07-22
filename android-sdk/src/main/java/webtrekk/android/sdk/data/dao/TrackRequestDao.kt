@@ -57,7 +57,7 @@ internal interface TrackRequestDao {
 
     @Transaction
     @Query("UPDATE tracking_data SET ever_id=:everId")
-    suspend fun updateEverId(everId:String?)
+    suspend fun updateEverId(everId: String?)
 
     @Update
     suspend fun updateTrackRequests(vararg trackRequests: TrackRequest)

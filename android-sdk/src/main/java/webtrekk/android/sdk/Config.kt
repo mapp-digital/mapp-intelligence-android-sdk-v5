@@ -181,7 +181,7 @@ interface Config {
      * Indicator to show generation mode for everId
      * [GenerationMode.USER_GENERATED] or [GenerationMode.AUTO_GENERATED]
       */
-    var everIdMode:GenerationMode?
+    var everIdMode: GenerationMode?
     /**
      * Parameter to enable or disable user matching between MAPP's Engage and Intelligence SDK
      */

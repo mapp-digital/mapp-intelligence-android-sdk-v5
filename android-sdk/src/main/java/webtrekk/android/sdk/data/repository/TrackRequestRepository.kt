@@ -79,5 +79,5 @@ internal interface TrackRequestRepository {
     /**
      * Update everId for all requests
      */
-    suspend fun updateEverId(everId:String?)
+    suspend fun updateEverId(everId: String?)
 }

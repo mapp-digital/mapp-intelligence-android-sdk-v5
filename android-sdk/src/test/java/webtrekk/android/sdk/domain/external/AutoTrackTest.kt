@@ -29,8 +29,6 @@ import android.content.Context
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.mockk
-import io.mockk.spyk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,7 +37,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -80,7 +77,7 @@ internal class AutoTrackTest {
     }
 
     @Test
-    fun `if opt out is active then return and don't track`() =  runTest {
+    fun `if opt out is active then return and don't track`() = runTest {
         val params = AutoTrack.Params(context = appContext, isOptOut = true)
 
         autoTrack(params, coroutinesDispatchersProvider())
@@ -91,7 +88,7 @@ internal class AutoTrackTest {
     }
 
     @AfterAll
-    fun tearDown(){
+    fun tearDown() {
         Dispatchers.resetMain()
         coroutineScope.cancel()
     }

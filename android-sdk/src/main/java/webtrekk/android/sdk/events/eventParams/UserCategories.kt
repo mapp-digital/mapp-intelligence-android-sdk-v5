@@ -3,7 +3,6 @@ package webtrekk.android.sdk.events.eventParams
 import webtrekk.android.sdk.BaseParam
 import webtrekk.android.sdk.UserCategoriesParam
 import webtrekk.android.sdk.extension.addNotNull
-import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.LibraryModule
 
 /**
