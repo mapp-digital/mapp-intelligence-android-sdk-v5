@@ -56,7 +56,7 @@ internal class SendRequestsWorkerTest : WorkManagerTest() {
 
         val workInfo = workManager.getWorkInfoById(sendRequestWorker.id).get()
 
-        val data=workInfo.outputData
+        val data = workInfo.outputData
 
         assertThat(
             workInfo.state,

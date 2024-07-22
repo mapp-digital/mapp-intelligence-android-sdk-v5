@@ -47,7 +47,7 @@ internal interface Sessions {
      */
     fun getEverId(): String?
 
-    fun getEverIdMode():GenerationMode?
+    fun getEverIdMode(): GenerationMode?
 
     /**
      * Returns user agent created for the mobile device.
@@ -57,7 +57,7 @@ internal interface Sessions {
     /**
      * Returns "1" if the app is first used by the SDK, after that always returns "0".
      */
-    fun getAppFirstOpen(updateValue:Boolean = false): String
+    fun getAppFirstOpen(updateValue: Boolean = false): String
 
     /**
      * Starting a new session when the app is freshly opened, setting its value to "1".
@@ -121,7 +121,7 @@ internal interface Sessions {
 
     fun setAnonymousParam(enabled: Set<String>)
 
-    fun setTemporarySessionId(userId:String?)
+    fun setTemporarySessionId(userId: String?)
 
-    fun getTemporarySessionId():String?
+    fun getTemporarySessionId(): String?
 }

@@ -168,23 +168,23 @@ internal class WebtrekkConfigurationTest {
     }
 
     @Test
-    fun test_user_configured_everId() = runBlocking{
+    fun test_user_configured_everId() = runBlocking {
         Webtrekk.getInstance().clearSdkConfig()
         val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds, trackDomain)
             .setEverId("2222")
             .build()
         Webtrekk.getInstance().init(context = appContext, config = webtrekkConfiguration)
-        //Webtrekk.getInstance().setEverId("2222")
+        // Webtrekk.getInstance().setEverId("2222")
         delay(100)
         val everId = Webtrekk.getInstance().getCurrentConfiguration().everId
-        val mode=Webtrekk.getInstance().getCurrentConfiguration().everIdMode
+        val mode = Webtrekk.getInstance().getCurrentConfiguration().everIdMode
 
         assertThat(everId, equalTo("2222"))
         assertThat(mode, equalTo(GenerationMode.USER_GENERATED))
     }
 
     @Test
-    fun test_set_temporary_session_id() = runBlocking{
+    fun test_set_temporary_session_id() = runBlocking {
         Webtrekk.reset(appContext)
         val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds, trackDomain)
             .build()
@@ -192,7 +192,7 @@ internal class WebtrekkConfigurationTest {
         Webtrekk.getInstance().anonymousTracking(true, emptySet())
         Webtrekk.getInstance().setTemporarySessionId("user_xyz_123")
 
-        val tempSessionId= Webtrekk.getInstance().getCurrentConfiguration().temporarySessionId
+        val tempSessionId = Webtrekk.getInstance().getCurrentConfiguration().temporarySessionId
         assertThat(tempSessionId, equalTo("user_xyz_123"))
     }
 

@@ -197,7 +197,7 @@ object SessionParam
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 object CampaignParam {
-    const val CAMPAIGN_PARAM_WT_CC="wt_cc"
+    const val CAMPAIGN_PARAM_WT_CC = "wt_cc"
     const val CAMPAIGN_PARAM = "cc"
     const val CAMPAIGN_ACTION_PARAM = "mca"
     const val MEDIA_CODE = "mc"
@@ -264,7 +264,7 @@ enum class ParamType(val value: String) {
  *      )
  * )
  */
-class TrackingParams:LinkedHashMap<String,String>()
+class TrackingParams : LinkedHashMap<String, String>()
 
 /**
  * A helper function, that is used to create a custom param name/key depends on the real custom param name in the analytics.

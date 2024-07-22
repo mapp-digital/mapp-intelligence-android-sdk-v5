@@ -108,7 +108,6 @@ class ActiveConfigTest {
         MatcherAssert.assertThat(result, equalTo(0))
     }
 
-
     @Test
     fun calculcate_when_send_app_version_in_every_request_set_test() = runBlocking {
         config.apply {
@@ -119,16 +118,14 @@ class ActiveConfigTest {
         MatcherAssert.assertThat(result, equalTo(4))
     }
 
-
     @Test
     fun calculcate_when_crash_tracking_set_test() = runBlocking {
         config.apply {
-            every { exceptionLogLevel } returns  ExceptionType.ALL
+            every { exceptionLogLevel } returns ExceptionType.ALL
         }
         val result = config.calculateUsageParam()
         MatcherAssert.assertThat(result, equalTo(2))
     }
-
 
     @Test
     fun calculcate_when_batch_support_set_test() = runBlocking {
