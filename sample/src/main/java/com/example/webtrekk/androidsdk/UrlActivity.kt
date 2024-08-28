@@ -53,5 +53,14 @@ class UrlActivity : AppCompatActivity() {
             val trackingParams = mapOf(key to value)
             Webtrekk.getInstance().trackPage(this, customPageName, trackingParams)
         }
+
+        binding.btnCustomTracking.setOnClickListener {
+            val trackingParams = mapOf(
+                "520" to "Position_6",
+                "521" to "16554_winter-sale-start"
+            )
+            Webtrekk.getInstance().trackCustomPage("Test", trackingParams)
+            Webtrekk.getInstance().sendRequestsNowAndClean()
+        }
     }
 }
