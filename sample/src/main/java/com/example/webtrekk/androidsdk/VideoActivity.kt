@@ -39,7 +39,7 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
     private var startPosition: Long = 0
     private var muted = false
     private var isPlayingNow = true
-    private val url = "https://live-par-2-cdn-alt.livepush.io/live/bigbuckbunnyclip/index.m3u8"
+    private val url = "https://docs.evostream.com/sample_content/assets/bun33s.mp4"
     private val videoName = "Sample video - big buck bunny clip"
     private val trackingInitialized=AtomicBoolean(false)
 

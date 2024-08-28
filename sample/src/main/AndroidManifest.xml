@@ -25,12 +25,6 @@
             android:name=".MediaExample"
             android:exported="false" />
         <activity
-            android:name=".StandardVideoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MediaActivityExample"
-            android:exported="false" />
-        <activity
             android:name=".VideoActivity"
             android:exported="false" />
         <activity
