@@ -1,14 +1,10 @@
 package webtrekk.android.sdk.domain.external
 
 import android.content.Context
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileReader
-import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import webtrekk.android.sdk.CustomParam
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -30,6 +26,11 @@ import webtrekk.android.sdk.util.NO_END_ITEM_SEPARATOR
 import webtrekk.android.sdk.util.NO_START_ITEM_SEPARATOR
 import webtrekk.android.sdk.util.START_EX_STRING
 import webtrekk.android.sdk.util.coroutineExceptionHandler
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileReader
+import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -90,6 +91,8 @@ internal class TrackUncaughtException(
 
                 val params = emptyMap<String, String>().toMutableMap()
                 params[UrlParams.CRASH_TYPE] = ExceptionType.UNCAUGHT.type
+
+                params[UrlParams.EVENT_NAME] = CustomParam.WEBTREKK_IGNORE
 
                 value = br.readParam()
                 if (value != "") params[UrlParams.CRASH_NAME] = value

@@ -34,9 +34,9 @@ import androidx.annotation.RestrictTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import okhttp3.internal.userAgent
 import webtrekk.android.sdk.ActiveConfig
 import webtrekk.android.sdk.Config
+import webtrekk.android.sdk.CustomParam
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.FormTrackingSettings
 import webtrekk.android.sdk.InternalParam
@@ -289,7 +289,7 @@ constructor() : Webtrekk(),
             trackException(
                 TrackException.Params(
                     trackRequest = TrackRequest(
-                        name = "webtrekk_ignore",
+                        name = "0",
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -321,7 +321,7 @@ constructor() : Webtrekk(),
             trackUncaughtException(
                 TrackUncaughtException.Params(
                     trackRequest = TrackRequest(
-                        name = WEBTREKK_IGNORE,
+                        name = "0",
                         screenResolution = context.resolution(),
                         forceNewSession = currentSession,
                         appFirstOpen = appFirstOpen,
@@ -591,7 +591,7 @@ constructor() : Webtrekk(),
             )
         )
 
-        trackCustomEvent(WEBTREKK_IGNORE, trackingParams)
+        trackCustomEvent(CustomParam.WEBTREKK_IGNORE, trackingParams)
     }
 
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
@@ -669,9 +669,6 @@ constructor() : Webtrekk(),
     }
 
     companion object {
-
-        const val WEBTREKK_IGNORE = "webtrekk_ignore"
-
         @Volatile
         private var INSTANCE: WebtrekkImpl? = null
 
