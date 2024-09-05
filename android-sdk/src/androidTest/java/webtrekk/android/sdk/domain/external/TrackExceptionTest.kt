@@ -16,7 +16,6 @@ import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.api.UrlParams
-import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
@@ -26,8 +25,6 @@ import webtrekk.android.sdk.util.CoroutineDispatchers
 class TrackExceptionTest {
 
     private lateinit var trackException: TrackException
-
-    private lateinit var trackCustomPage: TrackCustomPage
 
     private lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
@@ -64,16 +61,6 @@ class TrackExceptionTest {
             CacheTrackRequestWithCustomParams(trackRequestRepository, customParamRepository)
         trackException =
             spyk(TrackException(Dispatchers.Unconfined, cacheTrackRequestWithCustomParams))
-
-        val sessions: Sessions = mockk(relaxed = true)
-
-        trackCustomPage = spyk(
-            TrackCustomPage(
-                coroutineDispatchers.defaultDispatcher,
-                sessions,
-                cacheTrackRequestWithCustomParams
-            )
-        )
     }
 
     @After
@@ -101,26 +88,5 @@ class TrackExceptionTest {
 
         Truth.assertThat(data).isNotNull()
         Truth.assertThat(customParams?.filter { it.paramKey == UrlParams.EVENT_NAME }).isNotEmpty()
-    }
-
-    @Test
-    fun trackPageWithoutCtParameter() = runBlocking {
-        val invokeParams = TrackCustomPage.Params(
-            trackRequest = trackRequest,
-            trackingParams = emptyMap(),
-            isOptOut = false,
-            context = context
-        )
-
-        trackCustomPage(invokeParams, coroutineDispatchers)
-
-        verify(atLeast = 1) { trackCustomPage(any(), any()) }
-
-        val data = trackRequestRepository.getTrackRequests().getOrNull()
-        val customParams =
-            customParamRepository.getCustomParamsByTrackId(trackRequest.id).getOrNull()
-
-        Truth.assertThat(data).isNotNull()
-        Truth.assertThat(customParams).isEmpty()
     }
 }
