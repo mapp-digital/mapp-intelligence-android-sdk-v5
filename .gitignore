@@ -12,3 +12,5 @@ android-sdk/local.properties
 testers_webtrekk.txt
 *.hprof
 /android-sdk/8B08C4D9.gpg
+./sample/release-key
+./sample/release/*

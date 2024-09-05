@@ -94,7 +94,8 @@ buildscript {
             androidMockk          : "io.mockk:mockk-android:$versions.mockkVersion",
             androidArchCoreTest   : "androidx.arch.core:core-testing:$versions.coreTestingVersion",
             androidRoomTest       : "androidx.room:room-testing:$versions.roomVersion",
-            androidWorkmanagerTest: "androidx.work:work-testing:$versions.workManagerVersion"
+            androidWorkmanagerTest: "androidx.work:work-testing:$versions.workManagerVersion",
+            truth                 : "com.google.truth:truth:1.4.4"
     ]
 
     repositories {
