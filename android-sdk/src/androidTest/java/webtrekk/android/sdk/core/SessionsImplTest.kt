@@ -3,6 +3,9 @@ package webtrekk.android.sdk.core
 import android.content.Context
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.common.truth.Truth
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.OverrideMockKs
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -108,11 +111,13 @@ internal class SessionsImplTest {
 
     @Test
     fun test_05_getAppFirstOpen() = runBlocking {
-        val firstOpen = session.getAppFirstOpen()
-        MatcherAssert.assertThat("App first open equals to 1", "1", equalTo(firstOpen))
+        val firstOpen = session.getAppFirstOpen(true)
+        Truth.assertThat(firstOpen).isEqualTo("1")
+        //MatcherAssert.assertThat("App first open equals to 1", "1", equalTo(firstOpen))
         delay(1000)
         val secondOpen = session.getAppFirstOpen()
-        MatcherAssert.assertThat("Every next open should return 0", "0", equalTo(secondOpen))
+        Truth.assertThat(secondOpen).isEqualTo("0")
+        //MatcherAssert.assertThat("Every next open should return 0", "0", equalTo(secondOpen))
     }
 
     @Test

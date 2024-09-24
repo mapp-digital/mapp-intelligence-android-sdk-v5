@@ -33,8 +33,10 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import webtrekk.android.sdk.customParams
 import webtrekk.android.sdk.data.dao.CustomParamDao
 import webtrekk.android.sdk.data.dao.TrackRequestDao
+import webtrekk.android.sdk.trackRequests
 import java.io.IOException
 
 internal abstract class DbTest {

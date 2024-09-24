@@ -106,6 +106,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     lint {
@@ -151,8 +152,8 @@ dependencies {
 
     implementation('com.mapp.sdk:mapp-android:6.0.24')
 
-    implementation(project(':android-sdk'))
-    //implementation ("com.mapp.sdk:intelligence-android:5.1.10")
+    //implementation(project(':android-sdk'))
+    implementation ("com.mapp.sdk:intelligence-android:5.1.10")
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
