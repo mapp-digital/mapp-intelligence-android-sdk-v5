@@ -29,13 +29,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert
-import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import webtrekk.android.sdk.data.DbTest
-import webtrekk.android.sdk.data.dataTracks
 import webtrekk.android.sdk.data.entity.TrackRequest
-import webtrekk.android.sdk.data.trackRequests
+import webtrekk.android.sdk.dataTracks
+import webtrekk.android.sdk.trackRequests
 
 @RunWith(AndroidJUnit4::class)
 internal class TrackRequestDaoTest : DbTest() {

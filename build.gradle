@@ -32,17 +32,17 @@ buildscript {
     ext.versions = [
             'webtrekkVersion'        : '5.0.0',
             'gradleVersion'          : '3.6.4',
-            'kotlinVersion'          : '1.9.23',//'1.4.32',
+            'kotlinVersion'          : '1.9.24',//'1.4.32',
             'gradleVersionsPlugin'   : '0.21.0',
             'mavenPluginVersion'     : '2.1',
             'bintrayPluginVersion'   : '1.8.4',
 
             'compileSdkVersion'      : 34,
-            'minSdkVersion'          : 21,
+            'minSdkVersion'          : 24,
             'targetSdkVersion'       : 34,
             'buildTools'             : '34.0.0',
 
-            'appCompatVersion'       : '1.7.0',
+            'appCompatVersion'       : '1.6.1',
             'constraintLayoutVersion': '2.1.4',
 
             'kotlinCoroutines'       : '1.8.1',
