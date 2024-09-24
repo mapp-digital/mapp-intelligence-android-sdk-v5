@@ -212,6 +212,11 @@ object InternalParam {
     const val WT_MC_DEFAULT = "wt_mc"
 }
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+object CustomParam {
+    const val WEBTREKK_IGNORE = "webtrekk_ignore"
+}
+
 /**
  * This enum class contains predefined custom params names/keys that you must append some names/numbers to their keys
  * depend on what are their actual names in the analytics.

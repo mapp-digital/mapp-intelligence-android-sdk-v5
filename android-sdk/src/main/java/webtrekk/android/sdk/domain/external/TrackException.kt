@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import webtrekk.android.sdk.CustomParam
 import webtrekk.android.sdk.ExceptionType
 import webtrekk.android.sdk.api.UrlParams
 import webtrekk.android.sdk.data.entity.TrackRequest
@@ -44,7 +45,7 @@ internal class TrackException(
             val params =
                 createParamsFromException(invokeParams.exception, invokeParams.exceptionType)
             // Cache the track request with its custom params.
-            cacheTrackRequestWithCustomParams(
+            cacheTrackRequestWithCustomParams.invoke(
                 CacheTrackRequestWithCustomParams.Params(
                     invokeParams.trackRequest,
                     params
@@ -60,6 +61,7 @@ internal class TrackException(
         exceptionType: ExceptionType
     ): MutableMap<String, String> {
         val params = emptyMap<String, String>().toMutableMap()
+        params[UrlParams.EVENT_NAME] = CustomParam.WEBTREKK_IGNORE
         when (exceptionType) {
             ExceptionType.CAUGHT -> {
                 params[UrlParams.CRASH_TYPE] = exceptionType.type
@@ -76,6 +78,7 @@ internal class TrackException(
                     params[UrlParams.CRASH_CAUSE_STACK] =
                         exception.cause?.stackTrace!!.createString()
             }
+
             ExceptionType.CUSTOM -> {
                 params[UrlParams.CRASH_TYPE] = exceptionType.type
                 params[UrlParams.CRASH_NAME] = (exception as ExceptionWrapper).name
