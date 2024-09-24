@@ -38,11 +38,11 @@ buildscript {
             'bintrayPluginVersion'   : '1.8.4',
 
             'compileSdkVersion'      : 34,
-            'minSdkVersion'          : 24,
+            'minSdkVersion'          : 21,
             'targetSdkVersion'       : 34,
             'buildTools'             : '34.0.0',
 
-            'appCompatVersion'       : '1.6.1',
+            'appCompatVersion'       : '1.7.0',
             'constraintLayoutVersion': '2.1.4',
 
             'kotlinCoroutines'       : '1.8.1',
@@ -72,7 +72,7 @@ buildscript {
     ]
 
     ext.libs = [
-            kotlinStdlib          : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion",
+            kotlinStdlib          : "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlinVersion",
             appCompat             : "androidx.appcompat:appcompat:$versions.appCompatVersion",
             coreKtx               : "androidx.core:core-ktx:$versions.coreKtxVersion",
             constraintLayout      : "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion",
