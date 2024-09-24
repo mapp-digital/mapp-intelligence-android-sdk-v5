@@ -25,6 +25,7 @@
 
 package webtrekk.android.sdk.extension
 
+import androidx.annotation.VisibleForTesting
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -100,6 +101,7 @@ internal fun List<CustomParam>.buildCustomParams(
     return string.toString()
 }
 
+@VisibleForTesting
 internal fun DataTrack.buildUrl(
     activeConfig: ActiveConfig
 ): String {
