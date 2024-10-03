@@ -96,39 +96,36 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation libs.kotlinStdlib
-    implementation libs.appCompat
+    implementation ("androidx.appcompat:appcompat:1.7.0")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
 
-    implementation libs.coroutinesCore
-    implementation libs.coroutinesAndroid
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-    implementation libs.workmanager
+    implementation ("androidx.work:work-runtime-ktx:2.9.1")
 
-    implementation libs.okHttp
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
 
-    implementation libs.room
-    implementation libs.roomKtx
-    testImplementation 'junit:junit:4.13.2'
-    kapt libs.roomCompiler
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
 
-    testImplementation libs.junit
-    testImplementation libs.androidTestCore
-    testImplementation libs.mockk
-    testImplementation libs.coroutinesTest
-    testImplementation libs.kotlinTest
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("androidx.test:core:1.6.1")
+    testImplementation ("io.mockk:mockk:1.13.12")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation ("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.3")
 
-    androidTestImplementation libs.androidTestJunit
-    androidTestImplementation libs.androidTestCore
-    androidTestImplementation libs.runner
-    androidTestImplementation libs.androidMockk
-    androidTestImplementation libs.androidArchCoreTest
+    androidTestImplementation ("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation ("androidx.test:core:1.6.1")
+    androidTestImplementation ("androidx.test:runner:1.6.2")
+    androidTestImplementation ("io.mockk:mockk-android:1.13.12")
+    //androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
 
-    androidTestImplementation libs.androidRoomTest
-    androidTestImplementation libs.androidWorkmanagerTest
-    androidTestImplementation libs.truth
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.3'
-    //testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-    //api group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    androidTestImplementation ("androidx.room:room-testing:2.6.1")
+    androidTestImplementation ("androidx.work:work-testing:2.9.1")
+    androidTestImplementation ("com.google.truth:truth:1.4.4")
 }
 
 /**
