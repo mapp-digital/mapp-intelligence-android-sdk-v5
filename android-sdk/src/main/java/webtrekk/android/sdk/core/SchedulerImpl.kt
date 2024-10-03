@@ -33,6 +33,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import kotlinx.coroutines.sync.Mutex
@@ -82,16 +83,34 @@ internal class SchedulerImpl(
         }
     }
 
+    // To be changed to clean up after executing the requests
+    override fun scheduleCleanUp() {
+        val data = Data.Builder().apply {
+            putStringArray("trackIds", config.trackIds.toTypedArray())
+            putString("trackDomain", config.trackDomain)
+        }.build()
+
+        val cleanWorkBuilder = PeriodicWorkRequestBuilder<CleanUpWorker>(60, TimeUnit.MINUTES)
+            .addTag(CleanUpWorker.TAG)
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .setInputData(data)
+
+        workManager.enqueueUniquePeriodicWork(
+            CLEAN_UP_WORKER,
+            ExistingPeriodicWorkPolicy.UPDATE,
+            cleanWorkBuilder.build()
+        )
+    }
+
     override fun sendRequestsThenCleanUp() {
         webtrekkLogger.debug("SEND WORKER - sendRequestsThenCleanUp")
         synchronized(mutex) {
             // check if SendRequestsWorker already running as periodic work request
-//            val future = workManager.getWorkInfosByTag(SendRequestsWorker.TAG)
-//            val workers = future.get()
-//            if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
-//                scheduleSendAndCleanWorkers()
-//            }
-            scheduleSendAndCleanWorkers()
+            val future = workManager.getWorkInfosForUniqueWork(ONE_TIME_REQUEST)
+            val workers = future.get()
+            if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
+                scheduleSendAndCleanWorkers()
+            }
         }
     }
 
@@ -102,8 +121,8 @@ internal class SchedulerImpl(
         }.build()
 
         val sendWorkBuilder = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
-            .addTag(SendRequestsWorker.TAG)
             .setInputData(data)
+            .addTag(SendRequestsWorker.TAG)
 
         val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .setInputData(data)
@@ -114,42 +133,24 @@ internal class SchedulerImpl(
             cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }
 
-        workManager.enqueueUniqueWork(
+        workManager.beginUniqueWork(
             ONE_TIME_REQUEST,
-            ExistingWorkPolicy.APPEND_OR_REPLACE,
-            listOf(sendWorkBuilder.build(), cleanWorkBuilder.build())
+            ExistingWorkPolicy.REPLACE,
+            sendWorkBuilder.build()
         )
-    }
-
-    // To be changed to clean up after executing the requests
-    override fun scheduleCleanUp() {
-        val data = Data.Builder().apply {
-            putStringArray("trackIds", config.trackIds.toTypedArray())
-            putString("trackDomain", config.trackDomain)
-        }.build()
-
-        val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
-            .addTag(CleanUpWorker.TAG)
-            .setInputData(data)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-        }
-
-        workManager.enqueueUniqueWork(
-            "CleanUpWorker",
-            ExistingWorkPolicy.APPEND_OR_REPLACE,
-            cleanWorkBuilder.build()
-        )
+            .then(cleanWorkBuilder.build())
+            .enqueue()
     }
 
     override fun cancelScheduleSendRequests() {
-        workManager.cancelAllWorkByTag(CleanUpWorker.TAG)
-        workManager.cancelAllWorkByTag(SendRequestsWorker.TAG)
+        workManager.cancelUniqueWork(CLEAN_UP_WORKER)
+        workManager.cancelUniqueWork(ONE_TIME_REQUEST)
+        workManager.cancelUniqueWork(SEND_REQUESTS_WORKER)
     }
 
     companion object {
         const val SEND_REQUESTS_WORKER = "send_requests_worker"
         const val ONE_TIME_REQUEST = "one_time_request_send_and_clean"
+        const val CLEAN_UP_WORKER = "CleanUpWorker"
     }
 }

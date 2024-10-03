@@ -112,10 +112,10 @@
             android:text="@string/web_view_activity" />
 
         <Button
-            android:id="@+id/formActivity"
+            android:id="@+id/btnWorkSchedulerTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Form Activity" />
+            android:text="Work Scheduler Test" />
 
         <Button
             android:id="@+id/buttonOrdersTracking"
