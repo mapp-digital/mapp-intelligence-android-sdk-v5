@@ -546,8 +546,14 @@ constructor() : Webtrekk(),
         if (config.exceptionLogLevel.isUncaughtAllowed()) {
             initUncaughtExceptionTracking()
         }
-        // Scheduling the workers for cleaning up the current cache, and setting up the periodic worker for sending the requests.
+
+        // Clean all finished works (SUCCEEDED, FAILED, CANCELED)
+        scheduler.pruneWorks()
+
+        // Scheduling the workers for clearing sent requests.
         scheduler.scheduleCleanUp()
+
+        // Scheduling the periodic worker for sending requests
         scheduler.scheduleSendRequests(
             repeatInterval = config.requestsInterval,
             constraints = config.workManagerConstraints

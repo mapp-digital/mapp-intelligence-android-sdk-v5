@@ -27,8 +27,11 @@ package webtrekk.android.sdk.domain.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
@@ -48,51 +51,46 @@ internal class CleanUpWorker(
     workerParameters: WorkerParameters
 ) :
     CoroutineWorker(context, workerParameters) {
+    /**
+     * [coroutineDispatchers] the injected coroutine dispatchers.
+     */
+    val coroutineDispatchers: CoroutineDispatchers = AppModule.dispatchers
 
     override suspend fun doWork(): Result = coroutineScope {
-        // this check and initialization is needed for cross platform solutions
-        if (!Webtrekk.getInstance().isInitialized()) {
-            val configJson = WebtrekkSharedPrefs(applicationContext).configJson
-            val config = WebtrekkConfiguration.fromJson(configJson)
-            Webtrekk.getInstance().init(applicationContext, config)
-        }
-
-        /**
-         * [coroutineDispatchers] the injected coroutine dispatchers.
-         */
-        /**
-         * [coroutineDispatchers] the injected coroutine dispatchers.
-         */
-        val coroutineDispatchers: CoroutineDispatchers = AppModule.dispatchers
-
-        /**
-         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
-         */
-        /**
-         * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
-         */
-        val getCachedDataTracks: GetCachedDataTracks = InteractorModule.getCachedDataTracks()
-
-        /**
-         * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
-         */
-        /**
-         * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
-         */
-        val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
-
-        /**
-         * [logger] the injected logger from Webtrekk.
-         */
-        /**
-         * [logger] the injected logger from Webtrekk.
-         */
-        val logger by lazy { AppModule.logger }
-
-        // get the data from the data base with state DONE only.
         withContext(coroutineDispatchers.ioDispatcher) {
-            getCachedDataTracks(GetCachedDataTracks.Params(requestStates = listOf(TrackRequest.RequestState.DONE)))
-                .onSuccess { dataTracks ->
+            mutex.withLock {
+                /**
+                 * [logger] the injected logger from Webtrekk.
+                 */
+                val logger by lazy { AppModule.logger }
+
+                logger.debug("doWork - starting... ${tags.joinToString(separator = ", ")}")
+                // this check and initialization is needed for cross platform solutions
+                if (!Webtrekk.getInstance().isInitialized()) {
+                    val configJson = WebtrekkSharedPrefs(applicationContext).configJson
+                    val config = WebtrekkConfiguration.fromJson(configJson)
+                    Webtrekk.getInstance().init(applicationContext, config)
+                }
+
+                /**
+                 * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.
+                 */
+                val getCachedDataTracks: GetCachedDataTracks =
+                    InteractorModule.getCachedDataTracks()
+
+                /**
+                 * [clearTrackRequests] the injected internal interactor for deleting the data in the data base.
+                 */
+                val clearTrackRequests: ClearTrackRequests = InteractorModule.clearTrackRequest()
+
+                // get the data from the data base with state DONE only.
+                getCachedDataTracks(
+                    GetCachedDataTracks.Params(
+                        requestStates = listOf(
+                            TrackRequest.RequestState.DONE
+                        )
+                    )
+                ).onSuccess { dataTracks ->
                     if (dataTracks.isNotEmpty()) {
                         logger.info("Cleaning up the completed requests")
 
@@ -102,13 +100,15 @@ internal class CleanUpWorker(
                                 logger.error("Failed while cleaning up the completed requests: $it")
                             }
                     }
-                }
-                .onFailure { logger.error("Error getting the cached completed requests: $it") }
+                }.onFailure { logger.error("Error getting the cached completed requests: $it") }
+
+                return@withContext Result.success()
+            }
         }
-        Result.success()
     }
 
     companion object {
+        val mutex = Mutex()
         const val TAG = "clean_up"
     }
 }

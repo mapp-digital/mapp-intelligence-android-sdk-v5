@@ -28,6 +28,8 @@ package webtrekk.android.sdk.domain.external
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.domain.ExternalInteractor
@@ -42,12 +44,14 @@ internal class SendAndClean(
     private val scheduler: Scheduler
 ) : ExternalInteractor<SendAndClean.Params> {
 
-    private val _job = Job()
+    private val _job = SupervisorJob()
     override val scope =
         CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
-        scheduler.sendRequestsThenCleanUp()
+        scope.launch {
+            scheduler.sendRequestsThenCleanUp()
+        }
     }
 
     /**

@@ -32,14 +32,18 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
-import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import androidx.work.WorkQuery
+import androidx.work.await
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import webtrekk.android.sdk.Config
 import webtrekk.android.sdk.domain.worker.CleanUpWorker
 import webtrekk.android.sdk.domain.worker.SendRequestsWorker
+import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.webtrekkLogger
 import java.util.concurrent.TimeUnit
 
@@ -51,65 +55,71 @@ internal class SchedulerImpl(
     private val config: Config,
 ) :
     Scheduler {
-    private val mutex = Mutex()
-
-    override fun scheduleSendRequests(
+    override suspend fun scheduleSendRequests(
         repeatInterval: Long,
         constraints: Constraints,
     ) {
-        webtrekkLogger.debug("SEND WORKER - scheduleSendRequests")
-        synchronized(mutex) {
-            val data = Data.Builder().apply {
-                putStringArray("trackIds", config.trackIds.toTypedArray())
-                putString("trackDomain", config.trackDomain)
-            }.build()
+        withContext(AppModule.dispatchers.mainDispatcher) {
+            webtrekkLogger.debug("SEND WORKER - scheduleSendRequests")
+            mutex.withLock {
+                val data = Data.Builder().apply {
+                    putStringArray("trackIds", config.trackIds.toTypedArray())
+                    putString("trackDomain", config.trackDomain)
+                }.build()
 
-            val workBuilder = PeriodicWorkRequest.Builder(
-                SendRequestsWorker::class.java,
-                repeatInterval,
-                TimeUnit.MINUTES
-            ).setConstraints(constraints)
-                .setInitialDelay(0, TimeUnit.MILLISECONDS)
-                .setInputData(data)
-                .addTag(SendRequestsWorker.TAG)
+                val workBuilder = PeriodicWorkRequestBuilder<SendRequestsWorker>(
+                    repeatInterval,
+                    TimeUnit.MINUTES
+                ).setConstraints(constraints)
+                    .setInitialDelay(0, TimeUnit.MILLISECONDS)
+                    .setInputData(data)
 
-            val sendRequestsWorker = workBuilder.build()
+                val sendRequestsWorker = workBuilder.build()
 
-            workManager.enqueueUniquePeriodicWork(
-                SEND_REQUESTS_WORKER,
-                ExistingPeriodicWorkPolicy.UPDATE,
-                sendRequestsWorker
-            )
+                workManager.enqueueUniquePeriodicWork(
+                    SEND_REQUESTS_WORKER,
+                    ExistingPeriodicWorkPolicy.UPDATE,
+                    sendRequestsWorker
+                )
+            }
         }
     }
 
     // To be changed to clean up after executing the requests
-    override fun scheduleCleanUp() {
-        val data = Data.Builder().apply {
-            putStringArray("trackIds", config.trackIds.toTypedArray())
-            putString("trackDomain", config.trackDomain)
-        }.build()
+    override suspend fun scheduleCleanUp() {
+        withContext(AppModule.dispatchers.mainDispatcher) {
+            mutex.withLock {
+                val data = Data.Builder().apply {
+                    putStringArray("trackIds", config.trackIds.toTypedArray())
+                    putString("trackDomain", config.trackDomain)
+                }.build()
 
-        val cleanWorkBuilder = PeriodicWorkRequestBuilder<CleanUpWorker>(60, TimeUnit.MINUTES)
-            .addTag(CleanUpWorker.TAG)
-            .setInitialDelay(5, TimeUnit.MINUTES)
-            .setInputData(data)
+                val cleanWorkBuilder =
+                    PeriodicWorkRequestBuilder<CleanUpWorker>(
+                        60,
+                        TimeUnit.MINUTES
+                    ).setInitialDelay(5, TimeUnit.MINUTES)
+                        .setInputData(data)
 
-        workManager.enqueueUniquePeriodicWork(
-            CLEAN_UP_WORKER,
-            ExistingPeriodicWorkPolicy.UPDATE,
-            cleanWorkBuilder.build()
-        )
+                workManager.enqueueUniquePeriodicWork(
+                    CLEAN_UP_WORKER,
+                    ExistingPeriodicWorkPolicy.UPDATE,
+                    cleanWorkBuilder.build()
+                )
+            }
+        }
     }
 
-    override fun sendRequestsThenCleanUp() {
-        webtrekkLogger.debug("SEND WORKER - sendRequestsThenCleanUp")
-        synchronized(mutex) {
-            // check if SendRequestsWorker already running as periodic work request
-            val future = workManager.getWorkInfosForUniqueWork(ONE_TIME_REQUEST)
-            val workers = future.get()
-            if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
-                scheduleSendAndCleanWorkers()
+    override suspend fun sendRequestsThenCleanUp() {
+        withContext(AppModule.dispatchers.mainDispatcher) {
+            webtrekkLogger.debug("SEND WORKER - sendRequestsThenCleanUp")
+            mutex.withLock {
+                // check if SendRequestsWorker already running as periodic work request
+                val query = WorkQuery.fromTags(SendRequestsWorker::class.java.name)
+                val workers = workManager.getWorkInfos(query).get()
+                if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
+                    scheduleSendAndCleanWorkers()
+                }
             }
         }
     }
@@ -122,33 +132,33 @@ internal class SchedulerImpl(
 
         val sendWorkBuilder = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
             .setInputData(data)
-            .addTag(SendRequestsWorker.TAG)
 
         val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .setInputData(data)
-            .addTag(CleanUpWorker.TAG)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             sendWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             cleanWorkBuilder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }
 
-        workManager.beginUniqueWork(
-            ONE_TIME_REQUEST,
-            ExistingWorkPolicy.REPLACE,
-            sendWorkBuilder.build()
-        )
+        workManager
+            .beginUniqueWork(ONE_TIME_REQUEST, ExistingWorkPolicy.REPLACE, sendWorkBuilder.build())
             .then(cleanWorkBuilder.build())
             .enqueue()
     }
 
-    override fun cancelScheduleSendRequests() {
+    override suspend fun cancelScheduleSendRequests() {
         workManager.cancelUniqueWork(CLEAN_UP_WORKER)
         workManager.cancelUniqueWork(ONE_TIME_REQUEST)
         workManager.cancelUniqueWork(SEND_REQUESTS_WORKER)
     }
 
+    override suspend fun pruneWorks() {
+        workManager.pruneWork().await()
+    }
+
     companion object {
+        private val mutex = Mutex()
         const val SEND_REQUESTS_WORKER = "send_requests_worker"
         const val ONE_TIME_REQUEST = "one_time_request_send_and_clean"
         const val CLEAN_UP_WORKER = "CleanUpWorker"

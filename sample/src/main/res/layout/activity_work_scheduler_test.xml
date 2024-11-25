@@ -14,7 +14,9 @@
         style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Number of works"/>
+        android:text="1"
+        android:hint="Number of works"
+        tools:ignore="HardcodedText" />
     <Button
         android:id="@+id/btnScheduleWorks"
         android:layout_width="match_parent"
