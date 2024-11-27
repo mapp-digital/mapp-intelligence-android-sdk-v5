@@ -94,8 +94,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, CampaignActivity::class.java))
         }
 
-        binding.formActivity.setOnClickListener {
-            val intent = Intent(this, FormActivity::class.java)
+        binding.btnWorkSchedulerTest.setOnClickListener {
+            val intent = Intent(this, WorkSchedulerTest::class.java)
             startActivity(intent)
         }
 
@@ -266,9 +266,5 @@ class MainActivity : AppCompatActivity() {
                 Webtrekk.getInstance().getDmcUserId()
             Webtrekk.getInstance().sendRequestsNowAndClean()
         }
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
     }
 }

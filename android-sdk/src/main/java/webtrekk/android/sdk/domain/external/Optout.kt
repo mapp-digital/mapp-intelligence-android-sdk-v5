@@ -29,6 +29,7 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.core.Scheduler
@@ -52,7 +53,7 @@ internal class Optout(
     private val clearTrackRequests: ClearTrackRequests
 ) : ExternalInteractor<Optout.Params> {
 
-    private val _job = Job()
+    private val _job = SupervisorJob()
     override val scope =
         CoroutineScope(_job + coroutineContext) // Starting a new job with context of the parent.
 
@@ -62,23 +63,23 @@ internal class Optout(
     private val logger by lazy { AppModule.logger }
 
     override fun invoke(invokeParams: Params, coroutineDispatchers: CoroutineDispatchers) {
-        // Store the opt out value in the shared preferences.
-        sessions.optOut(invokeParams.optOutValue)
+        scope.launch(
+            context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
+                logger
+            ),
+            start = CoroutineStart.DEFAULT
+        ) {
+            // Store the opt out value in the shared preferences.
+            sessions.optOut(invokeParams.optOutValue)
 
-        // If opt out value is set to true, then disable tracking data, cancel all work manager workers and delete or send then delete current data in the data base.
-        if (invokeParams.optOutValue) {
-            appState.disable(invokeParams.context) // Disable the auto track
-            scheduler.cancelScheduleSendRequests() // Cancel the work manager workers
-            // If sendCurrentData is true, then one time worker will send current data requests to the server, then clean up the data base.
-            if (invokeParams.sendCurrentData) {
-                scheduler.sendRequestsThenCleanUp()
-            } else {
-                scope.launch(
-                    context = coroutineDispatchers.ioDispatcher + coroutineExceptionHandler(
-                        logger
-                    ),
-                    start = CoroutineStart.DEFAULT
-                ) {
+            // If opt out value is set to true, then disable tracking data, cancel all work manager workers and delete or send then delete current data in the data base.
+            if (invokeParams.optOutValue) {
+                appState.disable(invokeParams.context) // Disable the auto track
+                scheduler.cancelScheduleSendRequests() // Cancel the work manager workers
+                // If sendCurrentData is true, then one time worker will send current data requests to the server, then clean up the data base.
+                if (invokeParams.sendCurrentData) {
+                    scheduler.sendRequestsThenCleanUp()
+                } else {
                     clearTrackRequests(ClearTrackRequests.Params(trackRequests = emptyList()))
                         .onSuccess { logger.debug("Cleared all track requests, opt out is active") }
                         .onFailure { logger.error("Failed to clear the track requests while opting out") }

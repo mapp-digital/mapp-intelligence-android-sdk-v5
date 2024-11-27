@@ -131,7 +131,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlinVersion"
     //implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation('com.google.android.material:material:1.10.0')
+    implementation ("androidx.activity:activity:1.9.2")
+    implementation('com.google.android.material:material:1.12.0')
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
     implementation "androidx.work:work-runtime-ktx:$versions.workManagerVersion"
@@ -145,18 +146,15 @@ dependencies {
     implementation 'androidx.media3:media3-exoplayer-dash:1.4.1'
     implementation 'androidx.media3:media3-exoplayer-hls:1.4.1'
 
-    implementation platform('com.google.firebase:firebase-bom:33.3.0')
+    implementation platform('com.google.firebase:firebase-bom:33.4.0')
     implementation('com.google.firebase:firebase-messaging')
     implementation("com.google.firebase:firebase-crashlytics")
 
-    implementation('com.mapp.sdk:mapp-android:6.0.24')
+    implementation('com.mapp.sdk:mapp-android:6.0.25')
 
-    implementation(project(':android-sdk')) {
-        exclude(group: "androidx.appcompat", module: "appcompat")
-    }
-//    implementation("com.mapp.sdk:intelligence-android:5.1.10") {
-//        exclude(group: "androidx.appcompat", module: "appcompat")
-//    }
+    implementation(project(':android-sdk'))
+
+    //implementation("com.mapp.sdk:intelligence-android:5.1.10")
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
@@ -164,11 +162,3 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$versions.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espressoCoreVersion"
 }
-
-//configurations.configureEach {
-//    resolutionStrategy.eachDependency { details ->
-//        if (details.requested.group == 'androidx.appcompat') {
-//            details.useVersion '1.7.0'
-//        }
-//    }
-//}
