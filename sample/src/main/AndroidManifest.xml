@@ -16,8 +16,11 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
         <activity
+            android:name=".WorkSchedulerTest"
+            android:exported="false" />
+        <activity
             android:name=".tracking.OrdersTrackingActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".UrlActivity"
             android:exported="false" />
@@ -76,7 +79,7 @@
             android:exported="false" />
         <activity android:name=".ObjectTrackingProductStatus" />
         <activity
-            android:name="com.example.webtrekk.androidsdk.ManualMediaTracking"
+            android:name=".ManualMediaTracking"
             android:exported="false"
             android:screenOrientation="portrait"
             android:taskAffinity="" />

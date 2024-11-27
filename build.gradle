@@ -32,7 +32,7 @@ buildscript {
     ext.versions = [
             'webtrekkVersion'        : '5.0.0',
             'gradleVersion'          : '3.6.4',
-            'kotlinVersion'          : '1.9.24',//'1.4.32',
+            'kotlinVersion'          : '1.9.24',
             'gradleVersionsPlugin'   : '0.21.0',
             'mavenPluginVersion'     : '2.1',
             'bintrayPluginVersion'   : '1.8.4',
@@ -41,61 +41,6 @@ buildscript {
             'minSdkVersion'          : 21,
             'targetSdkVersion'       : 34,
             'buildTools'             : '34.0.0',
-
-            'appCompatVersion'       : '1.7.0',
-            'constraintLayoutVersion': '2.1.4',
-
-            'kotlinCoroutines'       : '1.8.1',
-            'coreKtxVersion'         : '1.13.1',
-
-            'okHttpVersion'          : '4.12.0',
-
-            'workManagerVersion'     : '2.9.0',
-            'roomVersion'            : '2.6.1',
-
-            'testCoreVersion'        : '1.6.1',
-            'testCoreVersionJunit'   : '1.2.1',
-            'junitVersion'           : '4.13.2',
-            'runnerVersion'          : '1.6.1',
-            'espressoCoreVersion'    : '3.5.1',
-            //Version 2.1.0 depends on androidx.arch.core:core-runtime:2.1.0 which must be explicitly added in android-sdk gradle
-            'coreTestingVersion'     : '2.2.0',
-            //Downgraded version from 1.9.3 to 1.9.2 while this issue is not resolved
-            //https://github.com/mockk/mockk/issues/281
-            'mockkVersion'           : '1.13.12',
-            'kotlinTestVersion'      : '3.4.2',
-
-            'ktlintVersion'          : '0.31.0',
-            'dokkaVersion'           : '0.9.17',
-            'googleServices'         : '4.3.14',
-            'firebaseAppDistribution': '2.1.1'
-    ]
-
-    ext.libs = [
-            kotlinStdlib          : "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlinVersion",
-            appCompat             : "androidx.appcompat:appcompat:$versions.appCompatVersion",
-            coreKtx               : "androidx.core:core-ktx:$versions.coreKtxVersion",
-            constraintLayout      : "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion",
-            coroutinesCore        : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines",
-            coroutinesAndroid     : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines",
-            okHttp                : "com.squareup.okhttp3:okhttp:$versions.okHttpVersion",
-            room                  : "androidx.room:room-runtime:$versions.roomVersion",
-            roomKtx               : "androidx.room:room-ktx:$versions.roomVersion",
-            roomCompiler          : "androidx.room:room-compiler:$versions.roomVersion",
-            workmanager           : "androidx.work:work-runtime-ktx:$versions.workManagerVersion",
-            junit                 : "junit:junit:$versions.junitVersion",
-            runner                : "androidx.test:runner:$versions.runnerVersion",
-            espresso              : "androidx.test.espresso:espresso-core:$versions.espressoCoreVersion",
-            androidTestCore       : "androidx.test:core:$versions.testCoreVersion",
-            mockk                 : "io.mockk:mockk:$versions.mockkVersion",
-            coroutinesTest        : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.kotlinCoroutines",
-            kotlinTest            : "io.kotlintest:kotlintest-runner-junit5:$versions.kotlinTestVersion",
-            androidTestJunit      : "androidx.test.ext:junit:$versions.testCoreVersionJunit",
-            androidMockk          : "io.mockk:mockk-android:$versions.mockkVersion",
-            androidArchCoreTest   : "androidx.arch.core:core-testing:$versions.coreTestingVersion",
-            androidRoomTest       : "androidx.room:room-testing:$versions.roomVersion",
-            androidWorkmanagerTest: "androidx.work:work-testing:$versions.workManagerVersion",
-            truth                 : "com.google.truth:truth:1.4.4"
     ]
 
     repositories {
@@ -106,12 +51,12 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlinVersion}"
-        classpath "com.github.ben-manes:gradle-versions-plugin:${versions.gradleVersionsPlugin}"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${versions.dokkaVersion}"
-        classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.mavenPluginVersion}"
-        classpath "com.google.gms:google-services:${versions.googleServices}"
-        classpath "com.google.firebase:firebase-appdistribution-gradle:${versions.firebaseAppDistribution}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.21.0"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:2.1"
+        classpath "com.google.gms:google-services:4.4.2"
+        classpath "com.google.firebase:firebase-appdistribution-gradle:5.0.0"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0'
     }
