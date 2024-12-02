@@ -150,11 +150,11 @@ dependencies {
     implementation('com.google.firebase:firebase-messaging')
     implementation("com.google.firebase:firebase-crashlytics")
 
-    implementation('com.mapp.sdk:mapp-android:6.0.24')
+    implementation('com.mapp.sdk:mapp-android:6.0.25')
 
-    //implementation(project(':android-sdk'))
+    implementation(project(':android-sdk'))
 
-    implementation("com.mapp.sdk:intelligence-android:5.1.9")
+    //implementation("com.mapp.sdk:intelligence-android:5.1.10")
 
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 

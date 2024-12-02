@@ -26,15 +26,14 @@
 package webtrekk.android.sdk.domain.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import webtrekk.android.sdk.BuildConfig
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
@@ -60,15 +59,20 @@ internal class SendRequestsWorker(
 ) :
     CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result = coroutineScope {
+        /**
+         * [logger] the injected logger from Webtrekk.
+         */
+        val logger by lazy { AppModule.logger }
+
         withContext(AppModule.dispatchers.ioDispatcher) {
             mutex.withLock {
-                Log.d(TAG, "doWork - starting... ${tags.joinToString(separator = ", ")}")
+                logger.debug("doWork - starting... ${tags.joinToString(separator = ", ")}")
                 // this check and initialization is needed for cross platform solutions
                 if (!Webtrekk.getInstance().isInitialized()) {
                     val configJson = WebtrekkSharedPrefs(applicationContext).configJson
                     val config = WebtrekkConfiguration.fromJson(configJson)
                     Webtrekk.getInstance().init(applicationContext, config)
-                    Log.d(TAG, "doWork - initialized!")
+                    logger.debug("doWork - initialized!")
                 }
 
                 /**
@@ -87,11 +91,6 @@ internal class SendRequestsWorker(
                  */
                 val executePostRequest: ExecutePostRequest =
                     InteractorModule.executePostRequest()
-
-                /**
-                 * [logger] the injected logger from Webtrekk.
-                 */
-                val logger by lazy { AppModule.logger }
 
                 val activeConfig = Webtrekk.getInstance().getCurrentConfiguration()
 
@@ -143,15 +142,11 @@ internal class SendRequestsWorker(
                                 }
                             }
                         }
-
-                        if (BuildConfig.DEBUG) {
-                            logger.debug(activeConfig.printUsageStatisticCalculation())
-                        }
                     }
                     .onFailure { logger.error("Error getting cached data tracks: $it") }
                 logger.debug("SEND WORKER - END ${this@SendRequestsWorker}")
+                return@withContext Result.success()
             }
-            return@withContext Result.success()
         }
     }
 

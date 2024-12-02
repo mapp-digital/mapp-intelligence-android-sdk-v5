@@ -40,20 +40,25 @@ internal interface Scheduler {
      * @param repeatInterval the periodic time that will be used by [WorkManager] to send the requests from the cache to the server.
      * @param constraints the [WorkManager] constraints that will be applied on that worker.
      */
-    fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints)
+    suspend fun scheduleSendRequests(repeatInterval: Long, constraints: Constraints)
 
     /**
      * A one time worker that will be used to send all available requests in the cache to the server, then cleaning up the cache. Used for Opt out.
      */
-    fun sendRequestsThenCleanUp()
+    suspend fun sendRequestsThenCleanUp()
 
     /**
      * A worker that is scheduled to clean up the requests in the cache that are already sent to the server.
      */
-    fun scheduleCleanUp()
+    suspend fun scheduleCleanUp()
 
     /**
      * Cancel current periodic worker that is used to send the request every n times. Used for Opt out.
      */
-    fun cancelScheduleSendRequests()
+    suspend fun cancelScheduleSendRequests()
+
+    /**
+     * Delete records about completed or canceled works
+     */
+    suspend fun pruneWorks()
 }
