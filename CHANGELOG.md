@@ -1,4 +1,8 @@
 # Change Log
+## Version 5.1.11 *(2024-12-02)*
+* Bug fixes and performance improvements
+
+# Change Log
 ## Version 5.1.10 *(2024-09-25)*
 * Changed exception tracking to include 'ct=webtrekk_ignore' as a query parameter in a tracking requests.
 * Page name in 'p' parameter for exception tracking request is set to 0.
