@@ -16,7 +16,7 @@ class SettingsExample : AppCompatActivity() {
 
         binding.button.setOnClickListener {
             val stringIds = BuildConfig.TRACK_IDS
-            val domain = BuildConfig.DOMEIN
+            val domain = BuildConfig.TRACK_DOMAIN
             val elements: List<String> = stringIds.split(",")
             Webtrekk.getInstance().setIdsAndDomain(elements, domain)
         }
@@ -30,7 +30,7 @@ class SettingsExample : AppCompatActivity() {
 
         binding.button3.setOnClickListener {
             val stringIds = BuildConfig.TRACK_IDS
-            val domain = BuildConfig.DOMEIN
+            val domain = BuildConfig.TRACK_DOMAIN
             var elements: MutableList<String> = stringIds.split(",").toMutableList()
             elements.add("826582930668809")
             Webtrekk.getInstance().setIdsAndDomain(elements, domain)

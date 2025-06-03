@@ -2,6 +2,7 @@ package webtrekk.android.sdk.core
 
 import android.content.Context
 import android.util.Log
+import androidx.concurrent.futures.await
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.Constraints

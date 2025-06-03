@@ -49,7 +49,7 @@ fun Context.resolution(): String {
 }
 
 val Context.appVersionName: String
-    inline get() = this.packageManager.getPackageInfo(this.packageName, 0).versionName
+    inline get() = this.packageManager.getPackageInfo(this.packageName, 0).versionName ?: "1.0.0"
 
 val Context.appVersionCode: String
     inline get() {

@@ -134,6 +134,6 @@ object DefaultConfiguration {
         .connectTimeout(60, TimeUnit.SECONDS)
         .build()
 
-    internal var exactSdkVersion: String? = BuildConfig.LIBRARY_VERSION
+    internal var exactSdkVersion: String? = BuildConfig.VERSION_NAME
     internal var platform: String = "Android"
 }
