@@ -45,7 +45,7 @@ import webtrekk.android.sdk.Webtrekk
 @TrackPageDetail(
     contextName = "Main Page",
     trackingParams = [TrackParams(
-        paramKey = Param.PAGE_PARAMS.INTERNAL_SEARCH,
+        paramKey = Param.INTERNAL_SEARCH,
         paramVal = "search"
     )]
 )

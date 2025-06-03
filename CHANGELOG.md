@@ -1,4 +1,13 @@
 # Change Log
+## Version 5.1.12-alpha01 *(UNRELEASED)*
+* Updated targetSdk to version 35
+* Updated android gradle plugin to version 8.10.1
+* Updated kotlin version to 2.1.21
+* Updated 3rd party dependencies to the latest versions
+* Updated gradle files to *.kts
+* Updated librarie
+
+# Change Log
 ## Version 5.1.11 *(2024-12-02)*
 * Bug fixes and performance improvements
 

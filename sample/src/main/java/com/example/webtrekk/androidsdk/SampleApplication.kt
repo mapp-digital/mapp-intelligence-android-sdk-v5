@@ -53,7 +53,7 @@ class SampleApplication : Application() {
             .build()
 
         val stringIds = BuildConfig.TRACK_IDS
-        val domain = BuildConfig.DOMEIN
+        val domain = BuildConfig.TRACK_DOMAIN
         val trackIds: List<String> = stringIds.split(",")
 
         val webtrekkConfigurations =

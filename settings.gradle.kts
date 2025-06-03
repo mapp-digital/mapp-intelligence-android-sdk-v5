@@ -22,9 +22,30 @@
  *  SOFTWARE.
  *
  */
+@file:Suppress("UnstableApiUsage")
 
-rootProject.name = 'webtrekk-android-sdk'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
-include ':android-sdk'
-include ':sample'
-//include ':sample-v4'
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        maven {
+            name = "Central Portal Snapshots"
+            url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        }
+        google()
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+rootProject.name = "webtrekk-android-sdk"
+
+include(":android-sdk")
+include(":sample")

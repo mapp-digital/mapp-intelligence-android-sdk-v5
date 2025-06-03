@@ -26,13 +26,11 @@
 package webtrekk.android.sdk.data
 
 import android.content.Context
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import webtrekk.android.sdk.customParams
 import webtrekk.android.sdk.data.dao.CustomParamDao
 import webtrekk.android.sdk.data.dao.TrackRequestDao
@@ -44,9 +42,6 @@ internal abstract class DbTest {
     lateinit var webtrekkDatabase: WebtrekkDatabase
     lateinit var trackRequestDao: TrackRequestDao
     lateinit var customParamDao: CustomParamDao
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     open fun setUp() {

@@ -1,0 +1,137 @@
+[versions]
+activity-ktx-version = "1.9.3"
+firebase-bom-version = "33.14.0"
+glide = "4.16.0"
+intelligence-android = "5.1.11"
+junit-jupiter-engine = "5.11.4"
+kotlin = "2.1.20"
+core-ktx = "1.16.0"
+appcompat = "1.7.0"
+kotlintest-runner-junit5 = "3.4.2"
+mapp-android = "6.0.28"
+material = "1.12.0"
+lifecycle-runtime-ktx = "2.8.7"
+coroutines-ktx = "1.8.1"
+activity-ktx = "1.10.1"
+fragment-ktx = "1.8.6"
+lifecycle-viewmodel-ktx = "2.8.7"
+browser = "1.8.0"
+media3-exoplayer = "1.7.1"
+media3-exoplayer-dash = "1.7.1"
+media3-session = "1.7.1"
+media3-ui = "1.7.1"
+okhttp = "4.12.0"
+recycler = "1.4.0"
+constraint-layout = "2.2.1"
+firebase-bom = "33.13.0"
+datastore-preferences = "1.1.4"
+coil = "2.5.0"
+media3 = "1.6.1"
+room-runtime = "2.7.1"
+runner = "1.6.2"
+work-manager = "2.10.1"
+play-services-location = "21.3.0"
+junit = "4.13.2"
+junit-jupiter = "5.11.4"
+mockk = "1.13.12"
+truth = "1.4.4"
+json = "20180813"
+mock-webserver = "4.12.0"
+kotlinx-coroutines-test = "1.8.1"
+androidx-test-junit = "1.2.1"
+androidx-test-espresso = "3.6.1"
+androidx-test-core = "1.6.1"
+androidx-test-mockk = "1.13.12"
+lifecycle-process = "2.8.7"
+work-testing = "2.10.1"
+
+[libraries]
+## BASE
+android-material = { module = "com.google.android.material:material", version.ref = "material" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment-ktx" }
+androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "media3-exoplayer" }
+androidx-media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3-exoplayer-dash" }
+androidx-media3-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "media3-exoplayer" }
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3-exoplayer" }
+androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3-session" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3-ui" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-runtime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-runtime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-runtime" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
+androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "work-testing" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx" }
+
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
+kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+
+kotlintest-runner-junit5 = { module = "io.kotlintest:kotlintest-runner-junit5", version.ref = "kotlintest-runner-junit5" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-ktx" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines-ktx" }
+
+
+mapp-android-intelligence = { module = "com.mapp.sdk:intelligence-android", version.ref = "intelligence-android" }
+mapp-android-engage = { module = "com.mapp.sdk:mapp-android", version.ref = "mapp-android" }
+
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
+
+
+## Chrome Tabs - browser
+browser = { module = "androidx.browser:browser", version.ref = "browser" }
+
+## UI components
+recycler = { module = "androidx.recyclerview:recyclerview", version.ref = "recycler" }
+constraint-layout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraint-layout" }
+
+## Datastore Prefs
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
+
+## Coil
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
+
+## Exoplayer media 3
+media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
+media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3" }
+media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
+
+## Worker
+work-manager = { module = "androidx.work:work-runtime-ktx", version.ref = "work-manager" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
+
+## Test
+junit4 = { module = "junit:junit", version.ref = "junit" }
+jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+json = { module = "org.json:json", version.ref = "json" }
+okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mock-webserver" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+
+
+## Android Test
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
+androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
+androidx-test-mockk = { module = "io.mockk:mockk-android", version.ref = "androidx-test-mockk" }
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle-process" }
+
+[bundles]
+base = ["appcompat", "android-material","core-ktx", "lifecycle-runtime-ktx", "kotlinx-coroutines-core", "kotlinx-coroutines-android", "androidx-activity-ktx", "androidx-fragment-ktx"]
+ui-components = ["recycler", "constraint-layout"]
+coil = ["coil", "coil-gif"]
+media3 = ["media3-exoplayer", "media3-exoplayer-dash", "media3-ui"]
+test = ["junit4", "jupiter", "mockk", "truth", "json", "kotlinx-coroutines-test", "okhttp3-mockwebserver"]
+android-test = ["androidx-test-junit", "androidx-test-mockk", "androidx-test-core", "androidx-test-espresso", "truth", "jupiter", "kotlinx-coroutines-test"]
