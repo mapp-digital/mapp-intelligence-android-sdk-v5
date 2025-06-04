@@ -1,11 +1,12 @@
 # Change Log
 ## Version 5.1.12-alpha01 *(UNRELEASED)*
 * Updated targetSdk to version 35
+* Updated gradle from 8.2 to 8.11.1
 * Updated android gradle plugin to version 8.10.1
 * Updated kotlin version to 2.1.21
 * Updated 3rd party dependencies to the latest versions
-* Updated gradle files to *.kts
-* Updated librarie
+* Migrated build configuration from groovy to Kotlin [https://developer.android.com/build/migrate-to-kotlin-dsl]
+* Migrated build versions to version catalogs [https://developer.android.com/build/migrate-to-catalogs]
 
 # Change Log
 ## Version 5.1.11 *(2024-12-02)*
