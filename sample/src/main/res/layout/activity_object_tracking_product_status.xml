@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
     android:paddingVertical="5dp"
+    android:fitsSystemWindows="true"
     tools:ignore="HardcodedText">
     <Button
         android:id="@+id/btnNoneStatus"

@@ -8,6 +8,7 @@
     android:keepScreenOn="true"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
+    android:fitsSystemWindows="true"
     tools:context=".UrlActivity">
 
     <com.google.android.material.card.MaterialCardView

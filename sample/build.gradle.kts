@@ -45,12 +45,12 @@ val trackIds = localProperties.getProperty("trackIds").toLong()
 
 android {
     namespace = "com.example.webtrekk.androidsdk"
-    compileSdk = 35
+    compileSdk = 36
     buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "com.example.webtrekk.androidsdk"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 7
         versionName = "1.0.11"
@@ -115,20 +115,15 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-    implementation(libs.androidx.media3.session)
-    implementation(libs.androidx.media3.exoplayer)
-    implementation(libs.androidx.media3.ui)
-    implementation(libs.androidx.media3.common)
-    implementation(libs.androidx.media3.exoplayer.dash)
-    implementation(libs.androidx.media3.exoplayer.hls)
+    implementation(libs.bundles.media3)
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
 
     implementation(libs.mapp.android.engage)
     implementation(libs.mapp.android.intelligence)
-    implementation(project(":android-sdk"))
+    //implementation(project(":android-sdk"))
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
