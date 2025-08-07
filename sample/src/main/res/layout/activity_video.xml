@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:background="@android:color/black"
+    android:fitsSystemWindows="true"
     tools:context=".VideoActivity">
+
 
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
