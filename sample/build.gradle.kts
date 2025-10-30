@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 /*
@@ -62,8 +63,12 @@ android {
     compileOptions {
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+
+    kotlin {
+        jvmToolchain(17) // Configure Java Toolchain for JDK 17
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17) // Set JVM target within compilerOptions
+        }
     }
 
     buildTypes {
@@ -122,8 +127,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.mapp.android.engage)
-    implementation(libs.mapp.android.intelligence)
-    //implementation(project(":android-sdk"))
+    //implementation(libs.mapp.android.intelligence)
+    implementation(project(":android-sdk"))
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
