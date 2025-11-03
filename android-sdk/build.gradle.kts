@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -15,10 +17,10 @@ fun getSdkVersionName(): String = "\"${VERSION}\""
 android {
     namespace = "webtrekk.android.sdk"
     compileSdk = 36
-    buildToolsVersion = "35.0.0"
+    buildToolsVersion = "36.0.0"
 
     lint {
-        targetSdk = 35
+        targetSdk = 36
         checkReleaseBuilds = false
         abortOnError = false
         textReport = true
@@ -48,8 +50,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        jvmToolchain(17) // Configure Java Toolchain for JDK 17
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17) // Set JVM target within compilerOptions
+        }
     }
 
     buildFeatures {
