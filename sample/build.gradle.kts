@@ -47,14 +47,14 @@ val trackIds = localProperties.getProperty("trackIds").toLong()
 android {
     namespace = "com.example.webtrekk.androidsdk"
     compileSdk = 36
-    buildToolsVersion = "35.0.0"
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "com.example.webtrekk.androidsdk"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 7
-        versionName = "1.0.11"
+        versionName = "1.0.12"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField(type = "String", name = "TRACK_DOMAIN", "\"$trackDomain\"")
         buildConfigField(type = "String", name = "TRACK_IDS", "\"$trackIds\"")

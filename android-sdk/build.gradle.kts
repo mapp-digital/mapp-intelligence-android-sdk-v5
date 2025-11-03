@@ -17,10 +17,10 @@ fun getSdkVersionName(): String = "\"${VERSION}\""
 android {
     namespace = "webtrekk.android.sdk"
     compileSdk = 36
-    buildToolsVersion = "35.0.0"
+    buildToolsVersion = "36.0.0"
 
     lint {
-        targetSdk = 35
+        targetSdk = 36
         checkReleaseBuilds = false
         abortOnError = false
         textReport = true

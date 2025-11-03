@@ -1,8 +1,11 @@
 package webtrekk.android.sdk
 
+import org.json.JSONObject
 import webtrekk.android.sdk.data.model.GenerationMode
+import webtrekk.android.sdk.util.webtrekkLogger
 
-class ActiveConfig(
+
+data class ActiveConfig(
     val trackDomains: String,
     val trackIds: List<String> = emptyList(),
     val everId: String?,
@@ -93,7 +96,25 @@ class ActiveConfig(
     }
 
     override fun toString(): String {
-        return "ActiveConfig(trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, everIdMode=${everIdMode?.name}, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatching, temporarySessionId=$temporarySessionId)"
+        return try {
+            toJsonJavaReflection(this@ActiveConfig).toString()
+        } catch (e: Exception) {
+            webtrekkLogger.error(e.toString())
+            "trackDomains='$trackDomains', trackIds=$trackIds, everId=$everId, everIdMode=${everIdMode?.name}, userAgent=$userAgent, userMatchingId=$userMatchingId, anonymousParams=$anonymousParams, logLevel=$logLevel, requestInterval=$requestInterval, requestsPerBatch=$requestsPerBatch, exceptionLogLevel=$exceptionLogLevel, appFirstOpen=$appFirstOpen, isOptOut=$isOptOut, isAnonymous=$isAnonymous, isFragmentAutoTracking=$isFragmentAutoTracking, isActivityAutoTracking=$isActivityAutoTracking, isAutoTracking=$isAutoTracking, isBatchSupport=$isBatchSupport, shouldMigrate=$shouldMigrate, sendVersionInEachRequest=$sendVersionInEachRequest, isUserMatchingEnabled=$isUserMatching, temporarySessionId=$temporarySessionId"
+        }
     }
 
+
+    fun toJsonJavaReflection(obj: Any): JSONObject {
+        val json = JSONObject()
+        val clazz = obj.javaClass
+
+        for (field in clazz.declaredFields) {
+            field.isAccessible = true
+            val name = field.name
+            val value = field.get(obj)
+            json.put(name, value)
+        }
+        return json
+    }
 }
