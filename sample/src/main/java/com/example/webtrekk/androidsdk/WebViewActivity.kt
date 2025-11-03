@@ -48,10 +48,12 @@ class WebViewActivity : AppCompatActivity() {
             WebtrekkWebInterface(Webtrekk.getInstance()),
             WebtrekkWebInterface.TAG
         )
+
         binding.webView.settings.apply {
             javaScriptEnabled=true
             textZoom=100
         }
+
         binding.webView.webViewClient=object :WebViewClient(){
             override fun onReceivedHttpAuthRequest(
                 view: WebView?,

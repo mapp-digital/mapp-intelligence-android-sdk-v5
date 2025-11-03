@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 /*
@@ -46,14 +47,14 @@ val trackIds = localProperties.getProperty("trackIds").toLong()
 android {
     namespace = "com.example.webtrekk.androidsdk"
     compileSdk = 36
-    buildToolsVersion = "35.0.0"
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "com.example.webtrekk.androidsdk"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 7
-        versionName = "1.0.11"
+        versionName = "1.0.12"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField(type = "String", name = "TRACK_DOMAIN", "\"$trackDomain\"")
         buildConfigField(type = "String", name = "TRACK_IDS", "\"$trackIds\"")
@@ -62,8 +63,12 @@ android {
     compileOptions {
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+
+    kotlin {
+        jvmToolchain(17) // Configure Java Toolchain for JDK 17
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17) // Set JVM target within compilerOptions
+        }
     }
 
     buildTypes {
@@ -122,8 +127,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.mapp.android.engage)
-    implementation(libs.mapp.android.intelligence)
-    //implementation(project(":android-sdk"))
+    //implementation(libs.mapp.android.intelligence)
+    implementation(project(":android-sdk"))
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)

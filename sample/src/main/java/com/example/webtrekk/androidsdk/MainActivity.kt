@@ -29,6 +29,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.appoxee.Appoxee
 import com.example.webtrekk.androidsdk.databinding.ActivityMainBinding
@@ -56,24 +57,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         prefs = Prefs(this)
 
         title = "${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME}"
-/*
-        val stringIds = BuildConfig.TRACK_IDS
-        val domain = BuildConfig.DOMEIN
-        val elements: List<String> = stringIds.split(",")
-        val webtrekkConfiguration=WebtrekkConfiguration.Builder(elements,domain).build()
+        /*
+                val stringIds = BuildConfig.TRACK_IDS
+                val domain = BuildConfig.DOMEIN
+                val elements: List<String> = stringIds.split(",")
+                val webtrekkConfiguration=WebtrekkConfiguration.Builder(elements,domain).build()
 
-        Webtrekk.getInstance().init(this, webtrekkConfiguration)
-*/
+                Webtrekk.getInstance().init(this, webtrekkConfiguration)
+        */
 
         binding.buttonPrintActiveConfig.setOnClickListener {
             val activeConfig = Webtrekk.getInstance().getCurrentConfiguration().toString()
-            Log.w(this::class.java.name,"ACTIVE CONFIG: $activeConfig")
+            Log.w(this::class.java.name, "ACTIVE CONFIG: $activeConfig")
+            AlertDialog.Builder(this)
+                .setTitle("Active config")
+                .setMessage(activeConfig)
+                .setPositiveButton("OK") { d, p ->
+                    d.dismiss()
+                }.show()
         }
 
         binding.buttonSendRequests.setOnClickListener {
@@ -134,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnObjectTrackingProductStatus.setOnClickListener {
-            val intent=Intent(this, ObjectTrackingProductStatus::class.java)
+            val intent = Intent(this, ObjectTrackingProductStatus::class.java)
             startActivity(intent)
         }
 
