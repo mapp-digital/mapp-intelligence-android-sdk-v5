@@ -10,12 +10,14 @@ import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import webtrekk.android.sdk.core.Sessions
+import webtrekk.android.sdk.data.dao.CustomParamDao
+import webtrekk.android.sdk.data.dao.TrackRequestDao
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.module.AppModule
+import webtrekk.android.sdk.module.DataModule
 import webtrekk.android.sdk.util.cacheTrackRequestParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
@@ -36,14 +38,21 @@ internal class ManualTrackTest : BaseExternalTest() {
 
     @Before
     override fun setup() {
+        mockkObject(DataModule)
+        val mockTrackRequestDao = mockk<TrackRequestDao>(relaxUnitFun = true)
+        val mockCustomParamDao = mockk<CustomParamDao>(relaxUnitFun = true)
+        every { DataModule.trackRequestDao } returns mockTrackRequestDao
+        every { DataModule.customParamsDao } returns mockCustomParamDao
+        every { DataModule.trackRequestRepository } returns mockk(relaxUnitFun = true)
+        every { DataModule.customParamsRepository } returns mockk(relaxUnitFun = true)
+
+        mockkObject(AppModule)
+        every { AppModule.logger } returns mockk(relaxed = true)
         super.setup()
     }
 
     @Before
     fun resetRequests() {
-        mockkObject(AppModule)
-        every { AppModule.logger } returns mockk(relaxed = true)
-
         cacheTrackRequest = mockk()
 
         cacheTrackRequestWithCustomParams = mockk()
