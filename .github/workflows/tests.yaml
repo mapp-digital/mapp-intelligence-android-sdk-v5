@@ -21,5 +21,5 @@ jobs:
           java-version: 17
 
       - name: Run unit tests
-        run: ./gradlew :mapp-engage-sdk:clean :mapp-engage-sdk:testProdReleaseUnitTest --no-daemon --stacktrace
+        run: ./gradlew :android:clean :android:testReleaseUnitTest --no-daemon --stacktrace
 

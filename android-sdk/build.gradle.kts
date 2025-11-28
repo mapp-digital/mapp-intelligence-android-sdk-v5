@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         resValue("string", "appoxee_sdk_version", getSdkVersionName())
         buildConfigField(type = "String", name = "VERSION_NAME", value = "\"$VERSION\"")
     }
@@ -62,15 +62,19 @@ android {
         buildConfig = true
     }
 
-    testOptions {
-        unitTests.isIncludeAndroidResources = false
-    }
+//    testOptions {
+//        unitTests.isIncludeAndroidResources = false
+//    }
 
     packaging {
         resources {
             pickFirsts += "META-INF/LICENSE.md"
             pickFirsts += "META-INF/LICENSE-notice.md"
         }
+    }
+
+    publishing {
+        singleVariant("release") {}
     }
 }
 
