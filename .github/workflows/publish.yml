@@ -37,8 +37,8 @@ jobs:
         run: |
           ./gradlew \
           :android-sdk:clean \
-          :android-sdk:testProdReleaseUnitTest \
-          :android-sdk:assembleProdRelease \
+          :android-sdk:testReleaseUnitTest \
+          :android-sdk:assembleRelease \
           :android-sdk:publishMavenPublicationToMavenLocal \
           :android-sdk:uploadToCentralPortal \
           -x test \
