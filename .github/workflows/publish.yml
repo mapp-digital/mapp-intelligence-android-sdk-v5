@@ -3,6 +3,9 @@ name: Upload to Maven Central
 on:
   workflow_dispatch:
 
+env:
+  CI: "true"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -29,6 +32,8 @@ jobs:
           echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" >> local.properties
           echo "signing.password=${{ secrets.SIGNING_KEY_PASSWORD }}" >> local.properties
           echo "signing.keyBase64=${{ secrets.SIGNING_KEY_ASC }}" >> local.properties
+          echo "trackIds=${{ secrets.TRACK_IDS }}" >> local.properties
+          echo "trackDomain=${{ secrets.TRACK_DOMAIN }}" >> local.properties
 
       - name: Make gradle executable
         run: chmod +x gradlew

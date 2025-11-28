@@ -2,10 +2,13 @@ name: Unit Tests
 description: Run Unit Tests and then Upload to Maven Central
 
 on:
-  push:
-    branches: ["**"]
-  pull_request:
+#  push:
+#    branches: ["**"]
+#  pull_request:
   workflow_dispatch:
+
+env:
+  CI: "true"
 
 jobs:
   test:

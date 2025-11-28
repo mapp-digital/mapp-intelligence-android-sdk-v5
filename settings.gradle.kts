@@ -48,4 +48,6 @@ dependencyResolutionManagement {
 rootProject.name = "webtrekk-android-sdk"
 
 include(":android-sdk")
-include(":sample")
+if (!System.getenv().containsKey("CI")) {
+    include(":sample")
+}
