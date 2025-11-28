@@ -1,0 +1,47 @@
+name: Upload to Maven Central
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Debug directory
+        run: |
+          ls -R .
+
+      - name: Create local.properties
+        run: |
+          echo "mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USERNAME }}" >> local.properties
+          echo "mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> local.properties
+          echo "signing.keyId=${{ secrets.SIGNING_KEY_ID }}" >> local.properties
+          echo "signing.password=${{ secrets.SIGNING_KEY_PASSWORD }}" >> local.properties
+          echo "signing.keyBase64=${{ secrets.SIGNING_KEY_ASC }}" >> local.properties
+
+      - name: Make gradle executable
+        run: chmod +x gradlew
+
+      - name: Publish to Maven Central
+        run: |
+          ./gradlew \
+          :mapp-engage-sdk:clean \
+          :mapp-engage-sdk:testProdReleaseUnitTest \
+          :mapp-engage-sdk:assembleProdRelease \
+          :mapp-engage-sdk:publishMavenPublicationToMavenLocal \
+          :mapp-engage-sdk:uploadToCentralPortal \
+          -x test \
+          -x check \
+          --stacktrace --no-daemon
+

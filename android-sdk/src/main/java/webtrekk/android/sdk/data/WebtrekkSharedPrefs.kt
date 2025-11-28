@@ -29,6 +29,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import webtrekk.android.sdk.data.model.GenerationMode
+import androidx.core.content.edit
 
 /**
  * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving
@@ -99,28 +100,28 @@ internal class WebtrekkSharedPrefs(val context: Context) {
             return previousSharedPreferences.getString(EVER_ID_KEY, "") ?: ""
         }
         set(value) {
-            previousSharedPreferences.edit().putString(EVER_ID_KEY, value).apply()
+            previousSharedPreferences.edit { putString(EVER_ID_KEY, value) }
         }
 
     var saveUrlData: String
         inline get() = sharedPreferences.getString(urlData, "") ?: ""
-        set(value) = sharedPreferences.edit().putString(urlData, value).apply()
+        set(value) = sharedPreferences.edit { putString(urlData, value) }
 
     var anonymousTracking: Boolean
         inline get() = sharedPreferences.getBoolean(ANONYMOUS_TRACKING, false)
         @SuppressLint("ApplySharedPref")
         set(value) {
-            sharedPreferences.edit().putBoolean(ANONYMOUS_TRACKING, value).commit()
+            sharedPreferences.edit(commit = true) { putBoolean(ANONYMOUS_TRACKING, value) }
         }
 
     var anonymousSuppress: Set<String>
         inline get() = sharedPreferences.getStringSet(ANONYMOUS_SUPPRESS_PARAM, emptySet())
             ?: emptySet()
-        set(value) = sharedPreferences.edit().putStringSet(ANONYMOUS_SUPPRESS_PARAM, value).apply()
+        set(value) = sharedPreferences.edit { putStringSet(ANONYMOUS_SUPPRESS_PARAM, value) }
 
     var configJson: String
         inline get() = sharedPreferences.getString(CONFIG, "") ?: ""
-        set(value) = sharedPreferences.edit().putString(CONFIG, value).apply()
+        set(value) = sharedPreferences.edit { putString(CONFIG, value) }
 
     fun contains(key: String): Boolean = sharedPreferences.contains(key)
 

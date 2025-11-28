@@ -113,6 +113,11 @@ abstract class Webtrekk protected constructor() {
     abstract fun init(context: Context, config: Config)
 
     /**
+     * To internally initialize SDK with previously provided configuration
+     */
+    internal abstract fun init(context: Context)
+
+    /**
      * Used as a manual tracking in case of disabling the auto tracking in [Config.autoTracking].
      * Use this method to track a specific page [android.app.Activity] with optional overriding
      * the local class name and optional some extra tracking params.

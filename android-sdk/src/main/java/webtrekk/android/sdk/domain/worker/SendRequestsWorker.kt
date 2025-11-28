@@ -68,12 +68,7 @@ internal class SendRequestsWorker(
             mutex.withLock {
                 logger.debug("doWork - starting... ${tags.joinToString(separator = ", ")}")
                 // this check and initialization is needed for cross platform solutions
-                if (!Webtrekk.getInstance().isInitialized()) {
-                    val configJson = WebtrekkSharedPrefs(applicationContext).configJson
-                    val config = WebtrekkConfiguration.fromJson(configJson)
-                    Webtrekk.getInstance().init(applicationContext, config)
-                    logger.debug("doWork - initialized!")
-                }
+                Webtrekk.getInstance().init(applicationContext)
 
                 /**
                  * [getCachedDataTracks] the injected internal interactor for getting the data from the data base.

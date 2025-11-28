@@ -46,6 +46,7 @@ import webtrekk.android.sdk.TrackingParams
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.WebtrekkConfiguration
 import webtrekk.android.sdk.api.UrlParams
+import webtrekk.android.sdk.data.WebtrekkSharedPrefs
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.model.GenerationMode
 import webtrekk.android.sdk.domain.external.AutoTrack
@@ -136,6 +137,19 @@ constructor() : Webtrekk(),
                 val configJson = config.toJson()
                 AppModule.webtrekkSharedPrefs.configJson = configJson
                 webtrekkLogger.info("CONFIG: $configJson")
+            } else {
+                webtrekkLogger.warn("Webtrekk is already initialized!")
+            }
+        }
+    }
+
+    override fun init(context: Context) {
+        synchronized(WebtrekkImpl::class) {
+            if (!LibraryModule.isInitialized()) {
+                val config = WebtrekkSharedPrefs(context).configJson.let {
+                    WebtrekkConfiguration.fromJson(it)
+                }
+                init(context, config)
             } else {
                 webtrekkLogger.warn("Webtrekk is already initialized!")
             }
