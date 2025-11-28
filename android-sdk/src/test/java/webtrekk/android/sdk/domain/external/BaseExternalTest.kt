@@ -12,14 +12,12 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.TestInstance
+import org.junit.After
+import org.junit.Before
 import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.core.WebtrekkImpl
 import webtrekk.android.sdk.util.configuration
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExperimentalCoroutinesApi
 open class BaseExternalTest {
 
@@ -27,27 +25,21 @@ open class BaseExternalTest {
     lateinit var appContext: Context
 
     protected val job = SupervisorJob()
-
     protected val dispatcher = Dispatchers.Unconfined
-
     protected val coroutineScope = CoroutineScope(dispatcher + job)
-
     protected val coroutineContext = coroutineScope.coroutineContext
 
     lateinit var webtrekk: Webtrekk
 
-    @BeforeAll
+    @Before
     open fun setup() {
-        MockKAnnotations.init(this)
-
+        MockKAnnotations.init(this, relaxUnitFun = true)
         Dispatchers.setMain(dispatcher)
-
         webtrekk = spyk<WebtrekkImpl>()
-
         webtrekk.init(appContext, configuration)
     }
 
-    @AfterAll
+    @After
     open fun tearDown() {
         coroutineScope.cancel()
         Dispatchers.resetMain()

@@ -1,70 +1,73 @@
-/*
- *  MIT License
- *
- *  Copyright (c) 2019 Webtrekk GmbH
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- *
- */
-
 package webtrekk.android.sdk.domain.internal
 
 import buildUrlRequestForTesting
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.mockkClass
+import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.api.datasource.SyncRequestsDataSourceImpl
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.util.dataTrack
 
-internal class ExecuteRequestTest : StringSpec({
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class ExecuteRequestTest {
 
-    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val syncRequestDataSource = mockkClass(SyncRequestsDataSourceImpl::class)
-    val executeRequest =
-        ExecuteRequest(trackRequestRepository, syncRequestDataSource)
+    @MockK
+    lateinit var trackRequestRepository: TrackRequestRepository
 
-    val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
-    val params = ExecuteRequest.Params(request = urlRequest, dataTrack = dataTrack)
+    @MockK
+    lateinit var syncRequestDataSource: SyncRequestsDataSourceImpl
 
-    "execute the request then update its track request's state" {
-        val resultSuccess = Result.success(dataTrack)
+    private lateinit var executeRequest: ExecuteRequest
 
-        coEvery {
-            syncRequestDataSource.sendRequest(urlRequest, dataTrack)
-        } returns resultSuccess
+    private val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
 
-        val syncRequestSuccess = syncRequestDataSource.sendRequest(urlRequest, dataTrack)
-
-        if (syncRequestSuccess.isSuccess) {
-            val updatedTrackRequest = syncRequestSuccess.getOrThrow().trackRequest
-            updatedTrackRequest.requestState = TrackRequest.RequestState.DONE
-
-            val updatedTrackRequestSuccess = Result.success(listOf(updatedTrackRequest))
-
-            coEvery {
-                trackRequestRepository.updateTrackRequests(updatedTrackRequest)
-            } returns updatedTrackRequestSuccess
-
-            executeRequest(params) shouldBe (resultSuccess)
-        }
+    private fun freshParams(): ExecuteRequest.Params {
+        val copiedTrack = dataTrack.copy(
+            trackRequest = dataTrack.trackRequest.copy(),
+            customParams = dataTrack.customParams.map { it.copy() }
+        )
+        return ExecuteRequest.Params(request = urlRequest, dataTrack = copiedTrack)
     }
-})
+
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        executeRequest = ExecuteRequest(trackRequestRepository, syncRequestDataSource)
+    }
+
+    @Test
+    fun `updates track request state to DONE when send succeeds`() = runTest {
+        val params = freshParams()
+        val resultSuccess = Result.success(params.dataTrack)
+        coEvery { syncRequestDataSource.sendRequest(urlRequest, params.dataTrack) } returns resultSuccess
+        coEvery { trackRequestRepository.updateTrackRequests(any<TrackRequest>()) } returns Result.success(listOf(params.dataTrack.trackRequest))
+
+        val result = executeRequest(params)
+
+        assertThat(result.isSuccess).isTrue()
+        assertThat(params.dataTrack.trackRequest.requestState).isEqualTo(TrackRequest.RequestState.DONE)
+        coVerify(exactly = 1) { syncRequestDataSource.sendRequest(urlRequest, params.dataTrack) }
+        coVerify(exactly = 1) { trackRequestRepository.updateTrackRequests(params.dataTrack.trackRequest) }
+    }
+
+    @Test
+    fun `updates track request state to FAILED when send fails`() = runTest {
+        val params = freshParams()
+        val failure = Result.failure<webtrekk.android.sdk.data.entity.DataTrack>(RuntimeException("boom"))
+        coEvery { syncRequestDataSource.sendRequest(urlRequest, params.dataTrack) } returns failure
+        coEvery { trackRequestRepository.updateTrackRequests(params.dataTrack.trackRequest) } returns Result.success(listOf(params.dataTrack.trackRequest))
+
+        val result = executeRequest(params)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(params.dataTrack.trackRequest.requestState).isEqualTo(TrackRequest.RequestState.FAILED)
+        coVerify(exactly = 1) { trackRequestRepository.updateTrackRequests(params.dataTrack.trackRequest) }
+    }
+}

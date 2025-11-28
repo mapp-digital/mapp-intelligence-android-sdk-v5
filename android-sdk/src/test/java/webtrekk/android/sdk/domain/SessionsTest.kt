@@ -25,26 +25,56 @@
 
 package webtrekk.android.sdk.domain
 
-import io.kotlintest.specs.StringSpec
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
+import io.mockk.justRun
+import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import org.junit.Before
+import org.junit.Test
+import webtrekk.android.sdk.core.SessionsImpl
+import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.data.dao.TrackRequestDao
 
-internal class SessionsTest : StringSpec({
+internal class SessionsTest {
 
-//    val webtrekkSharedPrefs = mockkClass(WebtrekkSharedPrefs::class)
-//    val sessions = SessionsImpl(webtrekkSharedPrefs)
-//    val everId = generateEverId()
+    private lateinit var webtrekkSharedPrefs: WebtrekkSharedPrefs
+    private lateinit var trackRequestDao: TrackRequestDao
+    private lateinit var sessions: SessionsImpl
 
-//    "generate ever ID then verify that the app is first start" {
-//        every {
-//            webtrekkSharedPrefs.contains(WebtrekkSharedPrefs.EVER_ID_KEY)
-//        } returns false
-//
-//        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.everId = everId } just Runs
-//
-//        every { webtrekkSharedPrefs.everId } returns everId
-//        every { webtrekkSharedPrefs.appFirstOpen} returns "1"
-//
-//        sessions.getEverId() shouldBe (everId)
-//        sessions.getAppFirstOpen() shouldBe ("1")
-//    }
-})
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        webtrekkSharedPrefs = mockk(relaxed = true)
+        trackRequestDao = mockk(relaxed = true)
+        sessions = SessionsImpl(webtrekkSharedPrefs, trackRequestDao, Dispatchers.Unconfined)
+    }
+
+    @Test
+    fun `getAppFirstOpen returns current value and resets when requested`() {
+        var storedFirstOpen = "1"
+        io.mockk.every { webtrekkSharedPrefs.appFirstOpen } answers { storedFirstOpen }
+        io.mockk.every { webtrekkSharedPrefs.appFirstOpen = any() } answers { storedFirstOpen = firstArg() }
+
+        val firstValue = sessions.getAppFirstOpen(updateValue = true)
+
+        assertThat(firstValue).isEqualTo("1")
+        assertThat(storedFirstOpen).isEqualTo("0")
+    }
+
+    @Test
+    fun `start and get current session updates flag`() {
+        var fns = "0"
+        io.mockk.every { webtrekkSharedPrefs.fns } answers { fns }
+        io.mockk.every { webtrekkSharedPrefs.fns = any() } answers { fns = firstArg() }
+
+        sessions.startNewSession()
+        assertThat(fns).isEqualTo("1")
+
+        val currentSession = sessions.getCurrentSession()
+        assertThat(currentSession).isEqualTo("1")
+        assertThat(fns).isEqualTo("0")
+        verify { webtrekkSharedPrefs.fns = "1" }
+    }
+}

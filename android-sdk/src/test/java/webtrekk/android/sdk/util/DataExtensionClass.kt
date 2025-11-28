@@ -1,13 +1,12 @@
 package webtrekk.android.sdk.util
 
-import org.junit.Assert.assertEquals
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
 
 class DataExtensionClass {
 
     @Test
-    fun testWebtrekkAppVersionSplittin() {
+    fun testWebtrekkAppVersionSplitting() {
         val version = "5.1.4.1"
 
         val trimmedVersion = version.split(".")
@@ -15,6 +14,6 @@ class DataExtensionClass {
             .joinToString(separator = "")
             .substring(0, 3)
 
-        Assertions.assertEquals(trimmedVersion, "514")
+        assertThat(trimmedVersion).isEqualTo("514")
     }
 }

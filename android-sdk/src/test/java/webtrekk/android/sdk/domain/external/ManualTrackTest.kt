@@ -1,18 +1,21 @@
 package webtrekk.android.sdk.domain.external
 
+import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
+import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
 import webtrekk.android.sdk.core.Sessions
 import webtrekk.android.sdk.domain.internal.CacheTrackRequest
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
+import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.cacheTrackRequestParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
@@ -21,7 +24,6 @@ import webtrekk.android.sdk.util.trackRequest
 import webtrekk.android.sdk.util.trackingParams
 
 @ExperimentalCoroutinesApi
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ManualTrackTest : BaseExternalTest() {
     @RelaxedMockK
     lateinit var sessions: Sessions
@@ -32,16 +34,21 @@ internal class ManualTrackTest : BaseExternalTest() {
 
     lateinit var manualTrack: ManualTrack
 
-    @BeforeAll
+    @Before
     override fun setup() {
         super.setup()
     }
 
-    @BeforeEach
+    @Before
     fun resetRequests() {
+        mockkObject(AppModule)
+        every { AppModule.logger } returns mockk(relaxed = true)
+
         cacheTrackRequest = mockk()
 
         cacheTrackRequestWithCustomParams = mockk()
+
+        every { sessions.getUrlKey() } returns emptyMap()
 
         manualTrack = ManualTrack(
             coroutineContext = coroutineScope.coroutineContext,
@@ -94,5 +101,6 @@ internal class ManualTrackTest : BaseExternalTest() {
             coVerify(exactly = 1) {
                 cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams)
             }
+            assertThat(params.isOptOut).isFalse()
         }
 }

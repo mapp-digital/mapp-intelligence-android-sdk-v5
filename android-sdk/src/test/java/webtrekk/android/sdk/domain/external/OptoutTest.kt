@@ -25,15 +25,16 @@
 
 package webtrekk.android.sdk.domain.external
 
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.core.Scheduler
 import webtrekk.android.sdk.core.Sessions
@@ -41,8 +42,7 @@ import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.domain.internal.ClearTrackRequests
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
-@ExperimentalCoroutinesApi
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class OptoutTest : BaseExternalTest() {
     @RelaxedMockK
     lateinit var sessions: Sessions
@@ -58,9 +58,10 @@ internal class OptoutTest : BaseExternalTest() {
 
     lateinit var optOut: Optout
 
-    @BeforeAll
+    @Before
     override fun setup() {
         super.setup()
+        MockKAnnotations.init(this, relaxUnitFun = true)
         optOut = Optout(
             coroutineContext = coroutineScope.coroutineContext,
             sessions = sessions,
@@ -122,5 +123,6 @@ internal class OptoutTest : BaseExternalTest() {
         coVerify(exactly = 1) {
             sessions.optOut(params.optOutValue)
         }
+        assertThat(params.optOutValue).isFalse()
     }
 }

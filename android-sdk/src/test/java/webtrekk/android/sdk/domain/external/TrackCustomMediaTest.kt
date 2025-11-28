@@ -1,13 +1,14 @@
 package webtrekk.android.sdk.domain.external
 
+import com.google.common.truth.Truth.assertThat
 import io.mockk.Called
+import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
@@ -20,16 +21,16 @@ import webtrekk.android.sdk.util.trackingParamsMediaParam
  * Copyright (c) 2020 MAPP.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class TrackCustomMediaTest : BaseExternalTest() {
     @MockK
     lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
     lateinit var trackCustomMedia: TrackCustomMedia
 
-    @BeforeAll
+    @Before
     override fun setup() {
         super.setup()
+        MockKAnnotations.init(this, relaxUnitFun = true)
         trackCustomMedia = TrackCustomMedia(
             coroutineContext,
             cacheTrackRequestWithCustomParams
@@ -70,5 +71,6 @@ internal class TrackCustomMediaTest : BaseExternalTest() {
         coVerify {
             cacheTrackRequestWithCustomParams(cacheTrackRequestWithCT)
         }
+        assertThat(params.isOptOut).isFalse()
     }
 }
