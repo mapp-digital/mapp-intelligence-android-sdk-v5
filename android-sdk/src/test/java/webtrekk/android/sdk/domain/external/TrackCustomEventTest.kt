@@ -25,13 +25,13 @@
 
 package webtrekk.android.sdk.domain.external
 
+import com.google.common.truth.Truth.assertThat
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.api.RequestType
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
@@ -39,8 +39,7 @@ import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 import webtrekk.android.sdk.util.trackRequest
 import webtrekk.android.sdk.util.trackingParams
 
-@ExperimentalCoroutinesApi
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class TrackCustomEventTest : BaseExternalTest() {
 
     @RelaxedMockK
@@ -48,7 +47,7 @@ internal class TrackCustomEventTest : BaseExternalTest() {
 
     lateinit var trackCustomEvent: TrackCustomEvent
 
-    @BeforeAll
+    @Before
     override fun setup() {
         super.setup()
         trackCustomEvent = TrackCustomEvent(

@@ -96,8 +96,8 @@ dependencies {
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.kotlintest.runner.junit5)
-    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.truth)
+    testImplementation(libs.okhttp3.mockwebserver)
 
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.core)

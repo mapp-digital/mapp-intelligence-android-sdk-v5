@@ -1,62 +1,58 @@
-/*
- *  MIT License
- *
- *  Copyright (c) 2019 Webtrekk GmbH
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- *
- */
-
 package webtrekk.android.sdk.domain.internal
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.mockkClass
+import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.util.cacheTrackRequestParams
 import webtrekk.android.sdk.util.trackRequest
 import java.io.IOException
 
-internal class CacheTrackRequestTest : StringSpec({
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class CacheTrackRequestTest {
 
-    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
+    @MockK
+    lateinit var trackRequestRepository: TrackRequestRepository
 
-    "cache trackRequest and return success" {
-        val resultSuccess = Result.success(trackRequest)
+    private lateinit var cacheTrackRequest: CacheTrackRequest
 
-        coEvery {
-            trackRequestRepository.addTrackRequest(trackRequest)
-        } returns resultSuccess
-
-        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultSuccess)
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        cacheTrackRequest = CacheTrackRequest(trackRequestRepository)
     }
 
-    "cache trackRequest and return failure encapsulating the exception" {
-        val resultFailure = Result.failure<TrackRequest>(IOException("error"))
+    @Test
+    fun `returns cached track when repository succeeds`() = runTest {
+        val expected = Result.success(trackRequest)
 
-        coEvery {
-            trackRequestRepository.addTrackRequest(trackRequest)
-        } returns resultFailure
+        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns expected
 
-        cacheTrackRequest(cacheTrackRequestParams) shouldBe (resultFailure)
+        val result = cacheTrackRequest(cacheTrackRequestParams)
+
+        assertThat(result.isSuccess).isTrue()
+        assertThat(result.getOrNull()).isEqualTo(trackRequest)
+        coVerify(exactly = 1) { trackRequestRepository.addTrackRequest(trackRequest) }
     }
-})
+
+    @Test
+    fun `propagates failure from repository`() = runTest {
+        val error = IOException("error")
+        val expected = Result.failure<TrackRequest>(error)
+
+        coEvery { trackRequestRepository.addTrackRequest(trackRequest) } returns expected
+
+        val result = cacheTrackRequest(cacheTrackRequestParams)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()).isEqualTo(error)
+        coVerify(exactly = 1) { trackRequestRepository.addTrackRequest(trackRequest) }
+    }
+}

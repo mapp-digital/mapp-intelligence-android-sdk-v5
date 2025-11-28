@@ -37,18 +37,16 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.core.AppState
 import webtrekk.android.sdk.data.entity.DataAnnotationClass
 import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.coroutinesDispatchersProvider
 
-@ExperimentalCoroutinesApi
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class AutoTrackTest {
 
     @RelaxedMockK
@@ -68,7 +66,7 @@ internal class AutoTrackTest {
 
     private val coroutineScope = CoroutineScope(dispatcher + job)
 
-    @BeforeAll
+    @Before
     fun setup() {
         MockKAnnotations.init(this)
         Dispatchers.setMain(dispatcher)
@@ -87,7 +85,7 @@ internal class AutoTrackTest {
         }
     }
 
-    @AfterAll
+    @After
     fun tearDown() {
         Dispatchers.resetMain()
         coroutineScope.cancel()

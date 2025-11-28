@@ -1,74 +1,96 @@
-/*
- *  MIT License
- *
- *  Copyright (c) 2019 Webtrekk GmbH
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- *
- */
-
 package webtrekk.android.sdk.domain.internal
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.mockkClass
+import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Test
+import webtrekk.android.sdk.data.entity.CustomParam
+import webtrekk.android.sdk.data.entity.DataTrack
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.CustomParamRepository
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
+import webtrekk.android.sdk.domain.internal.CacheTrackRequestWithCustomParams.Params
+import webtrekk.android.sdk.extension.toCustomParams
 import webtrekk.android.sdk.util.cacheTrackRequestWithCustomParamsParams
 import webtrekk.android.sdk.util.customParams
-import webtrekk.android.sdk.util.dataTrack
 import webtrekk.android.sdk.util.trackRequest
 import java.io.IOException
 
-internal class CacheTrackRequestWithCustomParamsTest : StringSpec({
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class CacheTrackRequestWithCustomParamsTest {
 
-    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val customParamRepository = mockkClass(CustomParamRepository::class)
-    val cacheTrackRequestWithCustomParams =
-        CacheTrackRequestWithCustomParams(
-            trackRequestRepository,
-            customParamRepository
-        )
+    @MockK
+    lateinit var trackRequestRepository: TrackRequestRepository
 
-    "cache track request with its custom params and return success" {
-        val resultSuccess = Result.success(dataTrack)
+    @MockK
+    lateinit var customParamRepository: CustomParamRepository
 
-        coEvery {
-            trackRequestRepository.addTrackRequest(trackRequest)
-        } returns Result.success(trackRequest)
+    private lateinit var cacheTrackRequestWithCustomParams: CacheTrackRequestWithCustomParams
 
-        coEvery {
-            customParamRepository.addCustomParams(customParams)
-        } returns Result.success(customParams)
-
-        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultSuccess)
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        cacheTrackRequestWithCustomParams =
+            CacheTrackRequestWithCustomParams(trackRequestRepository, customParamRepository)
     }
 
-    "cache track request with its custom params and return failure" {
-        val resultFailure = Result.failure<TrackRequest>(IOException("error"))
-
-        coEvery {
-            trackRequestRepository.addTrackRequest(trackRequest)
-        } returns resultFailure
-
-        cacheTrackRequestWithCustomParams(cacheTrackRequestWithCustomParamsParams) shouldBe (resultFailure)
+    private fun freshParams(): Params {
+        val trackRequestCopy = trackRequest.copy()
+        return Params(trackRequestCopy, cacheTrackRequestWithCustomParamsParams.trackingParams.toMap())
     }
-})
+
+    @Test
+    fun `returns composed DataTrack when repositories succeed`() = runTest {
+        val params = freshParams()
+        val expectedCustomParams: List<CustomParam> =
+            params.trackingParams.toCustomParams(params.trackRequest.id)
+        val expected = Result.success(DataTrack(params.trackRequest, expectedCustomParams))
+
+        coEvery { trackRequestRepository.addTrackRequest(params.trackRequest) } returns Result.success(params.trackRequest)
+        coEvery { customParamRepository.addCustomParams(expectedCustomParams) } returns Result.success(expectedCustomParams)
+
+        val result = cacheTrackRequestWithCustomParams(params)
+
+        assertThat(result.isSuccess).isTrue()
+        assertThat(result.getOrNull()).isEqualTo(expected.getOrNull())
+        coVerify(exactly = 1) { trackRequestRepository.addTrackRequest(params.trackRequest) }
+        coVerify(exactly = 1) { customParamRepository.addCustomParams(expectedCustomParams) }
+    }
+
+    @Test
+    fun `propagates failure when caching track request fails`() = runTest {
+        val params = freshParams()
+        val failure = Result.failure<TrackRequest>(IOException("error"))
+
+        coEvery { trackRequestRepository.addTrackRequest(params.trackRequest) } returns failure
+
+        val result = cacheTrackRequestWithCustomParams(params)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()).isEqualTo(failure.exceptionOrNull())
+        coVerify(exactly = 1) { trackRequestRepository.addTrackRequest(params.trackRequest) }
+        coVerify(exactly = 0) { customParamRepository.addCustomParams(any()) }
+    }
+
+    @Test
+    fun `propagates failure when caching custom params fails`() = runTest {
+        val params = freshParams()
+        val expectedCustomParams = params.trackingParams.toCustomParams(params.trackRequest.id)
+        val error = IOException("error")
+
+        coEvery { trackRequestRepository.addTrackRequest(params.trackRequest) } returns Result.success(params.trackRequest)
+        coEvery { customParamRepository.addCustomParams(expectedCustomParams) } returns Result.failure(error)
+
+        val result = cacheTrackRequestWithCustomParams(params)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()).isEqualTo(error)
+        coVerify(exactly = 1) { trackRequestRepository.addTrackRequest(params.trackRequest) }
+        coVerify(exactly = 1) { customParamRepository.addCustomParams(expectedCustomParams) }
+    }
+}

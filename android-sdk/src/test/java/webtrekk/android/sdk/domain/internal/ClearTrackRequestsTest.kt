@@ -1,77 +1,65 @@
-/*
- *  MIT License
- *
- *  Copyright (c) 2019 Webtrekk GmbH
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- *
- */
-
 package webtrekk.android.sdk.domain.internal
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.mockkClass
+import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Test
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.util.trackRequests
 import java.io.IOException
 
-internal class ClearTrackRequestsTest : StringSpec({
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class ClearTrackRequestsTest {
 
-    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val clearTrackRequests = ClearTrackRequests(trackRequestRepository)
+    @MockK
+    lateinit var trackRequestRepository: TrackRequestRepository
 
-    "clear all track requests and return success" {
-        val resultSuccess = Result.success(true)
+    private lateinit var clearTrackRequests: ClearTrackRequests
 
-        // We send emptyList of track requests to clear all track requests
-        val emptyParams = ClearTrackRequests.Params(emptyList())
-
-        coEvery {
-            trackRequestRepository.deleteAllTrackRequests()
-        } returns resultSuccess
-
-        clearTrackRequests(emptyParams) shouldBe (resultSuccess)
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        clearTrackRequests = ClearTrackRequests(trackRequestRepository)
     }
 
-    "clear list of track requests and return success" {
-        val resultSuccess = Result.success(true)
+    @Test
+    fun `clears all track requests when params are empty`() = runTest {
+        coEvery { trackRequestRepository.deleteAllTrackRequests() } returns Result.success(true)
 
-        val params = ClearTrackRequests.Params(trackRequests)
+        val result = clearTrackRequests(ClearTrackRequests.Params(emptyList()))
 
-        coEvery {
-            trackRequestRepository.deleteTrackRequests(trackRequests)
-        } returns resultSuccess
-
-        clearTrackRequests(params) shouldBe (resultSuccess)
+        assertThat(result.isSuccess).isTrue()
+        assertThat(result.getOrNull()).isTrue()
+        coVerify(exactly = 1) { trackRequestRepository.deleteAllTrackRequests() }
+        coVerify(exactly = 0) { trackRequestRepository.deleteTrackRequests(any()) }
     }
 
-    "clear track requests and return failure" {
-        val resultFailure = Result.failure<Boolean>(IOException("error"))
+    @Test
+    fun `clears only provided track requests when list is present`() = runTest {
+        coEvery { trackRequestRepository.deleteTrackRequests(trackRequests) } returns Result.success(true)
 
-        val emptyParams = ClearTrackRequests.Params(emptyList())
+        val result = clearTrackRequests(ClearTrackRequests.Params(trackRequests))
 
-        coEvery {
-            trackRequestRepository.deleteAllTrackRequests()
-        } returns resultFailure
-
-        clearTrackRequests(emptyParams) shouldBe (resultFailure)
+        assertThat(result.isSuccess).isTrue()
+        assertThat(result.getOrNull()).isTrue()
+        coVerify(exactly = 1) { trackRequestRepository.deleteTrackRequests(trackRequests) }
+        coVerify(exactly = 0) { trackRequestRepository.deleteAllTrackRequests() }
     }
-})
+
+    @Test
+    fun `propagates failure from repository`() = runTest {
+        val error = IOException("error")
+        coEvery { trackRequestRepository.deleteAllTrackRequests() } returns Result.failure(error)
+
+        val result = clearTrackRequests(ClearTrackRequests.Params(emptyList()))
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()).isEqualTo(error)
+        coVerify(exactly = 1) { trackRequestRepository.deleteAllTrackRequests() }
+    }
+}

@@ -26,35 +26,31 @@
 package webtrekk.android.sdk
 
 import android.content.Context
-import io.kotlintest.Spec
-import io.kotlintest.shouldThrow
-import io.kotlintest.specs.StringSpec
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkClass
-import webtrekk.android.sdk.domain.external.Optout
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
+import org.junit.Before
+import org.junit.Test
+import org.junit.Assert.assertThrows
 
-internal class WebtrekkTest : StringSpec() {
+internal class WebtrekkTest {
 
     private val webtrekk = Webtrekk.getInstance()
-    private val config = mockkClass(Config::class)
-    private val appContext = mockkClass(Context::class, relaxed = true)
 
-    private val optOut = mockk<Optout>(relaxed = true)
+    @MockK
+    lateinit var config: Config
 
-    override fun beforeSpec(spec: Spec) {
+    @MockK(relaxed = true)
+    lateinit var appContext: Context
+
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
     }
 
-    override fun afterSpec(spec: Spec) {
-    }
-
-    init {
-        ("throw IllegalStateException if init() not called first before invoking any other method") {
-            every { optOut.isActive() } returns true
-
-            shouldThrow<IllegalStateException> {
-                webtrekk.hasOptOut()
-            }
+    @Test
+    fun `throws IllegalStateException when init not called`() {
+        assertThrows(IllegalStateException::class.java) {
+            webtrekk.hasOptOut()
         }
     }
 }

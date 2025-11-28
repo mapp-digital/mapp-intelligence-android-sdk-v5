@@ -1,49 +1,83 @@
 package webtrekk.android.sdk.domain.internal
 
 import buildUrlRequestForTesting
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import com.google.common.truth.Truth.assertThat
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.mockkClass
-import webtrekk.android.sdk.api.datasource.SyncRequestsDataSourceImpl
+import io.mockk.coVerify
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Test
+import webtrekk.android.sdk.api.datasource.SyncPostRequestsDataSource
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.data.repository.TrackRequestRepository
 import webtrekk.android.sdk.util.dataTrack
+import webtrekk.android.sdk.util.dataTracks
 
 /**
  * Created by Aleksandar Marinkovic on 16/07/2020.
  * Copyright (c) 2020 MAPP.
  */
-internal class ExecutePostRequestTest : StringSpec({
+@OptIn(ExperimentalCoroutinesApi::class)
+internal class ExecutePostRequestTest {
 
-    val trackRequestRepository = mockkClass(TrackRequestRepository::class)
-    val syncRequestDataSource = mockkClass(SyncRequestsDataSourceImpl::class)
-    val executeRequest =
-        ExecuteRequest(trackRequestRepository, syncRequestDataSource)
+    @MockK
+    lateinit var trackRequestRepository: TrackRequestRepository
 
-    val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
-    val params = ExecuteRequest.Params(request = urlRequest, dataTrack = dataTrack)
+    @MockK
+    lateinit var syncRequestDataSource: SyncPostRequestsDataSource<List<webtrekk.android.sdk.data.entity.DataTrack>>
 
-    "execute the request then update its track request's state" {
-        val resultSuccess = Result.success(dataTrack)
+    private lateinit var executePostRequest: ExecutePostRequest
 
-        coEvery {
-            syncRequestDataSource.sendRequest(urlRequest, dataTrack)
-        } returns resultSuccess
+    private val urlRequest = dataTrack.buildUrlRequestForTesting("https://www.webtrekk.com", listOf("123"))
 
-        val syncRequestSuccess = syncRequestDataSource.sendRequest(urlRequest, dataTrack)
-
-        if (syncRequestSuccess.isSuccess) {
-            val updatedTrackRequest = syncRequestSuccess.getOrThrow().trackRequest
-            updatedTrackRequest.requestState = TrackRequest.RequestState.DONE
-
-            val updatedTrackRequestSuccess = Result.success(listOf(updatedTrackRequest))
-
-            coEvery {
-                trackRequestRepository.updateTrackRequests(updatedTrackRequest)
-            } returns updatedTrackRequestSuccess
-
-            executeRequest(params) shouldBe (resultSuccess)
+    private fun freshParams(): ExecutePostRequest.Params {
+        val copiedTracks = dataTracks.map { original ->
+            original.copy(
+                trackRequest = original.trackRequest.copy(),
+                customParams = original.customParams.map { it.copy() }
+            )
         }
+        return ExecutePostRequest.Params(request = urlRequest, dataTracks = copiedTracks)
     }
-})
+
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        executePostRequest = ExecutePostRequest(trackRequestRepository, syncRequestDataSource)
+    }
+
+    @Test
+    fun `marks requests as done when sending succeeds`() = runTest {
+        val params = freshParams()
+        val resultSuccess = Result.success(params.dataTracks)
+        coEvery { syncRequestDataSource.sendRequest(urlRequest, params.dataTracks) } returns resultSuccess
+        coEvery { trackRequestRepository.updateTrackRequests(any<TrackRequest>()) } returns Result.success(listOf(dataTrack.trackRequest))
+
+        val result = executePostRequest(params)
+
+        assertThat(result.isSuccess).isTrue()
+        params.dataTracks.forEach {
+            assertThat(it.trackRequest.requestState).isEqualTo(TrackRequest.RequestState.DONE)
+        }
+        coVerify(exactly = params.dataTracks.size) { trackRequestRepository.updateTrackRequests(any<TrackRequest>()) }
+    }
+
+    @Test
+    fun `marks requests as failed when sending fails`() = runTest {
+        val params = freshParams()
+        val failure = Result.failure<List<webtrekk.android.sdk.data.entity.DataTrack>>(RuntimeException("boom"))
+        coEvery { syncRequestDataSource.sendRequest(urlRequest, params.dataTracks) } returns failure
+        coEvery { trackRequestRepository.updateTrackRequests(any<TrackRequest>()) } returns Result.success(listOf(dataTrack.trackRequest))
+
+        val result = executePostRequest(params)
+
+        assertThat(result.isFailure).isTrue()
+        params.dataTracks.forEach {
+            assertThat(it.trackRequest.requestState).isEqualTo(TrackRequest.RequestState.FAILED)
+        }
+        coVerify(exactly = params.dataTracks.size) { trackRequestRepository.updateTrackRequests(any<TrackRequest>()) }
+    }
+}
