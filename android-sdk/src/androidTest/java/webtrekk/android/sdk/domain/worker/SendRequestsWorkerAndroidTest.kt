@@ -35,7 +35,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
-internal class SendRequestsWorkerTest : WorkManagerTest() {
+internal class SendRequestsWorkerAndroidTest : WorkManagerTest() {
 
     @Test
     @Throws(Exception::class)

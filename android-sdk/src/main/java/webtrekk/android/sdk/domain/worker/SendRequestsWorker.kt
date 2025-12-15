@@ -105,7 +105,12 @@ internal class SendRequestsWorker(
                             // Must execute requests sync and in order
                             if (batchSupported) {
                                 // group requests by everId
-                                dataTracks.asSequence()
+                                val orderedDataTracks = dataTracks.sortedBy {
+                                    it.trackRequest.timeStamp?.toLongOrNull()
+                                        ?: Long.MAX_VALUE
+                                }
+
+                                orderedDataTracks.asSequence()
                                     .batch(requestPerBatch)
                                     .forEach { dataTrack ->
                                         val urlRequest =
@@ -115,7 +120,7 @@ internal class SendRequestsWorker(
                                         executePostRequest(
                                             ExecutePostRequest.Params(
                                                 request = urlRequest,
-                                                dataTracks = dataTracks
+                                                dataTracks = dataTrack
                                             )
                                         )
                                             .onSuccess { logger.debug("Sent the request successfully $it") }
