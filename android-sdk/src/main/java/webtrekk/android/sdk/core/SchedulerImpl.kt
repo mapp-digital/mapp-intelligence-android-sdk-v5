@@ -104,7 +104,7 @@ internal class SchedulerImpl(
 
                 workManager.enqueueUniquePeriodicWork(
                     CLEAN_UP_WORKER,
-                    ExistingPeriodicWorkPolicy.UPDATE,
+                    ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                     cleanWorkBuilder.build()
                 )
             }

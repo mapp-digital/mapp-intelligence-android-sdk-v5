@@ -17,7 +17,7 @@ import webtrekk.android.sdk.Webtrekk
 class PageRequestsActivity : AppCompatActivity() {
     private lateinit var binding:ActivityPageRequestsBinding
 
-    private val REQUEST_COUNT=100
+    private val REQUEST_COUNT=10000
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityPageRequestsBinding.inflate(layoutInflater)
