@@ -113,7 +113,6 @@ internal class SchedulerImpl(
 
     override suspend fun sendRequestsThenCleanUp() {
         withContext(AppModule.dispatchers.mainDispatcher) {
-            webtrekkLogger.debug("SEND WORKER - sendRequestsThenCleanUp")
             mutex.withLock {
                 val activeStates = listOf(
                     WorkInfo.State.RUNNING,
@@ -144,6 +143,7 @@ internal class SchedulerImpl(
     }
 
     private fun scheduleSendAndCleanWorkers() {
+        webtrekkLogger.debug("SEND WORKER - scheduleSendAndCleanWorkers")
         val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
             putString("trackDomain", config.trackDomain)

@@ -30,6 +30,7 @@ android {
         minSdk = 23
         resValue("string", "appoxee_sdk_version", getSdkVersionName())
         buildConfigField(type = "String", name = "VERSION_NAME", value = "\"$VERSION\"")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
