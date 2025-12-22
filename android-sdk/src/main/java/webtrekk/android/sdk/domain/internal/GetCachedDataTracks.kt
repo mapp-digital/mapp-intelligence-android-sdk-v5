@@ -33,7 +33,7 @@ import webtrekk.android.sdk.domain.InternalInteractor
 /**
  * Get all the cached data tracks from the data base.
  */
-internal class GetCachedDataTracks(
+internal open class GetCachedDataTracks(
     private val trackRequestRepository: TrackRequestRepository
 ) : InternalInteractor<GetCachedDataTracks.Params, List<DataTrack>> {
 

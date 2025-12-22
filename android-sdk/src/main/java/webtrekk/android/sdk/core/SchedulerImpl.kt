@@ -73,6 +73,7 @@ internal class SchedulerImpl(
                 ).setConstraints(constraints)
                     .setInitialDelay(0, TimeUnit.MILLISECONDS)
                     .setInputData(data)
+                    .addTag(SendRequestsWorker::class.java.name)
 
                 val sendRequestsWorker = workBuilder.build()
 
@@ -103,7 +104,7 @@ internal class SchedulerImpl(
 
                 workManager.enqueueUniquePeriodicWork(
                     CLEAN_UP_WORKER,
-                    ExistingPeriodicWorkPolicy.UPDATE,
+                    ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                     cleanWorkBuilder.build()
                 )
             }
@@ -112,12 +113,29 @@ internal class SchedulerImpl(
 
     override suspend fun sendRequestsThenCleanUp() {
         withContext(AppModule.dispatchers.mainDispatcher) {
-            webtrekkLogger.debug("SEND WORKER - sendRequestsThenCleanUp")
             mutex.withLock {
-                // check if SendRequestsWorker already running as periodic work request
-                val query = WorkQuery.fromTags(SendRequestsWorker::class.java.name)
-                val workers = workManager.getWorkInfos(query).get()
-                if (workers.none { it.state in listOf(WorkInfo.State.RUNNING) }) {
+                val activeStates = listOf(
+                    WorkInfo.State.RUNNING,
+                    WorkInfo.State.BLOCKED,
+                )
+
+                // check if SendRequestsWorker already running/enqueued as periodic or one-time work
+                val periodicQuery = WorkQuery.Builder
+                    .fromTags(listOf(SendRequestsWorker::class.java.name))
+                    .addStates(activeStates)
+                    .build()
+                val periodicWorkers = workManager.getWorkInfos(periodicQuery).get()
+
+                val oneTimeQuery = WorkQuery.Builder
+                    .fromUniqueWorkNames(listOf(ONE_TIME_REQUEST))
+                    .addStates(activeStates)
+                    .build()
+                val oneTimeWorkers = workManager.getWorkInfos(oneTimeQuery).get()
+
+                val hasActiveSend = periodicWorkers.any { it.state in activeStates } ||
+                        oneTimeWorkers.any { it.state in activeStates }
+
+                if (!hasActiveSend) {
                     scheduleSendAndCleanWorkers()
                 }
             }
@@ -125,6 +143,7 @@ internal class SchedulerImpl(
     }
 
     private fun scheduleSendAndCleanWorkers() {
+        webtrekkLogger.debug("SEND WORKER - scheduleSendAndCleanWorkers")
         val data = Data.Builder().apply {
             putStringArray("trackIds", config.trackIds.toTypedArray())
             putString("trackDomain", config.trackDomain)
@@ -132,6 +151,7 @@ internal class SchedulerImpl(
 
         val sendWorkBuilder = OneTimeWorkRequest.Builder(SendRequestsWorker::class.java)
             .setInputData(data)
+            .addTag(SendRequestsWorker::class.java.name)
 
         val cleanWorkBuilder = OneTimeWorkRequest.Builder(CleanUpWorker::class.java)
             .setInputData(data)
