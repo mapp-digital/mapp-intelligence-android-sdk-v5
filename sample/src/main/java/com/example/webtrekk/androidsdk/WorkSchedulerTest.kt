@@ -87,7 +87,6 @@ internal class MyWorker(context: Context, workerParameters: WorkerParameters) :
                 workManager.getWorkInfosForUniqueWork(workName).get().firstOrNull()
             if (currentWork == null || currentWork.state != WorkInfo.State.RUNNING) {
                 val constraints = Constraints.Builder()
-                    .setRequiresCharging(true)
                     .build()
                 val inputData = Data.Builder()
                     .putInt("workNumber", workNumber)
@@ -112,7 +111,6 @@ internal class MyWorker(context: Context, workerParameters: WorkerParameters) :
                 workManager.getWorkInfosForUniqueWork(periodicWorkName).get().firstOrNull()
             if (currentWork == null || currentWork.state != WorkInfo.State.RUNNING) {
                 val constraints = Constraints.Builder()
-                    .setRequiresCharging(true)
                     .build()
                 val inputData = Data.Builder()
                     .putInt("workNumber", workNumber)

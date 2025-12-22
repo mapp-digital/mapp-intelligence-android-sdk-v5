@@ -26,17 +26,19 @@
 package webtrekk.android.sdk.domain.worker
 
 import android.content.Context
+import android.util.Log
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.Companion.PRIVATE
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import webtrekk.android.sdk.Logger
 import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.WebtrekkConfiguration
-import webtrekk.android.sdk.data.WebtrekkSharedPrefs
+import webtrekk.android.sdk.core.WebtrekkLogger
 import webtrekk.android.sdk.data.entity.TrackRequest
 import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
@@ -49,6 +51,7 @@ import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.batchSupported
 import webtrekk.android.sdk.util.requestPerBatch
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * [WorkManager] worker that retrieves the data from the data base, builds the requests and send them to the server.
@@ -59,10 +62,32 @@ internal class SendRequestsWorker(
 ) :
     CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result = coroutineScope {
+        // If already running → skip this execution
+        if (!isRunning.compareAndSet(false, true)) {
+            Log.i(
+                this::class.simpleName,
+                "Another instance of ${this.javaClass.simpleName} already running"
+            )
+            Result.success()
+        }
+
+        try {
+            processDataSending()
+            Result.success()
+        } catch (e: Exception) {
+            Result.failure()
+        } finally {
+            // Always release lock
+            isRunning.set(false)
+        }
+    }
+
+    @VisibleForTesting(otherwise = PRIVATE)
+    private suspend fun processDataSending() {
         /**
          * [logger] the injected logger from Webtrekk.
          */
-        val logger by lazy { AppModule.logger }
+        val logger by lazy { WebtrekkLogger(Logger.Level.BASIC) }
 
         withContext(AppModule.dispatchers.ioDispatcher) {
             mutex.withLock {
@@ -105,7 +130,12 @@ internal class SendRequestsWorker(
                             // Must execute requests sync and in order
                             if (batchSupported) {
                                 // group requests by everId
-                                dataTracks.asSequence()
+                                val orderedDataTracks = dataTracks.sortedBy {
+                                    it.trackRequest.timeStamp?.toLongOrNull()
+                                        ?: Long.MAX_VALUE
+                                }
+
+                                orderedDataTracks.asSequence()
                                     .batch(requestPerBatch)
                                     .forEach { dataTrack ->
                                         val urlRequest =
@@ -115,7 +145,7 @@ internal class SendRequestsWorker(
                                         executePostRequest(
                                             ExecutePostRequest.Params(
                                                 request = urlRequest,
-                                                dataTracks = dataTracks
+                                                dataTracks = dataTrack
                                             )
                                         )
                                             .onSuccess { logger.debug("Sent the request successfully $it") }
@@ -140,12 +170,12 @@ internal class SendRequestsWorker(
                     }
                     .onFailure { logger.error("Error getting cached data tracks: $it") }
                 logger.debug("SEND WORKER - END ${this@SendRequestsWorker}")
-                return@withContext Result.success()
             }
         }
     }
 
     companion object {
+        private val isRunning = AtomicBoolean(false)
         private val mutex = Mutex()
         const val TAG = "send_track_requests"
         const val TAG_ONE_TIME_WORKER = "send_track_requests_now"

@@ -30,6 +30,7 @@ android {
         minSdk = 23
         resValue("string", "appoxee_sdk_version", getSdkVersionName())
         buildConfigField(type = "String", name = "VERSION_NAME", value = "\"$VERSION\"")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -98,6 +99,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     testImplementation(libs.okhttp3.mockwebserver)
+    testImplementation(libs.androidx.work.testing)
 
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.core)
