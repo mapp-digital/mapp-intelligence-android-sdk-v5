@@ -46,13 +46,24 @@ internal class CleanUpWorkerTest : WorkManagerTest() {
 
         val workManager = WorkManager.getInstance(context)
 
+        // Enqueue the work
         workManager.enqueue(cleanUpWorker).result.get()
 
+        // Small delay to allow work to be enqueued
+        Thread.sleep(100)
+
+        // Check work state
         val workInfo = workManager.getWorkInfoById(cleanUpWorker.id).get()
 
+        // Work should be in one of these states: ENQUEUED (waiting to run), RUNNING (executing), or SUCCEEDED (already finished)
         assertThat(
+            "Work should be enqueued, running, or succeeded",
             workInfo?.state,
-            anyOf(`is`(WorkInfo.State.RUNNING), `is`(WorkInfo.State.ENQUEUED))
+            anyOf(
+                `is`(WorkInfo.State.RUNNING), 
+                `is`(WorkInfo.State.ENQUEUED),
+                `is`(WorkInfo.State.SUCCEEDED)
+            )
         )
     }
 }

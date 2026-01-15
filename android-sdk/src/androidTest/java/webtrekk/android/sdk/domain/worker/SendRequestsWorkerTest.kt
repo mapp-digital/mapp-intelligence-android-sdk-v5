@@ -34,8 +34,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
-import java.util.concurrent.atomic.AtomicInteger
-import kotlin.math.max
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -47,12 +45,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import webtrekk.android.sdk.ActiveConfig
 import webtrekk.android.sdk.Config
-import webtrekk.android.sdk.Webtrekk
 import webtrekk.android.sdk.core.WebtrekkImpl
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.module.InteractorModule
 import webtrekk.android.sdk.util.CoroutineDispatchers
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.math.max
 
 /**
  * Verifies two SendRequestsWorker instances never process cached data in parallel.
