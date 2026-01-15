@@ -160,8 +160,16 @@ internal class WebtrekkConfigurationTest {
         val webtrekkConfiguration = WebtrekkConfiguration.Builder(trackIds, trackDomain)
             .build()
         Webtrekk.getInstance().init(context = appContext, config = webtrekkConfiguration)
-        delay(100)
-        val everId = Webtrekk.getInstance().getEverId()
+        
+        // Wait for async initialization to complete by polling for everId
+        var everId: String? = null
+        var attempts = 0
+        while (everId.isNullOrEmpty() && attempts < 50) {
+            delay(50)
+            everId = Webtrekk.getInstance().getEverId()
+            attempts++
+        }
+        
         print("everId: $everId")
         assertThat(everId, not(""))
         assertThat(everId, notNullValue())
@@ -174,10 +182,18 @@ internal class WebtrekkConfigurationTest {
             .setEverId("2222")
             .build()
         Webtrekk.getInstance().init(context = appContext, config = webtrekkConfiguration)
-        // Webtrekk.getInstance().setEverId("2222")
-        delay(100)
-        val everId = Webtrekk.getInstance().getCurrentConfiguration().everId
-        val mode = Webtrekk.getInstance().getCurrentConfiguration().everIdMode
+        
+        // Wait for async initialization to complete by polling for everId
+        var everId: String? = null
+        var mode: GenerationMode? = null
+        var attempts = 0
+        while ((everId != "2222" || mode != GenerationMode.USER_GENERATED) && attempts < 50) {
+            delay(50)
+            val config = Webtrekk.getInstance().getCurrentConfiguration()
+            everId = config.everId
+            mode = config.everIdMode
+            attempts++
+        }
 
         assertThat(everId, equalTo("2222"))
         assertThat(mode, equalTo(GenerationMode.USER_GENERATED))

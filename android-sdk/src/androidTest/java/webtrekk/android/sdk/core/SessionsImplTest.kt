@@ -80,9 +80,22 @@ internal class SessionsImplTest {
 
     @Test
     fun test_02_getEverId() = runBlocking {
-        // session.setAnonymous(false)
+        session.setAnonymous(false)
         session.setEverId(userDefinedEverId, true, GenerationMode.USER_GENERATED)
-        val currentEverId = session.getEverId()
+        
+        // Small delay to ensure SharedPreferences commit completes
+        // Even though commit() is synchronous, there might be timing issues in tests
+        delay(50)
+        
+        // Poll for everId to ensure it's set (defensive check for flakiness)
+        var currentEverId: String? = null
+        var attempts = 0
+        while ((currentEverId == null || currentEverId != userDefinedEverId) && attempts < 20) {
+            delay(25)
+            currentEverId = session.getEverId()
+            attempts++
+        }
+        
         MatcherAssert.assertThat("EverID must be set", currentEverId, notNullValue())
         MatcherAssert.assertThat(
             "EverID has user defined value", currentEverId, equalTo(

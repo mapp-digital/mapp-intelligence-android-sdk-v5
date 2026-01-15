@@ -1,9 +1,11 @@
 # Change Log
-## Version 5.1.12-alpha01 *(UNRELEASED)*
-* Updated targetSdk to version 35
-* Updated gradle from 8.2 to 8.11.1
-* Updated android gradle plugin to version 8.10.1
-* Updated kotlin version to 2.1.21
+## Version 5.1.12 *(UNRELEASED)*
+* Fixed wrong ordering of requests when sent in batch
+* Fixed exception in EngageIntegrationReceiver when SDK integrated in react native plugin
+* Updated targetSdk to version 36
+* Updated gradle from 8.2 to 8.13.2
+* Updated android gradle plugin to version 8.13
+* Updated kotlin version to 2.2.21
 * Updated 3rd party dependencies to the latest versions
 * Migrated build configuration from groovy to Kotlin [https://developer.android.com/build/migrate-to-kotlin-dsl]
 * Migrated build versions to version catalogs [https://developer.android.com/build/migrate-to-catalogs]
