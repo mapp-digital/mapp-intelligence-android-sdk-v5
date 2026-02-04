@@ -57,6 +57,6 @@ fun <T : RoomDatabase> buildRoomDatabase(
     context.applicationContext,
     database,
     databaseName
-).fallbackToDestructiveMigration()
+).fallbackToDestructiveMigration(true)
     .addCallback(callback)
     .build()

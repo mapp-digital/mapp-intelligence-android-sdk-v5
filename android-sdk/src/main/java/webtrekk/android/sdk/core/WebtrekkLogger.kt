@@ -58,7 +58,6 @@ internal class WebtrekkLogger(level: Logger.Level) :
         basicMessage = when (logger) {
             Logger.Level.NONE -> null
             Logger.Level.BASIC -> date.toString()
-            else -> null
         }
     }
 

@@ -54,11 +54,11 @@ inline fun <reified T : Any> T?.nullOrEmptyThrowError(propertyName: T): T {
         is String? -> if (this.isNullOrBlank())
             error("$propertyName is missing in the configurations. $propertyName is required in the configurations.")
 
-        is List<*>? -> if (this.isNullOrEmpty())
+        is List<*>? -> if (this.isEmpty())
             error("$propertyName is missing in the configurations. $propertyName is required in the configurations.")
     }
 
-    return this as T
+    return this
 }
 
 /**

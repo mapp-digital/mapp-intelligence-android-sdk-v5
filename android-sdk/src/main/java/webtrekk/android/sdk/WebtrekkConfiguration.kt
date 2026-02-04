@@ -49,7 +49,7 @@ import webtrekk.android.sdk.util.webtrekkLogger
  *      .build()
  *
  */
-data class WebtrekkConfiguration private constructor(
+class WebtrekkConfiguration private constructor(
     override var trackIds: List<String>,
     override var trackDomain: String,
     override val logLevel: Logger.Level,

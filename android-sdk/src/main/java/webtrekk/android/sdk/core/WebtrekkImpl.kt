@@ -497,8 +497,8 @@ constructor() : Webtrekk(),
         return config.exceptionLogLevel
     }
 
-    override fun setExceptionLogLevel(exceptionLogLevel: ExceptionType) {
-        config.exceptionLogLevel = exceptionLogLevel
+    override fun setExceptionLogLevel(exceptionType: ExceptionType) {
+        config.exceptionLogLevel = exceptionType
         initUncaughtExceptionTracking()
     }
 
