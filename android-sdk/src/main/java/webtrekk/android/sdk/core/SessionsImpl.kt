@@ -210,8 +210,8 @@ internal class SessionsImpl(
         webtrekkSharedPrefs.anonymousSuppress = enabled
     }
 
-    override fun setTemporarySessionId(sessionId: String?) {
-        this.temporarySessionId = sessionId
+    override fun setTemporarySessionId(userId: String?) {
+        this.temporarySessionId = userId
     }
 
     override fun getTemporarySessionId(): String? {

@@ -127,8 +127,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.mapp.android.engage)
-    //implementation(libs.mapp.android.intelligence)
-    implementation(project(":android-sdk"))
+    implementation(libs.mapp.android.intelligence)
+    //implementation(project(":android-sdk"))
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)

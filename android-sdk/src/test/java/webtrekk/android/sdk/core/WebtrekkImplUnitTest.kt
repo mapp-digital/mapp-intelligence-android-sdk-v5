@@ -227,7 +227,7 @@ internal class WebtrekkImplUnitTest {
         val mockPackageManager = mockk<android.content.pm.PackageManager>(relaxed = true)
         val mockPackageInfo = mockk<android.content.pm.PackageInfo>(relaxed = true)
         mockPackageInfo.versionName = "1.0.0"
-        mockPackageInfo.versionCode = 1
+        mockPackageInfo.longVersionCode = 1
         every { mockContext.packageName } returns "com.test.package"
         every { mockContext.getPackageManager() } returns mockPackageManager
         every {
