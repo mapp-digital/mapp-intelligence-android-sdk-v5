@@ -16,3 +16,4 @@ testers_webtrekk.txt
 ./sample/release/*
 /android-sdk/3F5AB862.asc
 /.vscode/settings.json
+/sample/google-services.json
