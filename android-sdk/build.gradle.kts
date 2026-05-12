@@ -134,7 +134,7 @@ tasks.withType<Test>().configureEach {
     }
 }
 
-tasks.register<JacocoReport>("jacocoTestReport") {
+tasks.register<JacocoReport>("jacocoProdDebugUnitTestReport") {
     group = "verification"
     description = "Generates JaCoCo coverage reports for debug unit tests."
 
