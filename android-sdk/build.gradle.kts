@@ -56,7 +56,6 @@ android {
     }
 
     kotlin {
-        jvmToolchain(17) // Configure Java Toolchain for JDK 17
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17) // Set JVM target within compilerOptions
         }
