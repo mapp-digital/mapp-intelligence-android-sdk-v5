@@ -134,18 +134,11 @@ tasks.withType<Test>().configureEach {
     }
 }
 
-tasks.register("testProdDebugUnitTest") {
+tasks.register<JacocoReport>("jacocoDebugUnitTestReport") {
     group = "verification"
-    description = "Compatibility alias for CI jobs that expect a prodDebug unit test variant."
+    description = "Generates JaCoCo coverage reports for debug unit tests."
 
     dependsOn("testDebugUnitTest")
-}
-
-tasks.register<JacocoReport>("jacocoProdDebugUnitTestReport") {
-    group = "verification"
-    description = "Generates JaCoCo coverage reports for prodDebug unit tests."
-
-    dependsOn("testProdDebugUnitTest")
 
     reports {
         xml.required.set(true)
