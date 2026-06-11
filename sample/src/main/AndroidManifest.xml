@@ -28,6 +28,9 @@
             android:name=".MediaExample"
             android:exported="false" />
         <activity
+            android:name=".RapidScrollMediaTestActivity"
+            android:exported="false" />
+        <activity
             android:name=".VideoActivity"
             android:exported="false" />
         <activity

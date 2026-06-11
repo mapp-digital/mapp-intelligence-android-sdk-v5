@@ -190,14 +190,6 @@ constructor() : Webtrekk(),
         trackCustomPage(page.name, page.toHasMap())
     }
 
-    override fun trackMedia(media: MediaEvent) {
-        this.trackMedia(
-            pageName = media.pageName,
-            mediaName = media.parameters.name,
-            trackingParams = media.toHasMap()
-        )
-    }
-
     override fun trackAction(action: ActionEvent) {
         if (!cash.canContinue(action.campaignParameters)) {
             action.campaignParameters = null
@@ -247,6 +239,14 @@ constructor() : Webtrekk(),
                 ), coroutineDispatchers
             )
         }
+
+    override fun trackMedia(media: MediaEvent) {
+        this.trackMedia(
+            pageName = media.pageName,
+            mediaName = media.parameters.name,
+            trackingParams = media.toHasMap()
+        )
+    }
 
     override fun trackMedia(mediaName: String, trackingParams: Map<String, String>) {
         this.trackMedia(mediaName, mediaName, trackingParams)

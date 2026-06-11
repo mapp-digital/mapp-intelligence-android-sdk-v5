@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_margin="15dp"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textRapidScrollMediaTestInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This test simulates rapid scrolling through 100 videos. Each video is viewed for 100ms and sends INIT, PLAY, STOP media tracking events. Before each run, all SDK tracking DB records are deleted. After the run, DB records are validated for total count and duplicate/missing video-action pairs."
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textRapidScrollMediaTestStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Press the button to run the test."
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonRunRapidScrollMediaTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Run Rapid Scroll Test (100 Videos)" />
+</LinearLayout>

@@ -7,7 +7,7 @@ plugins {
     id("com.google.firebase.appdistribution") version "5.2.0" apply false
     id("org.jetbrains.kotlin.jvm") version "2.3.0" apply false
     id("com.google.devtools.ksp") version "2.3.0" apply false
-    id("io.github.tafilovic.central-portal-publisher") version "2.0.10" apply false
+    id("io.github.tafilovic.central-portal-publisher") version "2.0.11" apply false
 }
 
 gradle.projectsEvaluated {

@@ -175,7 +175,6 @@ class VideoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     // Internal methods
-    @OptIn(UnstableApi::class)
     private fun initializePlayer() {
         if (!::player.isInitialized) {
             player = ExoPlayer.Builder(this)
