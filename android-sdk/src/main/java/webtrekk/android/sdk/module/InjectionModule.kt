@@ -5,7 +5,6 @@ import androidx.work.Constraints
 import androidx.work.WorkManager
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CompletableJob
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
@@ -79,13 +78,16 @@ object AppModule {
     internal val appState: AppState<DataAnnotationClass> by lazy { provideAppState() }
 
     private fun provideAppState(): AppState<DataAnnotationClass> {
-        return if (LibraryModule.configuration.fragmentsAutoTracking && LibraryModule.configuration.activityAutoTracking)
-            AppStateImpl(sessions = InteractorModule.sessions)
-        else if (LibraryModule.configuration.fragmentsAutoTracking)
-            FragmentStateImpl()
-        else if (LibraryModule.configuration.activityAutoTracking)
-            ActivityAppStateImpl(sessions = InteractorModule.sessions)
-        else DisabledStateImpl()
+        val config = LibraryModule.configuration
+        return when {
+            config.fragmentsAutoTracking && config.activityAutoTracking ->
+                AppStateImpl(sessions = InteractorModule.sessions)
+            config.fragmentsAutoTracking ->
+                FragmentStateImpl()
+            config.activityAutoTracking ->
+                ActivityAppStateImpl(sessions = InteractorModule.sessions)
+            else -> DisabledStateImpl()
+        }
     }
 }
 

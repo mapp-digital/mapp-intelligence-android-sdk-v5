@@ -89,10 +89,8 @@ internal fun List<CustomParam>.buildCustomParams(
 
         if (paramKey == InternalParam.MEDIA_CODE_PARAM_EXCHANGER)
             paramKey = CampaignParam.MEDIA_CODE
-        if (paramKey == CampaignParam.MEDIA_CODE) {
-            if (!(paramVal.contains("=") || paramVal.contains("%3D") || paramVal.contains("%253D"))) {
-                paramVal = (InternalParam.WT_MC_DEFAULT + "=").encodeToUTF8() + paramVal
-            }
+        if (paramKey == CampaignParam.MEDIA_CODE && !(paramVal.contains("=") || paramVal.contains("%3D") || paramVal.contains("%253D"))) {
+            paramVal = (InternalParam.WT_MC_DEFAULT + "=").encodeToUTF8() + paramVal
         }
         if (!anonymous || !anonymousParam.contains(paramKey)) {
             string.append("&${paramKey.encodeToUTF8()}=${paramVal.encodeToUTF8()}")

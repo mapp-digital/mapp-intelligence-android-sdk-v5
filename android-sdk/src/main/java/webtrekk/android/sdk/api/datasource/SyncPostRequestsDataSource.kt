@@ -30,7 +30,7 @@ import okhttp3.Request
 /**
  * Interface represents the data source of interacting with the Api.
  */
-internal interface SyncPostRequestsDataSource<R> {
+internal fun interface SyncPostRequestsDataSource<R> {
 
     /**
      * Returns the result of a [Request] encapsulated in a [Result] with the [receiver].

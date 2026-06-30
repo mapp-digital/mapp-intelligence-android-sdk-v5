@@ -173,9 +173,8 @@ class WebtrekkConfiguration private constructor(
             this.versionInEachRequest = enabled
         }
 
-        fun isUserMatchingEnabled(): Boolean {
-            return this.userMatchingEnabled
-        }
+        val isUserMatchingEnabled: Boolean
+            get() = this.userMatchingEnabled
 
         fun setUserMatchingEnabled(enabled: Boolean) = apply {
             this.userMatchingEnabled = enabled
@@ -352,7 +351,7 @@ class WebtrekkConfiguration private constructor(
                 shouldMigrate = obj.optBoolean("shouldMigrate"),
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
                 workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
-                userMatchingEnabled = if (obj.has("userMatchingEnabled")) obj.optBoolean("userMatchingEnabled") else false,
+                userMatchingEnabled = obj.has("userMatchingEnabled") && obj.optBoolean("userMatchingEnabled"),
                 everId = if (obj.has("everId")) obj.optString("everId") else null,
                 everIdMode = everIdMode,
             )

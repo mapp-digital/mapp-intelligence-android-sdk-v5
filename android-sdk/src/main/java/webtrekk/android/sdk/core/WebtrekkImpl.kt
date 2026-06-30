@@ -266,14 +266,14 @@ constructor() : Webtrekk(),
 
             if (!params.containsKey(MediaParam.MEDIA_DURATION) ||
                 params[MediaParam.MEDIA_DURATION].isNullOrEmpty() ||
-                "null".equals(params[MediaParam.MEDIA_DURATION], true)
+                params[MediaParam.MEDIA_DURATION].equals("null", ignoreCase = true)
             ) {
                 params[MediaParam.MEDIA_DURATION] = "0"
             }
 
             if (!params.containsKey(MediaParam.MEDIA_POSITION) ||
                 params[MediaParam.MEDIA_POSITION].isNullOrEmpty() ||
-                "null".equals(params[MediaParam.MEDIA_POSITION], true)
+                params[MediaParam.MEDIA_POSITION].equals("null", ignoreCase = true)
             ) {
                 params[MediaParam.MEDIA_POSITION] = "0"
             }

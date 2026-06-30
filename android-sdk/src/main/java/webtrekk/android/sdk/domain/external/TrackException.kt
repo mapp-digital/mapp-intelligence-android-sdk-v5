@@ -68,10 +68,8 @@ internal class TrackException(
                 params[UrlParams.CRASH_NAME] = exception.javaClass.name
                 if (exception.message != null)
                     params[UrlParams.CRASH_MESSAGE] = exception.message!!
-                if (exception.cause != null) {
-                    if (exception.cause?.message != null) {
-                        params[UrlParams.CRASH_CAUSE_MESSAGE] = exception.cause?.message!!
-                    }
+                if (exception.cause != null && exception.cause?.message != null) {
+                    params[UrlParams.CRASH_CAUSE_MESSAGE] = exception.cause?.message!!
                 }
                 params[UrlParams.CRASH_STACK] = exception.stackTrace.createString()
                 if (exception.cause != null)

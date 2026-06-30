@@ -46,7 +46,7 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         inline get() {
             return sharedPreferences.getString(DMC_USER_ID, null)
         }
-        set(value) = sharedPreferences.edit().putString(DMC_USER_ID, value).apply()
+        set(value) = sharedPreferences.edit { putString(DMC_USER_ID, value) }
 
     var everId: String?
         inline get() {
@@ -54,7 +54,7 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         }
         @SuppressLint("ApplySharedPref")
         set(value) {
-            sharedPreferences.edit().putString(EVER_ID_KEY, value).commit()
+            sharedPreferences.edit(commit = true) { putString(EVER_ID_KEY, value) }
         }
 
     var everIdGenerationMode: GenerationMode?
@@ -67,33 +67,33 @@ internal class WebtrekkSharedPrefs(val context: Context) {
         }
         set(value) {
             if (value != null) {
-                sharedPreferences.edit().putInt(EVER_ID_GENERATION_MODE, value.mode).apply()
+                sharedPreferences.edit { putInt(EVER_ID_GENERATION_MODE, value.mode) }
             } else {
-                sharedPreferences.edit().remove(EVER_ID_GENERATION_MODE).apply()
+                sharedPreferences.edit { remove(EVER_ID_GENERATION_MODE) }
             }
         }
 
     var appFirstOpen: String
         inline get() = sharedPreferences.getString(APP_FIRST_OPEN, "1") ?: "1"
         set(value) {
-            sharedPreferences.edit().putString(APP_FIRST_OPEN, value).apply()
+            sharedPreferences.edit { putString(APP_FIRST_OPEN, value) }
         }
 
     var fns: String
         inline get() = sharedPreferences.getString(NEW_SESSION_KEY, "1") ?: "1"
-        set(value) = sharedPreferences.edit().putString(NEW_SESSION_KEY, value).apply()
+        set(value) = sharedPreferences.edit { putString(NEW_SESSION_KEY, value) }
 
     var optOut: Boolean
         inline get() = sharedPreferences.getBoolean(USER_OPT_OUT, false)
-        set(value) = sharedPreferences.edit().putBoolean(USER_OPT_OUT, value).apply()
+        set(value) = sharedPreferences.edit { putBoolean(USER_OPT_OUT, value) }
 
     var appVersion: String
         inline get() = sharedPreferences.getString(APP_VERSION, "") ?: ""
-        set(value) = sharedPreferences.edit().putString(APP_VERSION, value).apply()
+        set(value) = sharedPreferences.edit { putString(APP_VERSION, value) }
 
     var isMigrated: Boolean
         inline get() = sharedPreferences.getBoolean(MIGRATED, false)
-        set(value) = sharedPreferences.edit().putBoolean(MIGRATED, value).apply()
+        set(value) = sharedPreferences.edit { putBoolean(MIGRATED, value) }
 
     var previousEverId: String?
         get() {

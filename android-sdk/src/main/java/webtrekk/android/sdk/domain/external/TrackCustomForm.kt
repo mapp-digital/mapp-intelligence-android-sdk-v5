@@ -78,16 +78,7 @@ internal class TrackCustomForm(
             val params = emptyMap<String, String>().toMutableMap()
             params[RequestType.FORM.value] =
                 invokeParams.formName + "|" + invokeParams.confirmButton.toInt()
-            params[UrlParams.FORM_FIELD] = createField(
-                invokeParams.viewGroup,
-                invokeParams.trackingIds,
-                invokeParams.renameFields,
-                invokeParams.changeFieldsValue,
-                invokeParams.anonymous,
-                invokeParams.fieldsOrder,
-                invokeParams.anonymousSpecificFields,
-                invokeParams.fullContentSpecificFields
-            )
+            params[UrlParams.FORM_FIELD] = createField(invokeParams)
             // Cache the track request with its custom parafms.
             cacheTrackRequestWithCustomParams(
                 CacheTrackRequestWithCustomParams.Params(
@@ -100,36 +91,27 @@ internal class TrackCustomForm(
         }
     }
 
-    private fun createField(
-        viewGroup: ViewGroup,
-        trackingIds: List<Int>,
-        renameFields: Map<Int, String>,
-        changeFieldsValue: Map<Int, String>,
-        anonymous: Boolean,
-        fieldsOrder: List<Int>,
-        anonymousSpecificFields: List<Int>,
-        fullContentSpecificFields: List<Int>
-    ): String {
-
+    private fun createField(params: Params): String {
         var array: MutableList<View> = mutableListOf()
-        viewGroup.parseView(array)
-        array = array.notTrackedView(trackingIds).toMutableList()
+        params.viewGroup.parseView(array)
+        array = array.notTrackedView(params.trackingIds).toMutableList()
         var listFormField = mutableListOf<FormField>()
         array.forEach { view: View ->
             if (view.isTrackable()) {
-                val name: String? = renameFields[view.id]
-                val value: String? = changeFieldsValue[view.id]
-                val formView = view.toFormField(name, anonymous, value)
-                if (anonymousSpecificFields.contains(view.id)) {
+                val formView = view.toFormField(
+                    params.renameFields[view.id],
+                    params.anonymous,
+                    params.changeFieldsValue[view.id]
+                )
+                if (params.anonymousSpecificFields.contains(view.id)) {
                     formView.anonymous = true
-                } else if (fullContentSpecificFields.contains(view.id)) {
+                } else if (params.fullContentSpecificFields.contains(view.id)) {
                     formView.anonymous = false
                 }
                 listFormField.add(formView)
             }
         }
-        listFormField = listFormField.orderList(fieldsOrder)
-
+        listFormField = listFormField.orderList(params.fieldsOrder)
         return listFormField.toRequest()
     }
 

@@ -28,7 +28,6 @@ package webtrekk.android.sdk.domain.external
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import webtrekk.android.sdk.core.AppState

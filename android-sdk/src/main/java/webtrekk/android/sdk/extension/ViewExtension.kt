@@ -71,6 +71,43 @@ internal fun ViewGroup.parseView(array: MutableList<View>): MutableList<View> {
     return array
 }
 
+private fun View.resolveFieldValueAndType(formField: FormField) {
+    when (this) {
+        is EditText -> {
+            formField.fieldValue = if (text != null && text.isNotEmpty()) text.toString() else "empty"
+            formField.fieldType = getInputTypeString()
+        }
+        is SearchView -> {
+            formField.fieldValue = if (query != null && query.isNotEmpty()) query.toString() else "empty"
+            formField.fieldType = "SearchView"
+        }
+        is RadioButton -> {
+            formField.fieldValue = if (isChecked) text.toString() else "empty"
+            formField.fieldType = "RadioButton"
+        }
+        is ToggleButton -> {
+            formField.fieldValue = if (isChecked) text.toString() else "empty"
+            formField.fieldType = "ToggleButton"
+        }
+        is Switch -> {
+            formField.fieldValue = if (isChecked) text.toString() else "empty"
+            formField.fieldType = "Switch"
+        }
+        is CheckBox -> {
+            formField.fieldValue = if (isChecked) text.toString() else "empty"
+            formField.fieldType = "CheckBox"
+        }
+        is RatingBar -> {
+            formField.fieldValue = rating.toString()
+            formField.fieldType = "RatingBar"
+        }
+        is Spinner -> {
+            formField.fieldValue = selectedItem.toString()
+            formField.fieldType = "Spinner"
+        }
+    }
+}
+
 internal fun View.toFormField(
     name: String? = null,
     anonymous: Boolean = false,
@@ -83,46 +120,7 @@ internal fun View.toFormField(
     }
     formField.lastFocus = this.isFocused
     formField.anonymous = anonymous
-    when (this) {
-        is EditText -> {
-            formField.fieldValue = if (this.text != null) this.text.toString() else "empty"
-            if (formField.fieldValue.isEmpty()) {
-                formField.fieldValue = "empty"
-            }
-            formField.fieldType = getInputTypeString()
-        }
-        is SearchView -> {
-            formField.fieldValue = if (this.query != null) this.query.toString() else "empty"
-            if (formField.fieldValue.isEmpty()) {
-                formField.fieldValue = "empty"
-            }
-            formField.fieldType = "SearchView"
-        }
-        is RadioButton -> {
-            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
-            formField.fieldType = "RadioButton"
-        }
-        is ToggleButton -> {
-            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
-            formField.fieldType = "ToggleButton"
-        }
-        is Switch -> {
-            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
-            formField.fieldType = "Switch"
-        }
-        is CheckBox -> {
-            formField.fieldValue = if (isChecked) this.text.toString() else "empty"
-            formField.fieldType = "CheckBox"
-        }
-        is RatingBar -> {
-            formField.fieldValue = rating.toString()
-            formField.fieldType = "RatingBar"
-        }
-        is Spinner -> {
-            formField.fieldValue = selectedItem.toString()
-            formField.fieldType = "Spinner"
-        }
-    }
+    resolveFieldValueAndType(formField)
     if (value != null) {
         formField.fieldValue = value
     }

@@ -26,6 +26,8 @@
 package webtrekk.android.sdk.core
 
 import android.net.Uri
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -144,7 +146,7 @@ internal class SessionsImpl(
                 if (everId != null) {
                     webtrekkSharedPrefs.everId = everId
                     webtrekkSharedPrefs.appFirstOpen = "0"
-                    webtrekkSharedPrefs.previousSharedPreferences.edit().clear().apply()
+                    webtrekkSharedPrefs.previousSharedPreferences.edit { clear() }
                 }
             }
             webtrekkSharedPrefs.isMigrated = true
@@ -153,35 +155,36 @@ internal class SessionsImpl(
 
     override fun getUrlKey(): Map<String, String> {
         val urlString = webtrekkSharedPrefs.saveUrlData
+        if (urlString.isBlank()) return emptyMap()
+        val url = urlString.toUri()
+        val type = url.getQueryParameter("webtrekk_type_param")
         val urlMap = mutableMapOf<String, String>()
-        if (urlString.isNotBlank()) {
-            val url = Uri.parse(urlString)
-            val args: MutableSet<String> = url.queryParameterNames
-            val type = url.getQueryParameter("webtrekk_type_param")
-            for (key in args) {
-                val value = url.getQueryParameter(key)
-                if (!value.isNullOrBlank()) {
-                    if (type != null) {
-                        if (key == type)
-                            urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] =
-                                "$type=".encodeToUTF8() + value
-                    }
-                    if (key.startsWith(CampaignParam.CAMPAIGN_PARAM)) {
-                        urlMap[key] = value
-                    }
-                    if (key.startsWith(CampaignParam.CAMPAIGN_PARAM_WT_CC)) {
-                        val newKey = key.replace(
-                            CampaignParam.CAMPAIGN_PARAM_WT_CC,
-                            CampaignParam.CAMPAIGN_PARAM
-                        )
-                        urlMap[newKey] = value
-                    }
-                }
+        for (key in url.queryParameterNames) {
+            val value = url.getQueryParameter(key)
+            if (!value.isNullOrBlank()) {
+                parseUrlParam(key, value, type, urlMap)
             }
-
-            webtrekkSharedPrefs.saveUrlData = ""
         }
+        webtrekkSharedPrefs.saveUrlData = ""
         return urlMap
+    }
+
+    private fun parseUrlParam(
+        key: String,
+        value: String,
+        type: String?,
+        urlMap: MutableMap<String, String>
+    ) {
+        if (type != null && key == type) {
+            urlMap[InternalParam.MEDIA_CODE_PARAM_EXCHANGER] = "$type=".encodeToUTF8() + value
+        }
+        if (key.startsWith(CampaignParam.CAMPAIGN_PARAM)) {
+            urlMap[key] = value
+        }
+        if (key.startsWith(CampaignParam.CAMPAIGN_PARAM_WT_CC)) {
+            val newKey = key.replace(CampaignParam.CAMPAIGN_PARAM_WT_CC, CampaignParam.CAMPAIGN_PARAM)
+            urlMap[newKey] = value
+        }
     }
 
     override fun setUrl(urlString: Uri, mediaCode: String?) {

@@ -105,12 +105,15 @@ internal open class LifecycleWrapper :
     }
 
     override fun onActivityStarted(activity: Activity) {
+        // No action needed for activity start
     }
 
     override fun onActivityResumed(activity: Activity) {
+        // No action needed for activity resume
     }
 
     override fun onActivityPaused(activity: Activity) {
+        // No action needed for activity pause
     }
 
     override fun onActivityStopped(activity: Activity) {
@@ -120,6 +123,7 @@ internal open class LifecycleWrapper :
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        // No action needed for saving instance state
     }
 
     override fun onActivityDestroyed(activity: Activity) {

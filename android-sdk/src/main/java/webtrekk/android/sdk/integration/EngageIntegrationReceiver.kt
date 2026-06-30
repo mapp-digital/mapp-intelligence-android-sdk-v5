@@ -13,13 +13,11 @@ class EngageIntegrationReceiver : BroadcastReceiver() {
         intent?.let {
             context?.let { ctx ->
                 val action = it.action
-                if (it.component?.packageName.equals(ctx.packageName)) {
-                    if (ACTION == action) {
-                        Webtrekk.getInstance().init(ctx)
-                        it.extras?.getString("dmcUserId")?.let { dmcUserId ->
-                            if (dmcUserId.isNotEmpty()) {
-                                InteractorModule.sessions.setDmcUserId(dmcUserId)
-                            }
+                if (it.component?.packageName.equals(ctx.packageName) && ACTION == action) {
+                    Webtrekk.getInstance().init(ctx)
+                    it.extras?.getString("dmcUserId")?.let { dmcUserId ->
+                        if (dmcUserId.isNotEmpty()) {
+                            InteractorModule.sessions.setDmcUserId(dmcUserId)
                         }
                     }
                 }

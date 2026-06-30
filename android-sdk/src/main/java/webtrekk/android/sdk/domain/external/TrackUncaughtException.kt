@@ -77,44 +77,38 @@ internal class TrackUncaughtException(
         }
     }
 
+    private fun readExceptionParams(br: BufferedReader): MutableMap<String, String> {
+        val params = mutableMapOf<String, String>()
+        params[UrlParams.CRASH_TYPE] = ExceptionType.UNCAUGHT.type
+        params[UrlParams.EVENT_NAME] = CustomParam.WEBTREKK_IGNORE
+
+        br.readParam().takeIf { it.isNotEmpty() }?.let { params[UrlParams.CRASH_NAME] = it }
+        br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_NAME_ITEM_SEPARATOR)
+
+        br.readParam().takeIf { it.isNotEmpty() }?.let { params[UrlParams.CRASH_MESSAGE] = it }
+        br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_MESSAGE_ITEM_SEPARATOR)
+
+        br.readParam().takeIf { it.isNotEmpty() }?.let { params[UrlParams.CRASH_CAUSE_MESSAGE] = it }
+        br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_CAUSE_MESSAGE_ITEM_SEPARATOR)
+
+        br.readParam().takeIf { it.isNotEmpty() }?.let { params[UrlParams.CRASH_STACK] = it }
+        br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_STACK_ITEM_SEPARATOR)
+
+        br.readParam().takeIf { it.isNotEmpty() }?.let { params[UrlParams.CRASH_CAUSE_STACK] = it }
+        br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_CAUSE_STACK_ITEM_SEPARATOR)
+        br.validateLine(END_EX_STRING, NO_END_ITEM_SEPARATOR)
+        return params
+    }
+
     private fun createListParamsFromFile(file: File): MutableList<MutableMap<String, String>> {
-        val paramsList = emptyList<MutableMap<String, String>>().toMutableList()
+        val paramsList = mutableListOf<MutableMap<String, String>>()
         var br: BufferedReader? = null
         try {
             br = BufferedReader(FileReader(file))
             var line: String?
-            var value: String
             while (br.readLine().also { line = it } != null) {
-                if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(
-                    NO_START_ITEM_SEPARATOR
-                )
-
-                val params = emptyMap<String, String>().toMutableMap()
-                params[UrlParams.CRASH_TYPE] = ExceptionType.UNCAUGHT.type
-
-                params[UrlParams.EVENT_NAME] = CustomParam.WEBTREKK_IGNORE
-
-                value = br.readParam()
-                if (value != "") params[UrlParams.CRASH_NAME] = value
-                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_NAME_ITEM_SEPARATOR)
-
-                value = br.readParam()
-                if (value != "") params[UrlParams.CRASH_MESSAGE] = value
-                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_MESSAGE_ITEM_SEPARATOR)
-
-                value = br.readParam()
-                if (value != "") params[UrlParams.CRASH_CAUSE_MESSAGE] = value
-                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_CAUSE_MESSAGE_ITEM_SEPARATOR)
-
-                value = br.readParam()
-                if (value != "") params[UrlParams.CRASH_STACK] = value
-                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_STACK_ITEM_SEPARATOR)
-
-                value = br.readParam()
-                if (value != "") params[UrlParams.CRASH_CAUSE_STACK] = value
-                br.validateLine(EX_ITEM_SEPARATOR, NO_CRASH_CAUSE_STACK_ITEM_SEPARATOR)
-                br.validateLine(END_EX_STRING, NO_END_ITEM_SEPARATOR)
-                paramsList.add(params)
+                if (line != START_EX_STRING) throw IncorrectErrorFileFormatException(NO_START_ITEM_SEPARATOR)
+                paramsList.add(readExceptionParams(br))
             }
         } catch (e: IncorrectErrorFileFormatException) {
             logger.error("Incorrect File Exception Format:$e")

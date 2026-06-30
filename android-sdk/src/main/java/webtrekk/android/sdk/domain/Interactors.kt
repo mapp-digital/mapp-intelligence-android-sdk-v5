@@ -31,7 +31,7 @@ import webtrekk.android.sdk.util.CoroutineDispatchers
 /**
  * Internal interactors are the use cases handling the communication with the data layer.
  */
-internal interface InternalInteractor<in T, R : Any> {
+internal fun interface InternalInteractor<in T, R : Any> {
 
     /**
      * A suspendable function which returns [R] wrapped in a [Result] with either success or failed state to be handled in external interactors.
