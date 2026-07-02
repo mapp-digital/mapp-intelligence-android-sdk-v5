@@ -1,61 +1,23 @@
 package webtrekk.android.sdk.core
 
 import com.google.common.truth.Truth.assertThat
-import io.mockk.MockKAnnotations
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.spyk
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import webtrekk.android.sdk.MediaParam
-import webtrekk.android.sdk.Webtrekk
-import webtrekk.android.sdk.WebtrekkConfiguration
-import webtrekk.android.sdk.util.configuration
 
 /**
  * Tests for the null-string equality fix in WebtrekkImpl.trackMedia:
  *   Before: "null".equals(params[key], true)   — literal string first
  *   After:  params[key].equals("null", ignoreCase = true)  — receiver is the value
  *
- * Both produce the same result when the value is "null" (case-insensitive),
- * null, or a real value. These tests verify the semantic is preserved.
+ * All assertions are pure Kotlin — no Android framework, no Room, no coroutines.
+ * The previous version called spyk<WebtrekkImpl>().init(...) which triggered
+ * internalInit() → SessionsImpl → DataModule.database → real Room → NPE on
+ * Dispatchers.Default, leaking as UncaughtExceptionsBeforeTest into later runTest calls.
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class WebtrekkImplMediaNullParamTest {
-
-    private val dispatcher = Dispatchers.Unconfined
-    private lateinit var webtrekk: Webtrekk
-
-    @Before
-    fun setUp() {
-        MockKAnnotations.init(this, relaxUnitFun = true)
-        Dispatchers.setMain(dispatcher)
-        webtrekk = spyk<WebtrekkImpl>()
-        webtrekk.init(mockk(relaxed = true), configuration)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
-    }
-
-    // These tests verify behaviour through the public API rather than internal state.
-    // The change from "null".equals(x, true) → x.equals("null", ignoreCase = true)
-    // is semantically identical for non-null receivers (they both return true when x = "null"
-    // case-insensitively). The difference only matters when x is null — but the preceding
-    // isNullOrEmpty() guard already handles null, so both forms behave identically.
 
     @Test
     fun `null string literal equals ignoreCase is true when value is null_lowercase`() {
-        // Direct unit test of the condition logic (no Android dependency needed)
         val value: String? = "null"
         assertThat(value.equals("null", ignoreCase = true)).isTrue()
     }
@@ -86,7 +48,6 @@ internal class WebtrekkImplMediaNullParamTest {
 
     @Test
     fun `null value isNullOrEmpty guard catches null before equals is called`() {
-        // When value is actually null, isNullOrEmpty() is true → equals never called
         val value: String? = null
         val defaultApplied = value.isNullOrEmpty() || value.equals("null", ignoreCase = true)
         assertThat(defaultApplied).isTrue()
@@ -94,7 +55,6 @@ internal class WebtrekkImplMediaNullParamTest {
 
     @Test
     fun `media duration defaults to 0 when not present in params`() {
-        // Verify the map manipulation logic: if key absent → default "0"
         val params = mutableMapOf<String, String>()
         if (!params.containsKey(MediaParam.MEDIA_DURATION) ||
             params[MediaParam.MEDIA_DURATION].isNullOrEmpty() ||

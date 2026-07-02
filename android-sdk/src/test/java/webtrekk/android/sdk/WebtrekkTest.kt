@@ -25,30 +25,43 @@
 
 package webtrekk.android.sdk
 
-import android.content.Context
-import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.assertThrows
+import webtrekk.android.sdk.module.LibraryModule
 
+/**
+ * Verifies that calling SDK methods before init() throws IllegalStateException.
+ *
+ * We mock LibraryModule so that accessing .configuration (which hasOptOut() reaches via
+ * the config getter) throws IllegalStateException — matching the real production behaviour —
+ * without touching the real InteractorModule / DataModule / Room. Without this isolation,
+ * accessing the real InteractorModule.optOut → sessions → DataModule.database → Room on
+ * Dispatchers.Default throws a NullPointerException that leaks as UncaughtExceptionsBeforeTest
+ * into the next test class that uses runTest.
+ */
 internal class WebtrekkTest {
-
-    private val webtrekk = Webtrekk.getInstance()
-
-    @MockK
-    lateinit var config: Config
-
-    @MockK(relaxed = true)
-    lateinit var appContext: Context
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
+        mockkObject(LibraryModule)
+        every { LibraryModule.isInitialized() } returns false
+        every { LibraryModule.application } throws IllegalStateException("Webtrekk not initialized")
+        every { LibraryModule.configuration } throws IllegalStateException("Webtrekk not initialized")
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test
     fun `throws IllegalStateException when init not called`() {
+        val webtrekk = Webtrekk.getInstance()
         assertThrows(IllegalStateException::class.java) {
             webtrekk.hasOptOut()
         }
