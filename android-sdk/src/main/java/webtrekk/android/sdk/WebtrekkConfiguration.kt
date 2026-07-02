@@ -352,7 +352,7 @@ class WebtrekkConfiguration private constructor(
                 okHttpClient = DefaultConfiguration.OKHTTP_CLIENT,
                 workManagerConstraints = DefaultConfiguration.WORK_MANAGER_CONSTRAINTS,
                 userMatchingEnabled = obj.has("userMatchingEnabled") && obj.optBoolean("userMatchingEnabled"),
-                everId = if (obj.has("everId")) obj.optString("everId") else null,
+                everId = obj.optString("everId"),
                 everIdMode = everIdMode,
             )
         }

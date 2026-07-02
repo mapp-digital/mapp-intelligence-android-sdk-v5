@@ -171,7 +171,9 @@ internal class WebtrekkImplUnitTest {
         mockkObject(InteractorModule)
 
         // Setup LibraryModule mocks
-        every { LibraryModule.isInitialized() } returns false
+        // Default to true so init() is a no-op and internalInit() never launches leaked coroutines.
+        // Tests that specifically test initialization behaviour override this to false locally.
+        every { LibraryModule.isInitialized() } returns true
         every { LibraryModule.application } returns mockContext
         every { LibraryModule.configuration } returns mockConfig
         justRun { LibraryModule.initializeDI(any(), any()) }
@@ -299,14 +301,18 @@ internal class WebtrekkImplUnitTest {
     }
 
     @Test
-    fun `init with context and config initializes LibraryModule when not initialized`() {
-        every { LibraryModule.isInitialized() } returns false
+    fun `init with context and config initializes LibraryModule when not initialized`() =
+        runTest(testDispatcher) {
+            every { LibraryModule.isInitialized() } returns false
 
-        webtrekkImpl.init(mockContext, mockConfig)
+            webtrekkImpl.init(mockContext, mockConfig)
 
-        verify(exactly = 1) { LibraryModule.initializeDI(mockContext, mockConfig) }
-        verify(exactly = 1) { mockSharedPrefs.configJson = any() }
-    }
+            // Drain the coroutine launched by internalInit() so it doesn't leak into the next test
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            verify(exactly = 1) { LibraryModule.initializeDI(mockContext, mockConfig) }
+            verify(exactly = 1) { mockSharedPrefs.configJson = any() }
+        }
 
     @Test
     fun `init with context and config does not reinitialize when already initialized`() {
@@ -319,7 +325,7 @@ internal class WebtrekkImplUnitTest {
     }
 
     @Test
-    fun `init with context only loads config from SharedPrefs`() {
+    fun `init with context only loads config from SharedPrefs`() = runTest(testDispatcher) {
         // 1. Library is not initialized
         mockkObject(LibraryModule)
         every { LibraryModule.isInitialized() } returns false
@@ -342,6 +348,9 @@ internal class WebtrekkImplUnitTest {
 
         // 6. Run code under test
         impl.init(mockContext)
+
+        // Drain internalInit() coroutine so it doesn't leak into the next test
+        testDispatcher.scheduler.advanceUntilIdle()
 
         // 7. Verify that fromJson was called
         verify { WebtrekkConfiguration.fromJson("{}") }
