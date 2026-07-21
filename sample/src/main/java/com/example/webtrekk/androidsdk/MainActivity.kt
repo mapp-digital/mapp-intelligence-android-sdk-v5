@@ -214,7 +214,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonGetDmcUserId.setOnClickListener {
-            Appoxee.instance().getDeviceInfoDMC()
+            Appoxee.instance().getDevice().enqueue { result->
+                val dmcUserId=result.getData()?.dmcUserId
+
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Dmc User Id")
+                    .setMessage(dmcUserId)
+                    .show()
+            }
         }
 
         val int = intent

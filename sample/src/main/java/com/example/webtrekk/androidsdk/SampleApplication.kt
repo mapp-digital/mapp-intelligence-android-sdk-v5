@@ -58,7 +58,7 @@ class SampleApplication : Application() {
 
         val webtrekkConfigurations =
             WebtrekkConfiguration.Builder(trackIds, domain)
-                .setEverId("2222")
+                //.setEverId("2222")
                 //.disableAutoTracking()
                 .logLevel(Logger.Level.BASIC)
                 .disableAutoTracking()
