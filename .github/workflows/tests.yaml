@@ -24,5 +24,4 @@ jobs:
           java-version: 17
 
       - name: Run unit tests
-        run: ./gradlew :android:clean :android:testReleaseUnitTest --no-daemon --stacktrace
-
+        run: ./gradlew :android-sdk:clean :android-sdk:testDebugUnitTest --no-daemon --stacktrace
