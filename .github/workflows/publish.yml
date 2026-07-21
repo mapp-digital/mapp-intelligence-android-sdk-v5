@@ -42,11 +42,10 @@ jobs:
         run: |
           ./gradlew \
           :android-sdk:clean \
-          :android-sdk:testReleaseUnitTest \
+          :android-sdk:testDebugUnitTest \
           :android-sdk:assembleRelease \
           :android-sdk:publishMavenPublicationToMavenLocal \
           :android-sdk:uploadToCentralPortal \
           -x test \
           -x check \
           --stacktrace --no-daemon
-
