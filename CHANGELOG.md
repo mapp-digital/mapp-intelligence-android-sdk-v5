@@ -1,5 +1,17 @@
 # Change Log
-## Version 5.1.12 *(UNRELEASED)*
+## Version 5.1.14 *(2026-07-23)*
+* Updated codebase based on SonarQube recommendations
+* Updated Engage user matching to persist the DMC user ID without initializing the Intelligence SDK
+* Restricted Engage integration receiver to same-app broadcasts
+* Updated sample app for the latest Engage SDK API
+* Updated Gradle to version 9.4.1
+* Updated Android Gradle Plugin to version 9.2.1
+* Updated Kotlin to version 2.3.21
+* Updated 3rd party dependencies to the latest versions
+* Fixed GitHub Actions unit test and publishing workflows
+
+# Change Log
+## Version 5.1.12 *(2026-01-19)*
 * Fixed wrong ordering of requests when sent in batch
 * Fixed exception in EngageIntegrationReceiver when SDK integrated in react native plugin
 * Updated targetSdk to version 36
