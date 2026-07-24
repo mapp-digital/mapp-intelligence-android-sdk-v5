@@ -6,6 +6,9 @@ on:
 env:
   CI: "true"
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -38,6 +41,16 @@ jobs:
       - name: Make gradle executable
         run: chmod +x gradlew
 
+      - name: Read SDK version
+        id: sdk_version
+        run: |
+          version="$(sed -n 's/^VERSION_NAME=//p' android-sdk/gradle.properties)"
+          if [[ -z "$version" ]]; then
+            echo "VERSION_NAME is missing from android-sdk/gradle.properties" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
       - name: Publish to Maven Central
         run: |
           ./gradlew \
@@ -49,3 +62,13 @@ jobs:
           -x test \
           -x check \
           --stacktrace --no-daemon
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION_NAME: ${{ steps.sdk_version.outputs.version }}
+        run: |
+          gh release create "$VERSION_NAME" \
+            --target "${{ github.sha }}" \
+            --title "Mapp Intelligence SDK $VERSION_NAME" \
+            --generate-notes
