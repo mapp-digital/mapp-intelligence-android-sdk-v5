@@ -1,15 +1,15 @@
 package webtrekk.android.sdk.domain.external
 
 import android.content.Context
-import java.io.BufferedOutputStream
-import java.io.IOException
-import java.util.concurrent.atomic.AtomicBoolean
 import webtrekk.android.sdk.extension.createString
 import webtrekk.android.sdk.module.AppModule
 import webtrekk.android.sdk.util.END_EX_STRING
 import webtrekk.android.sdk.util.EX_ITEM_SEPARATOR
 import webtrekk.android.sdk.util.START_EX_STRING
 import webtrekk.android.sdk.util.getFileName
+import java.io.BufferedOutputStream
+import java.io.IOException
+import java.util.concurrent.atomic.AtomicBoolean
 
 internal class UncaughtExceptionHandler(
     private val defaultHandler: Thread.UncaughtExceptionHandler?,

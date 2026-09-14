@@ -26,7 +26,6 @@
 package webtrekk.android.sdk
 
 import androidx.work.Constraints
-import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
@@ -34,6 +33,7 @@ import webtrekk.android.sdk.data.model.GenerationMode
 import webtrekk.android.sdk.extension.nullOrEmptyThrowError
 import webtrekk.android.sdk.extension.validateEntireList
 import webtrekk.android.sdk.util.webtrekkLogger
+import java.util.concurrent.TimeUnit
 
 /**
  * The entry point where you can set up all the configurations that will be used by the lib.

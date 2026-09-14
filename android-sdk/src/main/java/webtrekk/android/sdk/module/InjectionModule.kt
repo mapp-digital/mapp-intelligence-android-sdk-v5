@@ -3,7 +3,6 @@ package webtrekk.android.sdk.module
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.WorkManager
-import java.util.concurrent.atomic.AtomicBoolean
 import kotlinx.coroutines.CompletableJob
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -54,6 +53,7 @@ import webtrekk.android.sdk.domain.internal.ExecutePostRequest
 import webtrekk.android.sdk.domain.internal.ExecuteRequest
 import webtrekk.android.sdk.domain.internal.GetCachedDataTracks
 import webtrekk.android.sdk.util.CoroutineDispatchers
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 
 object AppModule {

@@ -31,6 +31,7 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
+import androidx.core.content.edit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -84,7 +85,6 @@ import webtrekk.android.sdk.util.webtrekkLogger
 import java.io.File
 import java.util.Objects
 import kotlin.coroutines.CoroutineContext
-import androidx.core.content.edit
 
 /**
  * The concrete implementation of [Webtrekk]. This class extends [CoroutineScope] with a [SupervisorJob], it has the parent scope that will be passed to all the children coroutines.

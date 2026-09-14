@@ -54,7 +54,6 @@ open class WebtrekkWebInterface(private val webtrekk: Webtrekk) {
      */
     @JavascriptInterface
     fun getEverId(): String {
-        // TODO: everId is nullable, but WebtrekkWebInterface requires everId ???
         return webtrekk.getEverId() ?: ""
     }
 

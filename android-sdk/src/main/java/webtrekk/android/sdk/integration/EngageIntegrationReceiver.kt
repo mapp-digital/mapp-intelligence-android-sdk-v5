@@ -3,10 +3,7 @@ package webtrekk.android.sdk.integration
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import webtrekk.android.sdk.Logger
-import webtrekk.android.sdk.core.WebtrekkLogger
 import webtrekk.android.sdk.data.WebtrekkSharedPrefs
-import kotlin.math.log
 
 class EngageIntegrationReceiver : BroadcastReceiver() {
 

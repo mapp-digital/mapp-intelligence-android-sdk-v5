@@ -26,9 +26,9 @@
 package webtrekk.android.sdk.core
 
 import android.util.Log
-import java.text.SimpleDateFormat
-import java.util.*
 import webtrekk.android.sdk.Logger
+import java.text.SimpleDateFormat
+import java.util.Date
 
 /**
  * Webtrekk simple logger.

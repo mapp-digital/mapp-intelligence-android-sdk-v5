@@ -25,12 +25,6 @@
 
 package webtrekk.android.sdk.extension
 
-import java.io.BufferedReader
-import java.io.IOException
-import java.net.URLEncoder
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 import okhttp3.Request
 import okio.Buffer
 import org.json.JSONObject
@@ -40,7 +34,12 @@ import webtrekk.android.sdk.util.EX_LINE_SEPARATOR
 import webtrekk.android.sdk.util.IncorrectErrorFileFormatException
 import webtrekk.android.sdk.util.MAX_PARAMETER_NUMBER
 import webtrekk.android.sdk.util.NULL_MESSAGE
-import kotlin.collections.HashMap
+import java.io.BufferedReader
+import java.io.IOException
+import java.net.URLEncoder
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 /**
  * This file contains helper general extension functions.

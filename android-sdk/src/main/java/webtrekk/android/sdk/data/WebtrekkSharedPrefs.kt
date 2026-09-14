@@ -28,8 +28,8 @@ package webtrekk.android.sdk.data
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import webtrekk.android.sdk.data.model.GenerationMode
 import androidx.core.content.edit
+import webtrekk.android.sdk.data.model.GenerationMode
 
 /**
  * A class that manages all of Webtrekk internal SharedPreferences. This class can be used only for internal saving

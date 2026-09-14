@@ -28,11 +28,11 @@ package webtrekk.android.sdk
 import android.content.Context
 import android.net.Uri
 import android.view.View
-import java.io.File
 import webtrekk.android.sdk.core.WebtrekkImpl
 import webtrekk.android.sdk.events.ActionEvent
 import webtrekk.android.sdk.events.MediaEvent
 import webtrekk.android.sdk.events.PageViewEvent
+import java.io.File
 
 /**
  * Webtrekk is a library used to collect your app usage, how your customers interacting with your app,
