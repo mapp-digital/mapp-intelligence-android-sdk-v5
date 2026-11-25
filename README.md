@@ -1,4 +1,5 @@
-# [Mapp Intelligence Android SDK v5](https://webtrekk.github.io/webtrekk-android-sdk-v5/) [![Build Status](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5.svg?branch=master)](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5)
+# [Mapp Intelligence Android SDK v5](https://webtrekk.github.io/webtrekk-android-sdk-v5/) [![Build Status](https://travis-ci.com/Webtrekk/webtrekk-android-sdk-v5.svg?branch=master)]
+[![Upload to Maven Central](https://github.com/mapp-digital/mapp-intelligence-android-sdk-v5/actions/workflows/publish.yml/badge.svg)](https://github.com/mapp-digital/mapp-intelligence-android-sdk-v5/actions/workflows/publish.yml)
 
 [Site](https://mapp.com/) |
 [Docs](https://documentation.mapp.com/latest/en/android-sdk-v5-17498610.html) |
